@@ -8,6 +8,7 @@ const NPC: String = "EnemyAI"
 const SCHEDULE: String = "Schedule"
 const DUNGEON: String = "DungeonBoard"
 const REMOVE: String = "RemoveObject"
+const RANDOM: String = "RandomNumber"
 const SIDEBAR: String = "MainGUI/MainHBox/SidebarVBox"
 const MODELINE: String = "MainGUI/MainHBox/Modeline"
 
@@ -64,6 +65,11 @@ const NODE_REF: Array = [
 		"_ref_RemoveObject",
 		REMOVE,
 		PC_ATTACK,
+	],
+	[
+		"_ref_RandomNumber",
+		RANDOM,
+		INIT_WORLD,
 	],
 ]
 

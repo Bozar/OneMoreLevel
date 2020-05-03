@@ -10,20 +10,15 @@ const Wall := preload("res://sprite/Wall.tscn")
 const ArrowX := preload("res://sprite/ArrowX.tscn")
 const ArrowY := preload("res://sprite/ArrowY.tscn")
 const DungeonBoard := preload("res://scene/main/DungeonBoard.gd")
+const RandomNumber := preload("res://scene/main/RandomNumber.gd")
 
 var _ref_DungeonBoard: DungeonBoard
+var _ref_RandomNumber: RandomNumber
 
 var _new_ConvertCoord := preload("res://library/ConvertCoord.gd").new()
 var _new_DungeonSize := preload("res://library/DungeonSize.gd").new()
 var _new_GroupName := preload("res://library/GroupName.gd").new()
 var _new_InputName := preload("res://library/InputName.gd").new()
-
-var _rng := RandomNumberGenerator.new()
-
-
-func _ready() -> void:
-	# _rng.seed = 123
-	_rng.randomize()
 
 
 func _unhandled_input(event: InputEvent) -> void:
@@ -38,13 +33,13 @@ func _unhandled_input(event: InputEvent) -> void:
 
 
 func _init_dwarf() -> void:
-	var dwarf: int = _rng.randi_range(3, 6)
+	var dwarf: int = _ref_RandomNumber.get_int(3, 6)
 	var x: int
 	var y: int
 
 	while dwarf > 0:
-		x = _rng.randi_range(1, _new_DungeonSize.MAX_X - 1)
-		y = _rng.randi_range(1, _new_DungeonSize.MAX_Y - 1)
+		x = _ref_RandomNumber.get_int(1, _new_DungeonSize.MAX_X - 1)
+		y = _ref_RandomNumber.get_int(1, _new_DungeonSize.MAX_Y - 1)
 
 		if _ref_DungeonBoard.has_sprite(_new_GroupName.WALL, x, y) \
 				or _ref_DungeonBoard.has_sprite(_new_GroupName.DWARF, x, y):
