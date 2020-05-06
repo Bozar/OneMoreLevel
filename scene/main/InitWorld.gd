@@ -3,10 +3,8 @@ extends Node2D
 
 signal sprite_created(new_sprite)
 
-const Player := preload("res://sprite/PC.tscn")
 const Dwarf := preload("res://sprite/Dwarf.tscn")
 const Floor := preload("res://sprite/Floor.tscn")
-const Wall := preload("res://sprite/Wall.tscn")
 const ArrowX := preload("res://sprite/ArrowX.tscn")
 const ArrowY := preload("res://sprite/ArrowY.tscn")
 const DungeonBoard := preload("res://scene/main/DungeonBoard.gd")
@@ -25,18 +23,20 @@ var _new_InputName := preload("res://library/InputName.gd").new()
 var _world: Node
 
 
+func _ready() -> void:
+	_world = _select_world()
+	_set_world_reference(_world)
+	add_child(_world)
+
+
 func _unhandled_input(event: InputEvent) -> void:
 	if event.is_action_pressed(_new_InputName.INIT_WORLD):
 		_init_floor()
-		_init_wall()
-		_init_PC()
 		_init_dwarf()
 		_init_indicator()
 
-		_world = _select_world()
-		_set_world_reference(_world)
-		add_child(_world)
-		var __ = _world.get_blueprint()
+		for i in _world.get_blueprint():
+			_create_sprite(i[0], i[1], i[2], i[3])
 
 		set_process_unhandled_input(false)
 
@@ -69,26 +69,10 @@ func _init_dwarf() -> void:
 		dwarf -= 1
 
 
-func _init_PC() -> void:
-	_create_sprite(Player, _new_GroupName.PC, 0, 0)
-
-
 func _init_floor() -> void:
 	for i in range(_new_DungeonSize.MAX_X):
 		for j in range(_new_DungeonSize.MAX_Y):
 			_create_sprite(Floor, _new_GroupName.FLOOR, i, j)
-
-
-func _init_wall() -> void:
-	var shift: int = 2
-	var min_x: int = _new_DungeonSize.CENTER_X - shift
-	var max_x: int = _new_DungeonSize.CENTER_X + shift + 1
-	var min_y: int = _new_DungeonSize.CENTER_Y - shift
-	var max_y: int = _new_DungeonSize.CENTER_Y + shift + 1
-
-	for i in range(min_x, max_x):
-		for j in range(min_y, max_y):
-			_create_sprite(Wall, _new_GroupName.WALL, i, j)
 
 
 func _init_indicator() -> void:
