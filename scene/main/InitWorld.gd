@@ -12,6 +12,8 @@ const ArrowY := preload("res://sprite/ArrowY.tscn")
 const DungeonBoard := preload("res://scene/main/DungeonBoard.gd")
 const RandomNumber := preload("res://scene/main/RandomNumber.gd")
 
+const InitDemo := preload("res://scene/init/InitDemo.tscn")
+
 var _ref_DungeonBoard: DungeonBoard
 var _ref_RandomNumber: RandomNumber
 
@@ -19,6 +21,8 @@ var _new_ConvertCoord := preload("res://library/ConvertCoord.gd").new()
 var _new_DungeonSize := preload("res://library/DungeonSize.gd").new()
 var _new_GroupName := preload("res://library/GroupName.gd").new()
 var _new_InputName := preload("res://library/InputName.gd").new()
+
+var _world: Node
 
 
 func _unhandled_input(event: InputEvent) -> void:
@@ -29,7 +33,24 @@ func _unhandled_input(event: InputEvent) -> void:
 		_init_dwarf()
 		_init_indicator()
 
+		_world = _select_world()
+		_set_world_reference(_world)
+		add_child(_world)
+		var __ = _world.get_blueprint()
+
 		set_process_unhandled_input(false)
+
+
+func _select_world() -> Node:
+	var candidate: Node
+	candidate = InitDemo.instance()
+
+	return candidate
+
+
+func _set_world_reference(new_world: Node) -> void:
+	var __ = new_world
+	return
 
 
 func _init_dwarf() -> void:
