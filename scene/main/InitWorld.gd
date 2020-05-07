@@ -15,7 +15,7 @@ var _ref_RandomNumber: RandomNumber
 
 var _new_ConvertCoord := preload("res://library/ConvertCoord.gd").new()
 var _new_DungeonSize := preload("res://library/DungeonSize.gd").new()
-var _new_GroupName := preload("res://library/GroupName.gd").new()
+var _new_SubGroupName := preload("res://library/SubGroupName.gd").new()
 var _new_InputName := preload("res://library/InputName.gd").new()
 
 var _world: WorldTemplate
@@ -58,13 +58,13 @@ func _select_world() -> WorldTemplate:
 func _init_floor() -> void:
 	for i in range(_new_DungeonSize.MAX_X):
 		for j in range(_new_DungeonSize.MAX_Y):
-			_create_sprite(Floor, _new_GroupName.FLOOR, i, j)
+			_create_sprite(Floor, _new_SubGroupName.FLOOR, i, j)
 
 
 func _init_indicator(x: int, y: int) -> void:
-	_create_sprite(ArrowX, _new_GroupName.ARROW, 0, y,
+	_create_sprite(ArrowX, _new_SubGroupName.ARROW, 0, y,
 			-_new_DungeonSize.ARROW_MARGIN)
-	_create_sprite(ArrowY, _new_GroupName.ARROW, x, 0,
+	_create_sprite(ArrowY, _new_SubGroupName.ARROW, x, 0,
 			0, -_new_DungeonSize.ARROW_MARGIN)
 
 
@@ -81,4 +81,4 @@ func _create_sprite(prefab: PackedScene, group: String, x: int, y: int,
 
 
 func _is_pc(group_name: String) -> bool:
-	return group_name == _new_GroupName.PC
+	return group_name == _new_SubGroupName.PC

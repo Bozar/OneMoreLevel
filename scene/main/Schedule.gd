@@ -4,7 +4,7 @@ extends Node2D
 signal turn_started(current_sprite)
 signal turn_ended(current_sprite)
 
-var _new_GroupName := preload("res://library/GroupName.gd").new()
+var _new_SubGroupName := preload("res://library/SubGroupName.gd").new()
 
 var _actors: Array = [null]
 var _pointer: int = 0
@@ -18,9 +18,9 @@ func end_turn() -> void:
 
 
 func _on_InitWorld_sprite_created(new_sprite: Sprite) -> void:
-	if new_sprite.is_in_group(_new_GroupName.PC):
+	if new_sprite.is_in_group(_new_SubGroupName.PC):
 		_actors[0] = new_sprite
-	elif new_sprite.is_in_group(_new_GroupName.DWARF):
+	elif new_sprite.is_in_group(_new_SubGroupName.DWARF):
 		_actors.append(new_sprite)
 
 

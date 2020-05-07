@@ -14,7 +14,7 @@ var _ref_Schedule: Schedule
 
 var _new_ConvertCoord := preload("res://library/ConvertCoord.gd").new()
 var _new_InputName := preload("res://library/InputName.gd").new()
-var _new_GroupName := preload("res://library/GroupName.gd").new()
+var _new_SubGroupName := preload("res://library/SubGroupName.gd").new()
 
 var _pc: Sprite
 var _move_inputs: Array = [
@@ -41,13 +41,13 @@ func _unhandled_input(event: InputEvent) -> void:
 
 
 func _on_InitWorld_sprite_created(new_sprite: Sprite) -> void:
-	if new_sprite.is_in_group(_new_GroupName.PC):
+	if new_sprite.is_in_group(_new_SubGroupName.PC):
 		_pc = new_sprite
 		set_process_unhandled_input(true)
 
 
 func _on_Schedule_turn_started(current_sprite: Sprite) -> void:
-	if current_sprite.is_in_group(_new_GroupName.PC):
+	if current_sprite.is_in_group(_new_SubGroupName.PC):
 		set_process_unhandled_input(true)
 	# print("{0}: Start turn.".format([current_sprite.name]))
 
@@ -68,11 +68,11 @@ func _is_move_input(event: InputEvent) -> bool:
 func _try_move(x: int, y: int) -> void:
 	if not _ref_DungeonBoard.is_inside_dungeon(x, y):
 		emit_signal("pc_moved", "You cannot leave the map.")
-	elif _ref_DungeonBoard.has_sprite(_new_GroupName.WALL, x, y):
+	elif _ref_DungeonBoard.has_sprite(_new_SubGroupName.WALL, x, y):
 		emit_signal("pc_moved", "You bump into wall.")
-	elif _ref_DungeonBoard.has_sprite(_new_GroupName.DWARF, x, y):
+	elif _ref_DungeonBoard.has_sprite(_new_SubGroupName.DWARF, x, y):
 		set_process_unhandled_input(false)
-		get_node(PC_ATTACK).attack(_new_GroupName.DWARF, x, y)
+		get_node(PC_ATTACK).attack(_new_SubGroupName.DWARF, x, y)
 	else:
 		set_process_unhandled_input(false)
 		_pc.position = _new_ConvertCoord.index_to_vector(x, y)

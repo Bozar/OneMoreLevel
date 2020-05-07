@@ -2,7 +2,7 @@ extends Node2D
 
 
 var _new_DungeonSize := preload("res://library/DungeonSize.gd").new()
-var _new_GroupName := preload("res://library/GroupName.gd").new()
+var _new_SubGroupName := preload("res://library/SubGroupName.gd").new()
 var _new_ConvertCoord := preload("res://library/ConvertCoord.gd").new()
 
 # <string_group_name, <int_column, array_sprite>>
@@ -32,10 +32,10 @@ func _on_InitWorld_sprite_created(new_sprite: Sprite) -> void:
 	var pos: Array
 	var group: String
 
-	if new_sprite.is_in_group(_new_GroupName.DWARF):
-		group = _new_GroupName.DWARF
-	elif new_sprite.is_in_group(_new_GroupName.WALL):
-		group = _new_GroupName.WALL
+	if new_sprite.is_in_group(_new_SubGroupName.DWARF):
+		group = _new_SubGroupName.DWARF
+	elif new_sprite.is_in_group(_new_SubGroupName.WALL):
+		group = _new_SubGroupName.WALL
 	else:
 		return
 
@@ -49,7 +49,7 @@ func _on_RemoveObject_sprite_removed(_sprite: Sprite, group_name: String,
 
 
 func _init_dict() -> void:
-	var groups = [_new_GroupName.DWARF, _new_GroupName.WALL]
+	var groups = [_new_SubGroupName.DWARF, _new_SubGroupName.WALL]
 
 	for g in groups:
 		_sprite_dict[g] = {}

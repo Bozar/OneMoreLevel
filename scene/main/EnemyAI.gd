@@ -7,14 +7,14 @@ const Schedule := preload("res://scene/main/Schedule.gd")
 
 var _ref_Schedule: Schedule
 
-var _new_GroupName := preload("res://library/GroupName.gd").new()
+var _new_SubGroupName := preload("res://library/SubGroupName.gd").new()
 var _new_ConvertCoord := preload("res://library/ConvertCoord.gd").new()
 
 var _pc: Sprite
 
 
 func _on_Schedule_turn_started(current_sprite: Sprite) -> void:
-	if not current_sprite.is_in_group(_new_GroupName.DWARF):
+	if not current_sprite.is_in_group(_new_SubGroupName.DWARF):
 		return
 
 	if _pc_is_close(_pc, current_sprite):
@@ -23,7 +23,7 @@ func _on_Schedule_turn_started(current_sprite: Sprite) -> void:
 
 
 func _on_InitWorld_sprite_created(new_sprite: Sprite) -> void:
-	if new_sprite.is_in_group(_new_GroupName.PC):
+	if new_sprite.is_in_group(_new_SubGroupName.PC):
 		_pc = new_sprite
 
 

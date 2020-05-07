@@ -1,7 +1,7 @@
 const RandomNumber := preload("res://scene/main/RandomNumber.gd")
 
 var _new_DungeonSize := preload("res://library/DungeonSize.gd").new()
-var _new_GroupName := preload("res://library/GroupName.gd").new()
+var _new_SubGroupName := preload("res://library/SubGroupName.gd").new()
 
 var _ref_RandomNumber: RandomNumber
 

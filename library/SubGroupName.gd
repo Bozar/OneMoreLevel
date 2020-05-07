@@ -1,3 +1,5 @@
+const INVALID: String = "invalid"
+
 const DWARF: String = "dwarf"
 const PC: String = "pc"
 

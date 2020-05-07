@@ -1,7 +1,7 @@
 extends Label
 
 
-var _new_GroupName := preload("res://library/GroupName.gd").new()
+var _new_SubGroupName := preload("res://library/SubGroupName.gd").new()
 
 
 func _ready() -> void:
@@ -9,7 +9,7 @@ func _ready() -> void:
 
 
 func _on_Schedule_turn_ended(current_sprite: Sprite) -> void:
-	if current_sprite.is_in_group(_new_GroupName.PC):
+	if current_sprite.is_in_group(_new_SubGroupName.PC):
 		text = ""
 
 
