@@ -54,7 +54,7 @@ const NODE_REF: Array = [
 	[
 		"_ref_DungeonBoard",
 		DUNGEON,
-		PC_MOVE, PC_ATTACK, REMOVE, INIT_WORLD,
+		PC_MOVE, PC_ATTACK, REMOVE,
 	],
 	[
 		"_ref_Schedule",
