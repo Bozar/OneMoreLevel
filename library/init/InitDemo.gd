@@ -30,14 +30,18 @@ func _init_wall() -> void:
 	var min_y: int = _new_DungeonSize.CENTER_Y - shift
 	var max_y: int = _new_DungeonSize.CENTER_Y + shift + 1
 
-	for i in range(min_x, max_x):
-		for j in range(min_y, max_y):
-			_blueprint.push_back([Wall, _new_SubGroupName.WALL, i, j])
-			_occupy_position(i, j)
+	for x in range(min_x, max_x):
+		for y in range(min_y, max_y):
+			_add_to_blueprint(Wall,
+					_new_MainGroupName.BUILDING, _new_SubGroupName.WALL,
+					x, y)
+			_occupy_position(x, y)
 
 
 func _init_PC() -> void:
-	_blueprint.push_back([Player, _new_SubGroupName.PC, 0, 0])
+	_add_to_blueprint(Player,
+			_new_MainGroupName.ACTOR, _new_SubGroupName.PC,
+			0, 0)
 
 
 func _init_dwarf() -> void:
@@ -51,7 +55,9 @@ func _init_dwarf() -> void:
 
 		if _is_occupied(x, y):
 			continue
-		_blueprint.push_back([Dwarf, _new_SubGroupName.DWARF, x, y])
+		_add_to_blueprint(Dwarf,
+				_new_MainGroupName.ACTOR, _new_SubGroupName.DWARF,
+				x, y)
 		_occupy_position(x, y)
 
 		dwarf -= 1
