@@ -33,9 +33,11 @@ func _unhandled_input(event: InputEvent) -> void:
 	if event.is_action_pressed(_new_InputName.INIT_WORLD):
 		_init_floor()
 		_init_dwarf()
-		_init_indicator()
 
+		# [[PackedScene, group_name, x, y], ...]
 		for i in _world.get_blueprint():
+			if _is_pc(i[1]):
+				_init_indicator(i[2], i[3])
 			_create_sprite(i[0], i[1], i[2], i[3])
 
 		set_process_unhandled_input(false)
@@ -75,10 +77,10 @@ func _init_floor() -> void:
 			_create_sprite(Floor, _new_GroupName.FLOOR, i, j)
 
 
-func _init_indicator() -> void:
-	_create_sprite(ArrowX, _new_GroupName.ARROW, 0, 12,
+func _init_indicator(x: int, y: int) -> void:
+	_create_sprite(ArrowX, _new_GroupName.ARROW, 0, y,
 			-_new_DungeonSize.ARROW_MARGIN)
-	_create_sprite(ArrowY, _new_GroupName.ARROW, 5, 0,
+	_create_sprite(ArrowY, _new_GroupName.ARROW, x, 0,
 			0, -_new_DungeonSize.ARROW_MARGIN)
 
 
@@ -92,3 +94,7 @@ func _create_sprite(prefab: PackedScene, group: String, x: int, y: int,
 
 	add_child(new_sprite)
 	emit_signal("sprite_created", new_sprite)
+
+
+func _is_pc(group_name: String) -> bool:
+	return group_name == _new_GroupName.PC
