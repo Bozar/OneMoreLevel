@@ -8,6 +8,7 @@ const ArrowX := preload("res://sprite/ArrowX.tscn")
 const ArrowY := preload("res://sprite/ArrowY.tscn")
 const RandomNumber := preload("res://scene/main/RandomNumber.gd")
 
+const WorldTemplate := preload("res://library/init/WorldTemplate.gd")
 const InitDemo := preload("res://library/init/InitDemo.gd")
 
 var _ref_RandomNumber: RandomNumber
@@ -17,7 +18,7 @@ var _new_DungeonSize := preload("res://library/DungeonSize.gd").new()
 var _new_GroupName := preload("res://library/GroupName.gd").new()
 var _new_InputName := preload("res://library/InputName.gd").new()
 
-var _world: GDScript
+var _world: WorldTemplate
 
 
 func _ready() -> void:
@@ -48,7 +49,7 @@ func _unhandled_input(event: InputEvent) -> void:
 		set_process_unhandled_input(false)
 
 
-func _select_world() -> GDScript:
+func _select_world() -> WorldTemplate:
 	var candidate
 	candidate = InitDemo.new()
 	return candidate
