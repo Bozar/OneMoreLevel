@@ -25,13 +25,9 @@ var _new_InputName := preload("res://library/InputName.gd").new()
 var _world: WorldTemplate
 
 
-func _ready() -> void:
-	_world = _select_world()
-
-
 func _unhandled_input(event: InputEvent) -> void:
 	if event.is_action_pressed(_new_InputName.INIT_WORLD):
-		_world.init_self(_ref_RandomNumber)
+		_world = _select_world()
 		# sb: SpriteBlueprint
 		for sb in _world.get_blueprint():
 			if _is_pc(sb.sub_group):
@@ -43,7 +39,7 @@ func _unhandled_input(event: InputEvent) -> void:
 
 func _select_world() -> WorldTemplate:
 	var candidate
-	candidate = InitDemo.new()
+	candidate = InitDemo.new(_ref_RandomNumber)
 	return candidate
 
 

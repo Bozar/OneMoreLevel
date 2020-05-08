@@ -7,6 +7,10 @@ const Dwarf := preload("res://sprite/Dwarf.tscn")
 const Wall := preload("res://sprite/Wall.tscn")
 
 
+func _init(_random: RandomNumber).(_random) -> void:
+	pass
+
+
 func get_blueprint() -> Array:
 	_init_wall()
 	_init_PC()

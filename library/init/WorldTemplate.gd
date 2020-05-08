@@ -1,3 +1,8 @@
+# Scripts such as Init[DungeonType].gd inherit this script.
+# Override get_blueprint() and _set_dungeon_board().
+# The child should also implement _init() to pass arguments.
+
+
 const RandomNumber := preload("res://scene/main/RandomNumber.gd")
 const SpriteBlueprint := preload("res://library/init/SpriteBlueprint.gd")
 const Floor := preload("res://sprite/Floor.tscn")
@@ -14,15 +19,20 @@ var _dungeon: Dictionary = {}
 var _blueprint: Array = []
 
 
-# Override.
-func get_blueprint() -> Array:
-	return _blueprint
-
-
-func init_self(random: RandomNumber) -> void:
+func _init(random: RandomNumber) -> void:
 	_set_reference(random)
 	_set_dungeon_board()
 	_init_floor()
+
+
+# Child scripts should implement _init() to pass arguments.
+# func _init(_random: RandomNumber).(_random) -> void:
+# 	pass
+
+
+# Override.
+func get_blueprint() -> Array:
+	return _blueprint
 
 
 func _set_reference(random: RandomNumber) -> void:
