@@ -27,7 +27,7 @@ func _on_InitWorld_sprite_created(new_sprite: Sprite) -> void:
 
 
 func _on_RemoveObject_sprite_removed(reomve_sprite: Sprite,
-	_group_name: String, _x: int, _y: int) -> void:
+	_main_group: String, _x: int, _y: int) -> void:
 
 	var current_sprite: Sprite = _get_current()
 
