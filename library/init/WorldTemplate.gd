@@ -55,5 +55,5 @@ func _init_floor() -> void:
 	for i in range(_new_DungeonSize.MAX_X):
 		for j in range(_new_DungeonSize.MAX_Y):
 			_add_to_blueprint(Floor,
-					_new_MainGroupName.BUILDING, _new_SubGroupName.FLOOR,
+					_new_MainGroupName.GROUND, _new_SubGroupName.FLOOR,
 					i, j)
