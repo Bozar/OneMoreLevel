@@ -2,11 +2,14 @@ extends Node2D
 
 
 var _new_DungeonSize := preload("res://library/DungeonSize.gd").new()
-var _new_SubGroupName := preload("res://library/SubGroupName.gd").new()
+var _new_MainGroupName := preload("res://library/MainGroupName.gd").new()
 var _new_ConvertCoord := preload("res://library/ConvertCoord.gd").new()
 
-# <string_group_name, <int_column, array_sprite>>
+# <main_group: String, <column: int, [sprite]>>
 var _sprite_dict: Dictionary
+var _valid_main_groups: Array = [
+	_new_MainGroupName.ACTOR, _new_MainGroupName.BUILDING
+]
 
 
 func _ready() -> void:
@@ -18,25 +21,24 @@ func is_inside_dungeon(x: int, y: int) -> bool:
 			and (y > -1) and (y < _new_DungeonSize.MAX_Y)
 
 
-func has_sprite(group_name: String, x: int, y: int) -> bool:
-	return get_sprite(group_name, x, y) != null
+func has_sprite(main_group: String, x: int, y: int) -> bool:
+	return get_sprite(main_group, x, y) != null
 
 
-func get_sprite(group_name: String, x: int, y: int) -> Sprite:
+func get_sprite(main_group: String, x: int, y: int) -> Sprite:
 	if not is_inside_dungeon(x, y):
 		return null
-	return _sprite_dict[group_name][x][y]
+	return _sprite_dict[main_group][x][y]
 
 
 func _on_InitWorld_sprite_created(new_sprite: Sprite) -> void:
 	var pos: Array
 	var group: String
 
-	if new_sprite.is_in_group(_new_SubGroupName.DWARF):
-		group = _new_SubGroupName.DWARF
-	elif new_sprite.is_in_group(_new_SubGroupName.WALL):
-		group = _new_SubGroupName.WALL
-	else:
+	for mg in _valid_main_groups:
+		if new_sprite.is_in_group(mg):
+			group = mg
+	if group == "":
 		return
 
 	pos = _new_ConvertCoord.vector_to_array(new_sprite.position)
@@ -49,10 +51,8 @@ func _on_RemoveObject_sprite_removed(_sprite: Sprite, main_group: String,
 
 
 func _init_dict() -> void:
-	var groups = [_new_SubGroupName.DWARF, _new_SubGroupName.WALL]
-
-	for g in groups:
-		_sprite_dict[g] = {}
+	for mg in _valid_main_groups:
+		_sprite_dict[mg] = {}
 		for x in range(_new_DungeonSize.MAX_X):
-			_sprite_dict[g][x] = []
-			_sprite_dict[g][x].resize(_new_DungeonSize.MAX_Y)
+			_sprite_dict[mg][x] = []
+			_sprite_dict[mg][x].resize(_new_DungeonSize.MAX_Y)

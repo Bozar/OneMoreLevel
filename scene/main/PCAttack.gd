@@ -12,9 +12,9 @@ var _ref_RemoveObject: RemoveObject
 var _ref_Schedule: Schedule
 
 
-func attack(group_name: String, x: int, y: int) -> void:
-	if not _ref_DungeonBoard.has_sprite(group_name, x, y):
+func attack(main_group: String, x: int, y: int) -> void:
+	if not _ref_DungeonBoard.has_sprite(main_group, x, y):
 		return
-	_ref_RemoveObject.remove(group_name, x, y)
+	_ref_RemoveObject.remove(main_group, x, y)
 	_ref_Schedule.end_turn()
 	emit_signal("pc_attacked", "You kill Urist McRogueliker! :(")

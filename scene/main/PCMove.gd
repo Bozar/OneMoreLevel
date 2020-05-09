@@ -14,6 +14,7 @@ var _ref_Schedule: Schedule
 
 var _new_ConvertCoord := preload("res://library/ConvertCoord.gd").new()
 var _new_InputName := preload("res://library/InputName.gd").new()
+var _new_MainGroupName := preload("res://library/MainGroupName.gd").new()
 var _new_SubGroupName := preload("res://library/SubGroupName.gd").new()
 
 var _pc: Sprite
@@ -68,11 +69,11 @@ func _is_move_input(event: InputEvent) -> bool:
 func _try_move(x: int, y: int) -> void:
 	if not _ref_DungeonBoard.is_inside_dungeon(x, y):
 		emit_signal("pc_moved", "You cannot leave the map.")
-	elif _ref_DungeonBoard.has_sprite(_new_SubGroupName.WALL, x, y):
+	elif _ref_DungeonBoard.has_sprite(_new_MainGroupName.BUILDING, x, y):
 		emit_signal("pc_moved", "You bump into wall.")
-	elif _ref_DungeonBoard.has_sprite(_new_SubGroupName.DWARF, x, y):
+	elif _ref_DungeonBoard.has_sprite(_new_MainGroupName.ACTOR, x, y):
 		set_process_unhandled_input(false)
-		get_node(PC_ATTACK).attack(_new_SubGroupName.DWARF, x, y)
+		get_node(PC_ATTACK).attack(_new_MainGroupName.ACTOR, x, y)
 	else:
 		set_process_unhandled_input(false)
 		_pc.position = _new_ConvertCoord.index_to_vector(x, y)
