@@ -4,7 +4,7 @@ extends "res://library/RootNodeTemplate.gd"
 const INIT_WORLD: String = "InitWorld"
 const PC_MOVE: String = "PCMove"
 const PC_ATTACK: String = "PCMove/PCAttack"
-const NPC: String = "EnemyAI"
+const ENEMY_AI: String = "EnemyAI"
 const SCHEDULE: String = "Schedule"
 const DUNGEON: String = "DungeonBoard"
 const REMOVE: String = "RemoveObject"
@@ -16,12 +16,17 @@ const SIGNAL_BIND: Array = [
 	[
 		"sprite_created", "_on_InitWorld_sprite_created",
 		INIT_WORLD,
-		PC_MOVE, NPC, SCHEDULE, DUNGEON,
+		PC_MOVE, ENEMY_AI, SCHEDULE, DUNGEON,
+	],
+	[
+		"world_selected", "_on_InitWorld_world_selected",
+		INIT_WORLD,
+		ENEMY_AI,
 	],
 	[
 		"turn_started", "_on_Schedule_turn_started",
 		SCHEDULE,
-		PC_MOVE, NPC, SIDEBAR,
+		PC_MOVE, ENEMY_AI, SIDEBAR,
 	],
 	[
 		"turn_ended", "_on_Schedule_turn_ended",
@@ -35,7 +40,7 @@ const SIGNAL_BIND: Array = [
 	],
 	[
 		"enemy_warned", "_on_EnemyAI_enemy_warned",
-		NPC,
+		ENEMY_AI,
 		MODELINE,
 	],
 	[
@@ -59,7 +64,7 @@ const NODE_REF: Array = [
 	[
 		"_ref_Schedule",
 		SCHEDULE,
-		PC_MOVE, NPC, PC_ATTACK,
+		PC_MOVE, ENEMY_AI, PC_ATTACK,
 	],
 	[
 		"_ref_RemoveObject",

@@ -5,6 +5,7 @@ extends Node2D
 # * Everything else are created by calling _world.get_blueprint().
 
 
+signal world_selected(new_world)
 signal sprite_created(new_sprite)
 
 const ArrowX := preload("res://sprite/ArrowX.tscn")
@@ -21,6 +22,7 @@ var _new_DungeonSize := preload("res://library/DungeonSize.gd").new()
 var _new_MainGroupName := preload("res://library/MainGroupName.gd").new()
 var _new_SubGroupName := preload("res://library/SubGroupName.gd").new()
 var _new_InputName := preload("res://library/InputName.gd").new()
+var _new_WorldName := preload("res://library/WorldName.gd").new()
 
 var _world: WorldTemplate
 
@@ -40,6 +42,8 @@ func _unhandled_input(event: InputEvent) -> void:
 func _select_world() -> WorldTemplate:
 	var candidate
 	candidate = InitDemo.new(_ref_RandomNumber)
+	emit_signal("world_selected", _new_WorldName.DEMO)
+
 	return candidate
 
 

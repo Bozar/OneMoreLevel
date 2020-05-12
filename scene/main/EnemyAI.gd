@@ -22,6 +22,10 @@ func _on_Schedule_turn_started(current_sprite: Sprite) -> void:
 	_ref_Schedule.end_turn()
 
 
+func _on_InitWorld_world_selected(new_world: String) -> void:
+	print(new_world)
+
+
 func _on_InitWorld_sprite_created(new_sprite: Sprite) -> void:
 	if new_sprite.is_in_group(_new_SubGroupName.PC):
 		_pc = new_sprite
