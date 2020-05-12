@@ -4,37 +4,35 @@ extends Node2D
 signal enemy_warned(message)
 
 const Schedule := preload("res://scene/main/Schedule.gd")
+const AITemplate := preload("res://library/ai/AITemplate.gd")
 
 var _ref_Schedule: Schedule
 
+var _new_DemoAI := preload("res://library/ai/DemoAI.gd")
+
 var _new_SubGroupName := preload("res://library/SubGroupName.gd").new()
-var _new_ConvertCoord := preload("res://library/ConvertCoord.gd").new()
+var _new_WorldName := preload("res://library/WorldName.gd").new()
 
 var _pc: Sprite
+var _ai: AITemplate
 
 
 func _on_Schedule_turn_started(current_sprite: Sprite) -> void:
 	if not current_sprite.is_in_group(_new_SubGroupName.DWARF):
 		return
 
-	if _pc_is_close(_pc, current_sprite):
-		emit_signal("enemy_warned", "Urist McRogueliker is scared!")
+	_ai.take_action(_pc, current_sprite)
+	if _ai.print_text != "":
+		emit_signal("enemy_warned", _ai.print_text)
 	_ref_Schedule.end_turn()
 
 
 func _on_InitWorld_world_selected(new_world: String) -> void:
-	print(new_world)
+	if new_world == _new_WorldName.DEMO:
+		_ai = _new_DemoAI.new()
 
 
 func _on_InitWorld_sprite_created(new_sprite: Sprite) -> void:
 	if new_sprite.is_in_group(_new_SubGroupName.PC):
 		_pc = new_sprite
 
-
-func _pc_is_close(source: Sprite, target: Sprite) -> bool:
-	var source_pos: Array = _new_ConvertCoord.vector_to_array(source.position)
-	var target_pos: Array = _new_ConvertCoord.vector_to_array(target.position)
-	var delta_x: int = abs(source_pos[0] - target_pos[0]) as int
-	var delta_y: int = abs(source_pos[1] - target_pos[1]) as int
-
-	return delta_x + delta_y < 2
