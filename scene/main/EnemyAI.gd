@@ -4,11 +4,11 @@ extends Node2D
 signal enemy_warned(message)
 
 const Schedule := preload("res://scene/main/Schedule.gd")
-const AITemplate := preload("res://library/ai/AITemplate.gd")
+const AITemplate := preload("res://library/npc_ai/AITemplate.gd")
 
 var _ref_Schedule: Schedule
 
-var _new_DemoAI := preload("res://library/ai/DemoAI.gd")
+var _new_DemoAI := preload("res://library/npc_ai/DemoAI.gd")
 
 var _new_SubGroupName := preload("res://library/SubGroupName.gd").new()
 var _new_WorldName := preload("res://library/WorldName.gd").new()
