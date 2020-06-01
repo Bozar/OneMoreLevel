@@ -18,7 +18,7 @@ var _ai: AITemplate
 
 
 func _on_Schedule_turn_started(current_sprite: Sprite) -> void:
-	if not current_sprite.is_in_group(_new_SubGroupName.DWARF):
+	if current_sprite.is_in_group(_new_SubGroupName.PC):
 		return
 
 	_ai.take_action(_pc, current_sprite)
