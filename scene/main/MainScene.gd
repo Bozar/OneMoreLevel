@@ -2,6 +2,7 @@ extends "res://library/RootNodeTemplate.gd"
 
 
 const INIT_WORLD: String = "InitWorld"
+const PC_INPUT: String = "PCInput"
 const PC_MOVE: String = "PCMove"
 const PC_ATTACK: String = "PCMove/PCAttack"
 const ENEMY_AI: String = "EnemyAI"
@@ -26,7 +27,7 @@ const SIGNAL_BIND: Array = [
 	[
 		"turn_started", "_on_Schedule_turn_started",
 		SCHEDULE,
-		PC_MOVE, ENEMY_AI, SIDEBAR,
+		PC_INPUT, PC_MOVE, ENEMY_AI, SIDEBAR,
 	],
 	[
 		"turn_ended", "_on_Schedule_turn_ended",
