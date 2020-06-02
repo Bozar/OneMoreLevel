@@ -22,6 +22,8 @@ func _ready() -> void:
 func _unhandled_input(event: InputEvent) -> void:
 	if _is_move_input(event):
 		print("move")
+	elif _is_wait_input(event):
+		print("wait")
 	elif _is_reload_input(event):
 		get_node(RELOAD_GAME).reload()
 
@@ -38,9 +40,11 @@ func _on_Schedule_turn_started(current_sprite: Sprite) -> void:
 
 
 func _is_reload_input(event: InputEvent) -> bool:
-	if event.is_action_pressed(_new_InputName.RELOAD):
-		return true
-	return false
+	return event.is_action_pressed(_new_InputName.RELOAD)
+
+
+func _is_wait_input(event: InputEvent) -> bool:
+	return event.is_action_pressed(_new_InputName.WAIT)
 
 
 func _is_move_input(event: InputEvent) -> bool:
