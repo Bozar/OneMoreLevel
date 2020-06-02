@@ -1,11 +1,11 @@
 extends "res://library/pc_action/PCActionTemplate.gd"
 
 
-func is_ground(_x: int, _y: int) -> bool:
+func is_ground(_direction: String) -> bool:
 	return false
 
 
-func is_npc(_x: int, _y: int) -> bool:
+func is_npc(_direction: String) -> bool:
 	return false
 
 

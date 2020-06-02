@@ -23,15 +23,15 @@ func set_end_turn(_end_turn: bool) -> void:
 	return
 
 
-func is_ground(_x: int, _y: int) -> bool:
+func is_ground(_direction: String) -> bool:
 	return false
 
 
-func is_npc(_x: int, _y: int) -> bool:
+func is_npc(_direction: String) -> bool:
 	return false
 
 
-func is_building(_x: int, _y: int) -> bool:
+func is_building(_direction: String) -> bool:
 	return false
 
 
