@@ -22,7 +22,7 @@ const SIGNAL_BIND: Array = [
 	[
 		"world_selected", "_on_InitWorld_world_selected",
 		INIT_WORLD,
-		ENEMY_AI,
+		PC_INPUT, ENEMY_AI,
 	],
 	[
 		"turn_started", "_on_Schedule_turn_started",

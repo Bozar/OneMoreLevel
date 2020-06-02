@@ -1,12 +1,17 @@
 extends Node2D
 
 
+const PCActionTemplate := preload("res://library/pc_action/PCActionTemplate.gd")
+const DemoPCAction := preload("res://library/pc_action/DemoPCAction.gd")
+
 const RELOAD_GAME: String = "ReloadGame"
 
+var _new_WorldName := preload("res://library/WorldName.gd").new()
 var _new_InputName := preload("res://library/InputName.gd").new()
 var _new_SubGroupName := preload("res://library/SubGroupName.gd").new()
 
 var _pc: Sprite
+var _pc_action: PCActionTemplate
 var _move_inputs: Array = [
 	_new_InputName.MOVE_LEFT,
 	_new_InputName.MOVE_RIGHT,
@@ -21,11 +26,16 @@ func _ready() -> void:
 
 func _unhandled_input(event: InputEvent) -> void:
 	if _is_move_input(event):
-		print("move")
+		_pc_action.move()
 	elif _is_wait_input(event):
-		print("wait")
+		_pc_action.wait()
 	elif _is_reload_input(event):
 		get_node(RELOAD_GAME).reload()
+
+
+func _on_InitWorld_world_selected(new_world: String) -> void:
+	if new_world == _new_WorldName.DEMO:
+		_pc_action = DemoPCAction.new()
 
 
 func _on_InitWorld_sprite_created(new_sprite: Sprite) -> void:
