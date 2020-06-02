@@ -65,7 +65,7 @@ const NODE_REF: Array = [
 	[
 		"_ref_Schedule",
 		SCHEDULE,
-		PC_MOVE, ENEMY_AI, PC_ATTACK,
+		PC_INPUT, PC_MOVE, ENEMY_AI, PC_ATTACK,
 	],
 	[
 		"_ref_RemoveObject",

@@ -12,7 +12,7 @@ func get_message() -> String:
 
 
 func set_message(_message: String) -> void:
-	return
+	pass
 
 
 func get_end_turn() -> bool:
@@ -20,7 +20,7 @@ func get_end_turn() -> bool:
 
 
 func set_end_turn(_end_turn: bool) -> void:
-	return
+	pass
 
 
 func is_ground(_direction: String) -> bool:
@@ -48,4 +48,8 @@ func interact() -> void:
 
 
 func wait() -> void:
-	pass
+	end_turn = true
+
+
+func reset_status() -> void:
+	end_turn = false
