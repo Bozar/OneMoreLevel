@@ -5,11 +5,13 @@ const PCActionTemplate := preload("res://library/pc_action/PCActionTemplate.gd")
 const DemoPCAction := preload("res://library/pc_action/DemoPCAction.gd")
 const Schedule := preload("res://scene/main/Schedule.gd")
 const DungeonBoard := preload("res://scene/main/DungeonBoard.gd")
+const RemoveObject := preload("res://scene/main/RemoveObject.gd")
 
 const RELOAD_GAME: String = "ReloadGame"
 
 var _ref_Schedule: Schedule
 var _ref_DungeonBoard: DungeonBoard
+var _ref_RemoveObject: RemoveObject
 
 var _new_ConvertCoord := preload("res://library/ConvertCoord.gd").new()
 var _new_WorldName := preload("res://library/WorldName.gd").new()
@@ -48,7 +50,7 @@ func _unhandled_input(event: InputEvent) -> void:
 
 func _on_InitWorld_world_selected(new_world: String) -> void:
 	if new_world == _new_WorldName.DEMO:
-		_pc_action = DemoPCAction.new(_ref_DungeonBoard)
+		_pc_action = DemoPCAction.new(_ref_DungeonBoard, _ref_RemoveObject)
 
 
 func _on_InitWorld_sprite_created(new_sprite: Sprite) -> void:

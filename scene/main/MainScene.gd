@@ -58,6 +58,7 @@ const NODE_REF: Array = [
 	[
 		"_ref_RemoveObject",
 		REMOVE,
+		PC_INPUT,
 	],
 	[
 		"_ref_RandomNumber",

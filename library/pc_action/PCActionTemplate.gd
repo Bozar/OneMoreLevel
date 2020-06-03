@@ -4,11 +4,13 @@
 
 
 const DungeonBoard := preload("res://scene/main/DungeonBoard.gd")
+const RemoveObject := preload("res://scene/main/RemoveObject.gd")
 
 var message: String setget set_message, get_message
 var end_turn: bool setget set_end_turn, get_end_turn
 
 var _ref_DungeonBoard: DungeonBoard
+var _ref_RemoveObject: RemoveObject
 
 var _new_InputName := preload("res://library/InputName.gd").new()
 var _new_MainGroupName := preload("res://library/MainGroupName.gd").new()
@@ -23,8 +25,9 @@ var _direction_to_coord: Dictionary = {
 }
 
 
-func _init(dungeon: DungeonBoard) -> void:
+func _init(dungeon: DungeonBoard, remove: RemoveObject) -> void:
 	_ref_DungeonBoard = dungeon
+	_ref_RemoveObject = remove
 
 
 func get_message() -> String:
@@ -74,12 +77,13 @@ func is_building(source: Array, direction: String) -> bool:
 func move() -> void:
 	_ref_DungeonBoard.move_sprite(_new_MainGroupName.ACTOR,
 			_source_position, _target_position)
-
 	end_turn = true
 
 
 func attack() -> void:
-	pass
+	_ref_RemoveObject.remove(_new_MainGroupName.ACTOR,
+			_target_position[0], _target_position[1])
+	end_turn = true
 
 
 func interact() -> void:
