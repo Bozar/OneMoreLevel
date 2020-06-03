@@ -15,11 +15,3 @@ func _on_Schedule_turn_ended(current_sprite: Sprite) -> void:
 
 func _on_EnemyAI_enemy_warned(message: String) -> void:
 	text = message
-
-
-func _on_PCMove_pc_moved(message: String) -> void:
-	text = message
-
-
-func _on_PCAttack_pc_attacked(message: String) -> void:
-	text = message

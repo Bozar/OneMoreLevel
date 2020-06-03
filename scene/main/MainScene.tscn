@@ -29,10 +29,6 @@ script = ExtResource( 12 )
 [node name="ReloadGame" type="Node2D" parent="PCInput"]
 script = ExtResource( 10 )
 
-[node name="PCMove" type="Node2D" parent="."]
-
-[node name="PCAttack" type="Node2D" parent="PCMove"]
-
 [node name="Schedule" type="Node2D" parent="."]
 script = ExtResource( 5 )
 
