@@ -17,7 +17,7 @@ const SIGNAL_BIND: Array = [
 	[
 		"sprite_created", "_on_InitWorld_sprite_created",
 		INIT_WORLD,
-		PC_MOVE, ENEMY_AI, SCHEDULE, DUNGEON,
+		PC_INPUT, PC_MOVE, ENEMY_AI, SCHEDULE, DUNGEON,
 	],
 	[
 		"world_selected", "_on_InitWorld_world_selected",
@@ -60,7 +60,7 @@ const NODE_REF: Array = [
 	[
 		"_ref_DungeonBoard",
 		DUNGEON,
-		PC_MOVE, PC_ATTACK, REMOVE,
+		PC_INPUT, PC_MOVE, PC_ATTACK, REMOVE,
 	],
 	[
 		"_ref_Schedule",
