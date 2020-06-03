@@ -67,6 +67,9 @@ func _is_move_input(event: InputEvent) -> bool:
 
 
 func _try_move(x: int, y: int) -> void:
+	var source: Array = _new_ConvertCoord.vector_to_array(_pc.position)
+	var target: Array = [x, y]
+
 	if not _ref_DungeonBoard.is_inside_dungeon(x, y):
 		emit_signal("pc_moved", "You cannot leave the map.")
 	elif _ref_DungeonBoard.has_sprite(_new_MainGroupName.BUILDING, x, y):
@@ -76,7 +79,8 @@ func _try_move(x: int, y: int) -> void:
 		get_node(PC_ATTACK).attack(_new_MainGroupName.ACTOR, x, y)
 	else:
 		set_process_unhandled_input(false)
-		_pc.position = _new_ConvertCoord.index_to_vector(x, y)
+		_ref_DungeonBoard.move_sprite(_new_MainGroupName.ACTOR, source, target)
+		# _pc.position = _new_ConvertCoord.index_to_vector(x, y)
 		_ref_Schedule.end_turn()
 
 

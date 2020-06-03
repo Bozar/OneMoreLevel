@@ -31,6 +31,17 @@ func get_sprite(main_group: String, x: int, y: int) -> Sprite:
 	return _sprite_dict[main_group][x][y]
 
 
+func move_sprite(main_group: String, source: Array, target: Array) -> void:
+	var sprite: Sprite = get_sprite(main_group, source[0], source[1])
+
+	if sprite == null:
+		return
+
+	_sprite_dict[main_group][source[0]][source[1]] = null
+	_sprite_dict[main_group][target[0]][target[1]] = sprite
+	sprite.position = _new_ConvertCoord.index_to_vector(target[0], target[1])
+
+
 func _on_InitWorld_sprite_created(new_sprite: Sprite) -> void:
 	var pos: Array
 	var group: String
