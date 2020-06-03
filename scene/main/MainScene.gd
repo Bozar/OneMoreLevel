@@ -3,8 +3,6 @@ extends "res://library/RootNodeTemplate.gd"
 
 const INIT_WORLD: String = "InitWorld"
 const PC_INPUT: String = "PCInput"
-const PC_MOVE: String = "PCMove"
-const PC_ATTACK: String = "PCMove/PCAttack"
 const ENEMY_AI: String = "EnemyAI"
 const SCHEDULE: String = "Schedule"
 const DUNGEON: String = "DungeonBoard"
@@ -17,7 +15,7 @@ const SIGNAL_BIND: Array = [
 	[
 		"sprite_created", "_on_InitWorld_sprite_created",
 		INIT_WORLD,
-		PC_INPUT, PC_MOVE, ENEMY_AI, SCHEDULE, DUNGEON,
+		PC_INPUT, ENEMY_AI, SCHEDULE, DUNGEON,
 	],
 	[
 		"world_selected", "_on_InitWorld_world_selected",
@@ -27,7 +25,7 @@ const SIGNAL_BIND: Array = [
 	[
 		"turn_started", "_on_Schedule_turn_started",
 		SCHEDULE,
-		PC_INPUT, PC_MOVE, ENEMY_AI, SIDEBAR,
+		PC_INPUT, ENEMY_AI, SIDEBAR,
 	],
 	[
 		"turn_ended", "_on_Schedule_turn_ended",
@@ -44,33 +42,22 @@ const SIGNAL_BIND: Array = [
 		ENEMY_AI,
 		MODELINE,
 	],
-	[
-		"pc_moved", "_on_PCMove_pc_moved",
-		PC_MOVE,
-		MODELINE,
-	],
-	[
-		"pc_attacked", "_on_PCAttack_pc_attacked",
-		PC_ATTACK,
-		MODELINE,
-	],
 ]
 
 const NODE_REF: Array = [
 	[
 		"_ref_DungeonBoard",
 		DUNGEON,
-		PC_INPUT, PC_MOVE, PC_ATTACK, REMOVE,
+		PC_INPUT, REMOVE,
 	],
 	[
 		"_ref_Schedule",
 		SCHEDULE,
-		PC_INPUT, PC_MOVE, ENEMY_AI, PC_ATTACK,
+		PC_INPUT, ENEMY_AI,
 	],
 	[
 		"_ref_RemoveObject",
 		REMOVE,
-		PC_ATTACK,
 	],
 	[
 		"_ref_RandomNumber",
