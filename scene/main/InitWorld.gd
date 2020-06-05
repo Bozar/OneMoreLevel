@@ -26,10 +26,15 @@ var _new_WorldName := preload("res://library/WorldName.gd").new()
 
 var _world: WorldTemplate
 
+var _select_world: Dictionary = {
+	_new_WorldName.DEMO: InitDemo,
+	_new_WorldName.KNIGHT: InitDemo,
+}
+
 
 func _unhandled_input(event: InputEvent) -> void:
 	if event.is_action_pressed(_new_InputName.INIT_WORLD):
-		_world = _select_world()
+		_world = _get_world()
 		# sb: SpriteBlueprint
 		for sb in _world.get_blueprint():
 			if _is_pc(sb.sub_group):
@@ -39,12 +44,16 @@ func _unhandled_input(event: InputEvent) -> void:
 		set_process_unhandled_input(false)
 
 
-func _select_world() -> WorldTemplate:
-	var candidate
-	candidate = InitDemo.new(_ref_RandomNumber)
-	emit_signal("world_selected", _new_WorldName.DEMO)
+func _get_world() -> WorldTemplate:
+	var world_name: String
+	var world_template: WorldTemplate
 
-	return candidate
+	# TODO: Generate a random world name from potential candidates.
+	world_name = _new_WorldName.KNIGHT
+	world_template = _select_world[world_name].new(_ref_RandomNumber)
+	emit_signal("world_selected", world_name)
+
+	return world_template
 
 
 func _init_indicator(x: int, y: int) -> void:

@@ -21,12 +21,18 @@ var _new_SubGroupName := preload("res://library/SubGroupName.gd").new()
 var _pc: Sprite
 var _pc_action: PCActionTemplate
 var _direction: String
+
 var _move_inputs: Array = [
 	_new_InputName.MOVE_LEFT,
 	_new_InputName.MOVE_RIGHT,
 	_new_InputName.MOVE_UP,
 	_new_InputName.MOVE_DOWN,
 ]
+
+var _select_world: Dictionary = {
+	_new_WorldName.DEMO: DemoPCAction,
+	_new_WorldName.KNIGHT: DemoPCAction,
+}
 
 
 func _ready() -> void:
@@ -49,8 +55,8 @@ func _unhandled_input(event: InputEvent) -> void:
 
 
 func _on_InitWorld_world_selected(new_world: String) -> void:
-	if new_world == _new_WorldName.DEMO:
-		_pc_action = DemoPCAction.new(_ref_DungeonBoard, _ref_RemoveObject)
+	_pc_action = _select_world[new_world].new(
+			_ref_DungeonBoard, _ref_RemoveObject)
 
 
 func _on_InitWorld_sprite_created(new_sprite: Sprite) -> void:
