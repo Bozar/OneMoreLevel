@@ -14,6 +14,7 @@ const RandomNumber := preload("res://scene/main/RandomNumber.gd")
 
 const WorldTemplate := preload("res://library/init/WorldTemplate.gd")
 const InitDemo := preload("res://library/init/InitDemo.gd")
+const InitKnight := preload("res://library/init/InitKnight.gd")
 
 var _ref_RandomNumber: RandomNumber
 
@@ -28,7 +29,7 @@ var _world: WorldTemplate
 
 var _select_world: Dictionary = {
 	_new_WorldName.DEMO: InitDemo,
-	_new_WorldName.KNIGHT: InitDemo,
+	_new_WorldName.KNIGHT: InitKnight,
 }
 
 
