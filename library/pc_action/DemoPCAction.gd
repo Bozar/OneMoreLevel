@@ -5,5 +5,5 @@ extends "res://library/pc_action/PCActionTemplate.gd"
 
 
 func _init(_dungeon: DungeonBoard, _remove: RemoveObject).(_dungeon, _remove) \
-        -> void:
-    pass
+		-> void:
+	pass

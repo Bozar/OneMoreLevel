@@ -7,6 +7,8 @@ var _rng := RandomNumberGenerator.new()
 func _ready() -> void:
 	# _rng.seed = 123
 	_rng.randomize()
+	_rng.seed = _rng.randi()
+	print("seed: {0}".format([_rng.seed]))
 
 
 func get_int(min_int: int, max_int: int) -> int:
