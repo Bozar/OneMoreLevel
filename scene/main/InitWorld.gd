@@ -59,11 +59,11 @@ func _get_world() -> WorldTemplate:
 
 func _init_indicator(x: int, y: int) -> void:
 	_create_sprite(ArrowX,
-			_new_MainGroupName.INDICATOR, _new_SubGroupName.ARROW,
-			0, y, -_new_DungeonSize.ARROW_MARGIN)
-	_create_sprite(ArrowY,
-			_new_MainGroupName.INDICATOR, _new_SubGroupName.ARROW,
+			_new_MainGroupName.INDICATOR, _new_SubGroupName.ARROW_X,
 			x, 0, 0, -_new_DungeonSize.ARROW_MARGIN)
+	_create_sprite(ArrowY,
+			_new_MainGroupName.INDICATOR, _new_SubGroupName.ARROW_Y,
+			0, y, -_new_DungeonSize.ARROW_MARGIN)
 
 
 func _create_sprite(prefab: PackedScene, main_group: String, sub_group: String,

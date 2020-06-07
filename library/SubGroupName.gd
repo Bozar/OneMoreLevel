@@ -6,4 +6,5 @@ const PC: String = "pc"
 const FLOOR: String = "floor"
 const WALL: String = "wall"
 
-const ARROW: String = "arrow"
+const ARROW_X: String = "arrow_x"
+const ARROW_Y: String = "arrow_y"
