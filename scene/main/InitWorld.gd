@@ -32,6 +32,14 @@ var _select_world: Dictionary = {
 	_new_WorldName.KNIGHT: InitKnight,
 }
 
+var _group_to_z_index: Dictionary = {
+	_new_MainGroupName.GROUND: 0,
+	_new_MainGroupName.TRAP: 1,
+	_new_MainGroupName.BUILDING: 2,
+	_new_MainGroupName.ACTOR: 3,
+	_new_MainGroupName.INDICATOR: 4,
+}
+
 
 func _unhandled_input(event: InputEvent) -> void:
 	if event.is_action_pressed(_new_InputName.INIT_WORLD):
@@ -74,6 +82,7 @@ func _create_sprite(prefab: PackedScene, main_group: String, sub_group: String,
 			x, y, x_offset, y_offset)
 	new_sprite.add_to_group(main_group)
 	new_sprite.add_to_group(sub_group)
+	new_sprite.z_index = _group_to_z_index[main_group]
 
 	add_child(new_sprite)
 	emit_signal("sprite_created", new_sprite)
