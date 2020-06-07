@@ -42,9 +42,21 @@ func _init_wall() -> void:
 
 
 func _init_PC() -> void:
+	var position: Array = _get_PC_position()
+
+	while _dungeon[position[0]][position[1]]:
+		position = _get_PC_position()
+
 	_add_to_blueprint(Player,
 			_new_MainGroupName.ACTOR, _new_SubGroupName.PC,
-			0, 0)
+			position[0], position[1])
+
+
+func _get_PC_position() -> Array:
+	var x: int = _ref_RandomNumber.get_int(0, _new_DungeonSize.MAX_X)
+	var y: int = _ref_RandomNumber.get_int(0, _new_DungeonSize.MAX_Y)
+
+	return [x, y]
 
 
 func _init_dwarf() -> void:
