@@ -11,5 +11,6 @@ func _ready() -> void:
 	print("seed: {0}".format([_rng.seed]))
 
 
+# Get an integer from min_int (inclusive) to max_int (exclusive).
 func get_int(min_int: int, max_int: int) -> int:
-	return _rng.randi_range(min_int, max_int)
+	return _rng.randi_range(min_int, max_int - 1)
