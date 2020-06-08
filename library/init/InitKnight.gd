@@ -28,13 +28,51 @@ func _set_dungeon_board() -> void:
 
 
 func _init_wall() -> void:
-	var min_x: int = 3
-	var max_x: int = 6
-	var min_y: int = 3
-	var max_y: int = 6
+	var max_retry: int = 10000
 
-	for x in range(min_x, max_x):
-		for y in range(min_y, max_y):
+	for _i in range(max_retry):
+		_create_solid_wall()
+
+
+func _create_solid_wall() -> void:
+	var start_x: int = _ref_RandomNumber.get_int(0, _new_DungeonSize.MAX_X)
+	var start_y: int = _ref_RandomNumber.get_int(0, _new_DungeonSize.MAX_Y)
+	var max_x: int
+	var max_y: int
+
+	# The actual border length is from 2 to 3.
+	var min_size: int = 4
+	var max_size: int = 6
+	var width: int = _ref_RandomNumber.get_int(min_size, max_size)
+	var height: int = _ref_RandomNumber.get_int(min_size, max_size)
+
+	var is_not_digged: bool = true
+	var is_border: bool
+
+	# Verify the starting point and size.
+	for x in range(start_x, start_x + width):
+		for y in range(start_y, start_y + height):
+			if (not _new_DungeonSize.is_inside_dungeon(x, y)) \
+					or _is_occupied(x, y):
+				return
+
+	# Shrink the wall block in four directions by 1 grid.
+	start_x += 1
+	start_y += 1
+	max_x = start_x + width - 2
+	max_y = start_y + height - 2
+
+	for x in range(start_x, max_x):
+		for y in range(start_y, max_y):
+			# Every wall block might lose one grid.
+			is_border = (x == start_x) or (x == max_x - 1) \
+					or (y == start_y) or (y == max_y - 1)
+			if is_not_digged and is_border \
+					and (_ref_RandomNumber.get_int(0, 3) == 0):
+				is_not_digged = false
+				continue
+
+			# Add wall blocks to blueprint and set dungeon board.
 			_add_to_blueprint(Wall,
 					_new_MainGroupName.BUILDING, _new_SubGroupName.WALL,
 					x, y)
