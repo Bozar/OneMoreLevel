@@ -20,17 +20,12 @@ func _ready() -> void:
 	_init_dict()
 
 
-func is_inside_dungeon(x: int, y: int) -> bool:
-	return (x > -1) and (x < _new_DungeonSize.MAX_X) \
-			and (y > -1) and (y < _new_DungeonSize.MAX_Y)
-
-
 func has_sprite(main_group: String, x: int, y: int) -> bool:
 	return get_sprite(main_group, x, y) != null
 
 
 func get_sprite(main_group: String, x: int, y: int) -> Sprite:
-	if not is_inside_dungeon(x, y):
+	if not _new_DungeonSize.is_inside_dungeon(x, y):
 		return null
 	return _sprite_dict[main_group][x][y]
 
