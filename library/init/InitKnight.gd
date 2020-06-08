@@ -46,8 +46,9 @@ func _create_solid_wall() -> void:
 	var width: int = _ref_RandomNumber.get_int(min_size, max_size)
 	var height: int = _ref_RandomNumber.get_int(min_size, max_size)
 
-	var is_not_digged: bool = true
-	var is_border: bool
+	var dig_border: int
+	var exclude_x: int
+	var exclude_y: int
 
 	# Verify the starting point and size.
 	for x in range(start_x, start_x + width):
@@ -62,14 +63,33 @@ func _create_solid_wall() -> void:
 	max_x = start_x + width - 2
 	max_y = start_y + height - 2
 
+	# Decide which grid to dig.
+	dig_border = _ref_RandomNumber.get_int(0, 5)
+	match dig_border:
+		# Top.
+		0:
+			exclude_x = _ref_RandomNumber.get_int(start_x, max_x)
+			exclude_y = start_y
+		# Right.
+		1:
+			exclude_x = max_x - 1
+			exclude_y = _ref_RandomNumber.get_int(start_y, max_y)
+		# Bottom.
+		2:
+			exclude_x = _ref_RandomNumber.get_int(start_x, max_x)
+			exclude_y = max_y - 1
+		# Left.
+		3:
+			exclude_x = start_x
+			exclude_y = _ref_RandomNumber.get_int(start_y, max_y)
+		# Do not dig.
+		4:
+			pass
+
 	for x in range(start_x, max_x):
 		for y in range(start_y, max_y):
 			# Every wall block might lose one grid.
-			is_border = (x == start_x) or (x == max_x - 1) \
-					or (y == start_y) or (y == max_y - 1)
-			if is_not_digged and is_border \
-					and (_ref_RandomNumber.get_int(0, 3) == 0):
-				is_not_digged = false
+			if (x == exclude_x) and (y == exclude_y):
 				continue
 
 			# Add wall blocks to blueprint and set dungeon board.
