@@ -14,24 +14,24 @@ var _ref_DungeonBoard: DungeonBoard
 var _ref_RemoveObject: RemoveObject
 
 var _new_ConvertCoord := preload("res://library/ConvertCoord.gd").new()
-var _new_WorldName := preload("res://library/WorldName.gd").new()
-var _new_InputName := preload("res://library/InputName.gd").new()
-var _new_SubGroupName := preload("res://library/SubGroupName.gd").new()
+var _new_WorldTag := preload("res://library/WorldTag.gd").new()
+var _new_InputTag := preload("res://library/InputTag.gd").new()
+var _new_SubGroupTag := preload("res://library/SubGroupTag.gd").new()
 
 var _pc: Sprite
 var _pc_action: PCActionTemplate
 var _direction: String
 
 var _move_inputs: Array = [
-	_new_InputName.MOVE_LEFT,
-	_new_InputName.MOVE_RIGHT,
-	_new_InputName.MOVE_UP,
-	_new_InputName.MOVE_DOWN,
+	_new_InputTag.MOVE_LEFT,
+	_new_InputTag.MOVE_RIGHT,
+	_new_InputTag.MOVE_UP,
+	_new_InputTag.MOVE_DOWN,
 ]
 
 var _select_world: Dictionary = {
-	_new_WorldName.DEMO: DemoPCAction,
-	_new_WorldName.KNIGHT: DemoPCAction,
+	_new_WorldTag.DEMO: DemoPCAction,
+	_new_WorldTag.KNIGHT: DemoPCAction,
 }
 
 
@@ -60,22 +60,22 @@ func _on_InitWorld_world_selected(new_world: String) -> void:
 
 
 func _on_InitWorld_sprite_created(new_sprite: Sprite) -> void:
-	if new_sprite.is_in_group(_new_SubGroupName.PC):
+	if new_sprite.is_in_group(_new_SubGroupTag.PC):
 		_pc = new_sprite
 		set_process_unhandled_input(true)
 
 
 func _on_Schedule_turn_started(current_sprite: Sprite) -> void:
-	if current_sprite.is_in_group(_new_SubGroupName.PC):
+	if current_sprite.is_in_group(_new_SubGroupTag.PC):
 		set_process_unhandled_input(true)
 
 
 func _is_reload_input(event: InputEvent) -> bool:
-	return event.is_action_pressed(_new_InputName.RELOAD)
+	return event.is_action_pressed(_new_InputTag.RELOAD)
 
 
 func _is_wait_input(event: InputEvent) -> bool:
-	return event.is_action_pressed(_new_InputName.WAIT)
+	return event.is_action_pressed(_new_InputTag.WAIT)
 
 
 func _is_move_input(event: InputEvent) -> bool:

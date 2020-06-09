@@ -8,8 +8,8 @@ const AITemplate := preload("res://library/npc_ai/AITemplate.gd")
 
 var _ref_Schedule: Schedule
 
-var _new_SubGroupName := preload("res://library/SubGroupName.gd").new()
-var _new_WorldName := preload("res://library/WorldName.gd").new()
+var _new_SubGroupTag := preload("res://library/SubGroupTag.gd").new()
+var _new_WorldTag := preload("res://library/WorldTag.gd").new()
 
 var _new_DemoAI := preload("res://library/npc_ai/DemoAI.gd")
 
@@ -17,13 +17,13 @@ var _pc: Sprite
 var _ai: AITemplate
 
 var _select_world: Dictionary = {
-	_new_WorldName.DEMO: _new_DemoAI,
-	_new_WorldName.KNIGHT: _new_DemoAI,
+	_new_WorldTag.DEMO: _new_DemoAI,
+	_new_WorldTag.KNIGHT: _new_DemoAI,
 }
 
 
 func _on_Schedule_turn_started(current_sprite: Sprite) -> void:
-	if current_sprite.is_in_group(_new_SubGroupName.PC):
+	if current_sprite.is_in_group(_new_SubGroupTag.PC):
 		return
 
 	_ai.take_action(_pc, current_sprite)
@@ -37,6 +37,6 @@ func _on_InitWorld_world_selected(new_world: String) -> void:
 
 
 func _on_InitWorld_sprite_created(new_sprite: Sprite) -> void:
-	if new_sprite.is_in_group(_new_SubGroupName.PC):
+	if new_sprite.is_in_group(_new_SubGroupTag.PC):
 		_pc = new_sprite
 

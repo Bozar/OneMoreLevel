@@ -12,17 +12,17 @@ var end_turn: bool setget set_end_turn, get_end_turn
 var _ref_DungeonBoard: DungeonBoard
 var _ref_RemoveObject: RemoveObject
 
-var _new_InputName := preload("res://library/InputName.gd").new()
-var _new_MainGroupName := preload("res://library/MainGroupName.gd").new()
+var _new_InputTag := preload("res://library/InputTag.gd").new()
+var _new_MainGroupTag := preload("res://library/MainGroupTag.gd").new()
 var _new_DungeonSize := preload("res://library/DungeonSize.gd").new()
 
 var _source_position: Array
 var _target_position: Array
 var _direction_to_coord: Dictionary = {
-	_new_InputName.MOVE_UP: [0, -1],
-	_new_InputName.MOVE_DOWN: [0, 1],
-	_new_InputName.MOVE_LEFT: [-1, 0],
-	_new_InputName.MOVE_RIGHT: [1, 0],
+	_new_InputTag.MOVE_UP: [0, -1],
+	_new_InputTag.MOVE_DOWN: [0, 1],
+	_new_InputTag.MOVE_LEFT: [-1, 0],
+	_new_InputTag.MOVE_RIGHT: [1, 0],
 }
 
 
@@ -55,8 +55,8 @@ func is_ground(source: Array, direction: String) -> bool:
 
 	var is_not_ground: bool = \
 			(not _new_DungeonSize.is_inside_dungeon(x, y)) \
-			or _ref_DungeonBoard.has_sprite(_new_MainGroupName.BUILDING, x, y) \
-			or _ref_DungeonBoard.has_sprite(_new_MainGroupName.ACTOR, x, y)
+			or _ref_DungeonBoard.has_sprite(_new_MainGroupTag.BUILDING, x, y) \
+			or _ref_DungeonBoard.has_sprite(_new_MainGroupTag.ACTOR, x, y)
 
 	return not is_not_ground
 
@@ -64,25 +64,25 @@ func is_ground(source: Array, direction: String) -> bool:
 func is_npc(source: Array, direction: String) -> bool:
 	_set_source_target_positions(source, direction)
 
-	return _ref_DungeonBoard.has_sprite(_new_MainGroupName.ACTOR,
+	return _ref_DungeonBoard.has_sprite(_new_MainGroupTag.ACTOR,
 			_target_position[0], _target_position[1])
 
 
 func is_building(source: Array, direction: String) -> bool:
 	_set_source_target_positions(source, direction)
 
-	return _ref_DungeonBoard.has_sprite(_new_MainGroupName.BUILDING,
+	return _ref_DungeonBoard.has_sprite(_new_MainGroupTag.BUILDING,
 			_target_position[0], _target_position[1])
 
 
 func move() -> void:
-	_ref_DungeonBoard.move_sprite(_new_MainGroupName.ACTOR,
+	_ref_DungeonBoard.move_sprite(_new_MainGroupTag.ACTOR,
 			_source_position, _target_position)
 	end_turn = true
 
 
 func attack() -> void:
-	_ref_RemoveObject.remove(_new_MainGroupName.ACTOR,
+	_ref_RemoveObject.remove(_new_MainGroupTag.ACTOR,
 			_target_position[0], _target_position[1])
 	end_turn = true
 

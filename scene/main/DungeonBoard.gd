@@ -2,8 +2,8 @@ extends Node2D
 
 
 var _new_DungeonSize := preload("res://library/DungeonSize.gd").new()
-var _new_MainGroupName := preload("res://library/MainGroupName.gd").new()
-var _new_SubGroupName := preload("res://library/SubGroupName.gd").new()
+var _new_MainGroupTag := preload("res://library/MainGroupTag.gd").new()
+var _new_SubGroupTag := preload("res://library/SubGroupTag.gd").new()
 var _new_ConvertCoord := preload("res://library/ConvertCoord.gd").new()
 
 # <main_group: String, <column: int, [sprite]>>
@@ -12,7 +12,7 @@ var _arrow_x: Sprite
 var _arrow_y: Sprite
 
 var _valid_main_groups: Array = [
-	_new_MainGroupName.ACTOR, _new_MainGroupName.BUILDING
+	_new_MainGroupTag.ACTOR, _new_MainGroupTag.BUILDING
 ]
 
 
@@ -41,7 +41,7 @@ func move_sprite(main_group: String, source: Array, target: Array) -> void:
 	sprite.position = _new_ConvertCoord.index_to_vector(target[0], target[1])
 
 	# Move arrow indicators when PC moves.
-	if sprite.is_in_group(_new_SubGroupName.PC):
+	if sprite.is_in_group(_new_SubGroupTag.PC):
 		_arrow_x.position.x = sprite.position.x
 		_arrow_y.position.y = sprite.position.y
 
@@ -51,10 +51,10 @@ func _on_InitWorld_sprite_created(new_sprite: Sprite) -> void:
 	var group: String
 
 	# Save references to arrow indicators.
-	if new_sprite.is_in_group(_new_MainGroupName.INDICATOR):
-		if new_sprite.is_in_group(_new_SubGroupName.ARROW_X):
+	if new_sprite.is_in_group(_new_MainGroupTag.INDICATOR):
+		if new_sprite.is_in_group(_new_SubGroupTag.ARROW_X):
 			_arrow_x = new_sprite
-		elif new_sprite.is_in_group(_new_SubGroupName.ARROW_Y):
+		elif new_sprite.is_in_group(_new_SubGroupTag.ARROW_Y):
 			_arrow_y = new_sprite
 		return
 

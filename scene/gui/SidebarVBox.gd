@@ -1,7 +1,7 @@
 extends VBoxContainer
 
 
-const _new_SubGroupName = preload("res://library/SubGroupName.gd")
+const _new_SubGroupTag = preload("res://library/SubGroupTag.gd")
 
 var _turn_counter: int = 0
 var _turn_text: String = "Turn: {0}"
@@ -16,7 +16,7 @@ func _ready() -> void:
 
 
 func _on_Schedule_turn_started(current_sprite: Sprite) -> void:
-	if current_sprite.is_in_group(_new_SubGroupName.PC):
+	if current_sprite.is_in_group(_new_SubGroupTag.PC):
 		_turn_counter += 1
 		_update_turn()
 

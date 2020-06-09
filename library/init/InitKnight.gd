@@ -94,7 +94,7 @@ func _create_solid_wall() -> void:
 
 			# Add wall blocks to blueprint and set dungeon board.
 			_add_to_blueprint(Wall,
-					_new_MainGroupName.BUILDING, _new_SubGroupName.WALL,
+					_new_MainGroupTag.BUILDING, _new_SubGroupTag.WALL,
 					x, y)
 			_occupy_position(x, y)
 
@@ -106,7 +106,7 @@ func _init_PC() -> void:
 		position = _get_PC_position()
 
 	_add_to_blueprint(Player,
-			_new_MainGroupName.ACTOR, _new_SubGroupName.PC,
+			_new_MainGroupTag.ACTOR, _new_SubGroupTag.PC,
 			position[0], position[1])
 
 
@@ -129,7 +129,7 @@ func _init_dwarf() -> void:
 		if _is_occupied(x, y):
 			continue
 		_add_to_blueprint(Dwarf,
-				_new_MainGroupName.ACTOR, _new_SubGroupName.DWARF,
+				_new_MainGroupTag.ACTOR, _new_SubGroupTag.DWARF,
 				x, y)
 		_occupy_position(x, y)
 

@@ -20,29 +20,29 @@ var _ref_RandomNumber: RandomNumber
 
 var _new_ConvertCoord := preload("res://library/ConvertCoord.gd").new()
 var _new_DungeonSize := preload("res://library/DungeonSize.gd").new()
-var _new_MainGroupName := preload("res://library/MainGroupName.gd").new()
-var _new_SubGroupName := preload("res://library/SubGroupName.gd").new()
-var _new_InputName := preload("res://library/InputName.gd").new()
-var _new_WorldName := preload("res://library/WorldName.gd").new()
+var _new_MainGroupTag := preload("res://library/MainGroupTag.gd").new()
+var _new_SubGroupTag := preload("res://library/SubGroupTag.gd").new()
+var _new_InputTag := preload("res://library/InputTag.gd").new()
+var _new_WorldTag := preload("res://library/WorldTag.gd").new()
 
 var _world: WorldTemplate
 
 var _select_world: Dictionary = {
-	_new_WorldName.DEMO: InitDemo,
-	_new_WorldName.KNIGHT: InitKnight,
+	_new_WorldTag.DEMO: InitDemo,
+	_new_WorldTag.KNIGHT: InitKnight,
 }
 
 var _group_to_z_index: Dictionary = {
-	_new_MainGroupName.GROUND: 0,
-	_new_MainGroupName.TRAP: 1,
-	_new_MainGroupName.BUILDING: 2,
-	_new_MainGroupName.ACTOR: 3,
-	_new_MainGroupName.INDICATOR: 4,
+	_new_MainGroupTag.GROUND: 0,
+	_new_MainGroupTag.TRAP: 1,
+	_new_MainGroupTag.BUILDING: 2,
+	_new_MainGroupTag.ACTOR: 3,
+	_new_MainGroupTag.INDICATOR: 4,
 }
 
 
 func _unhandled_input(event: InputEvent) -> void:
-	if event.is_action_pressed(_new_InputName.INIT_WORLD):
+	if event.is_action_pressed(_new_InputTag.INIT_WORLD):
 		_world = _get_world()
 		# sb: SpriteBlueprint
 		for sb in _world.get_blueprint():
@@ -58,7 +58,7 @@ func _get_world() -> WorldTemplate:
 	var world_template: WorldTemplate
 
 	# TODO: Generate a random world name from potential candidates.
-	world_name = _new_WorldName.KNIGHT
+	world_name = _new_WorldTag.KNIGHT
 	world_template = _select_world[world_name].new(_ref_RandomNumber)
 	emit_signal("world_selected", world_name)
 
@@ -67,10 +67,10 @@ func _get_world() -> WorldTemplate:
 
 func _init_indicator(x: int, y: int) -> void:
 	_create_sprite(ArrowX,
-			_new_MainGroupName.INDICATOR, _new_SubGroupName.ARROW_X,
+			_new_MainGroupTag.INDICATOR, _new_SubGroupTag.ARROW_X,
 			x, 0, 0, -_new_DungeonSize.ARROW_MARGIN)
 	_create_sprite(ArrowY,
-			_new_MainGroupName.INDICATOR, _new_SubGroupName.ARROW_Y,
+			_new_MainGroupTag.INDICATOR, _new_SubGroupTag.ARROW_Y,
 			0, y, -_new_DungeonSize.ARROW_MARGIN)
 
 
@@ -89,4 +89,4 @@ func _create_sprite(prefab: PackedScene, main_group: String, sub_group: String,
 
 
 func _is_pc(group_name: String) -> bool:
-	return group_name == _new_SubGroupName.PC
+	return group_name == _new_SubGroupTag.PC

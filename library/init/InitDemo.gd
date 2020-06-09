@@ -37,14 +37,14 @@ func _init_wall() -> void:
 	for x in range(min_x, max_x):
 		for y in range(min_y, max_y):
 			_add_to_blueprint(Wall,
-					_new_MainGroupName.BUILDING, _new_SubGroupName.WALL,
+					_new_MainGroupTag.BUILDING, _new_SubGroupTag.WALL,
 					x, y)
 			_occupy_position(x, y)
 
 
 func _init_PC() -> void:
 	_add_to_blueprint(Player,
-			_new_MainGroupName.ACTOR, _new_SubGroupName.PC,
+			_new_MainGroupTag.ACTOR, _new_SubGroupTag.PC,
 			0, 0)
 
 
@@ -60,7 +60,7 @@ func _init_dwarf() -> void:
 		if _is_occupied(x, y):
 			continue
 		_add_to_blueprint(Dwarf,
-				_new_MainGroupName.ACTOR, _new_SubGroupName.DWARF,
+				_new_MainGroupTag.ACTOR, _new_SubGroupTag.DWARF,
 				x, y)
 		_occupy_position(x, y)
 

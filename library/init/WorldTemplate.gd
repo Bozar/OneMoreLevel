@@ -8,8 +8,8 @@ const SpriteBlueprint := preload("res://library/init/SpriteBlueprint.gd")
 const Floor := preload("res://sprite/Floor.tscn")
 
 var _new_DungeonSize := preload("res://library/DungeonSize.gd").new()
-var _new_MainGroupName := preload("res://library/MainGroupName.gd").new()
-var _new_SubGroupName := preload("res://library/SubGroupName.gd").new()
+var _new_MainGroupTag := preload("res://library/MainGroupTag.gd").new()
+var _new_SubGroupTag := preload("res://library/SubGroupTag.gd").new()
 
 var _ref_RandomNumber: RandomNumber
 
@@ -55,5 +55,5 @@ func _init_floor() -> void:
 	for i in range(_new_DungeonSize.MAX_X):
 		for j in range(_new_DungeonSize.MAX_Y):
 			_add_to_blueprint(Floor,
-					_new_MainGroupName.GROUND, _new_SubGroupName.FLOOR,
+					_new_MainGroupTag.GROUND, _new_SubGroupTag.FLOOR,
 					i, j)
