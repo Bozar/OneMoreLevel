@@ -1,0 +1,75 @@
+[gd_scene load_steps=9 format=2]
+
+[ext_resource path="res://resource/curses_vector_24x36.png" type="Texture" id=1]
+
+[sub_resource type="AtlasTexture" id=1]
+flags = 4
+atlas = ExtResource( 1 )
+region = Rect2( 72, 252, 24, 36 )
+
+[sub_resource type="AtlasTexture" id=2]
+flags = 4
+atlas = ExtResource( 1 )
+region = Rect2( 72, 180, 24, 36 )
+
+[sub_resource type="AtlasTexture" id=4]
+flags = 4
+atlas = ExtResource( 1 )
+region = Rect2( 0, 252, 24, 36 )
+
+[sub_resource type="AtlasTexture" id=5]
+flags = 4
+atlas = ExtResource( 1 )
+region = Rect2( 0, 180, 24, 36 )
+
+[sub_resource type="AtlasTexture" id=6]
+flags = 4
+atlas = ExtResource( 1 )
+region = Rect2( 96, 216, 24, 36 )
+
+[sub_resource type="AtlasTexture" id=7]
+flags = 4
+atlas = ExtResource( 1 )
+region = Rect2( 96, 144, 24, 36 )
+
+[sub_resource type="AtlasTexture" id=3]
+flags = 4
+atlas = ExtResource( 1 )
+region = Rect2( 24, 72, 24, 36 )
+
+[node name="KnightBoss" type="Sprite"]
+
+[node name="default" type="Sprite" parent="."]
+modulate = Color( 0.670588, 0.698039, 0.74902, 1 )
+texture = SubResource( 1 )
+
+[node name="active_1" type="Sprite" parent="."]
+visible = false
+modulate = Color( 0.670588, 0.698039, 0.74902, 1 )
+texture = SubResource( 2 )
+
+[node name="default_2" type="Sprite" parent="."]
+visible = false
+modulate = Color( 0.670588, 0.698039, 0.74902, 1 )
+texture = SubResource( 4 )
+
+[node name="active_2" type="Sprite" parent="."]
+visible = false
+modulate = Color( 0.670588, 0.698039, 0.74902, 1 )
+texture = SubResource( 5 )
+
+[node name="default_3" type="Sprite" parent="."]
+visible = false
+modulate = Color( 0.670588, 0.698039, 0.74902, 1 )
+texture = SubResource( 6 )
+
+[node name="active_3" type="Sprite" parent="."]
+visible = false
+modulate = Color( 0.670588, 0.698039, 0.74902, 1 )
+texture = SubResource( 7 )
+region_rect = Rect2( 96, 144, 24, 36 )
+
+[node name="passive" type="Sprite" parent="."]
+visible = false
+modulate = Color( 0.670588, 0.698039, 0.74902, 1 )
+texture = SubResource( 3 )
