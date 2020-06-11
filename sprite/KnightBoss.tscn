@@ -13,27 +13,27 @@ flags = 4
 atlas = ExtResource( 1 )
 region = Rect2( 72, 180, 24, 36 )
 
-[sub_resource type="AtlasTexture" id=4]
+[sub_resource type="AtlasTexture" id=3]
 flags = 4
 atlas = ExtResource( 1 )
 region = Rect2( 0, 252, 24, 36 )
 
-[sub_resource type="AtlasTexture" id=5]
+[sub_resource type="AtlasTexture" id=4]
 flags = 4
 atlas = ExtResource( 1 )
 region = Rect2( 0, 180, 24, 36 )
 
-[sub_resource type="AtlasTexture" id=6]
+[sub_resource type="AtlasTexture" id=5]
 flags = 4
 atlas = ExtResource( 1 )
 region = Rect2( 96, 216, 24, 36 )
 
-[sub_resource type="AtlasTexture" id=7]
+[sub_resource type="AtlasTexture" id=6]
 flags = 4
 atlas = ExtResource( 1 )
 region = Rect2( 96, 144, 24, 36 )
 
-[sub_resource type="AtlasTexture" id=3]
+[sub_resource type="AtlasTexture" id=7]
 flags = 4
 atlas = ExtResource( 1 )
 region = Rect2( 24, 72, 24, 36 )
@@ -53,25 +53,25 @@ texture = SubResource( 2 )
 [node name="default_2" type="Sprite" parent="."]
 visible = false
 modulate = Color( 0.670588, 0.698039, 0.74902, 1 )
-texture = SubResource( 4 )
+texture = SubResource( 3 )
 
 [node name="active_2" type="Sprite" parent="."]
 visible = false
 modulate = Color( 0.670588, 0.698039, 0.74902, 1 )
-texture = SubResource( 5 )
+texture = SubResource( 4 )
 
 [node name="default_3" type="Sprite" parent="."]
 visible = false
 modulate = Color( 0.670588, 0.698039, 0.74902, 1 )
-texture = SubResource( 6 )
+texture = SubResource( 5 )
 
 [node name="active_3" type="Sprite" parent="."]
 visible = false
 modulate = Color( 0.670588, 0.698039, 0.74902, 1 )
-texture = SubResource( 7 )
+texture = SubResource( 6 )
 region_rect = Rect2( 96, 144, 24, 36 )
 
 [node name="passive" type="Sprite" parent="."]
 visible = false
 modulate = Color( 0.670588, 0.698039, 0.74902, 1 )
-texture = SubResource( 3 )
+texture = SubResource( 7 )

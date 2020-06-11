@@ -3,17 +3,17 @@
 [ext_resource path="res://resource/curses_vector_24x36.png" type="Texture" id=1]
 [ext_resource path="res://library/SpriteManager.gd" type="Script" id=2]
 
-[sub_resource type="AtlasTexture" id=2]
+[sub_resource type="AtlasTexture" id=1]
 flags = 4
 atlas = ExtResource( 1 )
 region = Rect2( 264, 216, 24, 36 )
 
-[sub_resource type="AtlasTexture" id=3]
+[sub_resource type="AtlasTexture" id=2]
 flags = 4
 atlas = ExtResource( 1 )
 region = Rect2( 264, 144, 24, 36 )
 
-[sub_resource type="AtlasTexture" id=4]
+[sub_resource type="AtlasTexture" id=3]
 flags = 4
 atlas = ExtResource( 1 )
 region = Rect2( 360, 108, 24, 36 )
@@ -23,14 +23,14 @@ script = ExtResource( 2 )
 
 [node name="default" type="Sprite" parent="."]
 modulate = Color( 0.670588, 0.698039, 0.74902, 1 )
-texture = SubResource( 2 )
+texture = SubResource( 1 )
 
 [node name="active" type="Sprite" parent="."]
 visible = false
 modulate = Color( 0.670588, 0.698039, 0.74902, 1 )
-texture = SubResource( 3 )
+texture = SubResource( 2 )
 
 [node name="passive" type="Sprite" parent="."]
 visible = false
 modulate = Color( 0.670588, 0.698039, 0.74902, 1 )
-texture = SubResource( 4 )
+texture = SubResource( 3 )
