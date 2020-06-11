@@ -1,6 +1,6 @@
 func get_range(source: Array, target: Array) -> int:
 	var delta_x: int = abs(source[0] - target[0]) as int
-	var delta_y: int = abs(source[0] - target[0]) as int
+	var delta_y: int = abs(source[1] - target[1]) as int
 
 	return delta_x + delta_y
 
