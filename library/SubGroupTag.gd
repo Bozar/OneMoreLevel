@@ -3,6 +3,7 @@ const INVALID: String = "invalid"
 const PC: String = "pc"
 const DWARF: String = "dwarf"
 const KNIGHT: String = "knight"
+const KNIGHT_CAPTAIN: String = "knight_captain"
 const KNIGHT_BOSS: String = "knight_boss"
 
 const FLOOR: String = "floor"
