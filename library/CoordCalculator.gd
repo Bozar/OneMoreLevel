@@ -20,3 +20,15 @@ func get_neighbor(center: Array, distance: int) -> Array:
 	]
 
 	return neighbor
+
+
+func get_block(top_left: Array, width: int, height: int) -> Array:
+	var x: int = top_left[0]
+	var y: int = top_left[1]
+	var coord: Array = []
+
+	for i in range(x, x + width):
+		for j in range(y, y + height):
+			coord.push_back([i, j])
+
+	return coord

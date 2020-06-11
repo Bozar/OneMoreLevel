@@ -63,6 +63,8 @@ func _create_solid_wall() -> void:
 	var dig_x: int
 	var dig_y: int
 
+	var block: Array
+
 	# Initialize data.
 	# Start from [-1, -1] as the block will be shrinked later.
 	min_start = -1
@@ -96,30 +98,34 @@ func _create_solid_wall() -> void:
 		dig_y = -1
 
 	# Set blueprint and dungeon board.
-	for x in range(start_x, max_x):
-		for y in range(start_y, max_y):
-			# Do not generate wall blocks outside the map.
-			if not _new_DungeonSize.is_inside_dungeon(x, y):
-				continue
-			# Every wall block might lose one grid.
-			if (x == dig_x) and (y == dig_y):
-				continue
+	block = _new_CoordCalculator.get_block(
+			[start_x, start_y], max_x - start_x, max_y - start_y)
 
-			# Add wall blocks to blueprint and set dungeon board.
-			_add_to_blueprint(Wall,
-					_new_MainGroupTag.BUILDING, _new_SubGroupTag.WALL,
-					x, y)
-			_occupy_position(x, y)
+	for xy in block:
+		# Do not generate wall blocks outside the map.
+		if not _new_DungeonSize.is_inside_dungeon(xy[0], xy[1]):
+			continue
+		# Every wall block might lose one grid.
+		if (xy[0] == dig_x) and (xy[1] == dig_y):
+			continue
+
+		# Add wall blocks to blueprint and set dungeon board.
+		_add_to_blueprint(Wall,
+				_new_MainGroupTag.BUILDING, _new_SubGroupTag.WALL,
+				xy[0], xy[1])
+		_occupy_position(xy[0], xy[1])
 
 
 func _is_valid_block(start_x: int, start_y: int, width: int, height: int) \
 		-> bool:
-	for x in range(start_x, start_x + width):
-		for y in range(start_y, start_y + height):
-			if not _new_DungeonSize.is_inside_dungeon(x, y):
-				continue
-			if _is_occupied(x, y):
-				return false
+	var block: Array = _new_CoordCalculator.get_block(
+			[start_x, start_y], width, height)
+
+	for xy in block:
+		if not _new_DungeonSize.is_inside_dungeon(xy[0], xy[1]):
+			continue
+		if _is_occupied(xy[0], xy[1]):
+			return false
 	return true
 
 
