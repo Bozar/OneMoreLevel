@@ -2,9 +2,16 @@ extends "res://library/init/WorldTemplate.gd"
 # Initialize a map for Silent Knight Hall (Knight).
 
 
-const Player := preload("res://sprite/PC.tscn")
-const Dwarf := preload("res://sprite/Dwarf.tscn")
+const PC := preload("res://sprite/PC.tscn")
+const Knight := preload("res://sprite/Knight.tscn")
+const KnightCaptain := preload("res://sprite/KnightCaptain.tscn")
+const KnightBoss := preload("res://sprite/KnightBoss.tscn")
 const Wall := preload("res://sprite/Wall.tscn")
+
+var _new_CoordCalculator := preload("res://library/CoordCalculator.gd").new()
+
+var pc_x: int
+var pc_y: int
 
 
 func _init(_random: RandomNumber).(_random) -> void:
@@ -12,9 +19,14 @@ func _init(_random: RandomNumber).(_random) -> void:
 
 
 func get_blueprint() -> Array:
+	var max_knight: int = 6
+
 	_init_wall()
 	_init_PC()
-	# _init_dwarf()
+	_init_knight(KnightCaptain, _new_SubGroupTag.KNIGHT_CAPTAIN)
+
+	for _i in range(max_knight):
+		_init_knight(Knight, _new_SubGroupTag.KNIGHT)
 
 	return _blueprint
 
@@ -156,12 +168,7 @@ func _is_valid_hole(dig_x: int, dig_y: int, \
 	if not _new_DungeonSize.is_inside_dungeon(dig_x, dig_y):
 		return false
 
-	var neighbor: Array = [
-		[dig_x - 1, dig_y],
-		[dig_x + 1, dig_y],
-		[dig_x, dig_y - 1],
-		[dig_x, dig_y + 1],
-	]
+	var neighbor: Array = _new_CoordCalculator.get_neighbor([dig_x, dig_y], 1)
 
 	for n in neighbor:
 		if not _new_DungeonSize.is_inside_dungeon(n[0], n[1]):
@@ -173,14 +180,21 @@ func _is_valid_hole(dig_x: int, dig_y: int, \
 
 
 func _init_PC() -> void:
-	var position: Array = _get_PC_position()
+	var position: Array
 
-	while _dungeon[position[0]][position[1]]:
+	while true:
 		position = _get_PC_position()
+		pc_x = position[0]
+		pc_y = position[1]
 
-	_add_to_blueprint(Player,
+		if _dungeon[pc_x][pc_y]:
+			continue
+		break
+
+	_occupy_position(pc_x, pc_y)
+	_add_to_blueprint(PC,
 			_new_MainGroupTag.ACTOR, _new_SubGroupTag.PC,
-			position[0], position[1])
+			pc_x, pc_y)
 
 
 func _get_PC_position() -> Array:
@@ -190,23 +204,22 @@ func _get_PC_position() -> Array:
 	return [x, y]
 
 
-func _init_dwarf() -> void:
-	var dwarf: int = _ref_RandomNumber.get_int(3, 6)
+func _init_knight(scene: PackedScene, tag: String) -> void:
 	var x: int
 	var y: int
 
-	while dwarf > 0:
+	while true:
 		x = _ref_RandomNumber.get_int(1, _new_DungeonSize.MAX_X - 1)
 		y = _ref_RandomNumber.get_int(1, _new_DungeonSize.MAX_Y - 1)
 
-		if _is_occupied(x, y):
+		if _is_occupied(x, y) \
+				or _new_CoordCalculator.is_inside_range(
+					[x, y], [pc_x, pc_y], 5):
 			continue
-		_add_to_blueprint(Dwarf,
-				_new_MainGroupTag.ACTOR, _new_SubGroupTag.DWARF,
-				x, y)
-		_occupy_position(x, y)
 
-		dwarf -= 1
+		_occupy_position(x, y)
+		_add_to_blueprint(scene, _new_MainGroupTag.ACTOR, tag, x, y)
+		break
 
 
 func _occupy_position(x: int, y: int) -> void:
