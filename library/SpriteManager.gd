@@ -18,4 +18,4 @@ func switch_sprite(type_tag: String) -> void:
 # NOTE: Reset color if the sprite is removed from scene and will be recycled
 # later.
 func set_color(new_color: String) -> void:
-	get_node(_current).modulate = new_color
+	modulate = new_color
