@@ -24,20 +24,14 @@ var _new_MainGroupTag := preload("res://library/MainGroupTag.gd").new()
 var _new_SubGroupTag := preload("res://library/SubGroupTag.gd").new()
 var _new_InputTag := preload("res://library/InputTag.gd").new()
 var _new_WorldTag := preload("res://library/WorldTag.gd").new()
+var _new_Palette := preload("res://library/Palette.gd").new()
+var _new_ZIndex := preload("res://library/ZIndex.gd").new()
 
 var _world: WorldTemplate
 
 var _select_world: Dictionary = {
 	_new_WorldTag.DEMO: InitDemo,
 	_new_WorldTag.KNIGHT: InitKnight,
-}
-
-var _group_to_z_index: Dictionary = {
-	_new_MainGroupTag.GROUND: 0,
-	_new_MainGroupTag.TRAP: 1,
-	_new_MainGroupTag.BUILDING: 2,
-	_new_MainGroupTag.ACTOR: 3,
-	_new_MainGroupTag.INDICATOR: 4,
 }
 
 
@@ -76,13 +70,17 @@ func _init_indicator(x: int, y: int) -> void:
 
 func _create_sprite(prefab: PackedScene, main_group: String, sub_group: String,
 		x: int, y: int, x_offset: int = 0, y_offset: int = 0) -> void:
-
 	var new_sprite: Sprite = prefab.instance() as Sprite
+	var sprite_color: String = _new_Palette.get_default_color(
+			main_group, sub_group)
+	var z_index: int = _new_ZIndex.get_z_index(main_group)
+
 	new_sprite.position = _new_ConvertCoord.index_to_vector(
 			x, y, x_offset, y_offset)
 	new_sprite.add_to_group(main_group)
 	new_sprite.add_to_group(sub_group)
-	new_sprite.z_index = _group_to_z_index[main_group]
+	new_sprite.z_index = z_index
+	new_sprite.modulate = sprite_color
 
 	add_child(new_sprite)
 	emit_signal("sprite_created", new_sprite)
