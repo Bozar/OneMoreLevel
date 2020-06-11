@@ -39,39 +39,33 @@ atlas = ExtResource( 1 )
 region = Rect2( 24, 72, 24, 36 )
 
 [node name="KnightBoss" type="Sprite"]
+modulate = Color( 0.678431, 0.709804, 0.741176, 1 )
 script = ExtResource( 2 )
 
 [node name="default" type="Sprite" parent="."]
-modulate = Color( 0.670588, 0.698039, 0.74902, 1 )
 texture = SubResource( 1 )
 
 [node name="active_1" type="Sprite" parent="."]
 visible = false
-modulate = Color( 0.670588, 0.698039, 0.74902, 1 )
 texture = SubResource( 2 )
 
 [node name="default_2" type="Sprite" parent="."]
 visible = false
-modulate = Color( 0.670588, 0.698039, 0.74902, 1 )
 texture = SubResource( 3 )
 
 [node name="active_2" type="Sprite" parent="."]
 visible = false
-modulate = Color( 0.670588, 0.698039, 0.74902, 1 )
 texture = SubResource( 4 )
 
 [node name="default_3" type="Sprite" parent="."]
 visible = false
-modulate = Color( 0.670588, 0.698039, 0.74902, 1 )
 texture = SubResource( 5 )
 
 [node name="active_3" type="Sprite" parent="."]
 visible = false
-modulate = Color( 0.670588, 0.698039, 0.74902, 1 )
 texture = SubResource( 6 )
 region_rect = Rect2( 96, 144, 24, 36 )
 
 [node name="passive" type="Sprite" parent="."]
 visible = false
-modulate = Color( 0.670588, 0.698039, 0.74902, 1 )
 texture = SubResource( 7 )

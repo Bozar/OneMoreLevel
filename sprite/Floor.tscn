@@ -8,5 +8,5 @@ atlas = ExtResource( 1 )
 region = Rect2( 240, 540, 24, 36 )
 
 [node name="Floor" type="Sprite"]
-modulate = Color( 0.286275, 0.317647, 0.384314, 1 )
+modulate = Color( 0.203922, 0.227451, 0.25098, 1 )
 texture = SubResource( 1 )

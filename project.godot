@@ -69,4 +69,4 @@ wait={
 
 [rendering]
 
-environment/default_clear_color=Color( 0.156863, 0.172549, 0.203922, 1 )
+environment/default_clear_color=Color( 0.129412, 0.145098, 0.160784, 1 )
