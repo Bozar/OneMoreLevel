@@ -22,7 +22,8 @@ func get_neighbor(center: Array, max_range: int, has_center: bool = false) \
 		for j in range(y - max_range, y + max_range + 1):
 			if (i == x) and (j == y):
 				continue
-			if is_inside_range([x, y], [i, j], max_range):
+			if is_inside_dungeon(i, j) \
+					and is_inside_range([x, y], [i, j], max_range):
 				neighbor.push_back([i, j])
 
 	if has_center:
@@ -38,7 +39,8 @@ func get_block(top_left: Array, width: int, height: int) -> Array:
 
 	for i in range(x, x + width):
 		for j in range(y, y + height):
-			coord.push_back([i, j])
+			if is_inside_dungeon(i, j):
+				coord.push_back([i, j])
 
 	return coord
 
@@ -46,13 +48,3 @@ func get_block(top_left: Array, width: int, height: int) -> Array:
 func is_inside_dungeon(x: int, y: int) -> bool:
 	return (x > -1) and (x < _new_DungeonSize.MAX_X) \
 			and (y > -1) and (y < _new_DungeonSize.MAX_Y)
-
-
-func filter_out_of_bound_coord(coords: Array) -> Array:
-	var filtered: Array = []
-
-	for xy in coords:
-		if is_inside_dungeon(xy[0], xy[1]):
-			filtered.push_back(xy)
-
-	return filtered
