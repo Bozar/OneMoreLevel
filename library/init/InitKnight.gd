@@ -187,6 +187,8 @@ func _is_valid_hole(dig_x: int, dig_y: int, \
 
 func _init_PC() -> void:
 	var position: Array
+	var neighbor: Array
+	var min_range: int = 5
 
 	while true:
 		position = _get_PC_position()
@@ -197,7 +199,11 @@ func _init_PC() -> void:
 			continue
 		break
 
-	_occupy_position(pc_x, pc_y)
+	neighbor = _new_CoordCalculator.get_neighbor([pc_x, pc_y], min_range, true)
+	neighbor = _new_DungeonSize.filter_out_of_bound_coord(neighbor)
+	for xy in neighbor:
+		_occupy_position(xy[0], xy[1])
+
 	_add_to_blueprint(PC,
 			_new_MainGroupTag.ACTOR, _new_SubGroupTag.PC,
 			pc_x, pc_y)
@@ -213,19 +219,23 @@ func _get_PC_position() -> Array:
 func _init_knight(scene: PackedScene, tag: String) -> void:
 	var x: int
 	var y: int
+	var neighbor: Array
+	var min_range: int = 3
 
 	while true:
 		x = _ref_RandomNumber.get_int(1, _new_DungeonSize.MAX_X - 1)
 		y = _ref_RandomNumber.get_int(1, _new_DungeonSize.MAX_Y - 1)
 
-		if _is_occupied(x, y) \
-				or _new_CoordCalculator.is_inside_range(
-					[x, y], [pc_x, pc_y], 5):
+		if _is_occupied(x, y):
 			continue
 
-		_occupy_position(x, y)
+		neighbor = _new_CoordCalculator.get_neighbor([x, y], min_range, true)
+		neighbor = _new_DungeonSize.filter_out_of_bound_coord(neighbor)
+		for xy in neighbor:
+			_occupy_position(xy[0], xy[1])
+
 		_add_to_blueprint(scene, _new_MainGroupTag.ACTOR, tag, x, y)
-		break
+		return
 
 
 func _occupy_position(x: int, y: int) -> void:

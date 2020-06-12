@@ -9,15 +9,21 @@ func is_inside_range(source: Array, target: Array, max_range: int) -> bool:
 	return get_range(source, target) <= max_range
 
 
-func get_neighbor(center: Array, distance: int) -> Array:
+func get_neighbor(center: Array, max_range: int, has_center: bool = false) \
+		-> Array:
 	var x: int = center[0]
 	var y: int = center[1]
-	var neighbor: Array = [
-		[x - distance, y],
-		[x + distance, y],
-		[x, y - distance],
-		[x, y + distance],
-	]
+	var neighbor: Array = []
+
+	for i in range(x - max_range, x + max_range + 1):
+		for j in range(y - max_range, y + max_range + 1):
+			if (i == x) and (j == y):
+				continue
+			if is_inside_range([x, y], [i, j], max_range):
+				neighbor.push_back([i, j])
+
+	if has_center:
+		neighbor.push_back([x, y])
 
 	return neighbor
 
