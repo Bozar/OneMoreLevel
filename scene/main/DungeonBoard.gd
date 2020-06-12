@@ -5,6 +5,7 @@ var _new_DungeonSize := preload("res://library/DungeonSize.gd").new()
 var _new_MainGroupTag := preload("res://library/MainGroupTag.gd").new()
 var _new_SubGroupTag := preload("res://library/SubGroupTag.gd").new()
 var _new_ConvertCoord := preload("res://library/ConvertCoord.gd").new()
+var _new_CoordCalculator := preload("res://library/CoordCalculator.gd").new()
 
 # <main_group: String, <column: int, [sprite]>>
 var _sprite_dict: Dictionary
@@ -25,7 +26,7 @@ func has_sprite(main_group: String, x: int, y: int) -> bool:
 
 
 func get_sprite(main_group: String, x: int, y: int) -> Sprite:
-	if not _new_DungeonSize.is_inside_dungeon(x, y):
+	if not _new_CoordCalculator.is_inside_dungeon(x, y):
 		return null
 	return _sprite_dict[main_group][x][y]
 

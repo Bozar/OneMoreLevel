@@ -1,3 +1,6 @@
+var _new_DungeonSize := preload("res://library/DungeonSize.gd").new()
+
+
 func get_range(source: Array, target: Array) -> int:
 	var delta_x: int = abs(source[0] - target[0]) as int
 	var delta_y: int = abs(source[1] - target[1]) as int
@@ -38,3 +41,18 @@ func get_block(top_left: Array, width: int, height: int) -> Array:
 			coord.push_back([i, j])
 
 	return coord
+
+
+func is_inside_dungeon(x: int, y: int) -> bool:
+	return (x > -1) and (x < _new_DungeonSize.MAX_X) \
+			and (y > -1) and (y < _new_DungeonSize.MAX_Y)
+
+
+func filter_out_of_bound_coord(coords: Array) -> Array:
+	var filtered: Array = []
+
+	for xy in coords:
+		if is_inside_dungeon(xy[0], xy[1]):
+			filtered.push_back(xy)
+
+	return filtered

@@ -14,7 +14,7 @@ var _ref_RemoveObject: RemoveObject
 
 var _new_InputTag := preload("res://library/InputTag.gd").new()
 var _new_MainGroupTag := preload("res://library/MainGroupTag.gd").new()
-var _new_DungeonSize := preload("res://library/DungeonSize.gd").new()
+var _new_CoordCalculator := preload("res://library/CoordCalculator.gd").new()
 
 var _source_position: Array
 var _target_position: Array
@@ -54,7 +54,7 @@ func is_ground(source: Array, direction: String) -> bool:
 	var y: int = _target_position[1]
 
 	var is_not_ground: bool = \
-			(not _new_DungeonSize.is_inside_dungeon(x, y)) \
+			(not _new_CoordCalculator.is_inside_dungeon(x, y)) \
 			or _ref_DungeonBoard.has_sprite(_new_MainGroupTag.BUILDING, x, y) \
 			or _ref_DungeonBoard.has_sprite(_new_MainGroupTag.ACTOR, x, y)
 

@@ -8,8 +8,6 @@ const KnightCaptain := preload("res://sprite/KnightCaptain.tscn")
 const KnightBoss := preload("res://sprite/KnightBoss.tscn")
 const Wall := preload("res://sprite/Wall.tscn")
 
-var _new_CoordCalculator := preload("res://library/CoordCalculator.gd").new()
-
 var pc_x: int
 var pc_y: int
 
@@ -78,7 +76,7 @@ func _create_solid_wall() -> void:
 
 	# Verify the starting point and size. The block can extend over the edge of
 	# the map, but cannot overlap existing blocks.
-	if not _is_valid_block(start_x, start_y, width, height):
+	if not _is_valid_block([start_x, start_y], width, height):
 		return
 
 	# Shrink the wall block in four directions by 1 grid.
@@ -100,11 +98,9 @@ func _create_solid_wall() -> void:
 	# Set blueprint and dungeon board.
 	block = _new_CoordCalculator.get_block(
 			[start_x, start_y], max_x - start_x, max_y - start_y)
+	block = _new_CoordCalculator.filter_out_of_bound_coord(block)
 
 	for xy in block:
-		# Do not generate wall blocks outside the map.
-		if not _new_DungeonSize.is_inside_dungeon(xy[0], xy[1]):
-			continue
 		# Every wall block might lose one grid.
 		if (xy[0] == dig_x) and (xy[1] == dig_y):
 			continue
@@ -116,14 +112,12 @@ func _create_solid_wall() -> void:
 		_occupy_position(xy[0], xy[1])
 
 
-func _is_valid_block(start_x: int, start_y: int, width: int, height: int) \
+func _is_valid_block(start: Array, width: int, height: int) \
 		-> bool:
-	var block: Array = _new_CoordCalculator.get_block(
-			[start_x, start_y], width, height)
+	var block: Array = _new_CoordCalculator.get_block(start, width, height)
+	block = _new_CoordCalculator.filter_out_of_bound_coord(block)
 
 	for xy in block:
-		if not _new_DungeonSize.is_inside_dungeon(xy[0], xy[1]):
-			continue
 		if _is_occupied(xy[0], xy[1]):
 			return false
 	return true
@@ -171,15 +165,14 @@ func _dig_border(start_x: int, start_y: int, max_x: int, max_y: int) -> Array:
 
 func _is_valid_hole(dig_x: int, dig_y: int, \
 		start_x: int, start_y: int, max_x: int, max_y: int) -> bool:
-	if not _new_DungeonSize.is_inside_dungeon(dig_x, dig_y):
+	if not _new_CoordCalculator.is_inside_dungeon(dig_x, dig_y):
 		return false
 
 	var neighbor: Array = _new_CoordCalculator.get_neighbor([dig_x, dig_y], 1)
+	neighbor = _new_CoordCalculator.filter_out_of_bound_coord(neighbor)
 
 	for n in neighbor:
-		if not _new_DungeonSize.is_inside_dungeon(n[0], n[1]):
-			continue
-		elif (n[0] < start_x) or (n[0] >= max_x) \
+		if (n[0] < start_x) or (n[0] >= max_x) \
 				or (n[1] < start_y) or (n[1] >= max_y):
 			return true
 	return false
@@ -200,7 +193,7 @@ func _init_PC() -> void:
 		break
 
 	neighbor = _new_CoordCalculator.get_neighbor([pc_x, pc_y], min_range, true)
-	neighbor = _new_DungeonSize.filter_out_of_bound_coord(neighbor)
+	neighbor = _new_CoordCalculator.filter_out_of_bound_coord(neighbor)
 	for xy in neighbor:
 		_occupy_position(xy[0], xy[1])
 
@@ -230,7 +223,7 @@ func _init_knight(scene: PackedScene, tag: String) -> void:
 			continue
 
 		neighbor = _new_CoordCalculator.get_neighbor([x, y], min_range, true)
-		neighbor = _new_DungeonSize.filter_out_of_bound_coord(neighbor)
+		neighbor = _new_CoordCalculator.filter_out_of_bound_coord(neighbor)
 		for xy in neighbor:
 			_occupy_position(xy[0], xy[1])
 
