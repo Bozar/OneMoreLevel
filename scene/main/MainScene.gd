@@ -8,8 +8,7 @@ const SCHEDULE: String = "Schedule"
 const DUNGEON: String = "DungeonBoard"
 const REMOVE: String = "RemoveObject"
 const RANDOM: String = "RandomNumber"
-const SIDEBAR: String = "MainGUI/MainHBox/SidebarVBox"
-const MODELINE: String = "MainGUI/MainHBox/Modeline"
+const SIDEBAR: String = "MainGUI/SidebarVBox"
 
 const SIGNAL_BIND: Array = [
 	[
@@ -27,21 +26,21 @@ const SIGNAL_BIND: Array = [
 		SCHEDULE,
 		PC_INPUT, ENEMY_AI, SIDEBAR,
 	],
-	[
-		"turn_ended", "_on_Schedule_turn_ended",
-		SCHEDULE,
-		MODELINE,
-	],
+	# [
+	# 	"turn_ended", "_on_Schedule_turn_ended",
+	# 	SCHEDULE,
+	# 	MODELINE,
+	# ],
 	[
 		"sprite_removed", "_on_RemoveObject_sprite_removed",
 		REMOVE,
 		DUNGEON, SCHEDULE,
 	],
-	[
-		"enemy_warned", "_on_EnemyAI_enemy_warned",
-		ENEMY_AI,
-		MODELINE,
-	],
+	# [
+	# 	"enemy_warned", "_on_EnemyAI_enemy_warned",
+	# 	ENEMY_AI,
+	# 	MODELINE,
+	# ],
 ]
 
 const NODE_REF: Array = [
