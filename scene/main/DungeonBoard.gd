@@ -9,12 +9,15 @@ var _new_CoordCalculator := preload("res://library/CoordCalculator.gd").new()
 
 # <main_group: String, <column: int, [sprite]>>
 var _sprite_dict: Dictionary
-var _arrow_x: Sprite
-var _arrow_y: Sprite
 
 var _valid_main_groups: Array = [
-	_new_MainGroupTag.ACTOR, _new_MainGroupTag.BUILDING
+	_new_MainGroupTag.ACTOR, _new_MainGroupTag.BUILDING,
 ]
+
+var _sub_group_to_sprite: Dictionary = {
+	_new_SubGroupTag.ARROW_LEFT: null,
+	_new_SubGroupTag.ARROW_TOP: null,
+}
 
 
 func _ready() -> void:
@@ -43,8 +46,10 @@ func move_sprite(main_group: String, source: Array, target: Array) -> void:
 
 	# Move arrow indicators when PC moves.
 	if sprite.is_in_group(_new_SubGroupTag.PC):
-		_arrow_x.position.x = sprite.position.x
-		_arrow_y.position.y = sprite.position.y
+		_sub_group_to_sprite[_new_SubGroupTag.ARROW_LEFT] \
+				.position.y = sprite.position.y
+		_sub_group_to_sprite[_new_SubGroupTag.ARROW_TOP] \
+				.position.x = sprite.position.x
 
 
 func _on_InitWorld_sprite_created(new_sprite: Sprite) -> void:
@@ -53,10 +58,9 @@ func _on_InitWorld_sprite_created(new_sprite: Sprite) -> void:
 
 	# Save references to arrow indicators.
 	if new_sprite.is_in_group(_new_MainGroupTag.INDICATOR):
-		if new_sprite.is_in_group(_new_SubGroupTag.ARROW_X):
-			_arrow_x = new_sprite
-		elif new_sprite.is_in_group(_new_SubGroupTag.ARROW_Y):
-			_arrow_y = new_sprite
+		for sg in _sub_group_to_sprite.keys():
+			if new_sprite.is_in_group(sg):
+				_sub_group_to_sprite[sg] = new_sprite
 		return
 
 	# Save references to dungeon sprites.
@@ -65,7 +69,6 @@ func _on_InitWorld_sprite_created(new_sprite: Sprite) -> void:
 			group = mg
 	if group == "":
 		return
-
 	pos = _new_ConvertCoord.vector_to_array(new_sprite.position)
 	_sprite_dict[group][pos[0]][pos[1]] = new_sprite
 

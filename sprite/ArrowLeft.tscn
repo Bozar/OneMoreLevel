@@ -6,8 +6,8 @@
 [sub_resource type="AtlasTexture" id=1]
 flags = 4
 atlas = ExtResource( 1 )
-region = Rect2( 360, 36, 24, 36 )
+region = Rect2( 0, 36, 24, 36 )
 
-[node name="ArrowX" type="Sprite"]
+[node name="ArrowLeft" type="Sprite"]
 texture = SubResource( 1 )
 script = ExtResource( 2 )

@@ -8,8 +8,8 @@ extends Node2D
 signal world_selected(new_world)
 signal sprite_created(new_sprite)
 
-const ArrowX := preload("res://sprite/ArrowX.tscn")
-const ArrowY := preload("res://sprite/ArrowY.tscn")
+const ArrowLeft := preload("res://sprite/ArrowLeft.tscn")
+const ArrowTop := preload("res://sprite/ArrowTop.tscn")
 const RandomNumber := preload("res://scene/main/RandomNumber.gd")
 
 const WorldTemplate := preload("res://library/init/WorldTemplate.gd")
@@ -60,12 +60,13 @@ func _get_world() -> WorldTemplate:
 
 
 func _init_indicator(x: int, y: int) -> void:
-	_create_sprite(ArrowX,
-			_new_MainGroupTag.INDICATOR, _new_SubGroupTag.ARROW_X,
-			x, 0, 0, -_new_DungeonSize.ARROW_MARGIN)
-	_create_sprite(ArrowY,
-			_new_MainGroupTag.INDICATOR, _new_SubGroupTag.ARROW_Y,
+	_create_sprite(ArrowLeft,
+			_new_MainGroupTag.INDICATOR, _new_SubGroupTag.ARROW_LEFT,
 			0, y, -_new_DungeonSize.ARROW_MARGIN)
+
+	_create_sprite(ArrowTop,
+			_new_MainGroupTag.INDICATOR, _new_SubGroupTag.ARROW_TOP,
+			x, 0, 0, -_new_DungeonSize.ARROW_MARGIN)
 
 
 func _create_sprite(prefab: PackedScene, main_group: String, sub_group: String,
