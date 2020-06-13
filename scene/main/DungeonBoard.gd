@@ -17,6 +17,7 @@ var _valid_main_groups: Array = [
 var _sub_group_to_sprite: Dictionary = {
 	_new_SubGroupTag.ARROW_LEFT: null,
 	_new_SubGroupTag.ARROW_TOP: null,
+	_new_SubGroupTag.ARROW_BOTTOM: null,
 }
 
 
@@ -49,6 +50,8 @@ func move_sprite(main_group: String, source: Array, target: Array) -> void:
 		_sub_group_to_sprite[_new_SubGroupTag.ARROW_LEFT] \
 				.position.y = sprite.position.y
 		_sub_group_to_sprite[_new_SubGroupTag.ARROW_TOP] \
+				.position.x = sprite.position.x
+		_sub_group_to_sprite[_new_SubGroupTag.ARROW_BOTTOM] \
 				.position.x = sprite.position.x
 
 

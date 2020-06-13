@@ -10,6 +10,7 @@ signal sprite_created(new_sprite)
 
 const ArrowLeft := preload("res://sprite/ArrowLeft.tscn")
 const ArrowTop := preload("res://sprite/ArrowTop.tscn")
+const ArrowBottom := preload("res://sprite/ArrowBottom.tscn")
 const RandomNumber := preload("res://scene/main/RandomNumber.gd")
 
 const WorldTemplate := preload("res://library/init/WorldTemplate.gd")
@@ -67,6 +68,10 @@ func _init_indicator(x: int, y: int) -> void:
 	_create_sprite(ArrowTop,
 			_new_MainGroupTag.INDICATOR, _new_SubGroupTag.ARROW_TOP,
 			x, 0, 0, -_new_DungeonSize.ARROW_MARGIN)
+
+	_create_sprite(ArrowBottom,
+			_new_MainGroupTag.INDICATOR, _new_SubGroupTag.ARROW_BOTTOM,
+			x, _new_DungeonSize.MAX_Y - 1, 0, _new_DungeonSize.ARROW_MARGIN)
 
 
 func _create_sprite(prefab: PackedScene, main_group: String, sub_group: String,
