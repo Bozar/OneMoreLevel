@@ -12,13 +12,14 @@ var _new_SubGroupTag := preload("res://library/SubGroupTag.gd").new()
 var _new_WorldTag := preload("res://library/WorldTag.gd").new()
 
 var _new_DemoAI := preload("res://library/npc_ai/DemoAI.gd")
+var _new_KnightAI := preload("res://library/npc_ai/KnightAI.gd")
 
 var _pc: Sprite
 var _ai: AITemplate
 
 var _select_world: Dictionary = {
 	_new_WorldTag.DEMO: _new_DemoAI,
-	_new_WorldTag.KNIGHT: _new_DemoAI,
+	_new_WorldTag.KNIGHT: _new_KnightAI,
 }
 
 
