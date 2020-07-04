@@ -8,13 +8,14 @@ const SCHEDULE: String = "Schedule"
 const DUNGEON: String = "DungeonBoard"
 const REMOVE: String = "RemoveObject"
 const RANDOM: String = "RandomNumber"
+const SWITCH_SPRITE: String = "SwitchSprite"
 const SIDEBAR: String = "MainGUI/SidebarVBox"
 
 const SIGNAL_BIND: Array = [
 	[
 		"sprite_created", "_on_InitWorld_sprite_created",
 		INIT_WORLD,
-		PC_INPUT, ENEMY_AI, SCHEDULE, DUNGEON,
+		PC_INPUT, ENEMY_AI, SCHEDULE, DUNGEON, SWITCH_SPRITE,
 	],
 	[
 		"world_selected", "_on_InitWorld_world_selected",
