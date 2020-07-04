@@ -1,9 +1,6 @@
 extends "res://library/npc_ai/AITemplate.gd"
 
 
-var _new_ConvertCoord := preload("res://library/ConvertCoord.gd").new()
-
-
 func take_action(pc: Sprite, actor: Sprite) -> void:
 	print_text = ""
 
