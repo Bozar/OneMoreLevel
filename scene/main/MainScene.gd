@@ -66,6 +66,11 @@ const NODE_REF: Array = [
 		RANDOM,
 		INIT_WORLD,
 	],
+	[
+		"_ref_ObjectStatus",
+		OBJECT_STATUS,
+		ENEMY_AI,
+	],
 ]
 
 

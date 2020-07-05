@@ -1,7 +1,7 @@
 extends "res://library/npc_ai/AITemplate.gd"
 
 
-func take_action(pc: Sprite, actor: Sprite) -> void:
+func take_action(pc: Sprite, actor: Sprite, _status: ObjectStatus) -> void:
 	print_text = ""
 
 	if _pc_is_close(pc, actor):

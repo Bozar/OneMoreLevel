@@ -5,8 +5,10 @@ signal enemy_warned(message)
 
 const Schedule := preload("res://scene/main/Schedule.gd")
 const AITemplate := preload("res://library/npc_ai/AITemplate.gd")
+const ObjectStatus := preload("res://scene/main/ObjectStatus.gd")
 
 var _ref_Schedule: Schedule
+var _ref_ObjectStatus: ObjectStatus
 
 var _new_SubGroupTag := preload("res://library/SubGroupTag.gd").new()
 var _new_WorldTag := preload("res://library/WorldTag.gd").new()
@@ -27,7 +29,7 @@ func _on_Schedule_turn_started(current_sprite: Sprite) -> void:
 	if current_sprite.is_in_group(_new_SubGroupTag.PC):
 		return
 
-	_ai.take_action(_pc, current_sprite)
+	_ai.take_action(_pc, current_sprite, _ref_ObjectStatus)
 	if _ai.print_text != "":
 		emit_signal("enemy_warned", _ai.print_text)
 	_ref_Schedule.end_turn()
