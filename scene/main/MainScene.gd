@@ -36,7 +36,7 @@ const SIGNAL_BIND: Array = [
 	[
 		"sprite_removed", "_on_RemoveObject_sprite_removed",
 		REMOVE,
-		DUNGEON, SCHEDULE,
+		DUNGEON, SCHEDULE, OBJECT_DATA,
 	],
 	# [
 	# 	"enemy_warned", "_on_EnemyAI_enemy_warned",

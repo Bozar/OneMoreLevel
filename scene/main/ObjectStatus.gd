@@ -18,3 +18,7 @@ func verify_status(id: int, status: String) -> bool:
 	if _id_to_status.has(id):
 		return _id_to_status[id] == status
 	return false
+
+
+func remove_data(id: int) -> void:
+	var __ = _id_to_status.erase(id)

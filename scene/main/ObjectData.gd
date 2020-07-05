@@ -16,6 +16,13 @@ func _on_InitWorld_sprite_created(new_sprite: Sprite) -> void:
 	get_node(OBJECT_STATUS).set_status(id, _new_ObjectStatusTag.DEFAULT)
 
 
+func _on_RemoveObject_sprite_removed(remove_sprite: Sprite,
+		_main_group: String, _x: int, _y: int) -> void:
+	var id: int = _get_id(remove_sprite)
+
+	get_node(OBJECT_STATUS).remove_data(id)
+
+
 func get_status(sprite: Sprite) -> String:
 	return get_node(OBJECT_STATUS).get_status(_get_id(sprite))
 
