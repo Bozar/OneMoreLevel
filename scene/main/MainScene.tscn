@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=2]
+[gd_scene load_steps=14 format=2]
 
 [ext_resource path="res://scene/main/InitWorld.gd" type="Script" id=1]
 [ext_resource path="res://scene/gui/MainGUI.tscn" type="PackedScene" id=2]
@@ -12,6 +12,7 @@
 [ext_resource path="res://scene/main/ReloadGame.gd" type="Script" id=10]
 [ext_resource path="res://scene/main/RandomNumber.gd" type="Script" id=11]
 [ext_resource path="res://scene/main/PCInput.gd" type="Script" id=12]
+[ext_resource path="res://scene/main/ObjectData.gd" type="Script" id=13]
 
 [node name="MainScene" type="Node2D"]
 script = ExtResource( 4 )
@@ -49,5 +50,8 @@ script = ExtResource( 11 )
 [node name="SwitchSprite" type="Node2D" parent="."]
 script = ExtResource( 3 )
 
-[node name="ObjectStatus" type="Node2D" parent="."]
+[node name="ObjectData" type="Node2D" parent="."]
+script = ExtResource( 13 )
+
+[node name="ObjectStatus" type="Node2D" parent="ObjectData"]
 script = ExtResource( 8 )

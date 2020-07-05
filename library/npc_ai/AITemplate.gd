@@ -1,4 +1,4 @@
-const ObjectStatus := preload("res://scene/main/ObjectStatus.gd")
+const ObjectData := preload("res://scene/main/ObjectData.gd")
 
 var print_text: String setget set_print_text, get_print_text
 
@@ -8,7 +8,7 @@ var _new_ObjectStatusTag := preload("res://library/ObjectStatusTag.gd").new()
 
 
 # Override.
-func take_action(_pc: Sprite, _actor: Sprite, _status: ObjectStatus) -> void:
+func take_action(_pc: Sprite, _actor: Sprite, _object_data: ObjectData) -> void:
 	pass
 
 

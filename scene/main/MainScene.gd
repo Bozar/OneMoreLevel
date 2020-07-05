@@ -9,14 +9,14 @@ const DUNGEON: String = "DungeonBoard"
 const REMOVE: String = "RemoveObject"
 const RANDOM: String = "RandomNumber"
 const SWITCH_SPRITE: String = "SwitchSprite"
-const OBJECT_STATUS: String = "ObjectStatus"
+const OBJECT_DATA: String = "ObjectData"
 const SIDEBAR: String = "MainGUI/SidebarVBox"
 
 const SIGNAL_BIND: Array = [
 	[
 		"sprite_created", "_on_InitWorld_sprite_created",
 		INIT_WORLD,
-		PC_INPUT, ENEMY_AI, SCHEDULE, DUNGEON, SWITCH_SPRITE, OBJECT_STATUS,
+		PC_INPUT, ENEMY_AI, SCHEDULE, DUNGEON, SWITCH_SPRITE, OBJECT_DATA,
 	],
 	[
 		"world_selected", "_on_InitWorld_world_selected",
@@ -67,8 +67,8 @@ const NODE_REF: Array = [
 		INIT_WORLD,
 	],
 	[
-		"_ref_ObjectStatus",
-		OBJECT_STATUS,
+		"_ref_ObjectData",
+		OBJECT_DATA,
 		ENEMY_AI,
 	],
 ]
