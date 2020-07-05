@@ -26,12 +26,12 @@ func _on_InitWorld_sprite_created(new_sprite: Sprite) -> void:
 			_actors.append(new_sprite)
 
 
-func _on_RemoveObject_sprite_removed(reomve_sprite: Sprite,
+func _on_RemoveObject_sprite_removed(remove_sprite: Sprite,
 	_main_group: String, _x: int, _y: int) -> void:
 
 	var current_sprite: Sprite = _get_current()
 
-	_actors.erase(reomve_sprite)
+	_actors.erase(remove_sprite)
 	_pointer = _actors.find(current_sprite)
 
 
