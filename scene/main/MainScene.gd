@@ -16,7 +16,7 @@ const SIGNAL_BIND: Array = [
 	[
 		"sprite_created", "_on_InitWorld_sprite_created",
 		INIT_WORLD,
-		PC_INPUT, ENEMY_AI, SCHEDULE, DUNGEON, SWITCH_SPRITE, OBJECT_DATA,
+		PC_INPUT, ENEMY_AI, SCHEDULE, DUNGEON, OBJECT_DATA,
 	],
 	[
 		"world_selected", "_on_InitWorld_world_selected",
@@ -69,7 +69,7 @@ const NODE_REF: Array = [
 	[
 		"_ref_ObjectData",
 		OBJECT_DATA,
-		ENEMY_AI,
+		ENEMY_AI, SWITCH_SPRITE,
 	],
 ]
 

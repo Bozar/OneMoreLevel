@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=2]
+[gd_scene load_steps=15 format=2]
 
 [ext_resource path="res://scene/main/InitWorld.gd" type="Script" id=1]
 [ext_resource path="res://scene/gui/MainGUI.tscn" type="PackedScene" id=2]
@@ -13,6 +13,7 @@
 [ext_resource path="res://scene/main/RandomNumber.gd" type="Script" id=11]
 [ext_resource path="res://scene/main/PCInput.gd" type="Script" id=12]
 [ext_resource path="res://scene/main/ObjectData.gd" type="Script" id=13]
+[ext_resource path="res://scene/main/SpriteType.gd" type="Script" id=14]
 
 [node name="MainScene" type="Node2D"]
 script = ExtResource( 4 )
@@ -55,3 +56,6 @@ script = ExtResource( 13 )
 
 [node name="ObjectStatus" type="Node2D" parent="ObjectData"]
 script = ExtResource( 8 )
+
+[node name="SpriteType" type="Node2D" parent="ObjectData"]
+script = ExtResource( 14 )

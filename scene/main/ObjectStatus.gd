@@ -7,7 +7,7 @@ var _id_to_status: Dictionary = {}
 func get_status(id: int) -> String:
 	if _id_to_status.has(id):
 		return _id_to_status[id]
-	return "ERROR: ID not found."
+	return ""
 
 
 func set_status(id: int, status: String) -> void:
