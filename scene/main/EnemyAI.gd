@@ -18,6 +18,7 @@ var _new_KnightAI := preload("res://library/npc_ai/KnightAI.gd")
 
 var _pc: Sprite
 var _ai: AITemplate
+var _node_ref: Array
 
 var _select_world: Dictionary = {
 	_new_WorldTag.DEMO: _new_DemoAI,
@@ -29,7 +30,7 @@ func _on_Schedule_turn_started(current_sprite: Sprite) -> void:
 	if current_sprite.is_in_group(_new_SubGroupTag.PC):
 		return
 
-	_ai.take_action(_pc, current_sprite, _ref_ObjectData)
+	_ai.take_action(_pc, current_sprite, _node_ref)
 	if _ai.print_text != "":
 		emit_signal("enemy_warned", _ai.print_text)
 	_ref_Schedule.end_turn()
@@ -40,5 +41,8 @@ func _on_InitWorld_world_selected(new_world: String) -> void:
 
 
 func _on_InitWorld_sprite_created(new_sprite: Sprite) -> void:
-	if new_sprite.is_in_group(_new_SubGroupTag.PC):
-		_pc = new_sprite
+	if not new_sprite.is_in_group(_new_SubGroupTag.PC):
+		return
+
+	_pc = new_sprite
+	_node_ref = [_ref_ObjectData]
