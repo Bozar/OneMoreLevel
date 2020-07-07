@@ -6,9 +6,11 @@ signal enemy_warned(message)
 const Schedule := preload("res://scene/main/Schedule.gd")
 const AITemplate := preload("res://library/npc_ai/AITemplate.gd")
 const ObjectData := preload("res://scene/main/ObjectData.gd")
+const SwitchSprite := preload("res://scene/main/SwitchSprite.gd")
 
 var _ref_Schedule: Schedule
 var _ref_ObjectData: ObjectData
+var _ref_SwitchSprite: SwitchSprite
 
 var _new_SubGroupTag := preload("res://library/SubGroupTag.gd").new()
 var _new_WorldTag := preload("res://library/WorldTag.gd").new()
@@ -45,4 +47,7 @@ func _on_InitWorld_sprite_created(new_sprite: Sprite) -> void:
 		return
 
 	_pc = new_sprite
-	_node_ref = [_ref_ObjectData]
+	_node_ref = [
+		_ref_ObjectData,
+		_ref_SwitchSprite,
+	]
