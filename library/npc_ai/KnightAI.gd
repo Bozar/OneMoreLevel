@@ -1,30 +1,54 @@
 extends "res://library/npc_ai/AITemplate.gd"
 
 
+var _pc: Sprite
+var _self: Sprite
+var _node: AIFuncParam
+var _pc_pos: Array
+var _self_pos: Array
 var _attack_range: int = 1
 
 
-func take_action(pc: Sprite, actor: Sprite, node_ref: Array) -> void:
-	var pc_pos: Array = _new_ConvertCoord.vector_to_array(pc.position)
-	var self_pos: Array = _new_ConvertCoord.vector_to_array(actor.position)
+func take_action(pc: Sprite, actor: Sprite, node_ref: AIFuncParam) -> void:
+	_pc = pc
+	_self = actor
+	_node = node_ref
+	_pc_pos = _new_ConvertCoord.vector_to_array(_pc.position)
+	_self_pos = _new_ConvertCoord.vector_to_array(_self.position)
 
-	_ref_ObjectData = node_ref[0]
-	_ref_SwitchSprite = node_ref[1]
-
-	if _ref_ObjectData.verify_status(actor, _new_ObjectStatusTag.ACTIVE):
-		print(pc_pos[0] - self_pos[0])
-		print("alert -> attack")
-		_ref_ObjectData.set_status(actor, _new_ObjectStatusTag.PASSIVE)
-		_ref_SwitchSprite.switch_sprite(actor, _new_SpriteTypeTag.PASSIVE)
-	elif _ref_ObjectData.verify_status(actor, _new_ObjectStatusTag.PASSIVE):
-		print(pc_pos[0] - self_pos[0])
-		print("attacked -> normal")
-		_ref_ObjectData.set_status(actor, _new_ObjectStatusTag.DEFAULT)
-		_ref_SwitchSprite.switch_sprite(actor, _new_SpriteTypeTag.DEFAULT)
-	elif _new_CoordCalculator.is_inside_range(pc_pos, self_pos,	_attack_range):
-		print(pc_pos[0] - self_pos[0])
-		print("normal -> alert")
-		_ref_ObjectData.set_status(actor, _new_ObjectStatusTag.ACTIVE)
-		_ref_SwitchSprite.switch_sprite(actor, _new_SpriteTypeTag.ACTIVE)
+	# Active -> Passive.
+	if _node.ref_ObjectData.verify_status(
+			_self, _new_ObjectStatusTag.ACTIVE):
+		_attack()
+	# Passive -> Default.
+	elif _node.ref_ObjectData.verify_status(
+			_self, _new_ObjectStatusTag.PASSIVE):
+		_recover()
+	# Default -> Active.
+	elif _new_CoordCalculator.is_inside_range(
+			_pc_pos, _self_pos, _attack_range):
+		_alert()
+	# Approach.
 	# else:
 	# 	print("Approach")
+
+
+func _attack() -> void:
+	_node.ref_ObjectData.set_status(
+			_self, _new_ObjectStatusTag.PASSIVE)
+	_node.ref_SwitchSprite.switch_sprite(
+			_self, _new_SpriteTypeTag.PASSIVE)
+
+
+func _recover() -> void:
+	_node.ref_ObjectData.set_status(
+			_self, _new_ObjectStatusTag.DEFAULT)
+	_node.ref_SwitchSprite.switch_sprite(
+			_self, _new_SpriteTypeTag.DEFAULT)
+
+
+func _alert() -> void:
+	_node.ref_ObjectData.set_status(
+			_self, _new_ObjectStatusTag.ACTIVE)
+	_node.ref_SwitchSprite.switch_sprite(
+			_self, _new_SpriteTypeTag.ACTIVE)

@@ -3,8 +3,9 @@ extends Node2D
 
 signal enemy_warned(message)
 
-const Schedule := preload("res://scene/main/Schedule.gd")
 const AITemplate := preload("res://library/npc_ai/AITemplate.gd")
+const AIFuncParam := preload("res://library/npc_ai/AIFuncParam.gd")
+const Schedule := preload("res://scene/main/Schedule.gd")
 const ObjectData := preload("res://scene/main/ObjectData.gd")
 const SwitchSprite := preload("res://scene/main/SwitchSprite.gd")
 
@@ -20,7 +21,7 @@ var _new_KnightAI := preload("res://library/npc_ai/KnightAI.gd")
 
 var _pc: Sprite
 var _ai: AITemplate
-var _node_ref: Array
+var _node_ref: AIFuncParam
 
 var _select_world: Dictionary = {
 	_new_WorldTag.DEMO: _new_DemoAI,
@@ -47,7 +48,4 @@ func _on_InitWorld_sprite_created(new_sprite: Sprite) -> void:
 		return
 
 	_pc = new_sprite
-	_node_ref = [
-		_ref_ObjectData,
-		_ref_SwitchSprite,
-	]
+	_node_ref = AIFuncParam.new(_ref_ObjectData, _ref_SwitchSprite)
