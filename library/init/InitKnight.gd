@@ -22,6 +22,7 @@ func get_blueprint() -> Array:
 	_init_wall()
 	_init_PC()
 	_init_knight(KnightCaptain, _new_SubGroupTag.KNIGHT_CAPTAIN)
+	_init_knight(KnightBoss, _new_SubGroupTag.KNIGHT_BOSS)
 
 	for _i in range(max_knight):
 		_init_knight(Knight, _new_SubGroupTag.KNIGHT)
