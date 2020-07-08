@@ -1,20 +1,11 @@
 extends "res://library/npc_ai/AITemplate.gd"
 
 
-var _pc: Sprite
-var _self: Sprite
-var _node: AIFuncParam
-var _pc_pos: Array
-var _self_pos: Array
 var _attack_range: int = 1
 
 
 func take_action(pc: Sprite, actor: Sprite, node_ref: AIFuncParam) -> void:
-	_pc = pc
-	_self = actor
-	_node = node_ref
-	_pc_pos = _new_ConvertCoord.vector_to_array(_pc.position)
-	_self_pos = _new_ConvertCoord.vector_to_array(_self.position)
+	_set_local_var(pc, actor, node_ref)
 
 	# Active -> Passive.
 	if _node.ref_ObjectData.verify_state(
