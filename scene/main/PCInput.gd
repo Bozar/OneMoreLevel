@@ -40,7 +40,7 @@ func _ready() -> void:
 
 
 func _unhandled_input(event: InputEvent) -> void:
-	_pc_action.reset_status()
+	_pc_action.reset_state()
 
 	if _is_move_input(event):
 		_handle_move_input()

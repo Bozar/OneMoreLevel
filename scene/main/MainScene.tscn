@@ -7,7 +7,7 @@
 [ext_resource path="res://scene/main/Schedule.gd" type="Script" id=5]
 [ext_resource path="res://scene/main/EnemyAI.gd" type="Script" id=6]
 [ext_resource path="res://scene/main/DungeonBoard.gd" type="Script" id=7]
-[ext_resource path="res://scene/main/ObjectStatus.gd" type="Script" id=8]
+[ext_resource path="res://scene/main/ObjectState.gd" type="Script" id=8]
 [ext_resource path="res://scene/main/RemoveObject.gd" type="Script" id=9]
 [ext_resource path="res://scene/main/ReloadGame.gd" type="Script" id=10]
 [ext_resource path="res://scene/main/RandomNumber.gd" type="Script" id=11]
@@ -54,7 +54,7 @@ script = ExtResource( 3 )
 [node name="ObjectData" type="Node2D" parent="."]
 script = ExtResource( 13 )
 
-[node name="ObjectStatus" type="Node2D" parent="ObjectData"]
+[node name="ObjectState" type="Node2D" parent="ObjectData"]
 script = ExtResource( 8 )
 
 [node name="SpriteType" type="Node2D" parent="ObjectData"]

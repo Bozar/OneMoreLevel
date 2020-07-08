@@ -95,7 +95,7 @@ func wait() -> void:
 	end_turn = true
 
 
-func reset_status() -> void:
+func reset_state() -> void:
 	end_turn = false
 
 

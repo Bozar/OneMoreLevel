@@ -17,12 +17,12 @@ func take_action(pc: Sprite, actor: Sprite, node_ref: AIFuncParam) -> void:
 	_self_pos = _new_ConvertCoord.vector_to_array(_self.position)
 
 	# Active -> Passive.
-	if _node.ref_ObjectData.verify_status(
-			_self, _new_ObjectStatusTag.ACTIVE):
+	if _node.ref_ObjectData.verify_state(
+			_self, _new_ObjectStateTag.ACTIVE):
 		_attack()
 	# Passive -> Default.
-	elif _node.ref_ObjectData.verify_status(
-			_self, _new_ObjectStatusTag.PASSIVE):
+	elif _node.ref_ObjectData.verify_state(
+			_self, _new_ObjectStateTag.PASSIVE):
 		_recover()
 	# Default -> Active.
 	elif _new_CoordCalculator.is_inside_range(
@@ -34,21 +34,21 @@ func take_action(pc: Sprite, actor: Sprite, node_ref: AIFuncParam) -> void:
 
 
 func _attack() -> void:
-	_node.ref_ObjectData.set_status(
-			_self, _new_ObjectStatusTag.PASSIVE)
+	_node.ref_ObjectData.set_state(
+			_self, _new_ObjectStateTag.PASSIVE)
 	_node.ref_SwitchSprite.switch_sprite(
 			_self, _new_SpriteTypeTag.PASSIVE)
 
 
 func _recover() -> void:
-	_node.ref_ObjectData.set_status(
-			_self, _new_ObjectStatusTag.DEFAULT)
+	_node.ref_ObjectData.set_state(
+			_self, _new_ObjectStateTag.DEFAULT)
 	_node.ref_SwitchSprite.switch_sprite(
 			_self, _new_SpriteTypeTag.DEFAULT)
 
 
 func _alert() -> void:
-	_node.ref_ObjectData.set_status(
-			_self, _new_ObjectStatusTag.ACTIVE)
+	_node.ref_ObjectData.set_state(
+			_self, _new_ObjectStateTag.ACTIVE)
 	_node.ref_SwitchSprite.switch_sprite(
 			_self, _new_SpriteTypeTag.ACTIVE)
