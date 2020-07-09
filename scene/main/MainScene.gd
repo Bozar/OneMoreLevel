@@ -8,7 +8,6 @@ const SCHEDULE: String = "Schedule"
 const DUNGEON: String = "DungeonBoard"
 const REMOVE: String = "RemoveObject"
 const RANDOM: String = "RandomNumber"
-const SWITCH_SPRITE: String = "SwitchSprite"
 const OBJECT_DATA: String = "ObjectData"
 const SIDEBAR: String = "MainGUI/SidebarVBox"
 
@@ -69,11 +68,6 @@ const NODE_REF: Array = [
 	[
 		"_ref_ObjectData",
 		OBJECT_DATA,
-		ENEMY_AI, SWITCH_SPRITE,
-	],
-	[
-		"_ref_SwitchSprite",
-		SWITCH_SPRITE,
 		ENEMY_AI,
 	],
 ]

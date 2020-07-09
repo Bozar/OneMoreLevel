@@ -32,8 +32,7 @@ func take_action(pc: Sprite, actor: Sprite, node_ref: AIFuncParam) -> void:
 func _attack() -> void:
 	_node.ref_ObjectData.set_state(
 			_self, _new_ObjectStateTag.PASSIVE)
-	_node.ref_SwitchSprite.switch_sprite(
-			_self, _new_SpriteTypeTag.PASSIVE)
+	_new_SwitchSprite.switch_sprite(_self, _new_SpriteTypeTag.PASSIVE)
 
 
 func _recover() -> void:
@@ -46,11 +45,10 @@ func _recover() -> void:
 	if _self.is_in_group(_new_SubGroupTag.KNIGHT_BOSS) \
 			and _hit_to_sprite.has(hit):
 		new_sprite = _hit_to_sprite[hit]
-	_node.ref_SwitchSprite.switch_sprite(_self, new_sprite)
+	_new_SwitchSprite.switch_sprite(_self, new_sprite)
 
 
 func _alert() -> void:
 	_node.ref_ObjectData.set_state(
 			_self, _new_ObjectStateTag.ACTIVE)
-	_node.ref_SwitchSprite.switch_sprite(
-			_self, _new_SpriteTypeTag.ACTIVE)
+	_new_SwitchSprite.switch_sprite(_self, _new_SpriteTypeTag.ACTIVE)
