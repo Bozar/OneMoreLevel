@@ -2,6 +2,7 @@ extends "res://library/npc_ai/AITemplate.gd"
 
 
 var _range: int = 1
+var _default_ground_color: String
 var _id_to_danger_zone: Dictionary = {}
 var _hit_to_sprite: Dictionary
 
@@ -12,6 +13,8 @@ func _init(object_reference: Array).(object_reference) -> void:
 		1: _new_SpriteTypeTag.DEFAULT_2,
 		2: _new_SpriteTypeTag.DEFAULT_3,
 	}
+	_default_ground_color = _new_Palette.get_default_color(
+			_new_MainGroupTag.GROUND)
 
 
 func take_action(actor: Sprite) -> void:
@@ -34,18 +37,16 @@ func take_action(actor: Sprite) -> void:
 func _attack() -> void:
 	var id: int = _self.get_instance_id()
 	var danger_zone: Array = _id_to_danger_zone[id]
-	var switch_floor: Sprite
 
 	_ref_ObjectData.set_state(_self, _new_ObjectStateTag.PASSIVE)
 	_ref_SwitchSprite.switch_sprite(_self, _new_SpriteTypeTag.PASSIVE)
 
 	for i in danger_zone:
-		switch_floor = _ref_DungeonBoard.get_sprite(
-				_new_MainGroupTag.GROUND, i[0], i[1])
-		switch_floor.modulate = _new_Palette.get_default_color(
-				_new_MainGroupTag.GROUND)
-		_ref_SwitchSprite.switch_sprite(
-				switch_floor, _new_SpriteTypeTag.DEFAULT)
+		_ref_SwitchSprite.switch_sprite_by_position(
+				_new_MainGroupTag.GROUND,
+				i[0], i[1],
+				_new_SpriteTypeTag.DEFAULT,
+				_default_ground_color)
 
 	var __ = _id_to_danger_zone.erase(id)
 
@@ -67,7 +68,6 @@ func _alert() -> void:
 	var neighbor: Array = _new_CoordCalculator.get_neighbor(_pc_pos, 1, true)
 	var candidate: Array = []
 	var danger_zone: Array = []
-	var switch_floor: Sprite
 
 	_ref_ObjectData.set_state(_self, _new_ObjectStateTag.ACTIVE)
 	_ref_SwitchSprite.switch_sprite(_self, _new_SpriteTypeTag.ACTIVE)
@@ -91,7 +91,8 @@ func _alert() -> void:
 	_id_to_danger_zone[id] = danger_zone
 
 	for i in danger_zone:
-		switch_floor = _ref_DungeonBoard.get_sprite(
-				_new_MainGroupTag.GROUND, i[0], i[1])
-		switch_floor.modulate = _new_Palette.SHADOW
-		_ref_SwitchSprite.switch_sprite(switch_floor, _new_SpriteTypeTag.ACTIVE)
+		_ref_SwitchSprite.switch_sprite_by_position(
+				_new_MainGroupTag.GROUND,
+				i[0], i[1],
+				_new_SpriteTypeTag.ACTIVE,
+				_new_Palette.SHADOW)
