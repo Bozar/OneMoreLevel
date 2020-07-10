@@ -2,6 +2,7 @@ extends "res://library/npc_ai/AITemplate.gd"
 
 
 var _attack_range: int = 1
+var _id_to_danger_zone: Dictionary = {}
 var _hit_to_sprite: Dictionary = {
 	0: _new_SpriteTypeTag.DEFAULT,
 	1: _new_SpriteTypeTag.DEFAULT_2,
@@ -49,6 +50,29 @@ func _recover() -> void:
 
 
 func _alert() -> void:
+	var id: int = _self.get_instance_id()
+	var neighbor: Array = _new_CoordCalculator.get_neighbor(_pc_pos, 1, true)
+	var candidate: Array = []
+	var danger_zone: Array = []
+
 	_node.ref_ObjectData.set_state(
 			_self, _new_ObjectStateTag.ACTIVE)
 	_new_SwitchSprite.switch_sprite(_self, _new_SpriteTypeTag.ACTIVE)
+
+	for i in neighbor:
+		if (i[0] == _self_pos[0]) and (i[1] == _self_pos[1]):
+			continue
+		elif _node.ref_DungeonBoard.has_sprite(
+				_new_MainGroupTag.BUILDING, i[0], i[1]):
+			continue
+		candidate.push_back(i)
+
+	if _self.is_in_group(_new_SubGroupTag.KNIGHT):
+		danger_zone.push_back(_pc_pos)
+	elif _self.is_in_group(_new_SubGroupTag.KNIGHT_CAPTAIN):
+		for i in candidate:
+			if (i[0] == _self_pos[0]) or (i[1] == _self_pos[1]):
+				danger_zone.push_back(i)
+	elif _self.is_in_group(_new_SubGroupTag.KNIGHT_BOSS):
+		danger_zone = candidate
+	_id_to_danger_zone[id] = danger_zone
