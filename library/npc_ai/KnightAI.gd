@@ -41,13 +41,7 @@ func _attack() -> void:
 	_ref_ObjectData.set_state(_self, _new_ObjectStateTag.PASSIVE)
 	_ref_SwitchSprite.switch_sprite(_self, _new_SpriteTypeTag.PASSIVE)
 
-	for i in danger_zone:
-		_ref_SwitchSprite.switch_sprite_by_position(
-				_new_MainGroupTag.GROUND,
-				i[0], i[1],
-				_new_SpriteTypeTag.DEFAULT,
-				_default_ground_color)
-
+	_switch_ground(danger_zone, false)
 	var __ = _id_to_danger_zone.erase(id)
 
 
@@ -88,11 +82,26 @@ func _alert() -> void:
 				danger_zone.push_back(i)
 	elif _self.is_in_group(_new_SubGroupTag.KNIGHT_BOSS):
 		danger_zone = candidate
+
 	_id_to_danger_zone[id] = danger_zone
+	_switch_ground(danger_zone, true)
+
+
+func _switch_ground(danger_zone: Array, switch_to_active: bool) -> void:
+	var switch_ground: Sprite
+	var sprite_type: String
+	var sprite_color: String
 
 	for i in danger_zone:
-		_ref_SwitchSprite.switch_sprite_by_position(
-				_new_MainGroupTag.GROUND,
-				i[0], i[1],
-				_new_SpriteTypeTag.ACTIVE,
-				_new_Palette.SHADOW)
+		switch_ground = _ref_DungeonBoard.get_sprite(
+				_new_MainGroupTag.GROUND, i[0], i[1])
+
+		if switch_to_active:
+			sprite_type = _new_SpriteTypeTag.ACTIVE
+			sprite_color = _new_Palette.SHADOW
+		else:
+			sprite_type = _new_SpriteTypeTag.DEFAULT
+			sprite_color = _default_ground_color
+
+		_ref_SwitchSprite.switch_sprite(switch_ground, sprite_type)
+		switch_ground.modulate = sprite_color
