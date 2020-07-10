@@ -11,7 +11,9 @@ var _new_CoordCalculator := preload("res://library/CoordCalculator.gd").new()
 var _sprite_dict: Dictionary
 
 var _valid_main_groups: Array = [
-	_new_MainGroupTag.ACTOR, _new_MainGroupTag.BUILDING,
+	_new_MainGroupTag.GROUND,
+	_new_MainGroupTag.ACTOR,
+	_new_MainGroupTag.BUILDING,
 ]
 
 var _sub_group_to_sprite: Dictionary = {
