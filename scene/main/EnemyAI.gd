@@ -8,10 +8,12 @@ const AIFuncParam := preload("res://library/npc_ai/AIFuncParam.gd")
 const Schedule := preload("res://scene/main/Schedule.gd")
 const ObjectData := preload("res://scene/main/ObjectData.gd")
 const DungeonBoard := preload("res://scene/main/DungeonBoard.gd")
+const SwitchSprite := preload("res://scene/main/SwitchSprite.gd")
 
 var _ref_Schedule: Schedule
 var _ref_ObjectData: ObjectData
 var _ref_DungeonBoard: DungeonBoard
+var _ref_SwitchSprite: SwitchSprite
 
 var _new_SubGroupTag := preload("res://library/SubGroupTag.gd").new()
 var _new_WorldTag := preload("res://library/WorldTag.gd").new()
@@ -48,4 +50,6 @@ func _on_InitWorld_sprite_created(new_sprite: Sprite) -> void:
 		return
 
 	_pc = new_sprite
-	_node_ref = AIFuncParam.new(_ref_ObjectData, _ref_DungeonBoard)
+	_node_ref = AIFuncParam.new(
+		_ref_ObjectData, _ref_DungeonBoard, _ref_SwitchSprite
+	)

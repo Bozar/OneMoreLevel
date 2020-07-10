@@ -37,14 +37,14 @@ func _attack() -> void:
 
 	_node.ref_ObjectData.set_state(
 			_self, _new_ObjectStateTag.PASSIVE)
-	_new_SwitchSprite.switch_sprite(_self, _new_SpriteTypeTag.PASSIVE)
+	_node.ref_SwitchSprite.switch_sprite(_self, _new_SpriteTypeTag.PASSIVE)
 
 	for i in danger_zone:
 		switch_floor = _node.ref_DungeonBoard.get_sprite(
 				_new_MainGroupTag.GROUND, i[0], i[1])
 		switch_floor.modulate = _new_Palette.get_default_color(
 				_new_MainGroupTag.GROUND, _new_SubGroupTag.FLOOR)
-		_new_SwitchSprite.switch_sprite(
+		_node.ref_SwitchSprite.switch_sprite(
 				switch_floor, _new_SpriteTypeTag.DEFAULT)
 
 	var __ = _id_to_danger_zone.erase(id)
@@ -60,7 +60,7 @@ func _recover() -> void:
 	if _self.is_in_group(_new_SubGroupTag.KNIGHT_BOSS) \
 			and _hit_to_sprite.has(hit):
 		new_sprite = _hit_to_sprite[hit]
-	_new_SwitchSprite.switch_sprite(_self, new_sprite)
+	_node.ref_SwitchSprite.switch_sprite(_self, new_sprite)
 
 
 func _alert() -> void:
@@ -72,7 +72,7 @@ func _alert() -> void:
 
 	_node.ref_ObjectData.set_state(
 			_self, _new_ObjectStateTag.ACTIVE)
-	_new_SwitchSprite.switch_sprite(_self, _new_SpriteTypeTag.ACTIVE)
+	_node.ref_SwitchSprite.switch_sprite(_self, _new_SpriteTypeTag.ACTIVE)
 
 	for i in neighbor:
 		if (i[0] == _self_pos[0]) and (i[1] == _self_pos[1]):
@@ -96,4 +96,5 @@ func _alert() -> void:
 		switch_floor = _node.ref_DungeonBoard.get_sprite(
 				_new_MainGroupTag.GROUND, i[0], i[1])
 		switch_floor.modulate = _new_Palette.SHADOW
-		_new_SwitchSprite.switch_sprite(switch_floor, _new_SpriteTypeTag.ACTIVE)
+		_node.ref_SwitchSprite.switch_sprite(switch_floor,
+				_new_SpriteTypeTag.ACTIVE)
