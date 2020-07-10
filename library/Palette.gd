@@ -21,7 +21,7 @@ var _tag_to_color: Dictionary = {
 }
 
 
-func get_default_color(main_tag: String, sub_tag: String) -> String:
+func get_default_color(main_tag: String, sub_tag: String = "") -> String:
 	if _tag_to_color.has(sub_tag):
 		return _tag_to_color[sub_tag]
 	elif _tag_to_color.has(main_tag):

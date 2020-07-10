@@ -43,7 +43,7 @@ func _attack() -> void:
 		switch_floor = _ref_DungeonBoard.get_sprite(
 				_new_MainGroupTag.GROUND, i[0], i[1])
 		switch_floor.modulate = _new_Palette.get_default_color(
-				_new_MainGroupTag.GROUND, _new_SubGroupTag.FLOOR)
+				_new_MainGroupTag.GROUND)
 		_ref_SwitchSprite.switch_sprite(
 				switch_floor, _new_SpriteTypeTag.DEFAULT)
 
