@@ -1,6 +1,12 @@
-const AIFuncParam := preload("res://library/npc_ai/AIFuncParam.gd")
+const ObjectData := preload("res://scene/main/ObjectData.gd")
+const DungeonBoard := preload("res://scene/main/DungeonBoard.gd")
+const SwitchSprite := preload("res://scene/main/SwitchSprite.gd")
 
 var print_text: String setget set_print_text, get_print_text
+
+var _ref_ObjectData: ObjectData
+var _ref_DungeonBoard: DungeonBoard
+var _ref_SwitchSprite: SwitchSprite
 
 var _new_ConvertCoord := preload("res://library/ConvertCoord.gd").new()
 var _new_CoordCalculator := preload("res://library/CoordCalculator.gd").new()
@@ -12,13 +18,20 @@ var _new_Palette := preload("res://library/Palette.gd").new()
 
 var _pc: Sprite
 var _self: Sprite
-var _node: AIFuncParam
 var _pc_pos: Array
 var _self_pos: Array
 
 
+func _init(object_reference: Array) -> void:
+	# Order matters here. Refer: EnemyAI.gd.
+	_pc = object_reference[0]
+	_ref_ObjectData = object_reference[1]
+	_ref_DungeonBoard = object_reference[2]
+	_ref_SwitchSprite = object_reference[3]
+
+
 # Override.
-func take_action(__pc: Sprite, _actor: Sprite, _node_ref: AIFuncParam) -> void:
+func take_action(_actor: Sprite) -> void:
 	pass
 
 
@@ -30,9 +43,7 @@ func set_print_text(_text: String) -> void:
 	return
 
 
-func _set_local_var(pc: Sprite, actor: Sprite, node_ref: AIFuncParam) -> void:
-	_pc = pc
+func _set_local_var(actor: Sprite) -> void:
 	_self = actor
-	_node = node_ref
 	_pc_pos = _new_ConvertCoord.vector_to_array(_pc.position)
 	_self_pos = _new_ConvertCoord.vector_to_array(_self.position)

@@ -1,10 +1,14 @@
 extends "res://library/npc_ai/AITemplate.gd"
 
 
-func take_action(pc: Sprite, actor: Sprite, _node_ref: AIFuncParam) -> void:
+func _init(object_reference: Array).(object_reference) -> void:
+	pass
+
+
+func take_action(actor: Sprite) -> void:
 	print_text = ""
 
-	if _pc_is_close(pc, actor):
+	if _pc_is_close(_pc, actor):
 		print_text = "Urist McRogueliker is scared!"
 
 
