@@ -9,6 +9,7 @@ var _new_ObjectStateTag := preload("res://library/ObjectStateTag.gd").new()
 var _new_SpriteTypeTag := preload("res://library/SpriteTypeTag.gd").new()
 var _new_MainGroupTag := preload("res://library/MainGroupTag.gd").new()
 var _new_SubGroupTag := preload("res://library/SubGroupTag.gd").new()
+var _new_Palette := preload("res://library/Palette.gd").new()
 var _new_SwitchSprite: SwitchSprite
 
 var _pc: Sprite

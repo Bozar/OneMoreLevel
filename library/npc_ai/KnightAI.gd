@@ -31,9 +31,23 @@ func take_action(pc: Sprite, actor: Sprite, node_ref: AIFuncParam) -> void:
 
 
 func _attack() -> void:
+	var id: int = _self.get_instance_id()
+	var danger_zone: Array = _id_to_danger_zone[id]
+	var switch_floor: Sprite
+
 	_node.ref_ObjectData.set_state(
 			_self, _new_ObjectStateTag.PASSIVE)
 	_new_SwitchSprite.switch_sprite(_self, _new_SpriteTypeTag.PASSIVE)
+
+	for i in danger_zone:
+		switch_floor = _node.ref_DungeonBoard.get_sprite(
+				_new_MainGroupTag.GROUND, i[0], i[1])
+		switch_floor.modulate = _new_Palette.get_default_color(
+				_new_MainGroupTag.GROUND, _new_SubGroupTag.FLOOR)
+		_new_SwitchSprite.switch_sprite(
+				switch_floor, _new_SpriteTypeTag.DEFAULT)
+
+	var __ = _id_to_danger_zone.erase(id)
 
 
 func _recover() -> void:
@@ -54,6 +68,7 @@ func _alert() -> void:
 	var neighbor: Array = _new_CoordCalculator.get_neighbor(_pc_pos, 1, true)
 	var candidate: Array = []
 	var danger_zone: Array = []
+	var switch_floor: Sprite
 
 	_node.ref_ObjectData.set_state(
 			_self, _new_ObjectStateTag.ACTIVE)
@@ -76,3 +91,9 @@ func _alert() -> void:
 	elif _self.is_in_group(_new_SubGroupTag.KNIGHT_BOSS):
 		danger_zone = candidate
 	_id_to_danger_zone[id] = danger_zone
+
+	for i in danger_zone:
+		switch_floor = _node.ref_DungeonBoard.get_sprite(
+				_new_MainGroupTag.GROUND, i[0], i[1])
+		switch_floor.modulate = _new_Palette.SHADOW
+		_new_SwitchSprite.switch_sprite(switch_floor, _new_SpriteTypeTag.ACTIVE)
