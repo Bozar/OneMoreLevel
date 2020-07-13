@@ -59,15 +59,42 @@ func _recover() -> void:
 
 func _alert() -> void:
 	var id: int = _self.get_instance_id()
-	var neighbor: Array = _new_CoordCalculator.get_neighbor(_pc_pos, 1, true)
-	var candidate: Array = []
-	var danger_zone: Array = []
-	var one_grid: Array = []
-	var two_grids: Array = []
-	var four_grids: Array = []
+	var danger_zone: Array = _get_danger_zone()
 
 	_ref_ObjectData.set_state(_self, _new_ObjectStateTag.ACTIVE)
 	_ref_SwitchSprite.switch_sprite(_self, _new_SpriteTypeTag.ACTIVE)
+
+	_id_to_danger_zone[id] = danger_zone
+	_switch_ground(danger_zone, true)
+
+
+func _switch_ground(danger_zone: Array, switch_to_active: bool) -> void:
+	var switch_ground: Sprite
+	var sprite_type: String
+	var sprite_color: String
+
+	for i in danger_zone:
+		switch_ground = _ref_DungeonBoard.get_sprite(
+				_new_MainGroupTag.GROUND, i[0], i[1])
+
+		if switch_to_active:
+			sprite_type = _new_SpriteTypeTag.ACTIVE
+			sprite_color = _new_Palette.SHADOW
+		else:
+			sprite_type = _new_SpriteTypeTag.DEFAULT
+			sprite_color = _default_ground_color
+
+		_ref_SwitchSprite.switch_sprite(switch_ground, sprite_type)
+		switch_ground.modulate = sprite_color
+
+
+func _get_danger_zone() -> Array:
+	var neighbor: Array = _new_CoordCalculator.get_neighbor(_pc_pos, 1, true)
+	var candidate: Array = []
+	var one_grid: Array = []
+	var two_grids: Array = []
+	var four_grids: Array = []
+	var danger_zone: Array
 
 	for i in neighbor:
 		if (i[0] == _self_pos[0]) and (i[1] == _self_pos[1]):
@@ -93,25 +120,4 @@ func _alert() -> void:
 		else:
 			danger_zone = two_grids
 
-	_id_to_danger_zone[id] = danger_zone
-	_switch_ground(danger_zone, true)
-
-
-func _switch_ground(danger_zone: Array, switch_to_active: bool) -> void:
-	var switch_ground: Sprite
-	var sprite_type: String
-	var sprite_color: String
-
-	for i in danger_zone:
-		switch_ground = _ref_DungeonBoard.get_sprite(
-				_new_MainGroupTag.GROUND, i[0], i[1])
-
-		if switch_to_active:
-			sprite_type = _new_SpriteTypeTag.ACTIVE
-			sprite_color = _new_Palette.SHADOW
-		else:
-			sprite_type = _new_SpriteTypeTag.DEFAULT
-			sprite_color = _default_ground_color
-
-		_ref_SwitchSprite.switch_sprite(switch_ground, sprite_type)
-		switch_ground.modulate = sprite_color
+	return danger_zone
