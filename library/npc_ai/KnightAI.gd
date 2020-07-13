@@ -62,6 +62,9 @@ func _alert() -> void:
 	var neighbor: Array = _new_CoordCalculator.get_neighbor(_pc_pos, 1, true)
 	var candidate: Array = []
 	var danger_zone: Array = []
+	var one_grid: Array = []
+	var two_grids: Array = []
+	var four_grids: Array = []
 
 	_ref_ObjectData.set_state(_self, _new_ObjectStateTag.ACTIVE)
 	_ref_SwitchSprite.switch_sprite(_self, _new_SpriteTypeTag.ACTIVE)
@@ -74,14 +77,21 @@ func _alert() -> void:
 			continue
 		candidate.push_back(i)
 
+	one_grid = [_pc_pos]
+	for i in candidate:
+		if (i[0] == _self_pos[0]) or (i[1] == _self_pos[1]):
+			two_grids.push_back(i)
+	four_grids = candidate
+
 	if _self.is_in_group(_new_SubGroupTag.KNIGHT):
-		danger_zone.push_back(_pc_pos)
+		danger_zone = one_grid
 	elif _self.is_in_group(_new_SubGroupTag.KNIGHT_CAPTAIN):
-		for i in candidate:
-			if (i[0] == _self_pos[0]) or (i[1] == _self_pos[1]):
-				danger_zone.push_back(i)
+		danger_zone = two_grids
 	elif _self.is_in_group(_new_SubGroupTag.KNIGHT_BOSS):
-		danger_zone = candidate
+		if _ref_ObjectData.get_hit_point(_self) > 0:
+			danger_zone = four_grids
+		else:
+			danger_zone = two_grids
 
 	_id_to_danger_zone[id] = danger_zone
 	_switch_ground(danger_zone, true)
