@@ -35,6 +35,11 @@ func take_action(_actor: Sprite) -> void:
 	pass
 
 
+# Override.
+func remove_data(_actor: Sprite) -> void:
+	pass
+
+
 func get_print_text() -> String:
 	return print_text
 

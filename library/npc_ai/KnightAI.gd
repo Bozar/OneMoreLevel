@@ -34,6 +34,11 @@ func take_action(actor: Sprite) -> void:
 	# 	print("Approach")
 
 
+func remove_data(actor: Sprite) -> void:
+	var id: int = actor.get_instance_id()
+	var __ = _id_to_danger_zone.erase(id)
+
+
 func _attack() -> void:
 	var id: int = _self.get_instance_id()
 	var danger_zone: Array = _id_to_danger_zone[id]
@@ -42,7 +47,6 @@ func _attack() -> void:
 	_ref_SwitchSprite.switch_sprite(_self, _new_SpriteTypeTag.PASSIVE)
 
 	_switch_ground(danger_zone, false)
-	var __ = _id_to_danger_zone.erase(id)
 
 
 func _recover() -> void:

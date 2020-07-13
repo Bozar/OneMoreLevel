@@ -54,3 +54,8 @@ func _on_InitWorld_sprite_created(new_sprite: Sprite) -> void:
 		_ref_DungeonBoard,
 		_ref_SwitchSprite
 	])
+
+
+func _on_RemoveObject_sprite_removed(remove_sprite: Sprite,
+		_main_group: String, _x: int, _y: int) -> void:
+	_ai.remove_data(remove_sprite)
