@@ -2,8 +2,10 @@ extends "res://library/npc_ai/AITemplate.gd"
 
 
 var _range: int = 1
+var _max_boss_hp: int = 3
 var _default_ground_color: String
 var _id_to_danger_zone: Dictionary = {}
+var _boss_attack_count: Dictionary = {}
 var _hit_to_sprite: Dictionary
 
 
@@ -36,17 +38,23 @@ func take_action(actor: Sprite) -> void:
 
 func remove_data(actor: Sprite) -> void:
 	var id: int = actor.get_instance_id()
-	var __ = _id_to_danger_zone.erase(id)
+	var __
+
+	__ = _id_to_danger_zone.erase(id)
+	__ = _boss_attack_count.erase(id)
 
 
 func _attack() -> void:
 	var id: int = _self.get_instance_id()
 	var danger_zone: Array = _id_to_danger_zone[id]
 
-	_ref_ObjectData.set_state(_self, _new_ObjectStateTag.PASSIVE)
-	_ref_SwitchSprite.switch_sprite(_self, _new_SpriteTypeTag.PASSIVE)
-
 	_switch_ground(danger_zone, false)
+
+	if _is_final_boss() and (_boss_attack_count[id] < 1):
+		_prepare_second_attack(id)
+	else:
+		_ref_ObjectData.set_state(_self, _new_ObjectStateTag.PASSIVE)
+		_ref_SwitchSprite.switch_sprite(_self, _new_SpriteTypeTag.PASSIVE)
 
 
 func _recover() -> void:
@@ -70,6 +78,13 @@ func _alert() -> void:
 
 	_id_to_danger_zone[id] = danger_zone
 	_switch_ground(danger_zone, true)
+
+	# if _self.is_in_group(_new_SubGroupTag.KNIGHT_BOSS) \
+	# 		and _ref_ObjectData.get_hit_point(_self) < _max_boss_hp:
+	# 	_ref_ObjectData.add_hit_point(_self, 1)
+
+	if _is_final_boss():
+		_boss_attack_count[id] = 0
 
 
 func _switch_ground(danger_zone: Array, switch_to_active: bool) -> void:
@@ -125,3 +140,19 @@ func _get_danger_zone() -> Array:
 			danger_zone = two_grids
 
 	return danger_zone
+
+
+func _is_final_boss() -> bool:
+	return _self.is_in_group(_new_SubGroupTag.KNIGHT_BOSS) \
+			and (_ref_ObjectData.get_hit_point(_self) == _max_boss_hp)
+
+
+func _prepare_second_attack(id: int) -> void:
+	var danger_zone: Array
+
+	_boss_attack_count[id] += 1
+
+	if _new_CoordCalculator.is_inside_range(_pc_pos, _self_pos, _range):
+		danger_zone = _get_danger_zone()
+		_id_to_danger_zone[id] = danger_zone
+		_switch_ground(danger_zone, true)
