@@ -10,6 +10,7 @@ const REMOVE: String = "RemoveObject"
 const RANDOM: String = "RandomNumber"
 const OBJECT_DATA: String = "ObjectData"
 const SWITCH_SPRITE: String = "SwitchSprite"
+const DANGER_ZONE: String = "DangerZone"
 const SIDEBAR: String = "MainGUI/SidebarVBox"
 
 const SIGNAL_BIND: Array = [
@@ -74,7 +75,12 @@ const NODE_REF: Array = [
 	[
 		"_ref_SwitchSprite",
 		SWITCH_SPRITE,
-		ENEMY_AI,
+		ENEMY_AI, PC_INPUT,
+	],
+	[
+		"_ref_DangerZone",
+		DANGER_ZONE,
+		ENEMY_AI, PC_INPUT,
 	],
 ]
 

@@ -6,19 +6,25 @@ const DemoPCAction := preload("res://library/pc_action/DemoPCAction.gd")
 const Schedule := preload("res://scene/main/Schedule.gd")
 const DungeonBoard := preload("res://scene/main/DungeonBoard.gd")
 const RemoveObject := preload("res://scene/main/RemoveObject.gd")
+const DangerZone := preload("res://scene/main/DangerZone.gd")
+const SwitchSprite := preload("res://scene/main/SwitchSprite.gd")
 
 const RELOAD_GAME: String = "ReloadGame"
 
 var _ref_Schedule: Schedule
 var _ref_DungeonBoard: DungeonBoard
 var _ref_RemoveObject: RemoveObject
+var _ref_DangerZone: DangerZone
+var _ref_SwitchSprite: SwitchSprite
 
 var _new_ConvertCoord := preload("res://library/ConvertCoord.gd").new()
 var _new_WorldTag := preload("res://library/WorldTag.gd").new()
 var _new_InputTag := preload("res://library/InputTag.gd").new()
 var _new_SubGroupTag := preload("res://library/SubGroupTag.gd").new()
+var _new_SpriteTypeTag := preload("res://library/SpriteTypeTag.gd").new()
 
 var _pc: Sprite
+var _pc_pos: Array
 var _pc_action: PCActionTemplate
 var _direction: String
 
@@ -62,12 +68,22 @@ func _on_InitWorld_world_selected(new_world: String) -> void:
 func _on_InitWorld_sprite_created(new_sprite: Sprite) -> void:
 	if new_sprite.is_in_group(_new_SubGroupTag.PC):
 		_pc = new_sprite
+		_pc_pos = _new_ConvertCoord.vector_to_array(_pc.position)
 		set_process_unhandled_input(true)
 
 
 func _on_Schedule_turn_started(current_sprite: Sprite) -> void:
-	if current_sprite.is_in_group(_new_SubGroupTag.PC):
-		set_process_unhandled_input(true)
+	if not current_sprite.is_in_group(_new_SubGroupTag.PC):
+		return
+
+	_pc_pos = _new_ConvertCoord.vector_to_array(_pc.position)
+
+	if _ref_DangerZone.is_in_danger(_pc_pos[0], _pc_pos[1]):
+		_ref_SwitchSprite.switch_sprite(_pc, _new_SpriteTypeTag.ACTIVE)
+	else:
+		_ref_SwitchSprite.switch_sprite(_pc, _new_SpriteTypeTag.DEFAULT)
+
+	set_process_unhandled_input(true)
 
 
 func _is_reload_input(event: InputEvent) -> bool:
@@ -88,11 +104,9 @@ func _is_move_input(event: InputEvent) -> bool:
 
 
 func _handle_move_input() -> void:
-	var source: Array = _new_ConvertCoord.vector_to_array(_pc.position)
-
-	if _pc_action.is_ground(source, _direction):
+	if _pc_action.is_ground(_pc_pos, _direction):
 		_pc_action.move()
-	elif _pc_action.is_npc(source, _direction):
+	elif _pc_action.is_npc(_pc_pos, _direction):
 		_pc_action.attack()
-	elif _pc_action.is_building(source, _direction):
+	elif _pc_action.is_building(_pc_pos, _direction):
 		_pc_action.interact()

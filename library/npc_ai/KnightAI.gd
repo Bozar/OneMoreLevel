@@ -48,6 +48,7 @@ func _attack() -> void:
 	var id: int = _self.get_instance_id()
 	var danger_zone: Array = _id_to_danger_zone[id]
 
+	_set_danger_zone(danger_zone, false)
 	_switch_ground(danger_zone, false)
 
 	if _is_final_boss() and (_boss_attack_count[id] < 1):
@@ -77,6 +78,7 @@ func _alert() -> void:
 	_ref_SwitchSprite.switch_sprite(_self, _new_SpriteTypeTag.ACTIVE)
 
 	_id_to_danger_zone[id] = danger_zone
+	_set_danger_zone(danger_zone, true)
 	_switch_ground(danger_zone, true)
 
 	# if _self.is_in_group(_new_SubGroupTag.KNIGHT_BOSS) \
@@ -88,12 +90,12 @@ func _alert() -> void:
 
 
 func _switch_ground(danger_zone: Array, switch_to_active: bool) -> void:
-	var switch_ground: Sprite
+	var ground_sprite: Sprite
 	var sprite_type: String
 	var sprite_color: String
 
 	for i in danger_zone:
-		switch_ground = _ref_DungeonBoard.get_sprite(
+		ground_sprite= _ref_DungeonBoard.get_sprite(
 				_new_MainGroupTag.GROUND, i[0], i[1])
 
 		if switch_to_active:
@@ -103,8 +105,8 @@ func _switch_ground(danger_zone: Array, switch_to_active: bool) -> void:
 			sprite_type = _new_SpriteTypeTag.DEFAULT
 			sprite_color = _default_ground_color
 
-		_ref_SwitchSprite.switch_sprite(switch_ground, sprite_type)
-		switch_ground.modulate = sprite_color
+		_ref_SwitchSprite.switch_sprite(ground_sprite, sprite_type)
+		ground_sprite.modulate = sprite_color
 
 
 func _get_danger_zone() -> Array:
@@ -155,4 +157,10 @@ func _prepare_second_attack(id: int) -> void:
 	if _new_CoordCalculator.is_inside_range(_pc_pos, _self_pos, _range):
 		danger_zone = _get_danger_zone()
 		_id_to_danger_zone[id] = danger_zone
+		_set_danger_zone(danger_zone, true)
 		_switch_ground(danger_zone, true)
+
+
+func _set_danger_zone(danger_zone: Array, is_dangerous: bool) -> void:
+	for i in danger_zone:
+		_ref_DangerZone.set_danger_zone(i[0], i[1], is_dangerous)
