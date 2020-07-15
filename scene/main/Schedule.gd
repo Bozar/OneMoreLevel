@@ -9,11 +9,16 @@ var _new_SubGroupTag := preload("res://library/SubGroupTag.gd").new()
 
 var _actors: Array = [null]
 var _pointer: int = 0
+var _pc_is_dead: bool = false
 
 
 func end_turn() -> void:
 	# print("{0}: End turn.".format([_get_current().name]))
 	emit_signal("turn_ended", _get_current())
+
+	if _pc_is_dead:
+		return
+
 	_goto_next()
 	emit_signal("turn_started", _get_current())
 
@@ -33,6 +38,10 @@ func _on_RemoveObject_sprite_removed(remove_sprite: Sprite,
 
 	_actors.erase(remove_sprite)
 	_pointer = _actors.find(current_sprite)
+
+
+func _on_BuryPC_pc_is_dead() -> void:
+	_pc_is_dead = true
 
 
 func _get_current() -> Sprite:

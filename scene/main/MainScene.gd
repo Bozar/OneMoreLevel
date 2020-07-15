@@ -11,6 +11,7 @@ const RANDOM: String = "RandomNumber"
 const OBJECT_DATA: String = "ObjectData"
 const SWITCH_SPRITE: String = "SwitchSprite"
 const DANGER_ZONE: String = "DangerZone"
+const BURY_PC: String = "BuryPC"
 const SIDEBAR: String = "MainGUI/SidebarVBox"
 
 const SIGNAL_BIND: Array = [
@@ -38,6 +39,11 @@ const SIGNAL_BIND: Array = [
 		"sprite_removed", "_on_RemoveObject_sprite_removed",
 		REMOVE,
 		DUNGEON, SCHEDULE, OBJECT_DATA, ENEMY_AI,
+	],
+	[
+		"pc_is_dead", "_on_BuryPC_pc_is_dead",
+		BURY_PC,
+		SCHEDULE, PLAYER_INPUT,
 	],
 	# [
 	# 	"enemy_warned", "_on_EnemyAI_enemy_warned",
@@ -81,6 +87,11 @@ const NODE_REF: Array = [
 		"_ref_DangerZone",
 		DANGER_ZONE,
 		ENEMY_AI, PLAYER_INPUT,
+	],
+	[
+		"_ref_BuryPC",
+		BURY_PC,
+		ENEMY_AI,
 	],
 ]
 

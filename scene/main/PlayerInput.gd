@@ -22,11 +22,13 @@ var _new_WorldTag := preload("res://library/WorldTag.gd").new()
 var _new_InputTag := preload("res://library/InputTag.gd").new()
 var _new_SubGroupTag := preload("res://library/SubGroupTag.gd").new()
 var _new_SpriteTypeTag := preload("res://library/SpriteTypeTag.gd").new()
+var _new_Palette := preload("res://library/Palette.gd").new()
 
 var _pc: Sprite
 var _pc_pos: Array
 var _pc_action: PCActionTemplate
 var _direction: String
+var _pc_is_dead: bool = false
 
 var _move_inputs: Array = [
 	_new_InputTag.MOVE_LEFT,
@@ -48,12 +50,16 @@ func _ready() -> void:
 func _unhandled_input(event: InputEvent) -> void:
 	_pc_action.reset_state()
 
+	if _is_reload_input(event):
+		get_node(RELOAD_GAME).reload()
+
+	if _pc_is_dead:
+		return
+
 	if _is_move_input(event):
 		_handle_move_input()
 	elif _is_wait_input(event):
 		_pc_action.wait()
-	elif _is_reload_input(event):
-		get_node(RELOAD_GAME).reload()
 
 	if _pc_action.end_turn:
 		set_process_unhandled_input(false)
@@ -82,6 +88,15 @@ func _on_Schedule_turn_started(current_sprite: Sprite) -> void:
 		_ref_SwitchSprite.switch_sprite(_pc, _new_SpriteTypeTag.ACTIVE)
 	else:
 		_ref_SwitchSprite.switch_sprite(_pc, _new_SpriteTypeTag.DEFAULT)
+
+	set_process_unhandled_input(true)
+
+
+func _on_BuryPC_pc_is_dead() -> void:
+	_pc_is_dead = true
+
+	_ref_SwitchSprite.switch_sprite(_pc, _new_SpriteTypeTag.DEFAULT)
+	_pc.modulate = _new_Palette.SHADOW
 
 	set_process_unhandled_input(true)
 

@@ -170,4 +170,4 @@ func _set_danger_zone(danger_zone: Array, is_dangerous: bool) -> void:
 func _try_hit_pc(danger_zone: Array) -> void:
 	for i in danger_zone:
 		if (_pc_pos[0] == i[0]) and (_pc_pos[1] == i[1]):
-			print("pc is dead")
+			_ref_BuryPC.bury()

@@ -2,6 +2,7 @@ const ObjectData := preload("res://scene/main/ObjectData.gd")
 const DungeonBoard := preload("res://scene/main/DungeonBoard.gd")
 const SwitchSprite := preload("res://scene/main/SwitchSprite.gd")
 const DangerZone := preload("res://scene/main/DangerZone.gd")
+const BuryPC := preload("res://scene/main/BuryPC.gd")
 
 var print_text: String setget set_print_text, get_print_text
 
@@ -9,6 +10,7 @@ var _ref_ObjectData: ObjectData
 var _ref_DungeonBoard: DungeonBoard
 var _ref_SwitchSprite: SwitchSprite
 var _ref_DangerZone: DangerZone
+var _ref_BuryPC: BuryPC
 
 var _new_ConvertCoord := preload("res://library/ConvertCoord.gd").new()
 var _new_CoordCalculator := preload("res://library/CoordCalculator.gd").new()
@@ -31,6 +33,7 @@ func _init(object_reference: Array) -> void:
 	_ref_DungeonBoard = object_reference[2]
 	_ref_SwitchSprite = object_reference[3]
 	_ref_DangerZone = object_reference[4]
+	_ref_BuryPC = object_reference[5]
 
 # Override.
 func take_action(_actor: Sprite) -> void:
