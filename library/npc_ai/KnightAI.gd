@@ -48,6 +48,7 @@ func _attack() -> void:
 	var id: int = _self.get_instance_id()
 	var danger_zone: Array = _id_to_danger_zone[id]
 
+	_try_hit_pc(danger_zone)
 	_set_danger_zone(danger_zone, false)
 	_switch_ground(danger_zone, false)
 
@@ -164,3 +165,9 @@ func _prepare_second_attack(id: int) -> void:
 func _set_danger_zone(danger_zone: Array, is_dangerous: bool) -> void:
 	for i in danger_zone:
 		_ref_DangerZone.set_danger_zone(i[0], i[1], is_dangerous)
+
+
+func _try_hit_pc(danger_zone: Array) -> void:
+	for i in danger_zone:
+		if (_pc_pos[0] == i[0]) and (_pc_pos[1] == i[1]):
+			print("pc is dead")
