@@ -2,7 +2,7 @@ extends "res://library/RootNodeTemplate.gd"
 
 
 const INIT_WORLD: String = "InitWorld"
-const PC_INPUT: String = "PCInput"
+const PLAYER_INPUT: String = "PlayerInput"
 const ENEMY_AI: String = "EnemyAI"
 const SCHEDULE: String = "Schedule"
 const DUNGEON: String = "DungeonBoard"
@@ -17,17 +17,17 @@ const SIGNAL_BIND: Array = [
 	[
 		"sprite_created", "_on_InitWorld_sprite_created",
 		INIT_WORLD,
-		PC_INPUT, ENEMY_AI, SCHEDULE, DUNGEON, OBJECT_DATA,
+		PLAYER_INPUT, ENEMY_AI, SCHEDULE, DUNGEON, OBJECT_DATA,
 	],
 	[
 		"world_selected", "_on_InitWorld_world_selected",
 		INIT_WORLD,
-		PC_INPUT, ENEMY_AI,
+		PLAYER_INPUT, ENEMY_AI,
 	],
 	[
 		"turn_started", "_on_Schedule_turn_started",
 		SCHEDULE,
-		PC_INPUT, ENEMY_AI, SIDEBAR,
+		PLAYER_INPUT, ENEMY_AI, SIDEBAR,
 	],
 	# [
 	# 	"turn_ended", "_on_Schedule_turn_ended",
@@ -50,17 +50,17 @@ const NODE_REF: Array = [
 	[
 		"_ref_DungeonBoard",
 		DUNGEON,
-		PC_INPUT, REMOVE, ENEMY_AI,
+		PLAYER_INPUT, REMOVE, ENEMY_AI,
 	],
 	[
 		"_ref_Schedule",
 		SCHEDULE,
-		PC_INPUT, ENEMY_AI,
+		PLAYER_INPUT, ENEMY_AI,
 	],
 	[
 		"_ref_RemoveObject",
 		REMOVE,
-		PC_INPUT,
+		PLAYER_INPUT,
 	],
 	[
 		"_ref_RandomNumber",
@@ -75,12 +75,12 @@ const NODE_REF: Array = [
 	[
 		"_ref_SwitchSprite",
 		SWITCH_SPRITE,
-		ENEMY_AI, PC_INPUT,
+		ENEMY_AI, PLAYER_INPUT,
 	],
 	[
 		"_ref_DangerZone",
 		DANGER_ZONE,
-		ENEMY_AI, PC_INPUT,
+		ENEMY_AI, PLAYER_INPUT,
 	],
 ]
 

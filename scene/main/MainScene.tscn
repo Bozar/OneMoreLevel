@@ -11,7 +11,7 @@
 [ext_resource path="res://scene/main/RemoveObject.gd" type="Script" id=9]
 [ext_resource path="res://scene/main/ReloadGame.gd" type="Script" id=10]
 [ext_resource path="res://scene/main/RandomNumber.gd" type="Script" id=11]
-[ext_resource path="res://scene/main/PCInput.gd" type="Script" id=12]
+[ext_resource path="res://scene/main/PlayerInput.gd" type="Script" id=12]
 [ext_resource path="res://scene/main/ObjectData.gd" type="Script" id=13]
 [ext_resource path="res://scene/main/SpriteType.gd" type="Script" id=14]
 [ext_resource path="res://scene/main/HitPoint.gd" type="Script" id=15]
@@ -29,10 +29,10 @@ margin_bottom = 580.0
 [node name="InitWorld" type="Node2D" parent="."]
 script = ExtResource( 1 )
 
-[node name="PCInput" type="Node2D" parent="."]
+[node name="PlayerInput" type="Node2D" parent="."]
 script = ExtResource( 12 )
 
-[node name="ReloadGame" type="Node2D" parent="PCInput"]
+[node name="ReloadGame" type="Node2D" parent="PlayerInput"]
 script = ExtResource( 10 )
 
 [node name="Schedule" type="Node2D" parent="."]
