@@ -76,7 +76,7 @@ const NODE_REF: Array = [
 	[
 		"_ref_ObjectData",
 		OBJECT_DATA,
-		ENEMY_AI, SWITCH_SPRITE,
+		ENEMY_AI, SWITCH_SPRITE, PLAYER_INPUT,
 	],
 	[
 		"_ref_SwitchSprite",

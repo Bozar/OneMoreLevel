@@ -5,16 +5,21 @@
 
 const DungeonBoard := preload("res://scene/main/DungeonBoard.gd")
 const RemoveObject := preload("res://scene/main/RemoveObject.gd")
+const ObjectData := preload("res://scene/main/ObjectData.gd")
 
 var message: String setget set_message, get_message
 var end_turn: bool setget set_end_turn, get_end_turn
 
 var _ref_DungeonBoard: DungeonBoard
 var _ref_RemoveObject: RemoveObject
+var _ref_ObjectData: ObjectData
 
 var _new_InputTag := preload("res://library/InputTag.gd").new()
 var _new_MainGroupTag := preload("res://library/MainGroupTag.gd").new()
+var _new_SubGroupTag := preload("res://library/SubGroupTag.gd").new()
 var _new_CoordCalculator := preload("res://library/CoordCalculator.gd").new()
+var _new_ConvertCoord := preload("res://library/ConvertCoord.gd").new()
+var _new_ObjectStateTag := preload("res://library/ObjectStateTag.gd").new()
 
 var _source_position: Array
 var _target_position: Array
@@ -30,6 +35,7 @@ var _direction_to_coord: Dictionary = {
 func _init(object_reference: Array) -> void:
 	_ref_DungeonBoard = object_reference[0]
 	_ref_RemoveObject = object_reference[1]
+	_ref_ObjectData = object_reference[2]
 
 
 func get_message() -> String:
