@@ -35,12 +35,12 @@ func get_state(sprite: Sprite) -> String:
 	return get_node(OBJECT_STATE).get_state(_get_id(sprite))
 
 
-func set_state(sprite: Sprite, State: String) -> void:
-	get_node(OBJECT_STATE).set_state(_get_id(sprite), State)
+func set_state(sprite: Sprite, state: String) -> void:
+	get_node(OBJECT_STATE).set_state(_get_id(sprite), state)
 
 
-func verify_state(sprite: Sprite, State: String) -> bool:
-	return get_node(OBJECT_STATE).verify_state(_get_id(sprite), State)
+func verify_state(sprite: Sprite, state: String) -> bool:
+	return get_node(OBJECT_STATE).verify_state(_get_id(sprite), state)
 
 
 func get_sprite_type(sprite: Sprite) -> String:
