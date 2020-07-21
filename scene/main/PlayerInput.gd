@@ -3,6 +3,7 @@ extends Node2D
 
 const PCActionTemplate := preload("res://library/pc_action/PCActionTemplate.gd")
 const DemoPCAction := preload("res://library/pc_action/DemoPCAction.gd")
+const KnightPCAction := preload("res://library/pc_action/KnightPCAction.gd")
 const Schedule := preload("res://scene/main/Schedule.gd")
 const DungeonBoard := preload("res://scene/main/DungeonBoard.gd")
 const RemoveObject := preload("res://scene/main/RemoveObject.gd")
@@ -39,7 +40,7 @@ var _move_inputs: Array = [
 
 var _select_world: Dictionary = {
 	_new_WorldTag.DEMO: DemoPCAction,
-	_new_WorldTag.KNIGHT: DemoPCAction,
+	_new_WorldTag.KNIGHT: KnightPCAction,
 }
 
 
@@ -66,9 +67,12 @@ func _unhandled_input(event: InputEvent) -> void:
 		_ref_Schedule.end_turn()
 
 
+# Order matters here. Refer: PCActionTemplate.gd.
 func _on_InitWorld_world_selected(new_world: String) -> void:
-	_pc_action = _select_world[new_world].new(
-			_ref_DungeonBoard, _ref_RemoveObject)
+	_pc_action = _select_world[new_world].new([
+			_ref_DungeonBoard,
+			_ref_RemoveObject
+	])
 
 
 func _on_InitWorld_sprite_created(new_sprite: Sprite) -> void:

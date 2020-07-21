@@ -26,9 +26,10 @@ var _direction_to_coord: Dictionary = {
 }
 
 
-func _init(dungeon: DungeonBoard, remove: RemoveObject) -> void:
-	_ref_DungeonBoard = dungeon
-	_ref_RemoveObject = remove
+# Order matters here. Refer: PlayerInput.gd.
+func _init(object_reference: Array) -> void:
+	_ref_DungeonBoard = object_reference[0]
+	_ref_RemoveObject = object_reference[1]
 
 
 func get_message() -> String:
