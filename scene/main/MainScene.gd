@@ -71,7 +71,7 @@ const NODE_REF: Array = [
 	[
 		"_ref_RandomNumber",
 		RANDOM,
-		INIT_WORLD,
+		INIT_WORLD, PLAYER_INPUT,
 	],
 	[
 		"_ref_ObjectData",

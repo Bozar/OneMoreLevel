@@ -1,8 +1,8 @@
 extends "res://library/npc_ai/AITemplate.gd"
 
 
-var _range: int = 1
-var _max_boss_hp: int = 3
+var _new_KnightData := preload("res://library/npc_data/KnightData.gd").new()
+
 var _default_ground_color: String
 var _id_to_danger_zone: Dictionary = {}
 var _boss_attack_count: Dictionary = {}
@@ -29,7 +29,8 @@ func take_action(actor: Sprite) -> void:
 	elif _ref_ObjectData.verify_state(_self, _new_ObjectStateTag.PASSIVE):
 		_recover()
 	# Default -> Active.
-	elif _new_CoordCalculator.is_inside_range(_pc_pos, _self_pos, _range):
+	elif _new_CoordCalculator.is_inside_range(_pc_pos, _self_pos,
+			_new_KnightData.RANGE):
 		_alert()
 	# Approach.
 	# else:
@@ -147,7 +148,8 @@ func _get_danger_zone() -> Array:
 
 func _is_final_boss() -> bool:
 	return _self.is_in_group(_new_SubGroupTag.KNIGHT_BOSS) \
-			and (_ref_ObjectData.get_hit_point(_self) == _max_boss_hp)
+			and (_ref_ObjectData.get_hit_point(_self)
+					== _new_KnightData.MAX_BOSS_HP)
 
 
 func _prepare_second_attack(id: int) -> void:
@@ -155,7 +157,8 @@ func _prepare_second_attack(id: int) -> void:
 
 	_boss_attack_count[id] += 1
 
-	if _new_CoordCalculator.is_inside_range(_pc_pos, _self_pos, _range):
+	if _new_CoordCalculator.is_inside_range(_pc_pos, _self_pos,
+			_new_KnightData.RANGE):
 		danger_zone = _get_danger_zone()
 		_id_to_danger_zone[id] = danger_zone
 		_set_danger_zone(danger_zone, true)

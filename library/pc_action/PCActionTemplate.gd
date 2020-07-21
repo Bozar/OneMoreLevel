@@ -6,6 +6,7 @@
 const DungeonBoard := preload("res://scene/main/DungeonBoard.gd")
 const RemoveObject := preload("res://scene/main/RemoveObject.gd")
 const ObjectData := preload("res://scene/main/ObjectData.gd")
+const RandomNumber := preload("res://scene/main/RandomNumber.gd")
 
 var message: String setget set_message, get_message
 var end_turn: bool setget set_end_turn, get_end_turn
@@ -13,6 +14,7 @@ var end_turn: bool setget set_end_turn, get_end_turn
 var _ref_DungeonBoard: DungeonBoard
 var _ref_RemoveObject: RemoveObject
 var _ref_ObjectData: ObjectData
+var _ref_RandomNumber: RandomNumber
 
 var _new_InputTag := preload("res://library/InputTag.gd").new()
 var _new_MainGroupTag := preload("res://library/MainGroupTag.gd").new()
@@ -20,6 +22,7 @@ var _new_SubGroupTag := preload("res://library/SubGroupTag.gd").new()
 var _new_CoordCalculator := preload("res://library/CoordCalculator.gd").new()
 var _new_ConvertCoord := preload("res://library/ConvertCoord.gd").new()
 var _new_ObjectStateTag := preload("res://library/ObjectStateTag.gd").new()
+var _new_DungeonSize := preload("res://library/DungeonSize.gd").new()
 
 var _source_position: Array
 var _target_position: Array
@@ -36,6 +39,7 @@ func _init(object_reference: Array) -> void:
 	_ref_DungeonBoard = object_reference[0]
 	_ref_RemoveObject = object_reference[1]
 	_ref_ObjectData = object_reference[2]
+	_ref_RandomNumber = object_reference[3]
 
 
 func get_message() -> String:
@@ -60,12 +64,7 @@ func is_ground(source: Array, direction: String) -> bool:
 	var x: int = _target_position[0]
 	var y: int = _target_position[1]
 
-	var is_not_ground: bool = \
-			(not _new_CoordCalculator.is_inside_dungeon(x, y)) \
-			or _ref_DungeonBoard.has_sprite(_new_MainGroupTag.BUILDING, x, y) \
-			or _ref_DungeonBoard.has_sprite(_new_MainGroupTag.ACTOR, x, y)
-
-	return not is_not_ground
+	return not _is_occupied(x, y)
 
 
 func is_npc(source: Array, direction: String) -> bool:
@@ -111,3 +110,9 @@ func _set_source_target_positions(source: Array, direction: String) -> void:
 
 	_source_position = source
 	_target_position = [source[0] + shift[0], source[1] + shift[1]]
+
+
+func _is_occupied(x: int, y: int) -> bool:
+	return (not _new_CoordCalculator.is_inside_dungeon(x, y)) \
+			or _ref_DungeonBoard.has_sprite(_new_MainGroupTag.BUILDING, x, y) \
+			or _ref_DungeonBoard.has_sprite(_new_MainGroupTag.ACTOR, x, y)

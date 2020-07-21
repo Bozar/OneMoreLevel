@@ -6,6 +6,7 @@ const Schedule := preload("res://scene/main/Schedule.gd")
 const DungeonBoard := preload("res://scene/main/DungeonBoard.gd")
 const ObjectData := preload("res://scene/main/ObjectData.gd")
 const RemoveObject := preload("res://scene/main/RemoveObject.gd")
+const RandomNumber := preload("res://scene/main/RandomNumber.gd")
 const DangerZone := preload("res://scene/main/DangerZone.gd")
 const SwitchSprite := preload("res://scene/main/SwitchSprite.gd")
 
@@ -18,6 +19,7 @@ var _ref_Schedule: Schedule
 var _ref_DungeonBoard: DungeonBoard
 var _ref_RemoveObject: RemoveObject
 var _ref_ObjectData: ObjectData
+var _ref_RandomNumber: RandomNumber
 var _ref_DangerZone: DangerZone
 var _ref_SwitchSprite: SwitchSprite
 
@@ -75,7 +77,8 @@ func _on_InitWorld_world_selected(new_world: String) -> void:
 	_pc_action = _select_world[new_world].new([
 			_ref_DungeonBoard,
 			_ref_RemoveObject,
-			_ref_ObjectData
+			_ref_ObjectData,
+			_ref_RandomNumber
 	])
 
 
