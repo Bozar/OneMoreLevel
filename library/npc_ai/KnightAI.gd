@@ -51,7 +51,7 @@ func _attack() -> void:
 
 	_try_hit_pc(danger_zone)
 	_set_danger_zone(danger_zone, false)
-	_switch_ground(danger_zone, false)
+	_switch_ground(danger_zone)
 
 	if _is_final_boss() and (_boss_attack_count[id] < 1):
 		_prepare_second_attack(id)
@@ -81,7 +81,7 @@ func _alert() -> void:
 
 	_id_to_danger_zone[id] = danger_zone
 	_set_danger_zone(danger_zone, true)
-	_switch_ground(danger_zone, true)
+	_switch_ground(danger_zone)
 
 	# if _self.is_in_group(_new_SubGroupTag.KNIGHT_BOSS) \
 	# 		and _ref_ObjectData.get_hit_point(_self) < _max_boss_hp:
@@ -91,7 +91,7 @@ func _alert() -> void:
 		_boss_attack_count[id] = 0
 
 
-func _switch_ground(danger_zone: Array, switch_to_active: bool) -> void:
+func _switch_ground(danger_zone: Array) -> void:
 	var ground_sprite: Sprite
 	var sprite_type: String
 	var sprite_color: String
@@ -100,7 +100,7 @@ func _switch_ground(danger_zone: Array, switch_to_active: bool) -> void:
 		ground_sprite= _ref_DungeonBoard.get_sprite(
 				_new_MainGroupTag.GROUND, i[0], i[1])
 
-		if switch_to_active:
+		if _ref_DangerZone.is_in_danger(i[0], i[1]):
 			sprite_type = _new_SpriteTypeTag.ACTIVE
 			sprite_color = _new_Palette.SHADOW
 		else:
@@ -162,7 +162,7 @@ func _prepare_second_attack(id: int) -> void:
 		danger_zone = _get_danger_zone()
 		_id_to_danger_zone[id] = danger_zone
 		_set_danger_zone(danger_zone, true)
-		_switch_ground(danger_zone, true)
+		_switch_ground(danger_zone)
 
 
 func _set_danger_zone(danger_zone: Array, is_dangerous: bool) -> void:
