@@ -113,17 +113,18 @@ func _switch_ground(danger_zone: Array) -> void:
 
 func _get_danger_zone() -> Array:
 	var neighbor: Array = _new_CoordCalculator.get_neighbor(_pc_pos, 1, true)
-	var candidate: Array = []
+	var candidate: Array = [_pc_pos]
 	var one_grid: Array = []
 	var two_grids: Array = []
 	var four_grids: Array = []
 	var danger_zone: Array
 
 	for i in neighbor:
-		if (i[0] == _self_pos[0]) and (i[1] == _self_pos[1]):
+		if _ref_DungeonBoard.has_sprite(
+				_new_MainGroupTag.BUILDING, i[0], i[1]):
 			continue
 		elif _ref_DungeonBoard.has_sprite(
-				_new_MainGroupTag.BUILDING, i[0], i[1]):
+				_new_MainGroupTag.ACTOR, i[0], i[1]):
 			continue
 		candidate.push_back(i)
 
