@@ -6,7 +6,6 @@ var _new_KnightData := preload("res://library/npc_data/KnightData.gd").new()
 var _id_to_danger_zone: Dictionary = {}
 var _boss_attack_count: Dictionary = {}
 var _hit_to_sprite: Dictionary
-var _dungeon: Dictionary
 
 
 func _init(object_reference: Array).(object_reference) -> void:
@@ -31,7 +30,7 @@ func take_action(actor: Sprite) -> void:
 			_new_KnightData.RANGE):
 		_alert()
 	# Approach.
-	else:
+	elif _is_ready_to_move():
 		_move()
 
 
@@ -90,13 +89,26 @@ func _alert() -> void:
 
 
 func _move() -> void:
-	if not _new_CoordCalculator.is_inside_range(_pc_pos, _self_pos, 3):
-		return
+	_init_dungeon()
+	_dungeon[_pc_pos[0]][ _pc_pos[1]] = _new_PathFindingData.DESTINATION
 
 	var destination: Array = _new_DijkstraPathFinding.get_path(
-			_dungeon, _self_pos[0], _self_pos[1])
+			_dungeon, _self_pos[0], _self_pos[1], [_pc_pos])
+	var filter: Array = []
+	var move_to: Array = []
 
-	print(destination)
+	for i in destination:
+		if _ref_DungeonBoard.has_sprite(_new_MainGroupTag.ACTOR, i[0], i[1]):
+			continue
+		filter.push_back(i)
+
+	if filter.size() < 1:
+		return
+	elif filter.size() > 1:
+		move_to = filter[_ref_RandomNumber.get_int(0, filter.size())]
+	else:
+		move_to = filter[0]
+	_ref_DungeonBoard.move_sprite(_new_MainGroupTag.ACTOR, _self_pos, move_to)
 
 	return
 
@@ -134,8 +146,7 @@ func _get_danger_zone() -> Array:
 		if _ref_DungeonBoard.has_sprite(
 				_new_MainGroupTag.BUILDING, i[0], i[1]):
 			continue
-		elif _ref_DungeonBoard.has_sprite(
-				_new_MainGroupTag.ACTOR, i[0], i[1]):
+		elif (i[0] == _self_pos[0]) and (i[1] == _self_pos[1]):
 			continue
 		candidate.push_back(i)
 
@@ -186,3 +197,14 @@ func _try_hit_pc(danger_zone: Array) -> void:
 	for i in danger_zone:
 		if (_pc_pos[0] == i[0]) and (_pc_pos[1] == i[1]):
 			_ref_BuryPC.bury()
+
+
+func _is_ready_to_move() -> bool:
+	if not _new_CoordCalculator.is_inside_range(_pc_pos, _self_pos,
+			_new_KnightData.SIGHT):
+		return false
+	if _ref_RandomNumber.get_int(
+			_new_KnightData.MOVE_MIN, _new_KnightData.MOVE_MAX) \
+			< _new_KnightData.MOVE_THRESHOLD:
+		return false
+	return true

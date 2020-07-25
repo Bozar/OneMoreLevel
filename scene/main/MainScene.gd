@@ -71,7 +71,7 @@ const NODE_REF: Array = [
 	[
 		"_ref_RandomNumber",
 		RANDOM,
-		INIT_WORLD, PLAYER_INPUT,
+		INIT_WORLD, PLAYER_INPUT, ENEMY_AI,
 	],
 	[
 		"_ref_ObjectData",

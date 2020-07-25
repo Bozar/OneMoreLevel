@@ -5,6 +5,7 @@ const DungeonBoard := preload("res://scene/main/DungeonBoard.gd")
 const SwitchSprite := preload("res://scene/main/SwitchSprite.gd")
 const DangerZone := preload("res://scene/main/DangerZone.gd")
 const BuryPC := preload("res://scene/main/BuryPC.gd")
+const RandomNumber := preload("res://scene/main/RandomNumber.gd")
 
 var print_text: String setget set_print_text, get_print_text
 
@@ -13,6 +14,7 @@ var _ref_DungeonBoard: DungeonBoard
 var _ref_SwitchSprite: SwitchSprite
 var _ref_DangerZone: DangerZone
 var _ref_BuryPC: BuryPC
+var _ref_RandomNumber: RandomNumber
 
 var _new_ConvertCoord := preload("res://library/ConvertCoord.gd").new()
 var _new_CoordCalculator := preload("res://library/CoordCalculator.gd").new()
@@ -30,6 +32,7 @@ var _pc: Sprite
 var _self: Sprite
 var _pc_pos: Array
 var _self_pos: Array
+var _dungeon: Dictionary
 
 
 func _init(object_reference: Array) -> void:
@@ -40,6 +43,12 @@ func _init(object_reference: Array) -> void:
 	_ref_SwitchSprite = object_reference[3]
 	_ref_DangerZone = object_reference[4]
 	_ref_BuryPC = object_reference[5]
+	_ref_RandomNumber = object_reference[6]
+
+	for x in range(_new_DungeonSize.MAX_X):
+		_dungeon[x] = []
+		_dungeon[x].resize(_new_DungeonSize.MAX_Y)
+
 
 # Override.
 func take_action(_actor: Sprite) -> void:
@@ -63,3 +72,12 @@ func _set_local_var(actor: Sprite) -> void:
 	_self = actor
 	_pc_pos = _new_ConvertCoord.vector_to_array(_pc.position)
 	_self_pos = _new_ConvertCoord.vector_to_array(_self.position)
+
+
+func _init_dungeon() -> void:
+	for x in range(_new_DungeonSize.MAX_X):
+		for y in range(_new_DungeonSize.MAX_Y):
+			if _ref_DungeonBoard.has_sprite(_new_MainGroupTag.BUILDING, x, y):
+				_dungeon[x][y] = _new_PathFindingData.OBSTACLE
+			else:
+				_dungeon[x][y] = _new_PathFindingData.UNKNOWN
