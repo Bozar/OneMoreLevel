@@ -36,16 +36,20 @@ var _select_world: Dictionary = {
 }
 
 
-func _unhandled_input(event: InputEvent) -> void:
-	if event.is_action_pressed(_new_InputTag.INIT_WORLD):
-		_world = _get_world()
-		# sb: SpriteBlueprint
-		for sb in _world.get_blueprint():
-			if _is_pc(sb.sub_group):
-				_init_indicator(sb.x, sb.y)
-			_create_sprite(sb.scene, sb.main_group, sb.sub_group, sb.x, sb.y)
+# func _unhandled_input(event: InputEvent) -> void:
+# 	if event.is_action_pressed(_new_InputTag.INIT_WORLD):
+# 		init_world()
+#
+# 		set_process_unhandled_input(false)
 
-		set_process_unhandled_input(false)
+
+func init_world() -> void:
+	_world = _get_world()
+	# sb: SpriteBlueprint
+	for sb in _world.get_blueprint():
+		if _is_pc(sb.sub_group):
+			_init_indicator(sb.x, sb.y)
+		_create_sprite(sb.scene, sb.main_group, sb.sub_group, sb.x, sb.y)
 
 
 func _get_world() -> WorldTemplate:

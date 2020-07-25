@@ -1,4 +1,4 @@
-[gd_scene load_steps=18 format=2]
+[gd_scene load_steps=19 format=2]
 
 [ext_resource path="res://scene/main/InitWorld.gd" type="Script" id=1]
 [ext_resource path="res://scene/gui/MainGUI.tscn" type="PackedScene" id=2]
@@ -17,6 +17,7 @@
 [ext_resource path="res://scene/main/HitPoint.gd" type="Script" id=15]
 [ext_resource path="res://scene/main/DangerZone.gd" type="Script" id=16]
 [ext_resource path="res://scene/main/BuryPC.gd" type="Script" id=17]
+[ext_resource path="res://scene/main/AutoStart.gd" type="Script" id=18]
 
 [node name="MainScene" type="Node2D"]
 script = ExtResource( 4 )
@@ -26,6 +27,9 @@ margin_left = 20.0
 margin_top = 20.0
 margin_right = 780.0
 margin_bottom = 580.0
+
+[node name="AutoStart" type="Node2D" parent="."]
+script = ExtResource( 18 )
 
 [node name="InitWorld" type="Node2D" parent="."]
 script = ExtResource( 1 )
