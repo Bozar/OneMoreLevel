@@ -3,10 +3,10 @@ extends "res://library/npc_ai/AITemplate.gd"
 
 var _new_KnightData := preload("res://library/npc_data/KnightData.gd").new()
 
-var _default_ground_color: String
 var _id_to_danger_zone: Dictionary = {}
 var _boss_attack_count: Dictionary = {}
 var _hit_to_sprite: Dictionary
+var _dungeon: Dictionary
 
 
 func _init(object_reference: Array).(object_reference) -> void:
@@ -15,8 +15,6 @@ func _init(object_reference: Array).(object_reference) -> void:
 		1: _new_SpriteTypeTag.DEFAULT_2,
 		2: _new_SpriteTypeTag.DEFAULT_3,
 	}
-	_default_ground_color = _new_Palette.get_default_color(
-			_new_MainGroupTag.GROUND)
 
 
 func take_action(actor: Sprite) -> void:
@@ -33,8 +31,8 @@ func take_action(actor: Sprite) -> void:
 			_new_KnightData.RANGE):
 		_alert()
 	# Approach.
-	# else:
-	# 	print("Approach")
+	else:
+		_move()
 
 
 func remove_data(actor: Sprite) -> void:
@@ -91,6 +89,18 @@ func _alert() -> void:
 		_boss_attack_count[id] = 0
 
 
+func _move() -> void:
+	if not _new_CoordCalculator.is_inside_range(_pc_pos, _self_pos, 3):
+		return
+
+	var destination: Array = _new_DijkstraPathFinding.get_path(
+			_dungeon, _self_pos[0], _self_pos[1])
+
+	print(destination)
+
+	return
+
+
 func _switch_ground(danger_zone: Array) -> void:
 	var ground_sprite: Sprite
 	var sprite_type: String
@@ -105,7 +115,8 @@ func _switch_ground(danger_zone: Array) -> void:
 			sprite_color = _new_Palette.SHADOW
 		else:
 			sprite_type = _new_SpriteTypeTag.DEFAULT
-			sprite_color = _default_ground_color
+			sprite_color = _new_Palette.get_default_color(
+					_new_MainGroupTag.GROUND)
 
 		_ref_SwitchSprite.switch_sprite(ground_sprite, sprite_type)
 		ground_sprite.modulate = sprite_color

@@ -1,3 +1,5 @@
+const DIJKSTRA: String = "res://library/npc_ai/DijkstraPathFinding.gd"
+
 const ObjectData := preload("res://scene/main/ObjectData.gd")
 const DungeonBoard := preload("res://scene/main/DungeonBoard.gd")
 const SwitchSprite := preload("res://scene/main/SwitchSprite.gd")
@@ -19,6 +21,10 @@ var _new_SpriteTypeTag := preload("res://library/SpriteTypeTag.gd").new()
 var _new_MainGroupTag := preload("res://library/MainGroupTag.gd").new()
 var _new_SubGroupTag := preload("res://library/SubGroupTag.gd").new()
 var _new_Palette := preload("res://library/Palette.gd").new()
+var _new_DungeonSize := preload("res://library/DungeonSize.gd").new()
+var _new_PathFindingData := preload("res://library/PathFindingData.gd").new()
+
+var _new_DijkstraPathFinding := preload(DIJKSTRA).new()
 
 var _pc: Sprite
 var _self: Sprite
