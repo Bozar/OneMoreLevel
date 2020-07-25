@@ -17,6 +17,7 @@ _global_script_class_icons={
 
 config/name="One More Level"
 run/main_scene="res://scene/main/MainScene.tscn"
+run/low_processor_mode=true
 config/icon="res://resource/icon.png"
 
 [display]
