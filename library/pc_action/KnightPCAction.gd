@@ -47,7 +47,8 @@ func _hit_boss(boss: Sprite) -> void:
 
 
 func _roll() -> bool:
-	var neighbor: Array = _new_CoordCalculator.get_neighbor(_target_position, 1)
+	var neighbor: Array = _new_CoordCalculator.get_neighbor(
+			_target_position[0], _target_position[1], 1)
 	var roll_over: Array = [-1, -1]
 
 	for i in neighbor:

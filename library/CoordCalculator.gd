@@ -1,21 +1,21 @@
 var _new_DungeonSize := preload("res://library/DungeonSize.gd").new()
 
 
-func get_range(source: Array, target: Array) -> int:
-	var delta_x: int = abs(source[0] - target[0]) as int
-	var delta_y: int = abs(source[1] - target[1]) as int
+func get_range(x_source: int, y_source: int, x_target: int, y_target: int) \
+		-> int:
+	var delta_x: int = abs(x_source - x_target) as int
+	var delta_y: int = abs(y_source - y_target) as int
 
 	return delta_x + delta_y
 
 
-func is_inside_range(source: Array, target: Array, max_range: int) -> bool:
-	return get_range(source, target) <= max_range
+func is_inside_range(x_source: int, y_source: int, x_target: int, y_target: int,
+		 max_range: int) -> bool:
+	return get_range(x_source, y_source, x_target, y_target) <= max_range
 
 
-func get_neighbor(center: Array, max_range: int, has_center: bool = false) \
+func get_neighbor(x: int, y: int, max_range: int, has_center: bool = false) \
 		-> Array:
-	var x: int = center[0]
-	var y: int = center[1]
 	var neighbor: Array = []
 
 	for i in range(x - max_range, x + max_range + 1):
@@ -23,7 +23,7 @@ func get_neighbor(center: Array, max_range: int, has_center: bool = false) \
 			if (i == x) and (j == y):
 				continue
 			if is_inside_dungeon(i, j) \
-					and is_inside_range([x, y], [i, j], max_range):
+					and is_inside_range(x, y, i, j, max_range):
 				neighbor.push_back([i, j])
 
 	if has_center:
@@ -32,16 +32,14 @@ func get_neighbor(center: Array, max_range: int, has_center: bool = false) \
 	return neighbor
 
 
-func get_block(top_left: Array, width: int, height: int) -> Array:
-	var x: int = top_left[0]
-	var y: int = top_left[1]
+func get_block(x_top_left: int, y_top_left: int, width: int, height: int) \
+		-> Array:
 	var coord: Array = []
 
-	for i in range(x, x + width):
-		for j in range(y, y + height):
+	for i in range(x_top_left, x_top_left + width):
+		for j in range(y_top_left, y_top_left + height):
 			if is_inside_dungeon(i, j):
 				coord.push_back([i, j])
-
 	return coord
 
 

@@ -26,7 +26,8 @@ func take_action(actor: Sprite) -> void:
 	elif _ref_ObjectData.verify_state(_self, _new_ObjectStateTag.PASSIVE):
 		_recover()
 	# Default -> Active.
-	elif _new_CoordCalculator.is_inside_range(_pc_pos, _self_pos,
+	elif _new_CoordCalculator.is_inside_range(
+			_pc_pos[0], _pc_pos[1], _self_pos[0], _self_pos[1],
 			_new_KnightData.RANGE):
 		_alert()
 	# Approach.
@@ -135,7 +136,8 @@ func _switch_ground(danger_zone: Array) -> void:
 
 
 func _get_danger_zone() -> Array:
-	var neighbor: Array = _new_CoordCalculator.get_neighbor(_pc_pos, 1, true)
+	var neighbor: Array = _new_CoordCalculator.get_neighbor(
+			_pc_pos[0], _pc_pos[1], 1, true)
 	var candidate: Array = [_pc_pos]
 	var one_grid: Array = []
 	var two_grids: Array = []
@@ -180,7 +182,8 @@ func _prepare_second_attack(id: int) -> void:
 
 	_boss_attack_count[id] += 1
 
-	if _new_CoordCalculator.is_inside_range(_pc_pos, _self_pos,
+	if _new_CoordCalculator.is_inside_range(
+			_pc_pos[0], _pc_pos[1], _self_pos[0], _self_pos[1],
 			_new_KnightData.RANGE):
 		danger_zone = _get_danger_zone()
 		_id_to_danger_zone[id] = danger_zone
@@ -200,7 +203,8 @@ func _try_hit_pc(danger_zone: Array) -> void:
 
 
 func _is_ready_to_move() -> bool:
-	if not _new_CoordCalculator.is_inside_range(_pc_pos, _self_pos,
+	if not _new_CoordCalculator.is_inside_range(
+			_pc_pos[0], _pc_pos[1], _self_pos[0], _self_pos[1],
 			_new_KnightData.SIGHT):
 		return false
 	if _ref_RandomNumber.get_int(

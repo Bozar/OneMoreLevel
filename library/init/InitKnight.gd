@@ -98,7 +98,7 @@ func _create_solid_wall() -> void:
 
 	# Set blueprint and dungeon board.
 	block = _new_CoordCalculator.get_block(
-			[start_x, start_y], max_x - start_x, max_y - start_y)
+			start_x, start_y, max_x - start_x, max_y - start_y)
 
 	for xy in block:
 		# Every wall block might lose one grid.
@@ -114,7 +114,8 @@ func _create_solid_wall() -> void:
 
 func _is_valid_block(start: Array, width: int, height: int) \
 		-> bool:
-	var block: Array = _new_CoordCalculator.get_block(start, width, height)
+	var block: Array = _new_CoordCalculator.get_block(
+			start[0], start[1], width, height)
 
 	for xy in block:
 		if _is_occupied(xy[0], xy[1]):
@@ -167,7 +168,7 @@ func _is_valid_hole(dig_x: int, dig_y: int, \
 	if not _new_CoordCalculator.is_inside_dungeon(dig_x, dig_y):
 		return false
 
-	var neighbor: Array = _new_CoordCalculator.get_neighbor([dig_x, dig_y], 1)
+	var neighbor: Array = _new_CoordCalculator.get_neighbor(dig_x, dig_y, 1)
 
 	for n in neighbor:
 		if (n[0] < start_x) or (n[0] >= max_x) \
@@ -190,7 +191,7 @@ func _init_PC() -> void:
 			continue
 		break
 
-	neighbor = _new_CoordCalculator.get_neighbor([pc_x, pc_y], min_range, true)
+	neighbor = _new_CoordCalculator.get_neighbor(pc_x, pc_y, min_range, true)
 	for xy in neighbor:
 		_occupy_position(xy[0], xy[1])
 
@@ -219,7 +220,7 @@ func _init_knight(scene: PackedScene, tag: String) -> void:
 		if _is_occupied(x, y):
 			continue
 
-		neighbor = _new_CoordCalculator.get_neighbor([x, y], min_range, true)
+		neighbor = _new_CoordCalculator.get_neighbor(x, y, min_range, true)
 		for xy in neighbor:
 			_occupy_position(xy[0], xy[1])
 

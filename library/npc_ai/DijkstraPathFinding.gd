@@ -8,7 +8,8 @@ func get_path(dungeon: Dictionary, start_x: int, start_y: int, \
 		return _get_next_step(dungeon, start_x, start_y)
 
 	var check: Array = end_point.pop_front()
-	var neighbor: Array = _new_CoordCalculator.get_neighbor(check, 1)
+	var neighbor: Array = _new_CoordCalculator.get_neighbor(
+			check[0], check[1], 1)
 
 	for n in neighbor:
 		if dungeon[n[0]][n[1]] == _new_PathFindingData.UNKNOWN:
@@ -19,7 +20,8 @@ func get_path(dungeon: Dictionary, start_x: int, start_y: int, \
 
 
 func _get_distance(dungeon: Dictionary, center: Array) -> int:
-	var neighbor: Array = _new_CoordCalculator.get_neighbor(center, 1)
+	var neighbor: Array = _new_CoordCalculator.get_neighbor(
+			center[0], center[1], 1)
 	var min_distance: int = _new_PathFindingData.OBSTACLE
 
 	for n in neighbor:
@@ -32,8 +34,7 @@ func _get_distance(dungeon: Dictionary, center: Array) -> int:
 
 func _get_next_step(dungeon: Dictionary, start_x: int, start_y: int) -> Array:
 	var next_step: Array = []
-	var neighbor: Array = _new_CoordCalculator.get_neighbor(
-			[start_x, start_y], 1)
+	var neighbor: Array = _new_CoordCalculator.get_neighbor(start_x, start_y, 1)
 	var min_distance: int = _new_PathFindingData.OBSTACLE
 
 	for n in neighbor:
