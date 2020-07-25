@@ -35,6 +35,7 @@ var _pc_pos: Array
 var _pc_action: PCActionTemplate
 var _direction: String
 var _pc_is_dead: bool = false
+var _is_wizard: bool = true
 
 var _move_inputs: Array = [
 	_new_InputTag.MOVE_LEFT,
@@ -56,10 +57,14 @@ func _ready() -> void:
 func _unhandled_input(event: InputEvent) -> void:
 	_pc_action.reset_state()
 
-	if _is_reload_input(event):
-		get_node(RELOAD_GAME).reload()
+	if _is_wizard:
+		if _is_force_reload_input(event):
+			get_node(RELOAD_GAME).reload()
+			return
 
 	if _pc_is_dead:
+		if _is_reload_input(event):
+			get_node(RELOAD_GAME).reload()
 		return
 
 	if _is_move_input(event):
@@ -114,6 +119,10 @@ func _on_BuryPC_pc_is_dead() -> void:
 
 func _is_reload_input(event: InputEvent) -> bool:
 	return event.is_action_pressed(_new_InputTag.RELOAD)
+
+
+func _is_force_reload_input(event: InputEvent) -> bool:
+	return event.is_action_pressed(_new_InputTag.FORCE_RELOAD)
 
 
 func _is_wait_input(event: InputEvent) -> bool:

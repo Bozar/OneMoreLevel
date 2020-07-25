@@ -7,3 +7,4 @@ const WAIT: String = "wait"
 
 const INIT_WORLD: String = "init_world"
 const RELOAD: String = "reload"
+const FORCE_RELOAD: String = "force_reload"
