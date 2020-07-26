@@ -1,7 +1,7 @@
 extends "res://library/npc_ai/AITemplate.gd"
 
 
-func _init(object_reference: Array).(object_reference) -> void:
+func _init(parent_node: Node2D).(parent_node) -> void:
 	pass
 
 

@@ -4,7 +4,7 @@ extends "res://library/pc_action/PCActionTemplate.gd"
 var _new_KnightData := preload("res://library/npc_data/KnightData.gd").new()
 
 
-func _init(object_reference: Array).(object_reference) -> void:
+func _init(parent_node: Node2D).(parent_node) -> void:
 	pass
 
 

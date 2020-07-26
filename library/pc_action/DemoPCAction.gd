@@ -4,5 +4,5 @@ extends "res://library/pc_action/PCActionTemplate.gd"
 # parent, PCActionTemplate.gd.
 
 
-func _init(object_reference: Array).(object_reference) -> void:
+func _init(parent_node: Node2D).(parent_node) -> void:
 	pass

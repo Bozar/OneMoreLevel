@@ -28,6 +28,7 @@ var _new_KnightAI := preload("res://library/npc_ai/KnightAI.gd")
 
 var _world_tag: String
 var _ai: AITemplate
+var _pc: Sprite
 
 var _select_world: Dictionary = {
 	_new_WorldTag.DEMO: _new_DemoAI,
@@ -53,16 +54,9 @@ func _on_InitWorld_sprite_created(new_sprite: Sprite) -> void:
 	if not new_sprite.is_in_group(_new_SubGroupTag.PC):
 		return
 
-	# Order matters here. Refer: AITemplate.gd.
-	_ai = _select_world[_world_tag].new([
-		new_sprite,
-		_ref_ObjectData,
-		_ref_DungeonBoard,
-		_ref_SwitchSprite,
-		_ref_DangerZone,
-		_ref_BuryPC,
-		_ref_RandomNumber
-	])
+	# Refer: AITemplate.gd.
+	_pc = new_sprite
+	_ai = _select_world[_world_tag].new(self)
 
 
 func _on_RemoveObject_sprite_removed(remove_sprite: Sprite,

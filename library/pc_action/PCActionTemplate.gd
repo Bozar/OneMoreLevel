@@ -34,12 +34,12 @@ var _direction_to_coord: Dictionary = {
 }
 
 
-# Order matters here. Refer: PlayerInput.gd.
-func _init(object_reference: Array) -> void:
-	_ref_DungeonBoard = object_reference[0]
-	_ref_RemoveObject = object_reference[1]
-	_ref_ObjectData = object_reference[2]
-	_ref_RandomNumber = object_reference[3]
+# Refer: PlayerInput.gd.
+func _init(parent_node: Node2D) -> void:
+	_ref_DungeonBoard = parent_node._ref_DungeonBoard
+	_ref_RemoveObject = parent_node._ref_RemoveObject
+	_ref_ObjectData = parent_node._ref_ObjectData
+	_ref_RandomNumber = parent_node._ref_RandomNumber
 
 
 func get_message() -> String:

@@ -77,14 +77,9 @@ func _unhandled_input(event: InputEvent) -> void:
 		_ref_Schedule.end_turn()
 
 
-# Order matters here. Refer: PCActionTemplate.gd.
+# Refer: PCActionTemplate.gd.
 func _on_InitWorld_world_selected(new_world: String) -> void:
-	_pc_action = _select_world[new_world].new([
-			_ref_DungeonBoard,
-			_ref_RemoveObject,
-			_ref_ObjectData,
-			_ref_RandomNumber
-	])
+	_pc_action = _select_world[new_world].new(self)
 
 
 func _on_InitWorld_sprite_created(new_sprite: Sprite) -> void:

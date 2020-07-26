@@ -35,15 +35,15 @@ var _self_pos: Array
 var _dungeon: Dictionary
 
 
-func _init(object_reference: Array) -> void:
-	# Order matters here. Refer: EnemyAI.gd.
-	_pc = object_reference[0]
-	_ref_ObjectData = object_reference[1]
-	_ref_DungeonBoard = object_reference[2]
-	_ref_SwitchSprite = object_reference[3]
-	_ref_DangerZone = object_reference[4]
-	_ref_BuryPC = object_reference[5]
-	_ref_RandomNumber = object_reference[6]
+# Refer: EnemyAI.gd.
+func _init(parent_node: Node2D) -> void:
+	_pc = parent_node._pc
+	_ref_ObjectData = parent_node._ref_ObjectData
+	_ref_DungeonBoard = parent_node._ref_DungeonBoard
+	_ref_SwitchSprite = parent_node._ref_SwitchSprite
+	_ref_DangerZone = parent_node._ref_DangerZone
+	_ref_BuryPC = parent_node._ref_BuryPC
+	_ref_RandomNumber = parent_node._ref_RandomNumber
 
 	for x in range(_new_DungeonSize.MAX_X):
 		_dungeon[x] = []

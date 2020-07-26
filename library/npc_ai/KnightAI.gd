@@ -8,7 +8,7 @@ var _boss_attack_count: Dictionary = {}
 var _hit_to_sprite: Dictionary
 
 
-func _init(object_reference: Array).(object_reference) -> void:
+func _init(parent_node: Node2D).(parent_node) -> void:
 	_hit_to_sprite = {
 		0: _new_SpriteTypeTag.DEFAULT,
 		1: _new_SpriteTypeTag.DEFAULT_2,
