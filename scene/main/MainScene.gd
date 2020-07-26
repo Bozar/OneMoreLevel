@@ -18,12 +18,12 @@ const SIGNAL_BIND: Array = [
 	[
 		"sprite_created", "_on_InitWorld_sprite_created",
 		INIT_WORLD,
-		PLAYER_INPUT, ENEMY_AI, SCHEDULE, DUNGEON, OBJECT_DATA,
+		PLAYER_INPUT, ENEMY_AI, SCHEDULE, DUNGEON, OBJECT_DATA, SIDEBAR,
 	],
 	[
 		"world_selected", "_on_InitWorld_world_selected",
 		INIT_WORLD,
-		PLAYER_INPUT, ENEMY_AI,
+		PLAYER_INPUT, ENEMY_AI, SIDEBAR,
 	],
 	[
 		"turn_started", "_on_Schedule_turn_started",
@@ -71,7 +71,7 @@ const NODE_REF: Array = [
 	[
 		"_ref_RandomNumber",
 		RANDOM,
-		INIT_WORLD, PLAYER_INPUT, ENEMY_AI,
+		INIT_WORLD, PLAYER_INPUT, ENEMY_AI, SIDEBAR,
 	],
 	[
 		"_ref_ObjectData",
@@ -86,7 +86,7 @@ const NODE_REF: Array = [
 	[
 		"_ref_DangerZone",
 		DANGER_ZONE,
-		ENEMY_AI, PLAYER_INPUT,
+		ENEMY_AI, PLAYER_INPUT, SIDEBAR,
 	],
 	[
 		"_ref_BuryPC",

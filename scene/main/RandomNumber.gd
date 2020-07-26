@@ -1,6 +1,8 @@
 extends Node2D
 
 
+var rng_seed: int setget set_rng_seed, get_rng_seed
+
 var _rng := RandomNumberGenerator.new()
 
 
@@ -14,3 +16,11 @@ func _ready() -> void:
 # Get an integer from min_int (inclusive) to max_int (exclusive).
 func get_int(min_int: int, max_int: int) -> int:
 	return _rng.randi_range(min_int, max_int - 1)
+
+
+func get_rng_seed() -> int:
+	return _rng.seed
+
+
+func set_rng_seed(_rng_seed: int) -> void:
+	return
