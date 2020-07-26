@@ -20,13 +20,38 @@ script = ExtResource( 2 )
 
 [node name="Turn" parent="SidebarVBox" instance=ExtResource( 1 )]
 margin_right = 180.0
-margin_bottom = 565.0
-size_flags_vertical = 3
+margin_bottom = 60.0
+rect_min_size = Vector2( 0, 60 )
+size_flags_vertical = 1
 text = "Turn: 14"
 
+[node name="Message" parent="SidebarVBox" instance=ExtResource( 1 )]
+margin_top = 64.0
+margin_right = 180.0
+margin_bottom = 495.0
+size_flags_vertical = 3
+text = "Message"
+
+[node name="World" parent="SidebarVBox" instance=ExtResource( 1 )]
+margin_top = 499.0
+margin_right = 180.0
+margin_bottom = 530.0
+size_flags_vertical = 1
+text = "World Name"
+align = 2
+
 [node name="Help" parent="SidebarVBox" instance=ExtResource( 1 )]
+margin_top = 534.0
+margin_right = 180.0
+margin_bottom = 565.0
+size_flags_vertical = 1
+text = "Help"
+align = 2
+
+[node name="Seed" parent="SidebarVBox" instance=ExtResource( 1 )]
 margin_top = 569.0
 margin_right = 180.0
 margin_bottom = 600.0
 size_flags_vertical = 1
-text = "Help"
+text = "123456"
+align = 2
