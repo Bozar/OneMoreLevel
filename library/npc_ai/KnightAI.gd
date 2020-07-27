@@ -207,8 +207,6 @@ func _is_ready_to_move() -> bool:
 			_pc_pos[0], _pc_pos[1], _self_pos[0], _self_pos[1],
 			_new_KnightData.SIGHT):
 		return false
-	if _ref_RandomNumber.get_int(
-			_new_KnightData.MOVE_MIN, _new_KnightData.MOVE_MAX) \
-			< _new_KnightData.MOVE_THRESHOLD:
+	if _ref_RandomNumber.get_percent_chance(_new_KnightData.WAIT_CHANCE):
 		return false
 	return true

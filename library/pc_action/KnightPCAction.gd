@@ -33,12 +33,19 @@ func _hit_knight() -> void:
 
 func _hit_boss(boss: Sprite) -> void:
 	var teleport: Array = [-1, -1]
+	var is_occupied: bool = true
+	var is_too_close: bool = true
 
 	if _ref_ObjectData.get_hit_point(boss) < _new_KnightData.MAX_BOSS_HP:
 		_ref_ObjectData.add_hit_point(boss, 1)
 
-		while _is_occupied(teleport[0], teleport[1]):
+		while is_occupied or is_too_close:
 			teleport = _get_new_position()
+			is_occupied = _is_occupied(teleport[0], teleport[1])
+			is_too_close = _new_CoordCalculator.is_inside_range(
+					teleport[0], teleport[1],
+					_source_position[0], _source_position[1],
+					_new_KnightData.TELEPORT_DISTANCE)
 
 		_ref_DungeonBoard.move_sprite(_new_MainGroupTag.ACTOR,
 				_target_position, teleport)
