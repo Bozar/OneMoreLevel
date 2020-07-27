@@ -4,7 +4,7 @@ const ObjectData := preload("res://scene/main/ObjectData.gd")
 const DungeonBoard := preload("res://scene/main/DungeonBoard.gd")
 const SwitchSprite := preload("res://scene/main/SwitchSprite.gd")
 const DangerZone := preload("res://scene/main/DangerZone.gd")
-const BuryPC := preload("res://scene/main/BuryPC.gd")
+const EndGame := preload("res://scene/main/EndGame.gd")
 const RandomNumber := preload("res://scene/main/RandomNumber.gd")
 
 var print_text: String setget set_print_text, get_print_text
@@ -13,7 +13,7 @@ var _ref_ObjectData: ObjectData
 var _ref_DungeonBoard: DungeonBoard
 var _ref_SwitchSprite: SwitchSprite
 var _ref_DangerZone: DangerZone
-var _ref_BuryPC: BuryPC
+var _ref_EndGame: EndGame
 var _ref_RandomNumber: RandomNumber
 
 var _new_ConvertCoord := preload("res://library/ConvertCoord.gd").new()
@@ -42,7 +42,7 @@ func _init(parent_node: Node2D) -> void:
 	_ref_DungeonBoard = parent_node._ref_DungeonBoard
 	_ref_SwitchSprite = parent_node._ref_SwitchSprite
 	_ref_DangerZone = parent_node._ref_DangerZone
-	_ref_BuryPC = parent_node._ref_BuryPC
+	_ref_EndGame = parent_node._ref_EndGame
 	_ref_RandomNumber = parent_node._ref_RandomNumber
 
 	for x in range(_new_DungeonSize.MAX_X):

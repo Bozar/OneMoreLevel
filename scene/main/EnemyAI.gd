@@ -9,7 +9,7 @@ const ObjectData := preload("res://scene/main/ObjectData.gd")
 const DungeonBoard := preload("res://scene/main/DungeonBoard.gd")
 const SwitchSprite := preload("res://scene/main/SwitchSprite.gd")
 const DangerZone := preload("res://scene/main/DangerZone.gd")
-const BuryPC := preload("res://scene/main/BuryPC.gd")
+const EndGame := preload("res://scene/main/EndGame.gd")
 const RandomNumber := preload("res://scene/main/RandomNumber.gd")
 
 var _ref_Schedule: Schedule
@@ -17,7 +17,7 @@ var _ref_ObjectData: ObjectData
 var _ref_DungeonBoard: DungeonBoard
 var _ref_SwitchSprite: SwitchSprite
 var _ref_DangerZone: DangerZone
-var _ref_BuryPC: BuryPC
+var _ref_EndGame: EndGame
 var _ref_RandomNumber: RandomNumber
 
 var _new_SubGroupTag := preload("res://library/SubGroupTag.gd").new()

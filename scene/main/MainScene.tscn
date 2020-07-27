@@ -16,7 +16,7 @@
 [ext_resource path="res://scene/main/SpriteType.gd" type="Script" id=14]
 [ext_resource path="res://scene/main/HitPoint.gd" type="Script" id=15]
 [ext_resource path="res://scene/main/DangerZone.gd" type="Script" id=16]
-[ext_resource path="res://scene/main/BuryPC.gd" type="Script" id=17]
+[ext_resource path="res://scene/main/EndGame.gd" type="Script" id=17]
 [ext_resource path="res://scene/main/AutoStart.gd" type="Script" id=18]
 
 [node name="MainScene" type="Node2D"]
@@ -61,7 +61,7 @@ script = ExtResource( 3 )
 [node name="DangerZone" type="Node2D" parent="."]
 script = ExtResource( 16 )
 
-[node name="BuryPC" type="Node2D" parent="."]
+[node name="EndGame" type="Node2D" parent="."]
 script = ExtResource( 17 )
 
 [node name="ObjectData" type="Node2D" parent="."]

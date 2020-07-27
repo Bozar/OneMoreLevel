@@ -62,6 +62,13 @@ func _on_Schedule_turn_started(current_sprite: Sprite) -> void:
 	get_node(MESSAGE).text = _get_warning()
 
 
+func _on_EndGame_game_is_over(win: bool) -> void:
+	if win:
+		get_node(MESSAGE).text = _win
+	else:
+		get_node(MESSAGE).text = _lose
+
+
 func _set_color() -> void:
 	for i in _node_to_color.keys():
 		get_node(i).modulate = _node_to_color[i]

@@ -34,7 +34,7 @@ var _pc: Sprite
 var _pc_pos: Array
 var _pc_action: PCActionTemplate
 var _direction: String
-var _pc_is_dead: bool = false
+var _end_game: bool = false
 var _is_wizard: bool = true
 
 var _move_inputs: Array = [
@@ -62,7 +62,7 @@ func _unhandled_input(event: InputEvent) -> void:
 			get_node(RELOAD_GAME).reload()
 			return
 
-	if _pc_is_dead:
+	if _end_game:
 		if _is_reload_input(event):
 			get_node(RELOAD_GAME).reload()
 		return
@@ -103,11 +103,12 @@ func _on_Schedule_turn_started(current_sprite: Sprite) -> void:
 	set_process_unhandled_input(true)
 
 
-func _on_BuryPC_pc_is_dead() -> void:
-	_pc_is_dead = true
+func _on_EndGame_game_is_over(win: bool) -> void:
+	_end_game = true
 
 	_ref_SwitchSprite.switch_sprite(_pc, _new_SpriteTypeTag.DEFAULT)
-	_pc.modulate = _new_Palette.SHADOW
+	if not win:
+		_pc.modulate = _new_Palette.SHADOW
 
 	set_process_unhandled_input(true)
 
