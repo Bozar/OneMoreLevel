@@ -18,6 +18,10 @@ func get_int(min_int: int, max_int: int) -> int:
 	return _rng.randi_range(min_int, max_int - 1)
 
 
+func get_percent_chance(chance: int) -> bool:
+	return chance > get_int(0, 100)
+
+
 func get_rng_seed() -> int:
 	return _rng.seed
 
