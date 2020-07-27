@@ -20,13 +20,13 @@ script = ExtResource( 2 )
 
 [node name="Turn" parent="SidebarVBox" instance=ExtResource( 1 )]
 margin_right = 180.0
-margin_bottom = 60.0
-rect_min_size = Vector2( 0, 60 )
+margin_bottom = 45.0
+rect_min_size = Vector2( 0, 45 )
 size_flags_vertical = 1
 text = "Turn: 14"
 
 [node name="Message" parent="SidebarVBox" instance=ExtResource( 1 )]
-margin_top = 64.0
+margin_top = 49.0
 margin_right = 180.0
 margin_bottom = 495.0
 size_flags_vertical = 3
