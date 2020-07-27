@@ -9,6 +9,7 @@ const RemoveObject := preload("res://scene/main/RemoveObject.gd")
 const RandomNumber := preload("res://scene/main/RandomNumber.gd")
 const DangerZone := preload("res://scene/main/DangerZone.gd")
 const SwitchSprite := preload("res://scene/main/SwitchSprite.gd")
+const EndGame := preload("res://scene/main/EndGame.gd")
 
 const DemoPCAction := preload("res://library/pc_action/DemoPCAction.gd")
 const KnightPCAction := preload("res://library/pc_action/KnightPCAction.gd")
@@ -22,6 +23,7 @@ var _ref_ObjectData: ObjectData
 var _ref_RandomNumber: RandomNumber
 var _ref_DangerZone: DangerZone
 var _ref_SwitchSprite: SwitchSprite
+var _ref_EndGame: EndGame
 
 var _new_ConvertCoord := preload("res://library/ConvertCoord.gd").new()
 var _new_WorldTag := preload("res://library/WorldTag.gd").new()
@@ -71,6 +73,10 @@ func _unhandled_input(event: InputEvent) -> void:
 		_handle_move_input()
 	elif _is_wait_input(event):
 		_pc_action.wait()
+
+	# Do not end PC's turn if game ends.
+	if _end_game:
+		return
 
 	if _pc_action.end_turn:
 		set_process_unhandled_input(false)

@@ -7,6 +7,7 @@ const DungeonBoard := preload("res://scene/main/DungeonBoard.gd")
 const RemoveObject := preload("res://scene/main/RemoveObject.gd")
 const ObjectData := preload("res://scene/main/ObjectData.gd")
 const RandomNumber := preload("res://scene/main/RandomNumber.gd")
+const EndGame := preload("res://scene/main/EndGame.gd")
 
 var message: String setget set_message, get_message
 var end_turn: bool setget set_end_turn, get_end_turn
@@ -15,6 +16,7 @@ var _ref_DungeonBoard: DungeonBoard
 var _ref_RemoveObject: RemoveObject
 var _ref_ObjectData: ObjectData
 var _ref_RandomNumber: RandomNumber
+var _ref_EndGame: EndGame
 
 var _new_InputTag := preload("res://library/InputTag.gd").new()
 var _new_MainGroupTag := preload("res://library/MainGroupTag.gd").new()
@@ -40,6 +42,7 @@ func _init(parent_node: Node2D) -> void:
 	_ref_RemoveObject = parent_node._ref_RemoveObject
 	_ref_ObjectData = parent_node._ref_ObjectData
 	_ref_RandomNumber = parent_node._ref_RandomNumber
+	_ref_EndGame = parent_node._ref_EndGame
 
 
 func get_message() -> String:

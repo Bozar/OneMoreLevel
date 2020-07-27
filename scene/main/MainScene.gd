@@ -91,7 +91,7 @@ const NODE_REF: Array = [
 	[
 		"_ref_EndGame",
 		END_GAME,
-		ENEMY_AI,
+		ENEMY_AI, PLAYER_INPUT,
 	],
 ]
 

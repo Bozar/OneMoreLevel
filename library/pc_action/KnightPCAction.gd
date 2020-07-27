@@ -44,6 +44,7 @@ func _hit_boss(boss: Sprite) -> void:
 				_target_position, teleport)
 	else:
 		_hit_knight()
+		_ref_EndGame.player_win()
 
 
 func _roll() -> bool:
