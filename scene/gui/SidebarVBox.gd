@@ -30,6 +30,7 @@ var _node_to_color: Dictionary = {
 }
 
 var _pc: Sprite
+var _is_wizard: bool = false
 var _turn_counter: int = 0
 
 
@@ -41,7 +42,7 @@ func _on_InitWorld_world_selected(new_world: String) -> void:
 
 	get_node(WORLD).text = _new_WorldTag.get_world_name(new_world)
 	get_node(HELP).text = _new_SidebarText.HELP
-	get_node(VERSION).text = _new_SidebarText.VERSION
+	get_node(VERSION).text = _get_version()
 	get_node(SEED).text = _get_seed()
 
 
@@ -90,3 +91,9 @@ func _get_seed() -> String:
 	var _tail: String = _rng_seed.substr(6)
 
 	return _new_SidebarText.SEED.format([_head, _body, _tail])
+
+
+func _get_version() -> String:
+	if _is_wizard:
+		return _new_SidebarText.VERSION.format([_new_SidebarText.WIZARD])
+	return _new_SidebarText.VERSION.format([""])
