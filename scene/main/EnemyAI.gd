@@ -22,18 +22,11 @@ var _ref_RandomNumber: RandomNumber
 
 var _new_SubGroupTag := preload("res://library/SubGroupTag.gd").new()
 var _new_WorldTag := preload("res://library/WorldTag.gd").new()
-
-var _new_DemoAI := preload("res://library/npc_ai/DemoAI.gd")
-var _new_KnightAI := preload("res://library/npc_ai/KnightAI.gd")
+var _new_InitWorldData := preload("res://library/InitWorldData.gd").new()
 
 var _world_tag: String
 var _ai: AITemplate
 var _pc: Sprite
-
-var _select_world: Dictionary = {
-	_new_WorldTag.DEMO: _new_DemoAI,
-	_new_WorldTag.KNIGHT: _new_KnightAI,
-}
 
 
 func _on_Schedule_turn_started(current_sprite: Sprite) -> void:
@@ -56,7 +49,7 @@ func _on_InitWorld_sprite_created(new_sprite: Sprite) -> void:
 
 	# Refer: AITemplate.gd.
 	_pc = new_sprite
-	_ai = _select_world[_world_tag].new(self)
+	_ai = _new_InitWorldData.get_enemy_ai(_world_tag).new(self)
 
 
 func _on_RemoveObject_sprite_removed(remove_sprite: Sprite,

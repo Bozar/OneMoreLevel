@@ -11,11 +11,8 @@ signal sprite_created(new_sprite)
 const ArrowLeft := preload("res://sprite/ArrowLeft.tscn")
 const ArrowTop := preload("res://sprite/ArrowTop.tscn")
 const ArrowBottom := preload("res://sprite/ArrowBottom.tscn")
-const RandomNumber := preload("res://scene/main/RandomNumber.gd")
-
 const WorldTemplate := preload("res://library/init/WorldTemplate.gd")
-const InitDemo := preload("res://library/init/InitDemo.gd")
-const InitKnight := preload("res://library/init/InitKnight.gd")
+const RandomNumber := preload("res://scene/main/RandomNumber.gd")
 
 var _ref_RandomNumber: RandomNumber
 
@@ -27,13 +24,9 @@ var _new_InputTag := preload("res://library/InputTag.gd").new()
 var _new_WorldTag := preload("res://library/WorldTag.gd").new()
 var _new_Palette := preload("res://library/Palette.gd").new()
 var _new_ZIndex := preload("res://library/ZIndex.gd").new()
+var _new_InitWorldData := preload("res://library/InitWorldData.gd").new()
 
 var _world: WorldTemplate
-
-var _select_world: Dictionary = {
-	_new_WorldTag.DEMO: InitDemo,
-	_new_WorldTag.KNIGHT: InitKnight,
-}
 
 
 # func _unhandled_input(event: InputEvent) -> void:
@@ -58,7 +51,8 @@ func _get_world() -> WorldTemplate:
 
 	# TODO: Generate a random world name from potential candidates.
 	world_name = _new_WorldTag.KNIGHT
-	world_template = _select_world[world_name].new(_ref_RandomNumber)
+	world_template = _new_InitWorldData.get_world_template(world_name).new(
+			_ref_RandomNumber)
 	emit_signal("world_selected", world_name)
 
 	return world_template

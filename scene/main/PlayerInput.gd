@@ -12,9 +12,6 @@ const SwitchSprite := preload("res://scene/main/SwitchSprite.gd")
 const EndGame := preload("res://scene/main/EndGame.gd")
 const CountDown := preload("res://scene/main/CountDown.gd")
 
-const DemoPCAction := preload("res://library/pc_action/DemoPCAction.gd")
-const KnightPCAction := preload("res://library/pc_action/KnightPCAction.gd")
-
 const RELOAD_GAME: String = "ReloadGame"
 
 var _ref_Schedule: Schedule
@@ -33,6 +30,7 @@ var _new_InputTag := preload("res://library/InputTag.gd").new()
 var _new_SubGroupTag := preload("res://library/SubGroupTag.gd").new()
 var _new_SpriteTypeTag := preload("res://library/SpriteTypeTag.gd").new()
 var _new_Palette := preload("res://library/Palette.gd").new()
+var _new_InitWorldData := preload("res://library/InitWorldData.gd").new()
 
 var _pc: Sprite
 var _pc_pos: Array
@@ -47,11 +45,6 @@ var _move_inputs: Array = [
 	_new_InputTag.MOVE_UP,
 	_new_InputTag.MOVE_DOWN,
 ]
-
-var _select_world: Dictionary = {
-	_new_WorldTag.DEMO: DemoPCAction,
-	_new_WorldTag.KNIGHT: KnightPCAction,
-}
 
 
 func _ready() -> void:
@@ -89,7 +82,7 @@ func _unhandled_input(event: InputEvent) -> void:
 
 # Refer: PCActionTemplate.gd.
 func _on_InitWorld_world_selected(new_world: String) -> void:
-	_pc_action = _select_world[new_world].new(self)
+	_pc_action = _new_InitWorldData.get_pc_action(new_world).new(self)
 
 
 func _on_InitWorld_sprite_created(new_sprite: Sprite) -> void:
