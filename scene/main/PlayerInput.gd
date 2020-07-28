@@ -65,6 +65,8 @@ func _unhandled_input(event: InputEvent) -> void:
 		if _is_force_reload_input(event):
 			get_node(RELOAD_GAME).reload()
 			return
+		elif _is_add_turn_input(event):
+			_ref_CountDown.add_count(1)
 
 	if _end_game:
 		if _is_reload_input(event):
@@ -149,3 +151,7 @@ func _handle_move_input() -> void:
 		_pc_action.attack()
 	elif _pc_action.is_building(_pc_pos, _direction):
 		_pc_action.interact()
+
+
+func _is_add_turn_input(event: InputEvent) -> bool:
+	return event.is_action_pressed(_new_InputTag.ADD_TURN)
