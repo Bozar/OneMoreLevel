@@ -12,6 +12,7 @@ const OBJECT_DATA: String = "ObjectData"
 const SWITCH_SPRITE: String = "SwitchSprite"
 const DANGER_ZONE: String = "DangerZone"
 const END_GAME: String = "EndGame"
+const COUNT_DOWN: String = "CountDown"
 const SIDEBAR: String = "MainGUI/SidebarVBox"
 
 const SIGNAL_BIND: Array = [
@@ -28,13 +29,13 @@ const SIGNAL_BIND: Array = [
 	[
 		"turn_started", "_on_Schedule_turn_started",
 		SCHEDULE,
-		PLAYER_INPUT, ENEMY_AI, SIDEBAR,
+		PLAYER_INPUT, ENEMY_AI, SIDEBAR, COUNT_DOWN,
 	],
-	# [
-	# 	"turn_ended", "_on_Schedule_turn_ended",
-	# 	SCHEDULE,
-	# 	MODELINE,
-	# ],
+	[
+		"turn_ended", "_on_Schedule_turn_ended",
+		SCHEDULE,
+		COUNT_DOWN,
+	],
 	[
 		"sprite_removed", "_on_RemoveObject_sprite_removed",
 		REMOVE,
@@ -91,7 +92,12 @@ const NODE_REF: Array = [
 	[
 		"_ref_EndGame",
 		END_GAME,
-		ENEMY_AI, PLAYER_INPUT,
+		ENEMY_AI, PLAYER_INPUT, COUNT_DOWN,
+	],
+	[
+		"_ref_CountDown",
+		COUNT_DOWN,
+		SIDEBAR, PLAYER_INPUT,
 	],
 ]
 

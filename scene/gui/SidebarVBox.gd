@@ -10,6 +10,7 @@ const SEED: String = "Seed"
 
 const RandomNumber := preload("res://scene/main/RandomNumber.gd")
 const DangerZone := preload("res://scene/main/DangerZone.gd")
+const CountDown := preload("res://scene/main/CountDown.gd")
 
 var _new_SubGroupTag := preload("res://library/SubGroupTag.gd").new()
 var _new_Palette := preload("res://library/Palette.gd").new()
@@ -19,6 +20,7 @@ var _new_SidebarText := preload("res://library/SidebarText.gd").new()
 
 var _ref_RandomNumber: RandomNumber
 var _ref_DangerZone: DangerZone
+var _ref_CountDown: CountDown
 
 var _node_to_color: Dictionary = {
 	TURN: _new_Palette.STANDARD,
@@ -31,7 +33,6 @@ var _node_to_color: Dictionary = {
 
 var _pc: Sprite
 var _is_wizard: bool = false
-var _turn_counter: int = 0
 
 
 func _on_InitWorld_world_selected(new_world: String) -> void:
@@ -55,7 +56,6 @@ func _on_Schedule_turn_started(current_sprite: Sprite) -> void:
 	if not current_sprite.is_in_group(_new_SubGroupTag.PC):
 		return
 
-	_turn_counter += 1
 	get_node(TURN).text = _get_turn()
 	get_node(MESSAGE).text = _get_warning()
 
@@ -73,7 +73,7 @@ func _set_color() -> void:
 
 
 func _get_turn() -> String:
-	return _new_SidebarText.TURN.format([_turn_counter])
+	return _new_SidebarText.TURN.format([_ref_CountDown.get_count()])
 
 
 func _get_warning() -> String:

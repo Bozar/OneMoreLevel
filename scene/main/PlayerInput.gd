@@ -10,6 +10,7 @@ const RandomNumber := preload("res://scene/main/RandomNumber.gd")
 const DangerZone := preload("res://scene/main/DangerZone.gd")
 const SwitchSprite := preload("res://scene/main/SwitchSprite.gd")
 const EndGame := preload("res://scene/main/EndGame.gd")
+const CountDown := preload("res://scene/main/CountDown.gd")
 
 const DemoPCAction := preload("res://library/pc_action/DemoPCAction.gd")
 const KnightPCAction := preload("res://library/pc_action/KnightPCAction.gd")
@@ -24,6 +25,7 @@ var _ref_RandomNumber: RandomNumber
 var _ref_DangerZone: DangerZone
 var _ref_SwitchSprite: SwitchSprite
 var _ref_EndGame: EndGame
+var _ref_CountDown: CountDown
 
 var _new_ConvertCoord := preload("res://library/ConvertCoord.gd").new()
 var _new_WorldTag := preload("res://library/WorldTag.gd").new()

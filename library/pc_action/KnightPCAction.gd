@@ -21,6 +21,7 @@ func attack() -> void:
 			_hit_boss(npc)
 		else:
 			_hit_knight()
+		_ref_CountDown.hit_bonus()
 		end_turn = true
 	else:
 		end_turn = false
