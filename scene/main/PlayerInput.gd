@@ -96,7 +96,10 @@ func _on_Schedule_turn_started(current_sprite: Sprite) -> void:
 	set_process_unhandled_input(true)
 
 
-func _on_EndGame_game_is_over(_win: bool) -> void:
+func _on_EndGame_game_is_over(win: bool) -> void:
+	if not win:
+		_pc.modulate = _new_Palette.SHADOW
+
 	_end_game = true
 	set_process_unhandled_input(true)
 
