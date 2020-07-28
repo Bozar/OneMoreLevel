@@ -96,13 +96,8 @@ func _on_Schedule_turn_started(current_sprite: Sprite) -> void:
 	set_process_unhandled_input(true)
 
 
-func _on_EndGame_game_is_over(win: bool) -> void:
+func _on_EndGame_game_is_over(_win: bool) -> void:
 	_end_game = true
-
-	_ref_SwitchSprite.switch_sprite(_pc, _new_SpriteTypeTag.DEFAULT)
-	if not win:
-		_pc.modulate = _new_Palette.SHADOW
-
 	set_process_unhandled_input(true)
 
 
