@@ -1,9 +1,8 @@
 extends Node2D
+class_name Game_SwitchSprite
 
 
-const ObjectData := preload("res://scene/main/ObjectData.gd")
-
-var _ref_ObjectData: ObjectData
+var _ref_ObjectData: Game_ObjectData
 
 
 func switch_sprite(sprite: Sprite, type_tag: String) -> void:

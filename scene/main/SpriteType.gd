@@ -1,4 +1,5 @@
 extends Node2D
+class_name Game_SpriteType
 
 
 var _id_to_sprite_type: Dictionary = {}

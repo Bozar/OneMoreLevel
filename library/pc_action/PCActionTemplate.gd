@@ -1,24 +1,18 @@
+class_name Game_PCActionTemplate
 # Scripts such as [DungeonType]PCAction.gd inherit this script.
 # All functions except getters and setters can be overriden.
 # The child should also implement _init() to pass arguments.
 
 
-const DungeonBoard := preload("res://scene/main/DungeonBoard.gd")
-const RemoveObject := preload("res://scene/main/RemoveObject.gd")
-const ObjectData := preload("res://scene/main/ObjectData.gd")
-const RandomNumber := preload("res://scene/main/RandomNumber.gd")
-const EndGame := preload("res://scene/main/EndGame.gd")
-const CountDown := preload("res://scene/main/CountDown.gd")
-
 var message: String setget set_message, get_message
 var end_turn: bool setget set_end_turn, get_end_turn
 
-var _ref_DungeonBoard: DungeonBoard
-var _ref_RemoveObject: RemoveObject
-var _ref_ObjectData: ObjectData
-var _ref_RandomNumber: RandomNumber
-var _ref_EndGame: EndGame
-var _ref_CountDown: CountDown
+var _ref_DungeonBoard: Game_DungeonBoard
+var _ref_RemoveObject: Game_RemoveObject
+var _ref_ObjectData: Game_ObjectData
+var _ref_RandomNumber: Game_RandomNumber
+var _ref_EndGame: Game_EndGame
+var _ref_CountDown: Game_CountDown
 
 var _new_InputTag := preload("res://library/InputTag.gd").new()
 var _new_MainGroupTag := preload("res://library/MainGroupTag.gd").new()

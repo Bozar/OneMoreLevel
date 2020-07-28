@@ -1,9 +1,9 @@
+class_name Game_WorldTemplate
 # Scripts such as Init[DungeonType].gd inherit this script.
 # Override get_blueprint() and _set_dungeon_board().
 # The child should also implement _init() to pass arguments.
 
 
-const RandomNumber := preload("res://scene/main/RandomNumber.gd")
 const SpriteBlueprint := preload("res://library/init/SpriteBlueprint.gd")
 const Floor := preload("res://sprite/Floor.tscn")
 
@@ -12,7 +12,7 @@ var _new_MainGroupTag := preload("res://library/MainGroupTag.gd").new()
 var _new_SubGroupTag := preload("res://library/SubGroupTag.gd").new()
 var _new_CoordCalculator := preload("res://library/CoordCalculator.gd").new()
 
-var _ref_RandomNumber: RandomNumber
+var _ref_RandomNumber: Game_RandomNumber
 
 # {0: [], 1: [], ...}
 var _dungeon: Dictionary = {}
@@ -20,7 +20,7 @@ var _dungeon: Dictionary = {}
 var _blueprint: Array = []
 
 
-func _init(random: RandomNumber) -> void:
+func _init(random: Game_RandomNumber) -> void:
 	_set_reference(random)
 	_set_dungeon_board()
 	_init_floor()
@@ -36,7 +36,7 @@ func get_blueprint() -> Array:
 	return _blueprint
 
 
-func _set_reference(random: RandomNumber) -> void:
+func _set_reference(random: Game_RandomNumber) -> void:
 	_ref_RandomNumber = random
 
 

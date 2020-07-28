@@ -1,4 +1,5 @@
 extends Node2D
+class_name Game_DangerZone
 
 
 var _new_DungeonSize := preload("res://library/DungeonSize.gd").new()

@@ -1,20 +1,16 @@
-const DIJKSTRA: String = "res://library/npc_ai/DijkstraPathFinding.gd"
+class_name Game_AITemplate
 
-const ObjectData := preload("res://scene/main/ObjectData.gd")
-const DungeonBoard := preload("res://scene/main/DungeonBoard.gd")
-const SwitchSprite := preload("res://scene/main/SwitchSprite.gd")
-const DangerZone := preload("res://scene/main/DangerZone.gd")
-const EndGame := preload("res://scene/main/EndGame.gd")
-const RandomNumber := preload("res://scene/main/RandomNumber.gd")
+
+const DIJKSTRA: String = "res://library/npc_ai/DijkstraPathFinding.gd"
 
 var print_text: String setget set_print_text, get_print_text
 
-var _ref_ObjectData: ObjectData
-var _ref_DungeonBoard: DungeonBoard
-var _ref_SwitchSprite: SwitchSprite
-var _ref_DangerZone: DangerZone
-var _ref_EndGame: EndGame
-var _ref_RandomNumber: RandomNumber
+var _ref_ObjectData: Game_ObjectData
+var _ref_DungeonBoard: Game_DungeonBoard
+var _ref_SwitchSprite: Game_SwitchSprite
+var _ref_DangerZone: Game_DangerZone
+var _ref_EndGame: Game_EndGame
+var _ref_RandomNumber: Game_RandomNumber
 
 var _new_ConvertCoord := preload("res://library/ConvertCoord.gd").new()
 var _new_CoordCalculator := preload("res://library/CoordCalculator.gd").new()

@@ -1,4 +1,5 @@
 extends Node2D
+class_name Game_RandomNumber
 
 
 var rng_seed: int setget set_rng_seed, get_rng_seed

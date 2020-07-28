@@ -1,31 +1,23 @@
 extends Node2D
+class_name Game_EnemyAI
 
 
 signal enemy_warned(message)
 
-const AITemplate := preload("res://library/npc_ai/AITemplate.gd")
-const Schedule := preload("res://scene/main/Schedule.gd")
-const ObjectData := preload("res://scene/main/ObjectData.gd")
-const DungeonBoard := preload("res://scene/main/DungeonBoard.gd")
-const SwitchSprite := preload("res://scene/main/SwitchSprite.gd")
-const DangerZone := preload("res://scene/main/DangerZone.gd")
-const EndGame := preload("res://scene/main/EndGame.gd")
-const RandomNumber := preload("res://scene/main/RandomNumber.gd")
-
-var _ref_Schedule: Schedule
-var _ref_ObjectData: ObjectData
-var _ref_DungeonBoard: DungeonBoard
-var _ref_SwitchSprite: SwitchSprite
-var _ref_DangerZone: DangerZone
-var _ref_EndGame: EndGame
-var _ref_RandomNumber: RandomNumber
+var _ref_Schedule: Game_Schedule
+var _ref_ObjectData: Game_ObjectData
+var _ref_DungeonBoard: Game_DungeonBoard
+var _ref_SwitchSprite: Game_SwitchSprite
+var _ref_DangerZone: Game_DangerZone
+var _ref_EndGame: Game_EndGame
+var _ref_RandomNumber: Game_RandomNumber
 
 var _new_SubGroupTag := preload("res://library/SubGroupTag.gd").new()
 var _new_WorldTag := preload("res://library/WorldTag.gd").new()
 var _new_InitWorldData := preload("res://library/InitWorldData.gd").new()
 
 var _world_tag: String
-var _ai: AITemplate
+var _ai: Game_AITemplate
 var _pc: Sprite
 
 

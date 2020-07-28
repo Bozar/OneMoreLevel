@@ -7,7 +7,7 @@ const Dwarf := preload("res://sprite/Dwarf.tscn")
 const Wall := preload("res://sprite/Wall.tscn")
 
 
-func _init(_random: RandomNumber).(_random) -> void:
+func _init(_random: Game_RandomNumber).(_random) -> void:
 	pass
 
 

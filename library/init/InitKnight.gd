@@ -12,7 +12,7 @@ var pc_x: int
 var pc_y: int
 
 
-func _init(_random: RandomNumber).(_random) -> void:
+func _init(_random: Game_RandomNumber).(_random) -> void:
 	pass
 
 

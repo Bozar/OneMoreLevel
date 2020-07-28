@@ -1,4 +1,5 @@
 extends Node2D
+class_name Game_ObjectState
 
 
 var _id_to_state: Dictionary = {}

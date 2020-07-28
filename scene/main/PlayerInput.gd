@@ -1,28 +1,18 @@
 extends Node2D
+class_name Game_PlayerInput
 
-
-const PCActionTemplate := preload("res://library/pc_action/PCActionTemplate.gd")
-const Schedule := preload("res://scene/main/Schedule.gd")
-const DungeonBoard := preload("res://scene/main/DungeonBoard.gd")
-const ObjectData := preload("res://scene/main/ObjectData.gd")
-const RemoveObject := preload("res://scene/main/RemoveObject.gd")
-const RandomNumber := preload("res://scene/main/RandomNumber.gd")
-const DangerZone := preload("res://scene/main/DangerZone.gd")
-const SwitchSprite := preload("res://scene/main/SwitchSprite.gd")
-const EndGame := preload("res://scene/main/EndGame.gd")
-const CountDown := preload("res://scene/main/CountDown.gd")
 
 const RELOAD_GAME: String = "ReloadGame"
 
-var _ref_Schedule: Schedule
-var _ref_DungeonBoard: DungeonBoard
-var _ref_RemoveObject: RemoveObject
-var _ref_ObjectData: ObjectData
-var _ref_RandomNumber: RandomNumber
-var _ref_DangerZone: DangerZone
-var _ref_SwitchSprite: SwitchSprite
-var _ref_EndGame: EndGame
-var _ref_CountDown: CountDown
+var _ref_Schedule: Game_Schedule
+var _ref_DungeonBoard: Game_DungeonBoard
+var _ref_RemoveObject: Game_RemoveObject
+var _ref_ObjectData: Game_ObjectData
+var _ref_RandomNumber: Game_RandomNumber
+var _ref_DangerZone: Game_DangerZone
+var _ref_SwitchSprite: Game_SwitchSprite
+var _ref_EndGame: Game_EndGame
+var _ref_CountDown: Game_CountDown
 
 var _new_ConvertCoord := preload("res://library/ConvertCoord.gd").new()
 var _new_WorldTag := preload("res://library/WorldTag.gd").new()
@@ -34,7 +24,7 @@ var _new_InitWorldData := preload("res://library/InitWorldData.gd").new()
 
 var _pc: Sprite
 var _pc_pos: Array
-var _pc_action: PCActionTemplate
+var _pc_action: Game_PCActionTemplate
 var _direction: String
 var _end_game: bool = false
 var _is_wizard: bool = true

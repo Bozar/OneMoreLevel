@@ -1,4 +1,5 @@
 extends Node2D
+class_name Game_HitPoint
 
 
 var _id_to_hit_point: Dictionary = {}

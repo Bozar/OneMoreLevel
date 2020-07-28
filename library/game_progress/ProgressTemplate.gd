@@ -1,3 +1,6 @@
+class_name Game_ProgressTemplate
+
+
 func renew_world() -> void:
     pass
 

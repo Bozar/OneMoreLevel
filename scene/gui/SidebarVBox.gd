@@ -8,8 +8,6 @@ const HELP: String = "Help"
 const VERSION: String = "Version"
 const SEED: String = "Seed"
 
-const RandomNumber := preload("res://scene/main/RandomNumber.gd")
-const DangerZone := preload("res://scene/main/DangerZone.gd")
 const CountDown := preload("res://scene/main/CountDown.gd")
 
 var _new_SubGroupTag := preload("res://library/SubGroupTag.gd").new()
@@ -18,8 +16,8 @@ var _new_WorldTag := preload("res://library/WorldTag.gd").new()
 var _new_ConvertCoord := preload("res://library/ConvertCoord.gd").new()
 var _new_SidebarText := preload("res://library/SidebarText.gd").new()
 
-var _ref_RandomNumber: RandomNumber
-var _ref_DangerZone: DangerZone
+var _ref_RandomNumber: Game_RandomNumber
+var _ref_DangerZone: Game_DangerZone
 var _ref_CountDown: CountDown
 
 var _node_to_color: Dictionary = {

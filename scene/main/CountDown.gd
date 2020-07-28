@@ -1,12 +1,11 @@
 extends Node2D
+class_name Game_CountDown
 
-
-const EndGame := preload("res://scene/main/EndGame.gd")
 
 const _hit_bonus: int = 5
 const _max_count: int = 24
 
-var _ref_EndGame: EndGame
+var _ref_EndGame: Game_EndGame
 
 var _new_SubGroupTag := preload("res://library/SubGroupTag.gd").new()
 

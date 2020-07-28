@@ -1,4 +1,5 @@
 extends Node2D
+class_name Game_ObjectData
 
 
 const OBJECT_STATE: String = "ObjectState"

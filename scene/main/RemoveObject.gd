@@ -1,11 +1,10 @@
 extends Node2D
+class_name Game_RemoveObject
 
 
 signal sprite_removed(remove_sprite, main_group, x, y)
 
-const DungeonBoard := preload("res://scene/main/DungeonBoard.gd")
-
-var _ref_DungeonBoard: DungeonBoard
+var _ref_DungeonBoard: Game_DungeonBoard
 
 
 func remove(main_group: String, x: int, y: int) -> void:

@@ -1,4 +1,5 @@
 extends Node2D
+class_name Game_InitWorld
 # Blueprints are scattered in three scripts.
 # * Floors are created in WorldTemplate.gd.
 # * Arrow indicators are created in this script.
@@ -11,10 +12,8 @@ signal sprite_created(new_sprite)
 const ArrowLeft := preload("res://sprite/ArrowLeft.tscn")
 const ArrowTop := preload("res://sprite/ArrowTop.tscn")
 const ArrowBottom := preload("res://sprite/ArrowBottom.tscn")
-const WorldTemplate := preload("res://library/init/WorldTemplate.gd")
-const RandomNumber := preload("res://scene/main/RandomNumber.gd")
 
-var _ref_RandomNumber: RandomNumber
+var _ref_RandomNumber: Game_RandomNumber
 
 var _new_ConvertCoord := preload("res://library/ConvertCoord.gd").new()
 var _new_DungeonSize := preload("res://library/DungeonSize.gd").new()
@@ -26,7 +25,7 @@ var _new_Palette := preload("res://library/Palette.gd").new()
 var _new_ZIndex := preload("res://library/ZIndex.gd").new()
 var _new_InitWorldData := preload("res://library/InitWorldData.gd").new()
 
-var _world: WorldTemplate
+var _world: Game_WorldTemplate
 
 
 # func _unhandled_input(event: InputEvent) -> void:
@@ -45,9 +44,9 @@ func init_world() -> void:
 		_create_sprite(sb.scene, sb.main_group, sb.sub_group, sb.x, sb.y)
 
 
-func _get_world() -> WorldTemplate:
+func _get_world() -> Game_WorldTemplate:
 	var world_name: String
-	var world_template: WorldTemplate
+	var world_template: Game_WorldTemplate
 
 	# TODO: Generate a random world name from potential candidates.
 	world_name = _new_WorldTag.KNIGHT

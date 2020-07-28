@@ -1,4 +1,5 @@
 extends Node2D
+class_name Game_EndGame
 
 
 signal game_is_over(win)
