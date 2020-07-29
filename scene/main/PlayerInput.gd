@@ -44,6 +44,9 @@ func _ready() -> void:
 func _unhandled_input(event: InputEvent) -> void:
 	_pc_action.reset_state()
 
+	if _is_quit_input(event):
+		get_tree().quit()
+
 	if _is_wizard:
 		if _is_force_reload_input(event):
 			get_node(RELOAD_GAME).reload()
@@ -136,3 +139,7 @@ func _handle_move_input() -> void:
 
 func _is_add_turn_input(event: InputEvent) -> bool:
 	return event.is_action_pressed(_new_InputTag.ADD_TURN)
+
+
+func _is_quit_input(event: InputEvent) -> bool:
+	return event.is_action_pressed(_new_InputTag.QUIT)
