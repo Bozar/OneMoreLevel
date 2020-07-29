@@ -45,6 +45,11 @@ _global_script_classes=[ {
 "path": "res://scene/main/EnemyAI.gd"
 }, {
 "base": "Node2D",
+"class": "Game_GameProgress",
+"language": "GDScript",
+"path": "res://scene/main/GameProgress.gd"
+}, {
+"base": "Node2D",
 "class": "Game_HitPoint",
 "language": "GDScript",
 "path": "res://scene/main/HitPoint.gd"
@@ -122,6 +127,7 @@ _global_script_class_icons={
 "Game_DungeonBoard": "",
 "Game_EndGame": "",
 "Game_EnemyAI": "",
+"Game_GameProgress": "",
 "Game_HitPoint": "",
 "Game_InitWorld": "",
 "Game_ObjectData": "",

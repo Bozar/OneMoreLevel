@@ -1,13 +1,17 @@
 extends "res://library/game_progress/ProgressTemplate.gd"
 
 
+func _init(parent_node: Node2D).(parent_node) -> void:
+    pass
+
+
 func renew_world() -> void:
     print("renew world")
 
 
-func remove_npc(_npc: Sprite) -> void:
+func remove_npc(_npc: Sprite, _x: int, _y: int) -> void:
     print("remove npc")
 
 
-func remove_building(_building: Sprite) -> void:
+func remove_building(_building: Sprite, _x: int, _y: int) -> void:
     print("remove building")

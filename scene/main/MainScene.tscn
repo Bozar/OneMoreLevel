@@ -1,4 +1,4 @@
-[gd_scene load_steps=20 format=2]
+[gd_scene load_steps=21 format=2]
 
 [ext_resource path="res://scene/main/InitWorld.gd" type="Script" id=1]
 [ext_resource path="res://scene/gui/MainGUI.tscn" type="PackedScene" id=2]
@@ -19,6 +19,7 @@
 [ext_resource path="res://scene/main/EndGame.gd" type="Script" id=17]
 [ext_resource path="res://scene/main/AutoStart.gd" type="Script" id=18]
 [ext_resource path="res://scene/main/CountDown.gd" type="Script" id=19]
+[ext_resource path="res://scene/main/GameProgress.gd" type="Script" id=20]
 
 [node name="MainScene" type="Node2D"]
 script = ExtResource( 4 )
@@ -49,6 +50,9 @@ script = ExtResource( 5 )
 
 [node name="EnemyAI" type="Node2D" parent="."]
 script = ExtResource( 6 )
+
+[node name="GameProgress" type="Node2D" parent="."]
+script = ExtResource( 20 )
 
 [node name="DungeonBoard" type="Node2D" parent="."]
 script = ExtResource( 7 )

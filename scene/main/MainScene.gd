@@ -13,6 +13,7 @@ const SWITCH_SPRITE: String = "SwitchSprite"
 const DANGER_ZONE: String = "DangerZone"
 const END_GAME: String = "EndGame"
 const COUNT_DOWN: String = "CountDown"
+const GAME_PROGRESS: String = "GameProgress"
 const SIDEBAR: String = "MainGUI/SidebarVBox"
 
 const SIGNAL_BIND: Array = [
@@ -24,12 +25,12 @@ const SIGNAL_BIND: Array = [
 	[
 		"world_selected", "_on_InitWorld_world_selected",
 		INIT_WORLD,
-		PLAYER_INPUT, ENEMY_AI, SIDEBAR,
+		PLAYER_INPUT, ENEMY_AI, SIDEBAR, GAME_PROGRESS,
 	],
 	[
 		"turn_started", "_on_Schedule_turn_started",
 		SCHEDULE,
-		PLAYER_INPUT, ENEMY_AI, SIDEBAR, COUNT_DOWN,
+		PLAYER_INPUT, ENEMY_AI, SIDEBAR, COUNT_DOWN, GAME_PROGRESS,
 	],
 	[
 		"turn_ended", "_on_Schedule_turn_ended",
@@ -39,7 +40,7 @@ const SIGNAL_BIND: Array = [
 	[
 		"sprite_removed", "_on_RemoveObject_sprite_removed",
 		REMOVE,
-		DUNGEON, SCHEDULE, OBJECT_DATA, ENEMY_AI,
+		DUNGEON, SCHEDULE, OBJECT_DATA, ENEMY_AI, GAME_PROGRESS,
 	],
 	[
 		"game_is_over", "_on_EndGame_game_is_over",
