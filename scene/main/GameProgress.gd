@@ -2,6 +2,9 @@ extends Node2D
 class_name Game_GameProgress
 
 
+var _ref_RandomNumber: Game_RandomNumber
+var _ref_Schedule: Game_Schedule
+
 var _new_InitWorldData := preload("res://library/InitWorldData.gd").new()
 var _new_MainGroupTag := preload("res://library/MainGroupTag.gd").new()
 var _new_SubGroupTag := preload("res://library/SubGroupTag.gd").new()

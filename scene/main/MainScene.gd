@@ -63,7 +63,7 @@ const NODE_REF: Array = [
 	[
 		"_ref_Schedule",
 		SCHEDULE,
-		PLAYER_INPUT, ENEMY_AI,
+		PLAYER_INPUT, ENEMY_AI, GAME_PROGRESS,
 	],
 	[
 		"_ref_RemoveObject",
@@ -73,7 +73,7 @@ const NODE_REF: Array = [
 	[
 		"_ref_RandomNumber",
 		RANDOM,
-		INIT_WORLD, PLAYER_INPUT, ENEMY_AI, SIDEBAR,
+		INIT_WORLD, PLAYER_INPUT, ENEMY_AI, SIDEBAR, GAME_PROGRESS,
 	],
 	[
 		"_ref_ObjectData",
