@@ -8,6 +8,7 @@ const DemoAI := preload("res://library/npc_ai/DemoAI.gd")
 const KnightAI := preload("res://library/npc_ai/KnightAI.gd")
 
 const DemoProgress := preload("res://library/game_progress/DemoProgress.gd")
+const KnightProgress := preload("res://library/game_progress/KnightProgress.gd")
 
 var _new_WorldTag := preload("res://library/WorldTag.gd").new()
 
@@ -16,7 +17,7 @@ var _world_data: Dictionary = {
         InitDemo, DemoPCAction, DemoAI, DemoProgress
     ],
     _new_WorldTag.KNIGHT: [
-        InitKnight, KnightPCAction, KnightAI, DemoProgress
+        InitKnight, KnightPCAction, KnightAI, KnightProgress
     ],
 }
 

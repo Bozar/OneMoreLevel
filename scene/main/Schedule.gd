@@ -24,6 +24,10 @@ func end_turn() -> void:
 	emit_signal("turn_started", _get_current())
 
 
+func count_npc() -> int:
+	return _actors.size() - 1
+
+
 func _on_InitWorld_sprite_created(new_sprite: Sprite) -> void:
 	if new_sprite.is_in_group(_new_MainGroupTag.ACTOR):
 		if new_sprite.is_in_group(_new_SubGroupTag.PC):

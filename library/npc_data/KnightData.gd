@@ -4,3 +4,8 @@ const TELEPORT_DISTANCE: int = 10
 const RANGE: int = 1
 const SIGHT: int = 6
 const WAIT_CHANCE: int = 10
+
+const MAX_KNIGHT: int = 10
+const RESPAWN_CHANCE: int = 20
+const MAX_RESPAWN: int = 4
+const STOP_RESPAWN: int = 120

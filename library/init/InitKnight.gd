@@ -5,26 +5,24 @@ extends "res://library/init/WorldTemplate.gd"
 const PC := preload("res://sprite/PC.tscn")
 const Knight := preload("res://sprite/Knight.tscn")
 const KnightCaptain := preload("res://sprite/KnightCaptain.tscn")
-const KnightBoss := preload("res://sprite/KnightBoss.tscn")
 const Wall := preload("res://sprite/Wall.tscn")
+
+var _new_KnightData := preload("res://library/npc_data/KnightData.gd")
 
 var pc_x: int
 var pc_y: int
 
 
-func _init(_random: Game_RandomNumber).(_random) -> void:
+func _init(parent_node: Node2D).(parent_node) -> void:
 	pass
 
 
 func get_blueprint() -> Array:
-	var max_knight: int = 6
-
 	_init_wall()
 	_init_PC()
 	_init_knight(KnightCaptain, _new_SubGroupTag.KNIGHT_CAPTAIN)
-	_init_knight(KnightBoss, _new_SubGroupTag.KNIGHT_BOSS)
 
-	for _i in range(max_knight):
+	for _i in range(_new_KnightData.MAX_KNIGHT):
 		_init_knight(Knight, _new_SubGroupTag.KNIGHT)
 
 	return _blueprint

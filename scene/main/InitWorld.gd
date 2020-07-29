@@ -37,41 +37,15 @@ var _world: Game_WorldTemplate
 
 func init_world() -> void:
 	_world = _get_world()
+	var blueprint: Array = _world.get_blueprint()
 	# sb: SpriteBlueprint
-	for sb in _world.get_blueprint():
+	for sb in blueprint:
 		if _is_pc(sb.sub_group):
 			_init_indicator(sb.x, sb.y)
-		_create_sprite(sb.scene, sb.main_group, sb.sub_group, sb.x, sb.y)
+		create_sprite(sb.scene, sb.main_group, sb.sub_group, sb.x, sb.y)
 
 
-func _get_world() -> Game_WorldTemplate:
-	var world_name: String
-	var world_template: Game_WorldTemplate
-
-	# TODO: Generate a random world name from potential candidates.
-	world_name = _new_WorldTag.KNIGHT
-	world_template = _new_InitWorldData.get_world_template(world_name).new(
-			_ref_RandomNumber)
-	emit_signal("world_selected", world_name)
-
-	return world_template
-
-
-func _init_indicator(x: int, y: int) -> void:
-	_create_sprite(ArrowLeft,
-			_new_MainGroupTag.INDICATOR, _new_SubGroupTag.ARROW_LEFT,
-			0, y, -_new_DungeonSize.ARROW_MARGIN)
-
-	_create_sprite(ArrowTop,
-			_new_MainGroupTag.INDICATOR, _new_SubGroupTag.ARROW_TOP,
-			x, 0, 0, -_new_DungeonSize.ARROW_MARGIN)
-
-	_create_sprite(ArrowBottom,
-			_new_MainGroupTag.INDICATOR, _new_SubGroupTag.ARROW_BOTTOM,
-			x, _new_DungeonSize.MAX_Y - 1, 0, _new_DungeonSize.ARROW_MARGIN)
-
-
-func _create_sprite(prefab: PackedScene, main_group: String, sub_group: String,
+func create_sprite(prefab: PackedScene, main_group: String, sub_group: String,
 		x: int, y: int, x_offset: int = 0, y_offset: int = 0) -> void:
 	var new_sprite: Sprite = prefab.instance() as Sprite
 	var sprite_color: String = _new_Palette.get_default_color(
@@ -87,6 +61,32 @@ func _create_sprite(prefab: PackedScene, main_group: String, sub_group: String,
 
 	add_child(new_sprite)
 	emit_signal("sprite_created", new_sprite)
+
+
+func _get_world() -> Game_WorldTemplate:
+	var world_name: String
+	var world_template: Game_WorldTemplate
+
+	# TODO: Generate a random world name from potential candidates.
+	world_name = _new_WorldTag.KNIGHT
+	world_template = _new_InitWorldData.get_world_template(world_name).new(self)
+	emit_signal("world_selected", world_name)
+
+	return world_template
+
+
+func _init_indicator(x: int, y: int) -> void:
+	create_sprite(ArrowLeft,
+			_new_MainGroupTag.INDICATOR, _new_SubGroupTag.ARROW_LEFT,
+			0, y, -_new_DungeonSize.ARROW_MARGIN)
+
+	create_sprite(ArrowTop,
+			_new_MainGroupTag.INDICATOR, _new_SubGroupTag.ARROW_TOP,
+			x, 0, 0, -_new_DungeonSize.ARROW_MARGIN)
+
+	create_sprite(ArrowBottom,
+			_new_MainGroupTag.INDICATOR, _new_SubGroupTag.ARROW_BOTTOM,
+			x, _new_DungeonSize.MAX_Y - 1, 0, _new_DungeonSize.ARROW_MARGIN)
 
 
 func _is_pc(group_name: String) -> bool:

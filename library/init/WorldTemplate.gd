@@ -20,8 +20,9 @@ var _dungeon: Dictionary = {}
 var _blueprint: Array = []
 
 
-func _init(random: Game_RandomNumber) -> void:
-	_set_reference(random)
+func _init(parent_node: Node2D) -> void:
+	_ref_RandomNumber = parent_node._ref_RandomNumber
+
 	_set_dungeon_board()
 	_init_floor()
 
@@ -34,10 +35,6 @@ func _init(random: Game_RandomNumber) -> void:
 # Override.
 func get_blueprint() -> Array:
 	return _blueprint
-
-
-func _set_reference(random: Game_RandomNumber) -> void:
-	_ref_RandomNumber = random
 
 
 # Override.
