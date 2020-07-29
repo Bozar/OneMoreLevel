@@ -30,7 +30,7 @@ var _node_to_color: Dictionary = {
 }
 
 var _pc: Sprite
-var _is_wizard: bool = false
+var _is_wizard: bool
 
 
 func _on_InitWorld_world_selected(new_world: String) -> void:
@@ -63,6 +63,10 @@ func _on_EndGame_game_is_over(win: bool) -> void:
 		get_node(MESSAGE).text = _new_SidebarText.WIN
 	else:
 		get_node(MESSAGE).text = _new_SidebarText.LOSE
+
+
+func _on_GameSetting_setting_loaded(setting: Game_SettingTemplate) -> void:
+	_is_wizard = setting.get_wizard_mode()
 
 
 func _set_color() -> void:

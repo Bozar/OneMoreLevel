@@ -27,7 +27,7 @@ var _pc_pos: Array
 var _pc_action: Game_PCActionTemplate
 var _direction: String
 var _end_game: bool = false
-var _is_wizard: bool = true
+var _is_wizard: bool
 
 var _move_inputs: Array = [
 	_new_InputTag.MOVE_LEFT,
@@ -46,6 +46,7 @@ func _unhandled_input(event: InputEvent) -> void:
 
 	if _is_quit_input(event):
 		get_tree().quit()
+		return
 
 	if _is_wizard:
 		if _is_force_reload_input(event):
@@ -105,6 +106,10 @@ func _on_EndGame_game_is_over(win: bool) -> void:
 
 	_end_game = true
 	set_process_unhandled_input(true)
+
+
+func _on_GameSetting_setting_loaded(setting: Game_SettingTemplate) -> void:
+	_is_wizard = setting.get_wizard_mode()
 
 
 func _is_reload_input(event: InputEvent) -> bool:

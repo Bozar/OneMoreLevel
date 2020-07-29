@@ -15,6 +15,7 @@ const DANGER_ZONE: String = "DangerZone"
 const END_GAME: String = "EndGame"
 const COUNT_DOWN: String = "CountDown"
 const GAME_PROGRESS: String = "GameProgress"
+const GAME_SETTING: String = "GameSetting"
 const SIDEBAR: String = "MainGUI/SidebarVBox"
 
 const SIGNAL_BIND: Array = [
@@ -47,6 +48,11 @@ const SIGNAL_BIND: Array = [
 		"game_is_over", "_on_EndGame_game_is_over",
 		END_GAME,
 		SCHEDULE, PLAYER_INPUT, SIDEBAR,
+	],
+	[
+		"setting_loaded", "_on_GameSetting_setting_loaded",
+		GAME_SETTING,
+		RANDOM, INIT_WORLD, PLAYER_INPUT, SIDEBAR,
 	],
 	# [
 	# 	"enemy_warned", "_on_EnemyAI_enemy_warned",
@@ -105,6 +111,11 @@ const NODE_REF: Array = [
 		"_ref_CreateObject",
 		CREATE_OBJECT,
 		INIT_WORLD, GAME_PROGRESS,
+	],
+	[
+		"_ref_GameSetting",
+		GAME_SETTING,
+		INIT_WORLD,
 	],
 ]
 

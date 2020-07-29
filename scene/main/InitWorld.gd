@@ -14,6 +14,7 @@ var _spr_ArrowBottom := preload("res://sprite/ArrowBottom.tscn")
 
 var _ref_RandomNumber: Game_RandomNumber
 var _ref_CreateObject: Game_CreateObject
+var _ref_GameSetting : Game_GameSetting
 
 var _new_DungeonSize := preload("res://library/DungeonSize.gd").new()
 var _new_MainGroupTag := preload("res://library/MainGroupTag.gd").new()
@@ -22,6 +23,7 @@ var _new_InputTag := preload("res://library/InputTag.gd").new()
 var _new_WorldTag := preload("res://library/WorldTag.gd").new()
 var _new_InitWorldData := preload("res://library/InitWorldData.gd").new()
 
+var _world_name: String
 var _world: Game_WorldTemplate
 
 
@@ -33,25 +35,33 @@ var _world: Game_WorldTemplate
 
 
 func init_world() -> void:
+	_ref_GameSetting.load_setting()
 	_world = _get_world()
-	var blueprint: Array = _world.get_blueprint()
+
 	# sb: SpriteBlueprint
-	for sb in blueprint:
+	for sb in _world.get_blueprint():
 		if _is_pc(sb.sub_group):
 			_init_indicator(sb.x, sb.y)
 		_ref_CreateObject.create(
 				sb.scene, sb.main_group, sb.sub_group, sb.x, sb.y)
 
 
+func _on_GameSetting_setting_loaded(setting: Game_SettingTemplate) -> void:
+	_world_name = setting.get_world_tag()
+
+
 func _get_world() -> Game_WorldTemplate:
-	var world_name: String
+	var candidate: String
 	var world_template: Game_WorldTemplate
 
 	# TODO: Generate a random world name from potential candidates.
-	world_name = _new_WorldTag.KNIGHT
-	world_template = _new_InitWorldData.get_world_template(world_name).new(self)
-	emit_signal("world_selected", world_name)
+	candidate = _new_WorldTag.KNIGHT
+	if _world_name != "":
+		candidate = _world_name
 
+	emit_signal("world_selected", candidate)
+
+	world_template = _new_InitWorldData.get_world_template(candidate).new(self)
 	return world_template
 
 

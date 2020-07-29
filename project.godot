@@ -55,6 +55,11 @@ _global_script_classes=[ {
 "path": "res://scene/main/GameProgress.gd"
 }, {
 "base": "Node2D",
+"class": "Game_GameSetting",
+"language": "GDScript",
+"path": "res://scene/main/GameSetting.gd"
+}, {
+"base": "Node2D",
 "class": "Game_HitPoint",
 "language": "GDScript",
 "path": "res://scene/main/HitPoint.gd"
@@ -110,6 +115,11 @@ _global_script_classes=[ {
 "path": "res://scene/main/Schedule.gd"
 }, {
 "base": "Node2D",
+"class": "Game_SettingTemplate",
+"language": "GDScript",
+"path": "res://library/SettingTemplate.gd"
+}, {
+"base": "Node2D",
 "class": "Game_SpriteType",
 "language": "GDScript",
 "path": "res://scene/main/SpriteType.gd"
@@ -134,6 +144,7 @@ _global_script_class_icons={
 "Game_EndGame": "",
 "Game_EnemyAI": "",
 "Game_GameProgress": "",
+"Game_GameSetting": "",
 "Game_HitPoint": "",
 "Game_InitWorld": "",
 "Game_ObjectData": "",
@@ -145,6 +156,7 @@ _global_script_class_icons={
 "Game_ReloadGame": "",
 "Game_RemoveObject": "",
 "Game_Schedule": "",
+"Game_SettingTemplate": "",
 "Game_SpriteType": "",
 "Game_SwitchSprite": "",
 "Game_WorldTemplate": ""

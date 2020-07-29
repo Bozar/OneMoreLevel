@@ -7,7 +7,7 @@ var _spr_Dwarf := preload("res://sprite/Dwarf.tscn")
 var _spr_Wall := preload("res://sprite/Wall.tscn")
 
 
-func _init(_random: Game_RandomNumber).(_random) -> void:
+func _init(parent_node: Node2D).(parent_node) -> void:
 	pass
 
 
