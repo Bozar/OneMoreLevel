@@ -2,9 +2,9 @@ extends "res://library/init/WorldTemplate.gd"
 # Initialize a simple map for testing.
 
 
-const Player := preload("res://sprite/PC.tscn")
-const Dwarf := preload("res://sprite/Dwarf.tscn")
-const Wall := preload("res://sprite/Wall.tscn")
+var _spr_Player := preload("res://sprite/PC.tscn")
+var _spr_Dwarf := preload("res://sprite/Dwarf.tscn")
+var _spr_Wall := preload("res://sprite/Wall.tscn")
 
 
 func _init(_random: Game_RandomNumber).(_random) -> void:
@@ -36,14 +36,14 @@ func _init_wall() -> void:
 
 	for x in range(min_x, max_x):
 		for y in range(min_y, max_y):
-			_add_to_blueprint(Wall,
+			_add_to_blueprint(_spr_Wall,
 					_new_MainGroupTag.BUILDING, _new_SubGroupTag.WALL,
 					x, y)
 			_occupy_position(x, y)
 
 
 func _init_PC() -> void:
-	_add_to_blueprint(Player,
+	_add_to_blueprint(_spr_Player,
 			_new_MainGroupTag.ACTOR, _new_SubGroupTag.PC,
 			0, 0)
 
@@ -59,7 +59,7 @@ func _init_dwarf() -> void:
 
 		if _is_occupied(x, y):
 			continue
-		_add_to_blueprint(Dwarf,
+		_add_to_blueprint(_spr_Dwarf,
 				_new_MainGroupTag.ACTOR, _new_SubGroupTag.DWARF,
 				x, y)
 		_occupy_position(x, y)

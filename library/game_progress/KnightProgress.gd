@@ -1,9 +1,9 @@
 extends "res://library/game_progress/ProgressTemplate.gd"
 
 
-const Knight := preload("res://sprite/Knight.tscn")
-const KnightCaptain := preload("res://sprite/KnightCaptain.tscn")
-const KnightBoss := preload("res://sprite/KnightBoss.tscn")
+var _spr_Knight := preload("res://sprite/Knight.tscn")
+var _spr_KnightCaptain := preload("res://sprite/KnightCaptain.tscn")
+var _spr_KnightBoss := preload("res://sprite/KnightBoss.tscn")
 
 var _new_KnightData := preload("res://library/npc_data/KnightData.gd").new()
 
@@ -25,16 +25,16 @@ func renew_world(pc_x: int, pc_y: int) -> void:
 
 	if _spawn_captain:
 		for _i in range(_new_KnightData.MAX_CAPTAIN - 1):
-			_spawn_npc(KnightCaptain, _new_SubGroupTag.KNIGHT_CAPTAIN)
+			_spawn_npc(_spr_KnightCaptain, _new_SubGroupTag.KNIGHT_CAPTAIN)
 		_spawn_captain = false
 	elif _spawn_boss:
-		_spawn_npc(KnightBoss, _new_SubGroupTag.KNIGHT_BOSS)
+		_spawn_npc(_spr_KnightBoss, _new_SubGroupTag.KNIGHT_BOSS)
 		_spawn_boss = false
 
 	if _ref_Schedule.count_npc() < _new_KnightData.START_RESPAWN:
 		spawn = _ref_RandomNumber.get_int(1, _new_KnightData.MAX_RESPAWN)
 		for _i in range(spawn):
-			_spawn_npc(Knight, _new_SubGroupTag.KNIGHT)
+			_spawn_npc(_spr_Knight, _new_SubGroupTag.KNIGHT)
 
 
 func remove_npc(npc: Sprite, _x: int, _y: int) -> void:

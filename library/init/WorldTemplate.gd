@@ -4,8 +4,9 @@ class_name Game_WorldTemplate
 # The child should also implement _init() to pass arguments.
 
 
-const SpriteBlueprint := preload("res://library/init/SpriteBlueprint.gd")
-const Floor := preload("res://sprite/Floor.tscn")
+const SPRITE_BLUEPRINT := preload("res://library/init/SpriteBlueprint.gd")
+
+var _spr_Floor := preload("res://sprite/Floor.tscn")
 
 var _new_DungeonSize := preload("res://library/DungeonSize.gd").new()
 var _new_MainGroupTag := preload("res://library/MainGroupTag.gd").new()
@@ -44,14 +45,13 @@ func _set_dungeon_board() -> void:
 
 func _add_to_blueprint(scene: PackedScene,
 		main_group: String, sub_group: String, x: int, y: int) -> void:
-
-	_blueprint.push_back(
-		SpriteBlueprint.new(scene, main_group, sub_group, x, y))
+	_blueprint.push_back(SPRITE_BLUEPRINT.new(
+			scene, main_group, sub_group, x, y))
 
 
 func _init_floor() -> void:
 	for i in range(_new_DungeonSize.MAX_X):
 		for j in range(_new_DungeonSize.MAX_Y):
-			_add_to_blueprint(Floor,
+			_add_to_blueprint(_spr_Floor,
 					_new_MainGroupTag.GROUND, _new_SubGroupTag.FLOOR,
 					i, j)

@@ -2,10 +2,10 @@ extends "res://library/init/WorldTemplate.gd"
 # Initialize a map for Silent Knight Hall (Knight).
 
 
-const PC := preload("res://sprite/PC.tscn")
-const Knight := preload("res://sprite/Knight.tscn")
-const KnightCaptain := preload("res://sprite/KnightCaptain.tscn")
-const Wall := preload("res://sprite/Wall.tscn")
+var _spr_PC := preload("res://sprite/PC.tscn")
+var _spr_Knight := preload("res://sprite/Knight.tscn")
+var _spr_KnightCaptain := preload("res://sprite/KnightCaptain.tscn")
+var _spr_Wall := preload("res://sprite/Wall.tscn")
 
 var _new_KnightData := preload("res://library/npc_data/KnightData.gd")
 
@@ -20,10 +20,10 @@ func _init(parent_node: Node2D).(parent_node) -> void:
 func get_blueprint() -> Array:
 	_init_wall()
 	_init_PC()
-	_init_knight(KnightCaptain, _new_SubGroupTag.KNIGHT_CAPTAIN)
+	_init_knight(_spr_KnightCaptain, _new_SubGroupTag.KNIGHT_CAPTAIN)
 
 	for _i in range(_new_KnightData.MAX_KNIGHT):
-		_init_knight(Knight, _new_SubGroupTag.KNIGHT)
+		_init_knight(_spr_Knight, _new_SubGroupTag.KNIGHT)
 
 	return _blueprint
 
@@ -104,7 +104,7 @@ func _create_solid_wall() -> void:
 			continue
 
 		# Add wall blocks to blueprint and set dungeon board.
-		_add_to_blueprint(Wall,
+		_add_to_blueprint(_spr_Wall,
 				_new_MainGroupTag.BUILDING, _new_SubGroupTag.WALL,
 				xy[0], xy[1])
 		_occupy_position(xy[0], xy[1])
@@ -193,7 +193,7 @@ func _init_PC() -> void:
 	for xy in neighbor:
 		_occupy_position(xy[0], xy[1])
 
-	_add_to_blueprint(PC,
+	_add_to_blueprint(_spr_PC,
 			_new_MainGroupTag.ACTOR, _new_SubGroupTag.PC,
 			pc_x, pc_y)
 

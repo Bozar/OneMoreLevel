@@ -8,9 +8,9 @@ class_name Game_InitWorld
 
 signal world_selected(new_world)
 
-const ArrowLeft := preload("res://sprite/ArrowLeft.tscn")
-const ArrowTop := preload("res://sprite/ArrowTop.tscn")
-const ArrowBottom := preload("res://sprite/ArrowBottom.tscn")
+var _spr_ArrowLeft := preload("res://sprite/ArrowLeft.tscn")
+var _spr_ArrowTop := preload("res://sprite/ArrowTop.tscn")
+var _spr_ArrowBottom := preload("res://sprite/ArrowBottom.tscn")
 
 var _ref_RandomNumber: Game_RandomNumber
 var _ref_CreateObject: Game_CreateObject
@@ -56,15 +56,15 @@ func _get_world() -> Game_WorldTemplate:
 
 
 func _init_indicator(x: int, y: int) -> void:
-	_ref_CreateObject.create(ArrowLeft,
+	_ref_CreateObject.create(_spr_ArrowLeft,
 			_new_MainGroupTag.INDICATOR, _new_SubGroupTag.ARROW_LEFT,
 			0, y, -_new_DungeonSize.ARROW_MARGIN)
 
-	_ref_CreateObject.create(ArrowTop,
+	_ref_CreateObject.create(_spr_ArrowTop,
 			_new_MainGroupTag.INDICATOR, _new_SubGroupTag.ARROW_TOP,
 			x, 0, 0, -_new_DungeonSize.ARROW_MARGIN)
 
-	_ref_CreateObject.create(ArrowBottom,
+	_ref_CreateObject.create(_spr_ArrowBottom,
 			_new_MainGroupTag.INDICATOR, _new_SubGroupTag.ARROW_BOTTOM,
 			x, _new_DungeonSize.MAX_Y - 1, 0, _new_DungeonSize.ARROW_MARGIN)
 
