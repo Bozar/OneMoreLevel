@@ -203,10 +203,17 @@ func _try_hit_pc(danger_zone: Array) -> void:
 
 
 func _is_ready_to_move() -> bool:
+	var sight: int
+
+	if _self.is_in_group(_new_SubGroupTag.KNIGHT):
+		sight = _new_KnightData.SIGHT
+	else:
+		sight = _new_KnightData.ELITE_SIGHT
+
 	if not _new_CoordCalculator.is_inside_range(
-			_pc_pos[0], _pc_pos[1], _self_pos[0], _self_pos[1],
-			_new_KnightData.SIGHT):
+			_pc_pos[0], _pc_pos[1], _self_pos[0], _self_pos[1], sight):
 		return false
+
 	if _ref_RandomNumber.get_percent_chance(_new_KnightData.WAIT_CHANCE):
 		return false
 	return true

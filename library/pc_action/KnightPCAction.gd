@@ -46,7 +46,7 @@ func _hit_boss(boss: Sprite) -> void:
 			is_too_close = _new_CoordCalculator.is_inside_range(
 					teleport[0], teleport[1],
 					_source_position[0], _source_position[1],
-					_new_KnightData.TELEPORT_DISTANCE)
+					_new_KnightData.ELITE_SIGHT)
 
 		_ref_DungeonBoard.move_sprite(_new_MainGroupTag.ACTOR,
 				_target_position, teleport)

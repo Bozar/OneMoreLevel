@@ -59,7 +59,7 @@ const NODE_REF: Array = [
 	[
 		"_ref_DungeonBoard",
 		DUNGEON,
-		PLAYER_INPUT, REMOVE_OBJECT, ENEMY_AI,
+		PLAYER_INPUT, REMOVE_OBJECT, ENEMY_AI, GAME_PROGRESS,
 	],
 	[
 		"_ref_Schedule",
@@ -104,7 +104,7 @@ const NODE_REF: Array = [
 	[
 		"_ref_CreateObject",
 		CREATE_OBJECT,
-		INIT_WORLD,
+		INIT_WORLD, GAME_PROGRESS,
 	],
 ]
 
