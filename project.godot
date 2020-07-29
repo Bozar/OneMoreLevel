@@ -25,6 +25,11 @@ _global_script_classes=[ {
 "path": "res://scene/main/CountDown.gd"
 }, {
 "base": "Node2D",
+"class": "Game_CreateObject",
+"language": "GDScript",
+"path": "res://scene/main/CreateObject.gd"
+}, {
+"base": "Node2D",
 "class": "Game_DangerZone",
 "language": "GDScript",
 "path": "res://scene/main/DangerZone.gd"
@@ -123,6 +128,7 @@ _global_script_class_icons={
 "Game_AITemplate": "",
 "Game_AutoStart": "",
 "Game_CountDown": "",
+"Game_CreateObject": "",
 "Game_DangerZone": "",
 "Game_DungeonBoard": "",
 "Game_EndGame": "",

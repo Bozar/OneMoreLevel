@@ -6,7 +6,8 @@ const PLAYER_INPUT: String = "PlayerInput"
 const ENEMY_AI: String = "EnemyAI"
 const SCHEDULE: String = "Schedule"
 const DUNGEON: String = "DungeonBoard"
-const REMOVE: String = "RemoveObject"
+const CREATE_OBJECT: String = "CreateObject"
+const REMOVE_OBJECT: String = "RemoveObject"
 const RANDOM: String = "RandomNumber"
 const OBJECT_DATA: String = "ObjectData"
 const SWITCH_SPRITE: String = "SwitchSprite"
@@ -18,8 +19,8 @@ const SIDEBAR: String = "MainGUI/SidebarVBox"
 
 const SIGNAL_BIND: Array = [
 	[
-		"sprite_created", "_on_InitWorld_sprite_created",
-		INIT_WORLD,
+		"sprite_created", "_on_CreateObject_sprite_created",
+		CREATE_OBJECT,
 		PLAYER_INPUT, ENEMY_AI, SCHEDULE, DUNGEON, OBJECT_DATA, SIDEBAR,
 	],
 	[
@@ -39,7 +40,7 @@ const SIGNAL_BIND: Array = [
 	],
 	[
 		"sprite_removed", "_on_RemoveObject_sprite_removed",
-		REMOVE,
+		REMOVE_OBJECT,
 		DUNGEON, SCHEDULE, OBJECT_DATA, ENEMY_AI, GAME_PROGRESS,
 	],
 	[
@@ -58,7 +59,7 @@ const NODE_REF: Array = [
 	[
 		"_ref_DungeonBoard",
 		DUNGEON,
-		PLAYER_INPUT, REMOVE, ENEMY_AI,
+		PLAYER_INPUT, REMOVE_OBJECT, ENEMY_AI,
 	],
 	[
 		"_ref_Schedule",
@@ -67,7 +68,7 @@ const NODE_REF: Array = [
 	],
 	[
 		"_ref_RemoveObject",
-		REMOVE,
+		REMOVE_OBJECT,
 		PLAYER_INPUT,
 	],
 	[
@@ -99,6 +100,11 @@ const NODE_REF: Array = [
 		"_ref_CountDown",
 		COUNT_DOWN,
 		SIDEBAR, PLAYER_INPUT,
+	],
+	[
+		"_ref_CreateObject",
+		CREATE_OBJECT,
+		INIT_WORLD,
 	],
 ]
 

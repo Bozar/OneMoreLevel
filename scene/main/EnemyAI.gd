@@ -35,7 +35,7 @@ func _on_InitWorld_world_selected(new_world: String) -> void:
 	_world_tag = new_world
 
 
-func _on_InitWorld_sprite_created(new_sprite: Sprite) -> void:
+func _on_CreateObject_sprite_created(new_sprite: Sprite) -> void:
 	if not new_sprite.is_in_group(_new_SubGroupTag.PC):
 		return
 

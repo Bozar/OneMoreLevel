@@ -15,7 +15,7 @@ var _child_node: Array = [
 ]
 
 
-func _on_InitWorld_sprite_created(new_sprite: Sprite) -> void:
+func _on_CreateObject_sprite_created(new_sprite: Sprite) -> void:
 	if new_sprite.is_in_group(_new_MainGroupTag.INDICATOR):
 		return
 

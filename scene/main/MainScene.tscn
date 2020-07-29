@@ -1,4 +1,4 @@
-[gd_scene load_steps=21 format=2]
+[gd_scene load_steps=22 format=2]
 
 [ext_resource path="res://scene/main/InitWorld.gd" type="Script" id=1]
 [ext_resource path="res://scene/gui/MainGUI.tscn" type="PackedScene" id=2]
@@ -20,6 +20,7 @@
 [ext_resource path="res://scene/main/AutoStart.gd" type="Script" id=18]
 [ext_resource path="res://scene/main/CountDown.gd" type="Script" id=19]
 [ext_resource path="res://scene/main/GameProgress.gd" type="Script" id=20]
+[ext_resource path="res://scene/main/CreateObject.gd" type="Script" id=21]
 
 [node name="MainScene" type="Node2D"]
 script = ExtResource( 4 )
@@ -56,6 +57,9 @@ script = ExtResource( 20 )
 
 [node name="DungeonBoard" type="Node2D" parent="."]
 script = ExtResource( 7 )
+
+[node name="CreateObject" type="Node2D" parent="."]
+script = ExtResource( 21 )
 
 [node name="RemoveObject" type="Node2D" parent="."]
 script = ExtResource( 9 )

@@ -58,7 +58,7 @@ func move_sprite(main_group: String, source: Array, target: Array) -> void:
 				.position.x = sprite.position.x
 
 
-func _on_InitWorld_sprite_created(new_sprite: Sprite) -> void:
+func _on_CreateObject_sprite_created(new_sprite: Sprite) -> void:
 	var pos: Array
 	var group: String
 
