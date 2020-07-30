@@ -115,11 +115,6 @@ _global_script_classes=[ {
 "path": "res://scene/main/Schedule.gd"
 }, {
 "base": "Node2D",
-"class": "Game_SettingTemplate",
-"language": "GDScript",
-"path": "res://library/SettingTemplate.gd"
-}, {
-"base": "Node2D",
 "class": "Game_SpriteType",
 "language": "GDScript",
 "path": "res://scene/main/SpriteType.gd"
@@ -156,7 +151,6 @@ _global_script_class_icons={
 "Game_ReloadGame": "",
 "Game_RemoveObject": "",
 "Game_Schedule": "",
-"Game_SettingTemplate": "",
 "Game_SpriteType": "",
 "Game_SwitchSprite": "",
 "Game_WorldTemplate": ""

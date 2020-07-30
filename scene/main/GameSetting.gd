@@ -4,54 +4,103 @@ class_name Game_GameSetting
 
 signal setting_loaded(setting)
 
-var _new_SettingTemplate := preload("res://library/SettingTemplate.gd")
+const WIZARD: String = "wizard_mode"
+const SEED: String = "rng_seed"
+const WORLD: String = "world_tag"
+
+const EXE_PATH: String = "data/setting.json"
+const RES_PATH: String = "res://bin/data/setting.json"
 
 var _new_WorldTag := preload("res://library/WorldTag.gd").new()
 
-var _exe_path: String = "data/setting.gd"
-var _res_path: String = "res://bin/data/setting.gd"
+
+class PlayerSetting extends Resource:
+
+
+	var wizard_mode: bool setget set_wizard_mode, get_wizard_mode
+	var rng_seed: int setget set_rng_seed, get_rng_seed
+	var world_tag: String setget set_world_tag, get_world_tag
+
+
+	func _init(wizard: bool, random: int, world: String) -> void:
+		wizard_mode = wizard
+		rng_seed = random
+		world_tag = world
+
+
+	func get_wizard_mode() -> bool:
+		return wizard_mode
+
+
+	func set_wizard_mode(__) -> void:
+		return
+
+
+	func get_rng_seed() -> int:
+		return rng_seed
+
+
+	func set_rng_seed(__) -> void:
+		return
+
+
+	func get_world_tag() -> String:
+		return world_tag
+
+
+	func set_world_tag(__) -> void:
+		return
 
 
 func load_setting() -> void:
 	var setting_file: File = File.new()
 	var load_path: String = ""
-	var setting_data
+	var setting_data: Dictionary
+	var __
 
 	var wizard: bool
-	var rng_seed: int
-	var world_tag: String
+	var world: String
+	var random: int
 
-	for i in [_exe_path, _res_path]:
+	for i in [EXE_PATH, RES_PATH]:
 		if setting_file.file_exists(i):
 			load_path = i
 			break
 	if load_path == "":
-		setting_data = null
+		setting_data = {}
 	else:
-		setting_data = load(load_path).new()
+		__ = setting_file.open(load_path, File.READ)
+		setting_data = JSON.parse(setting_file.get_as_text()).get_result()
+		setting_file.close()
 
 	wizard = _get_wizard(setting_data)
-	rng_seed = _get_seed(setting_data)
-	world_tag = _get_world(setting_data)
+	random = _get_seed(setting_data)
+	world = _get_world(setting_data)
 
-	emit_signal("setting_loaded", _new_SettingTemplate.new(
-			wizard, rng_seed, world_tag))
+	emit_signal("setting_loaded", PlayerSetting.new(wizard, random, world))
 
 
 func _get_wizard(setting) -> bool:
-	if (setting == null) or (not "WIZARD_MODE" in setting):
+	if not setting.has(WIZARD):
 		return false
-	return setting.WIZARD_MODE
+	return setting[WIZARD] as bool
 
 
 func _get_seed(setting) -> int:
-	if (setting == null) or (not "SEED" in setting) or (setting.SEED < 1):
+	var random: int
+
+	if not setting.has(SEED):
 		return -1
-	return setting.SEED
+
+	random = setting[SEED] as int
+	if random < 1:
+		return -1
+	return random
 
 
 func _get_world(setting) -> String:
-	if (setting == null) or (not "WORLD" in setting) \
-			or (not setting.WORLD in _new_WorldTag.get_full_world_tag()):
+	if not setting.has(WORLD):
 		return ""
-	return setting.WORLD
+	if not setting[WORLD] in _new_WorldTag.get_full_world_tag():
+		return ""
+	return setting[WORLD] as String

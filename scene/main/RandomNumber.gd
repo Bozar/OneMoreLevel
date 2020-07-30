@@ -24,9 +24,10 @@ func set_rng_seed(_rng_seed: int) -> void:
 	return
 
 
-func _on_GameSetting_setting_loaded(setting: Game_SettingTemplate) -> void:
+func _on_GameSetting_setting_loaded(
+		setting: Game_GameSetting.PlayerSetting) -> void:
 	# _rng.seed = 123
-	var set_seed: int = setting.get_seed()
+	var set_seed: int = setting.rng_seed
 
 	if set_seed > 0:
 		_rng.seed = set_seed

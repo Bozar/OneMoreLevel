@@ -108,8 +108,9 @@ func _on_EndGame_game_is_over(win: bool) -> void:
 	set_process_unhandled_input(true)
 
 
-func _on_GameSetting_setting_loaded(setting: Game_SettingTemplate) -> void:
-	_is_wizard = setting.get_wizard_mode()
+func _on_GameSetting_setting_loaded(
+		setting: Game_GameSetting.PlayerSetting) -> void:
+	_is_wizard = setting.wizard_mode
 
 
 func _is_reload_input(event: InputEvent) -> bool:

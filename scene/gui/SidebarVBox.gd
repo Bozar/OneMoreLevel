@@ -65,8 +65,9 @@ func _on_EndGame_game_is_over(win: bool) -> void:
 		get_node(MESSAGE).text = _new_SidebarText.LOSE
 
 
-func _on_GameSetting_setting_loaded(setting: Game_SettingTemplate) -> void:
-	_is_wizard = setting.get_wizard_mode()
+func _on_GameSetting_setting_loaded(
+		setting: Game_GameSetting.PlayerSetting) -> void:
+	_is_wizard = setting.wizard_mode
 
 
 func _set_color() -> void:

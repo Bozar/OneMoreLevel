@@ -46,8 +46,9 @@ func init_world() -> void:
 				sb.scene, sb.main_group, sb.sub_group, sb.x, sb.y)
 
 
-func _on_GameSetting_setting_loaded(setting: Game_SettingTemplate) -> void:
-	_world_name = setting.get_world_tag()
+func _on_GameSetting_setting_loaded(
+		setting: Game_GameSetting.PlayerSetting) -> void:
+	_world_name = setting.world_tag
 
 
 func _get_world() -> Game_WorldTemplate:
