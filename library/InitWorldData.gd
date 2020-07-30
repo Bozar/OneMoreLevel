@@ -10,8 +10,8 @@ const KnightAI := preload("res://library/npc_ai/KnightAI.gd")
 const DemoProgress := preload("res://library/game_progress/DemoProgress.gd")
 const KnightProgress := preload("res://library/game_progress/KnightProgress.gd")
 
-const DemolHelp := preload("res://library/help_text/DemolHelp.gd")
-const KnightHelp := preload("res://library/help_text/KnightHelp.gd")
+const DemolHelp: String = "res://doc/guide/demo.md"
+const KnightHelp: String = "res://doc/guide/knight.md"
 
 var _new_WorldTag := preload("res://library/WorldTag.gd").new()
 
@@ -42,4 +42,11 @@ func get_progress(world_tag: String) -> Game_ProgressTemplate:
 
 
 func get_help(world_tag: String) -> String:
-	return _world_data[world_tag][4].TEXT
+	var help_file: File = File.new()
+	var load_path: String = _world_data[world_tag][4]
+
+	var __ = help_file.open(load_path, File.READ)
+	var text: String = help_file.get_as_text()
+	help_file.close()
+
+	return text
