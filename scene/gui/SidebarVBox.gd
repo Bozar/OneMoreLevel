@@ -2,12 +2,12 @@ extends VBoxContainer
 class_name Game_SidebarVBox
 
 
-const TURN: String = "Turn"
-const MESSAGE: String = "Message"
-const WORLD: String = "World"
-const HELP: String = "Help"
-const VERSION: String = "Version"
-const SEED: String = "Seed"
+const TURN: String = "Upper/Turn"
+const MESSAGE: String = "Upper/Message"
+const WORLD: String = "Lower/World"
+const HELP: String = "Lower/Help"
+const VERSION: String = "Lower/Version"
+const SEED: String = "Lower/Seed"
 
 const CountDown := preload("res://scene/main/CountDown.gd")
 
