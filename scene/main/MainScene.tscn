@@ -1,4 +1,4 @@
-[gd_scene load_steps=23 format=2]
+[gd_scene load_steps=25 format=2]
 
 [ext_resource path="res://scene/main/InitWorld.gd" type="Script" id=1]
 [ext_resource path="res://scene/gui/MainGUI.tscn" type="PackedScene" id=2]
@@ -22,6 +22,8 @@
 [ext_resource path="res://scene/main/GameProgress.gd" type="Script" id=20]
 [ext_resource path="res://scene/main/CreateObject.gd" type="Script" id=21]
 [ext_resource path="res://scene/main/GameSetting.gd" type="Script" id=22]
+[ext_resource path="res://scene/main/SwitchScreen.gd" type="Script" id=23]
+[ext_resource path="res://scene/main/HelpInput.gd" type="Script" id=24]
 
 [node name="MainScene" type="Node2D"]
 script = ExtResource( 4 )
@@ -47,6 +49,9 @@ script = ExtResource( 12 )
 [node name="ReloadGame" type="Node2D" parent="PlayerInput"]
 script = ExtResource( 10 )
 
+[node name="HelpInput" type="Node2D" parent="."]
+script = ExtResource( 24 )
+
 [node name="Schedule" type="Node2D" parent="."]
 script = ExtResource( 5 )
 
@@ -70,6 +75,9 @@ script = ExtResource( 9 )
 
 [node name="RandomNumber" type="Node2D" parent="."]
 script = ExtResource( 11 )
+
+[node name="SwitchScreen" type="Node2D" parent="."]
+script = ExtResource( 23 )
 
 [node name="SwitchSprite" type="Node2D" parent="."]
 script = ExtResource( 3 )

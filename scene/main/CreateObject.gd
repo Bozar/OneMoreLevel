@@ -7,6 +7,7 @@ signal sprite_created(new_sprite)
 var _new_Palette := preload("res://library/Palette.gd").new()
 var _new_ZIndex := preload("res://library/ZIndex.gd").new()
 var _new_ConvertCoord := preload("res://library/ConvertCoord.gd").new()
+var _new_ScreenTag := preload("res://library/ScreenTag.gd").new()
 
 
 func create(prefab: PackedScene, main_group: String, sub_group: String,
@@ -25,3 +26,7 @@ func create(prefab: PackedScene, main_group: String, sub_group: String,
 
 	add_child(new_sprite)
 	emit_signal("sprite_created", new_sprite)
+
+
+func _on_SwitchScreen_screen_switched(screen_tag: String) -> void:
+	visible = (screen_tag == _new_ScreenTag.MAIN)

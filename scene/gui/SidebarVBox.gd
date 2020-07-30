@@ -15,6 +15,7 @@ var _new_Palette := preload("res://library/Palette.gd").new()
 var _new_WorldTag := preload("res://library/WorldTag.gd").new()
 var _new_ConvertCoord := preload("res://library/ConvertCoord.gd").new()
 var _new_SidebarText := preload("res://library/SidebarText.gd").new()
+var _new_ScreenTag := preload("res://library/ScreenTag.gd").new()
 
 var _ref_RandomNumber: Game_RandomNumber
 var _ref_DangerZone: Game_DangerZone
@@ -68,6 +69,10 @@ func _on_EndGame_game_is_over(win: bool) -> void:
 func _on_GameSetting_setting_loaded(
 		setting: Game_GameSetting.PlayerSetting) -> void:
 	_is_wizard = setting.wizard_mode
+
+
+func _on_SwitchScreen_screen_switched(screen_tag: String) -> void:
+	visible = (screen_tag == _new_ScreenTag.MAIN)
 
 
 func _set_color() -> void:

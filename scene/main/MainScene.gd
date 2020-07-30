@@ -3,6 +3,7 @@ extends "res://library/RootNodeTemplate.gd"
 
 const INIT_WORLD: String = "InitWorld"
 const PLAYER_INPUT: String = "PlayerInput"
+const HELP_INPUT: String = "HelpInput"
 const ENEMY_AI: String = "EnemyAI"
 const SCHEDULE: String = "Schedule"
 const DUNGEON: String = "DungeonBoard"
@@ -11,6 +12,7 @@ const REMOVE_OBJECT: String = "RemoveObject"
 const RANDOM: String = "RandomNumber"
 const OBJECT_DATA: String = "ObjectData"
 const SWITCH_SPRITE: String = "SwitchSprite"
+const SWITCH_SCREEN: String = "SwitchScreen"
 const DANGER_ZONE: String = "DangerZone"
 const END_GAME: String = "EndGame"
 const COUNT_DOWN: String = "CountDown"
@@ -53,6 +55,11 @@ const SIGNAL_BIND: Array = [
 		"setting_loaded", "_on_GameSetting_setting_loaded",
 		GAME_SETTING,
 		RANDOM, INIT_WORLD, PLAYER_INPUT, SIDEBAR,
+	],
+	[
+		"screen_switched", "_on_SwitchScreen_screen_switched",
+		SWITCH_SCREEN,
+		PLAYER_INPUT, CREATE_OBJECT, SIDEBAR, HELP_INPUT,
 	],
 	# [
 	# 	"enemy_warned", "_on_EnemyAI_enemy_warned",
@@ -116,6 +123,11 @@ const NODE_REF: Array = [
 		"_ref_GameSetting",
 		GAME_SETTING,
 		INIT_WORLD,
+	],
+	[
+		"_ref_SwitchScreen",
+		SWITCH_SCREEN,
+		PLAYER_INPUT, HELP_INPUT,
 	],
 ]
 

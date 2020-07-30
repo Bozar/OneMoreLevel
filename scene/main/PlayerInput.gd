@@ -13,6 +13,7 @@ var _ref_DangerZone: Game_DangerZone
 var _ref_SwitchSprite: Game_SwitchSprite
 var _ref_EndGame: Game_EndGame
 var _ref_CountDown: Game_CountDown
+var _ref_SwitchScreen: Game_SwitchScreen
 
 var _new_ConvertCoord := preload("res://library/ConvertCoord.gd").new()
 var _new_WorldTag := preload("res://library/WorldTag.gd").new()
@@ -21,6 +22,7 @@ var _new_SubGroupTag := preload("res://library/SubGroupTag.gd").new()
 var _new_SpriteTypeTag := preload("res://library/SpriteTypeTag.gd").new()
 var _new_Palette := preload("res://library/Palette.gd").new()
 var _new_InitWorldData := preload("res://library/InitWorldData.gd").new()
+var _new_ScreenTag: = preload("res://library/ScreenTag.gd").new()
 
 var _pc: Sprite
 var _pc_pos: Array
@@ -64,6 +66,8 @@ func _unhandled_input(event: InputEvent) -> void:
 		_handle_move_input()
 	elif _is_wait_input(event):
 		_pc_action.wait()
+	elif _is_help_input(event):
+		_ref_SwitchScreen.switch_to_screen(_new_ScreenTag.HELP)
 
 	# Do not end PC's turn if game ends.
 	if _end_game:
@@ -113,6 +117,10 @@ func _on_GameSetting_setting_loaded(
 	_is_wizard = setting.wizard_mode
 
 
+func _on_SwitchScreen_screen_switched(screen_tag: String) -> void:
+	set_process_unhandled_input(screen_tag == _new_ScreenTag.MAIN)
+
+
 func _is_reload_input(event: InputEvent) -> bool:
 	return event.is_action_pressed(_new_InputTag.RELOAD)
 
@@ -149,3 +157,7 @@ func _is_add_turn_input(event: InputEvent) -> bool:
 
 func _is_quit_input(event: InputEvent) -> bool:
 	return event.is_action_pressed(_new_InputTag.QUIT)
+
+
+func _is_help_input(event: InputEvent) -> bool:
+	return event.is_action_pressed(_new_InputTag.HELP)
