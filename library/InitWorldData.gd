@@ -10,14 +10,17 @@ const KnightAI := preload("res://library/npc_ai/KnightAI.gd")
 const DemoProgress := preload("res://library/game_progress/DemoProgress.gd")
 const KnightProgress := preload("res://library/game_progress/KnightProgress.gd")
 
+const DemolHelp := preload("res://library/help_text/DemolHelp.gd")
+const KnightHelp := preload("res://library/help_text/KnightHelp.gd")
+
 var _new_WorldTag := preload("res://library/WorldTag.gd").new()
 
 var _world_data: Dictionary = {
 	_new_WorldTag.DEMO: [
-		InitDemo, DemoPCAction, DemoAI, DemoProgress
+		InitDemo, DemoPCAction, DemoAI, DemoProgress, DemolHelp
 	],
 	_new_WorldTag.KNIGHT: [
-		InitKnight, KnightPCAction, KnightAI, KnightProgress
+		InitKnight, KnightPCAction, KnightAI, KnightProgress, KnightHelp
 	],
 }
 
@@ -36,3 +39,7 @@ func get_enemy_ai(world_tag: String) -> Game_AITemplate:
 
 func get_progress(world_tag: String) -> Game_ProgressTemplate:
 	return _world_data[world_tag][3]
+
+
+func get_help(world_tag: String) -> String:
+	return _world_data[world_tag][4].TEXT

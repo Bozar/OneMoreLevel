@@ -35,6 +35,8 @@ margin_top = 20.0
 margin_right = 780.0
 margin_bottom = 580.0
 
+[node name="HelpGUI" parent="." instance=ExtResource( 25 )]
+
 [node name="AutoStart" type="Node2D" parent="."]
 script = ExtResource( 18 )
 
@@ -52,8 +54,6 @@ script = ExtResource( 10 )
 
 [node name="HelpInput" type="Node2D" parent="."]
 script = ExtResource( 24 )
-
-[node name="HelpGUI" parent="HelpInput" instance=ExtResource( 25 )]
 
 [node name="Schedule" type="Node2D" parent="."]
 script = ExtResource( 5 )

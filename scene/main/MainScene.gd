@@ -19,6 +19,7 @@ const COUNT_DOWN: String = "CountDown"
 const GAME_PROGRESS: String = "GameProgress"
 const GAME_SETTING: String = "GameSetting"
 const SIDEBAR: String = "MainGUI/SidebarVBox"
+const HELP_GUI: String = "HelpGUI/HelpHBox"
 
 const SIGNAL_BIND: Array = [
 	[
@@ -29,7 +30,7 @@ const SIGNAL_BIND: Array = [
 	[
 		"world_selected", "_on_InitWorld_world_selected",
 		INIT_WORLD,
-		PLAYER_INPUT, ENEMY_AI, SIDEBAR, GAME_PROGRESS,
+		PLAYER_INPUT, ENEMY_AI, SIDEBAR, GAME_PROGRESS, HELP_GUI,
 	],
 	[
 		"turn_started", "_on_Schedule_turn_started",
@@ -59,7 +60,7 @@ const SIGNAL_BIND: Array = [
 	[
 		"screen_switched", "_on_SwitchScreen_screen_switched",
 		SWITCH_SCREEN,
-		PLAYER_INPUT, CREATE_OBJECT, SIDEBAR, HELP_INPUT,
+		PLAYER_INPUT, CREATE_OBJECT, SIDEBAR, HELP_INPUT, HELP_GUI,
 	],
 	# [
 	# 	"enemy_warned", "_on_EnemyAI_enemy_warned",

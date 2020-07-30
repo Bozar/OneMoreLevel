@@ -1,4 +1,5 @@
 extends VBoxContainer
+class_name Game_SidebarVBox
 
 
 const TURN: String = "Turn"

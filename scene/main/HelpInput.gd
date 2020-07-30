@@ -10,7 +10,6 @@ var _new_ScreenTag: = preload("res://library/ScreenTag.gd").new()
 
 func _ready() -> void:
 	set_process_unhandled_input(false)
-	visible = false
 
 
 func _unhandled_input(event: InputEvent) -> void:
@@ -19,7 +18,4 @@ func _unhandled_input(event: InputEvent) -> void:
 
 
 func _on_SwitchScreen_screen_switched(screen_tag: String) -> void:
-	var active: bool = (screen_tag == _new_ScreenTag.HELP)
-
-	set_process_unhandled_input(active)
-	visible = active
+	set_process_unhandled_input(screen_tag == _new_ScreenTag.HELP)
