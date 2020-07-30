@@ -4,7 +4,7 @@
 
 [node name="HelpGUI" type="MarginContainer"]
 margin_left = 40.0
-margin_top = 40.0
+margin_top = 80.0
 margin_right = 760.0
 margin_bottom = 560.0
 __meta__ = {
@@ -12,26 +12,27 @@ __meta__ = {
 }
 
 [node name="HelpHBox" type="HBoxContainer" parent="."]
-margin_right = 820.0
-margin_bottom = 520.0
+margin_right = 720.0
+margin_bottom = 480.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
 custom_constants/separation = 20
 
 [node name="Dungeon" parent="HelpHBox" instance=ExtResource( 1 )]
-margin_right = 400.0
-margin_bottom = 520.0
-rect_min_size = Vector2( 400, 0 )
+margin_right = 420.0
+margin_bottom = 480.0
+size_flags_horizontal = 3
 size_flags_vertical = 1
-text = "Left Left Left Left Left Left Left Left Left Left Left Left Left Left Left Left "
-align = 2
-valign = 2
+size_flags_stretch_ratio = 3.0
+text = "Left: Dungeon"
 autowrap = true
 
 [node name="General" parent="HelpHBox" instance=ExtResource( 1 )]
-margin_left = 420.0
+margin_left = 440.0
 margin_right = 720.0
-margin_bottom = 520.0
-rect_min_size = Vector2( 300, 0 )
+margin_bottom = 480.0
+size_flags_horizontal = 3
 size_flags_vertical = 1
-text = "Right Right Right Right Right Right Right Right "
-valign = 2
+size_flags_stretch_ratio = 2.0
+text = "Right: General"
 autowrap = true
