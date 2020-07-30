@@ -1,4 +1,4 @@
-[gd_scene load_steps=25 format=2]
+[gd_scene load_steps=26 format=2]
 
 [ext_resource path="res://scene/main/InitWorld.gd" type="Script" id=1]
 [ext_resource path="res://scene/gui/MainGUI.tscn" type="PackedScene" id=2]
@@ -24,6 +24,7 @@
 [ext_resource path="res://scene/main/GameSetting.gd" type="Script" id=22]
 [ext_resource path="res://scene/main/SwitchScreen.gd" type="Script" id=23]
 [ext_resource path="res://scene/main/HelpInput.gd" type="Script" id=24]
+[ext_resource path="res://scene/gui/HelpGUI.tscn" type="PackedScene" id=25]
 
 [node name="MainScene" type="Node2D"]
 script = ExtResource( 4 )
@@ -51,6 +52,8 @@ script = ExtResource( 10 )
 
 [node name="HelpInput" type="Node2D" parent="."]
 script = ExtResource( 24 )
+
+[node name="HelpGUI" parent="HelpInput" instance=ExtResource( 25 )]
 
 [node name="Schedule" type="Node2D" parent="."]
 script = ExtResource( 5 )
