@@ -18,6 +18,4 @@ Godot engine natively supports keyboards and gamepads (Xbox, DualShock and Ninte
 
 ## Core Mechanics
 
-As mentioned above, every theme dungeon has a unique winning condition. Press the `Help` key to read it. The help text is also available in `doc/guide/`. Articles in `doc/manual/` explain game mechanics in more detail, though they might spoil the fun of discovery.
-
-You lose the game if running out time. Remaining turns are shown on the upper right corner. However, there is always a way to gain more turns. You may also get killed by other causes in a dungeon.
+As mentioned above, every theme dungeon has a unique winning condition. Press `Help` key to read it. The help text is also available in `doc/`. You lose the game if running out time. Remaining turns are shown on the upper right corner. However, there is always a way to gain more turns. You may also get killed by other causes in a dungeon.
