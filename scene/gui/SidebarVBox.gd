@@ -9,8 +9,6 @@ const HELP: String = "Lower/Help"
 const VERSION: String = "Lower/Version"
 const SEED: String = "Lower/Seed"
 
-const CountDown := preload("res://scene/main/CountDown.gd")
-
 var _new_SubGroupTag := preload("res://library/SubGroupTag.gd").new()
 var _new_Palette := preload("res://library/Palette.gd").new()
 var _new_WorldTag := preload("res://library/WorldTag.gd").new()
@@ -20,7 +18,7 @@ var _new_ScreenTag := preload("res://library/ScreenTag.gd").new()
 
 var _ref_RandomNumber: Game_RandomNumber
 var _ref_DangerZone: Game_DangerZone
-var _ref_CountDown: CountDown
+var _ref_CountDown: Game_CountDown
 
 var _node_to_color: Dictionary = {
 	TURN: _new_Palette.STANDARD,
@@ -82,7 +80,7 @@ func _set_color() -> void:
 
 
 func _get_turn() -> String:
-	return _new_SidebarText.TURN.format([_ref_CountDown.get_count()])
+	return _new_SidebarText.TURN.format([_ref_CountDown.get_count(true)])
 
 
 func _get_warning() -> String:
