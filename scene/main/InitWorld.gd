@@ -52,14 +52,15 @@ func _on_GameSetting_setting_loaded(
 
 
 func _get_world() -> Game_WorldTemplate:
+	var full_tag: Array = _new_WorldTag.get_full_world_tag()
+	var tag_index: int = _ref_RandomNumber.get_int(0, full_tag.size())
 	var candidate: String
 	var world_template: Game_WorldTemplate
 
-	# TODO: Generate a random world name from potential candidates.
-	candidate = _new_WorldTag.KNIGHT
-	if _world_name != "":
+	if _world_name == "":
+		candidate = full_tag[tag_index]
+	else:
 		candidate = _world_name
-
 	emit_signal("world_selected", candidate)
 
 	world_template = _new_InitWorldData.get_world_template(candidate).new(self)

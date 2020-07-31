@@ -3,6 +3,7 @@ class_name Game_RandomNumber
 
 
 var rng_seed: int setget set_rng_seed, get_rng_seed
+var _init_seed: int
 
 var _rng := RandomNumberGenerator.new()
 
@@ -17,7 +18,7 @@ func get_percent_chance(chance: int) -> bool:
 
 
 func get_rng_seed() -> int:
-	return _rng.seed
+	return _init_seed
 
 
 func set_rng_seed(_rng_seed: int) -> void:
@@ -34,4 +35,6 @@ func _on_GameSetting_setting_loaded(
 	else:
 		_rng.randomize()
 		_rng.seed = _rng.randi()
+
+	_init_seed = _rng.seed
 	print("seed: {0}".format([_rng.seed]))

@@ -101,6 +101,6 @@ func _get_seed(setting) -> int:
 func _get_world(setting) -> String:
 	if not setting.has(WORLD):
 		return ""
-	if not setting[WORLD] in _new_WorldTag.get_full_world_tag():
+	if not _new_WorldTag.is_valid_world_tag(setting[WORLD]):
 		return ""
 	return setting[WORLD] as String

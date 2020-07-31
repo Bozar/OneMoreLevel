@@ -4,7 +4,7 @@ const DEMO: String = "demo"
 const KNIGHT: String = "knight"
 
 var _world_tag: Array = [
-	DEMO, KNIGHT,
+	KNIGHT,
 ]
 
 var _tag_to_name: Dictionary = {
@@ -21,3 +21,7 @@ func get_world_name(world_tag: String) -> String:
 
 func get_full_world_tag() -> Array:
 	return _world_tag
+
+
+func is_valid_world_tag(world_tag: String) -> bool:
+	return (world_tag == DEMO) or (world_tag in _world_tag)
