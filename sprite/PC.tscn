@@ -10,7 +10,7 @@ region = Rect2( 0, 144, 24, 36 )
 [sub_resource type="AtlasTexture" id=2]
 flags = 4
 atlas = ExtResource( 1 )
-region = Rect2( 72, 36, 24, 36 )
+region = Rect2( 264, 468, 24, 36 )
 
 [node name="PC" type="Sprite"]
 
