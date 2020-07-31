@@ -11,6 +11,8 @@ var _ref_SwitchSprite: Game_SwitchSprite
 var _ref_DangerZone: Game_DangerZone
 var _ref_EndGame: Game_EndGame
 var _ref_RandomNumber: Game_RandomNumber
+var _ref_RemoveObject: Game_RemoveObject
+var _ref_CountDown: Game_CountDown
 
 var _new_SubGroupTag := preload("res://library/SubGroupTag.gd").new()
 var _new_WorldTag := preload("res://library/WorldTag.gd").new()

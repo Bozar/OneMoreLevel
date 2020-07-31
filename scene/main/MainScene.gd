@@ -83,7 +83,7 @@ const NODE_REF: Array = [
 	[
 		"_ref_RemoveObject",
 		REMOVE_OBJECT,
-		PLAYER_INPUT,
+		PLAYER_INPUT, ENEMY_AI,
 	],
 	[
 		"_ref_RandomNumber",
@@ -113,7 +113,7 @@ const NODE_REF: Array = [
 	[
 		"_ref_CountDown",
 		COUNT_DOWN,
-		SIDEBAR, PLAYER_INPUT,
+		SIDEBAR, PLAYER_INPUT, ENEMY_AI,
 	],
 	[
 		"_ref_CreateObject",
