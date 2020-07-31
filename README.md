@@ -16,6 +16,11 @@ Godot engine natively supports keyboards and gamepads (Xbox, DualShock and Ninte
 * Reload: Space, [A].
 * Quit: Ctrl + W, [Select].
 
+Edit `data/setting.json` to enable wizard mode.
+
+* Add 1 turn (Wizard): T.
+* Force reload (Wizard): O.
+
 ## Core Mechanics
 
 As mentioned above, every theme dungeon has a unique winning condition. Press `Help` key to read it. The help text is also available in `doc/`. You lose the game if running out time. Remaining turns are shown on the upper right corner. However, there is always a way to gain more turns. You may also get killed by other causes in a dungeon.
