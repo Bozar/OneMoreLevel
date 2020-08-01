@@ -51,7 +51,7 @@ func _attack() -> void:
 	_set_danger_zone(danger_zone, false)
 	_switch_ground(danger_zone)
 
-	if _is_final_boss() and (_boss_attack_count[id] < 1):
+	if _can_attack_twice(id):
 		_prepare_second_attack(id)
 	else:
 		_ref_ObjectData.set_state(_self, _new_ObjectStateTag.PASSIVE)
@@ -177,18 +177,26 @@ func _is_final_boss() -> bool:
 					== _new_KnightData.MAX_BOSS_HP)
 
 
-func _prepare_second_attack(id: int) -> void:
-	var danger_zone: Array
-
-	_boss_attack_count[id] += 1
-
-	if _new_CoordCalculator.is_inside_range(
+func _can_attack_twice(id: int) -> bool:
+	if not _is_final_boss():
+		return false
+	if _boss_attack_count[id] > 0:
+		return false
+	if not _new_CoordCalculator.is_inside_range(
 			_pc_pos[0], _pc_pos[1], _self_pos[0], _self_pos[1],
 			_new_KnightData.RANGE):
-		danger_zone = _get_danger_zone()
-		_id_to_danger_zone[id] = danger_zone
-		_set_danger_zone(danger_zone, true)
-		_switch_ground(danger_zone)
+		return false
+	return true
+
+
+func _prepare_second_attack(id: int) -> void:
+	var danger_zone: Array = _get_danger_zone()
+
+	_id_to_danger_zone[id] = danger_zone
+	_set_danger_zone(danger_zone, true)
+	_switch_ground(danger_zone)
+
+	_boss_attack_count[id] += 1
 
 
 func _set_danger_zone(danger_zone: Array, is_dangerous: bool) -> void:
