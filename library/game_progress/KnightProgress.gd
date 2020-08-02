@@ -20,6 +20,8 @@ func _init(parent_node: Node2D).(parent_node) -> void:
 
 func renew_world(pc_x: int, pc_y: int) -> void:
 	var spawn: int
+	var encirclement: Array
+	var spawn_nearby: Array
 	_pc_x = pc_x
 	_pc_y = pc_y
 
@@ -31,10 +33,21 @@ func renew_world(pc_x: int, pc_y: int) -> void:
 		_spawn_npc(_spr_KnightBoss, _new_SubGroupTag.KNIGHT_BOSS)
 		_spawn_boss = false
 
-	if _ref_Schedule.count_npc() < _new_KnightData.START_RESPAWN:
-		spawn = _ref_RandomNumber.get_int(1, _new_KnightData.MAX_RESPAWN)
-		for _i in range(spawn):
-			_spawn_npc(_spr_Knight, _new_SubGroupTag.KNIGHT)
+	if _ref_Schedule.count_npc() > _new_KnightData.START_RESPAWN:
+		return
+	spawn = _ref_RandomNumber.get_int(1, _new_KnightData.MAX_RESPAWN)
+
+	if _is_too_sparse(_pc_x, _pc_y):
+		encirclement = _get_encirclement(_pc_x, _pc_y)
+		if encirclement.size() > 0:
+			spawn_nearby = encirclement[_ref_RandomNumber.get_int(
+					0, encirclement.size())]
+			_ref_CreateObject.create(_spr_Knight, _new_MainGroupTag.ACTOR,
+					_new_SubGroupTag.KNIGHT, spawn_nearby[0], spawn_nearby[1])
+			spawn -= 1
+
+	for _i in range(spawn):
+		_spawn_npc(_spr_Knight, _new_SubGroupTag.KNIGHT)
 
 
 func remove_npc(npc: Sprite, _x: int, _y: int) -> void:
@@ -88,3 +101,26 @@ func _has_neighbor(x: int, y: int) -> bool:
 		if _ref_DungeonBoard.has_sprite(_new_MainGroupTag.ACTOR, i[0], i[1]):
 			return true
 	return false
+
+
+func _is_too_sparse(x: int, y: int) -> bool:
+	var actor: int = 0
+	var neighbor: Array = _new_CoordCalculator.get_neighbor(
+			x, y, _new_KnightData.SIGHT)
+
+	for i in neighbor:
+		if _ref_DungeonBoard.has_sprite(_new_MainGroupTag.ACTOR, i[0], i[1]):
+			actor += 1
+	return actor < _new_KnightData.MIN_NEIGHBOR
+
+
+func _get_encirclement(x: int, y: int) -> Array:
+	var neighbor: Array = _new_CoordCalculator.get_neighbor(
+			x, y, _new_KnightData.ENCIRCLEMENT)
+	var candidate: Array = []
+
+	for i in neighbor:
+		if _is_occupied(i[0], i[1]) or _is_close_to_pc(i[0], i[1]):
+			continue
+		candidate.push_back(i)
+	return candidate

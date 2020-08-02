@@ -10,3 +10,6 @@ const MAX_CAPTAIN: int = 3
 
 const START_RESPAWN: int = 8
 const MAX_RESPAWN: int = 4
+
+const MIN_NEIGHBOR: int = 3
+const ENCIRCLEMENT: int = 9
