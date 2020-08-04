@@ -16,11 +16,26 @@ Godot engine natively supports keyboards and gamepads (Xbox, DualShock and Ninte
 * Reload: Space, [A].
 * Quit: Ctrl + W, [Select].
 
-Edit `data/setting.json` to enable wizard mode.
+Following keys are available only in help screen.
+
+* Move down (Help): Down, J, D, [Direction pad down].
+* Move up (Help): Up, K, A, [Direction pad up].
+* Page down (Help): PgDn, F, N.
+* Page up (Help): PgUp, B, P.
+
+These keys are available in wizard mode (see below).
 
 * Add 1 turn (Wizard): T.
 * Force reload (Wizard): O.
 
-## Core Mechanics
+## Game Mechanics
 
-As mentioned above, every theme dungeon has a unique winning condition. Press `Help` key to read it. The help text is also available in `doc/`. You lose the game if running out time. Remaining turns are shown on the upper right corner. However, there is always a way to gain more turns. You may also get killed by other causes in a dungeon.
+There is a count down timer at the top right corner of the main screen. You have 24 turns at most. When it reduces to zero, you lose the game. Every map provides a way to reverse the counter by 4 turns.
+
+Sometimes enemies and environment are able to consume your remaining turns. They might also kill you in other ways. On the other hand, every theme dungeon has a unique winning condition.
+
+Press `Help` key to read these mechanics. The help text is also available in `doc/`.
+
+## Change Game Settings
+
+Edit `data/setting.json` for play testing. Set `wizard_mode` to `true` to enable wizard keys. `rng_seed` accepts a positive integer as RNG seed. Feed `world_tag` with a string in `data/world_list.md` to specify the dungeon type.

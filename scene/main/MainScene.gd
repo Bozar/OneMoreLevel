@@ -18,24 +18,24 @@ const END_GAME: String = "EndGame"
 const COUNT_DOWN: String = "CountDown"
 const GAME_PROGRESS: String = "GameProgress"
 const GAME_SETTING: String = "GameSetting"
-const SIDEBAR: String = "MainGUI/SidebarVBox"
-const HELP_GUI: String = "HelpGUI/HelpHBox"
+const SIDEBAR_GUI: String = "MainGUI/SidebarVBox"
+const HELP_GUI: String = "HelpGUI/HelpVScroll"
 
 const SIGNAL_BIND: Array = [
 	[
 		"sprite_created", "_on_CreateObject_sprite_created",
 		CREATE_OBJECT,
-		PLAYER_INPUT, ENEMY_AI, SCHEDULE, DUNGEON, OBJECT_DATA, SIDEBAR,
+		PLAYER_INPUT, ENEMY_AI, SCHEDULE, DUNGEON, OBJECT_DATA, SIDEBAR_GUI,
 	],
 	[
 		"world_selected", "_on_InitWorld_world_selected",
 		INIT_WORLD,
-		PLAYER_INPUT, ENEMY_AI, SIDEBAR, GAME_PROGRESS, HELP_GUI,
+		PLAYER_INPUT, ENEMY_AI, SIDEBAR_GUI, GAME_PROGRESS, HELP_GUI,
 	],
 	[
 		"turn_started", "_on_Schedule_turn_started",
 		SCHEDULE,
-		PLAYER_INPUT, ENEMY_AI, SIDEBAR, COUNT_DOWN, GAME_PROGRESS,
+		PLAYER_INPUT, ENEMY_AI, SIDEBAR_GUI, COUNT_DOWN, GAME_PROGRESS,
 	],
 	[
 		"turn_ended", "_on_Schedule_turn_ended",
@@ -50,17 +50,17 @@ const SIGNAL_BIND: Array = [
 	[
 		"game_is_over", "_on_EndGame_game_is_over",
 		END_GAME,
-		SCHEDULE, PLAYER_INPUT, SIDEBAR,
+		SCHEDULE, PLAYER_INPUT, SIDEBAR_GUI,
 	],
 	[
 		"setting_loaded", "_on_GameSetting_setting_loaded",
 		GAME_SETTING,
-		RANDOM, INIT_WORLD, PLAYER_INPUT, SIDEBAR,
+		RANDOM, INIT_WORLD, PLAYER_INPUT, SIDEBAR_GUI,
 	],
 	[
 		"screen_switched", "_on_SwitchScreen_screen_switched",
 		SWITCH_SCREEN,
-		PLAYER_INPUT, CREATE_OBJECT, SIDEBAR, HELP_INPUT, HELP_GUI,
+		PLAYER_INPUT, CREATE_OBJECT, SIDEBAR_GUI, HELP_INPUT, HELP_GUI,
 	],
 	# [
 	# 	"enemy_warned", "_on_EnemyAI_enemy_warned",
@@ -88,7 +88,7 @@ const NODE_REF: Array = [
 	[
 		"_ref_RandomNumber",
 		RANDOM,
-		INIT_WORLD, PLAYER_INPUT, ENEMY_AI, SIDEBAR, GAME_PROGRESS,
+		INIT_WORLD, PLAYER_INPUT, ENEMY_AI, SIDEBAR_GUI, GAME_PROGRESS,
 	],
 	[
 		"_ref_ObjectData",
@@ -103,7 +103,7 @@ const NODE_REF: Array = [
 	[
 		"_ref_DangerZone",
 		DANGER_ZONE,
-		ENEMY_AI, PLAYER_INPUT, SIDEBAR,
+		ENEMY_AI, PLAYER_INPUT, SIDEBAR_GUI,
 	],
 	[
 		"_ref_EndGame",
@@ -113,7 +113,7 @@ const NODE_REF: Array = [
 	[
 		"_ref_CountDown",
 		COUNT_DOWN,
-		SIDEBAR, PLAYER_INPUT, ENEMY_AI,
+		SIDEBAR_GUI, PLAYER_INPUT, ENEMY_AI,
 	],
 	[
 		"_ref_CreateObject",
@@ -129,6 +129,11 @@ const NODE_REF: Array = [
 		"_ref_SwitchScreen",
 		SWITCH_SCREEN,
 		PLAYER_INPUT, HELP_INPUT,
+	],
+	[
+		"_ref_HelpVScroll",
+		HELP_GUI,
+		HELP_INPUT,
 	],
 ]
 

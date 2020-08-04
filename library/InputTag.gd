@@ -11,3 +11,6 @@ const HELP: String = "help"
 const INIT_WORLD: String = "init_world"
 const FORCE_RELOAD: String = "force_reload"
 const ADD_TURN: String = "add_turn"
+
+const PAGE_DOWN: String = "page_down"
+const PAGE_UP: String = "page_up"

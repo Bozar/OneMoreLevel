@@ -1,16 +1,40 @@
-extends HBoxContainer
-class_name Game_HelpHBox
+extends ScrollContainer
+class_name Game_HelpVScroll
 
 
-const DUNGEON: String = "Dungeon"
+const DUNGEON: String = "HelpHBox/Dungeon"
 
 var _new_Palette := preload("res://library/Palette.gd").new()
 var _new_ScreenTag: = preload("res://library/ScreenTag.gd").new()
 var _new_InitWorldData := preload("res://library/InitWorldData.gd").new()
 
+var _scroll_line: int = 60
+var _scroll_page: int = 300
+
 
 func _ready() -> void:
 	visible = false
+
+
+func slide_scroll_bar(scroll_line: bool, scroll_down: bool) -> void:
+	var distance: int
+
+	if scroll_line:
+		if scroll_down:
+			distance = _scroll_line
+		else:
+			distance = -_scroll_line
+	else:
+		if scroll_down:
+			distance = _scroll_page
+		else:
+			distance = -_scroll_page
+
+	scroll_vertical += distance
+
+
+func reset_scroll_bar() -> void:
+	scroll_vertical = 0
 
 
 func _on_InitWorld_world_selected(new_world: String) -> void:
