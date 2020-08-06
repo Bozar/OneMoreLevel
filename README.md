@@ -20,7 +20,7 @@ Following keys are available only in help screen.
 
 * Move down (Help): Down, J, D, [Direction pad down].
 * Move up (Help): Up, K, A, [Direction pad up].
-* Page down (Help): PgDn, F, N.
+* Page down (Help): PgDn, Space, F, N.
 * Page up (Help): PgUp, B, P.
 * Scroll to top (Help): Home, G.
 * Scroll to bottom (Help): End, Shift + G.
