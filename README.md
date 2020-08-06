@@ -22,6 +22,8 @@ Following keys are available only in help screen.
 * Move up (Help): Up, K, A, [Direction pad up].
 * Page down (Help): PgDn, F, N.
 * Page up (Help): PgUp, B, P.
+* Scroll to top (Help): Home, G.
+* Scroll to bottom (Help): End, Shift + G.
 
 These keys are available in wizard mode (see below).
 

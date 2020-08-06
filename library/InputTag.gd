@@ -14,3 +14,5 @@ const ADD_TURN: String = "add_turn"
 
 const PAGE_DOWN: String = "page_down"
 const PAGE_UP: String = "page_up"
+const SCROLL_TO_TOP: String = "scroll_to_top"
+const SCROLL_TO_BOTTOM: String = "scroll_to_bottom"

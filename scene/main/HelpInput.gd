@@ -14,16 +14,24 @@ func _ready() -> void:
 
 
 func _unhandled_input(event: InputEvent) -> void:
+	# Leave help screen.
 	if event.is_action_pressed(_new_InputTag.HELP):
 		_ref_SwitchScreen.switch_to_screen(_new_ScreenTag.MAIN)
+	# Scroll one line.
 	elif event.is_action_pressed(_new_InputTag.MOVE_DOWN):
 		_ref_HelpVScroll.slide_scroll_bar(true, true)
 	elif event.is_action_pressed(_new_InputTag.MOVE_UP):
 		_ref_HelpVScroll.slide_scroll_bar(true, false)
+	# Scroll one page.
 	elif event.is_action_pressed(_new_InputTag.PAGE_DOWN):
 		_ref_HelpVScroll.slide_scroll_bar(false, true)
 	elif event.is_action_pressed(_new_InputTag.PAGE_UP):
 		_ref_HelpVScroll.slide_scroll_bar(false, false)
+	# Scroll to top or bottom.
+	elif event.is_action_pressed(_new_InputTag.SCROLL_TO_BOTTOM):
+		_ref_HelpVScroll.scroll_to_top_or_bottom(true)
+	elif event.is_action_pressed(_new_InputTag.SCROLL_TO_TOP):
+		_ref_HelpVScroll.scroll_to_top_or_bottom(false)
 
 
 func _on_SwitchScreen_screen_switched(screen_tag: String) -> void:

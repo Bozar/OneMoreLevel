@@ -33,6 +33,13 @@ func slide_scroll_bar(scroll_line: bool, scroll_down: bool) -> void:
 	scroll_vertical += distance
 
 
+func scroll_to_top_or_bottom(scroll_to_bottom: bool) -> void:
+	if scroll_to_bottom:
+		scroll_vertical = get_v_scrollbar().max_value as int
+	else:
+		scroll_vertical = 0
+
+
 func reset_scroll_bar() -> void:
 	scroll_vertical = 0
 
