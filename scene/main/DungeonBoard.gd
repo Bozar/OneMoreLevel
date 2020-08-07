@@ -15,6 +15,7 @@ var _valid_main_groups: Array = [
 	_new_MainGroupTag.GROUND,
 	_new_MainGroupTag.ACTOR,
 	_new_MainGroupTag.BUILDING,
+	_new_MainGroupTag.TRAP,
 ]
 
 var _sub_group_to_sprite: Dictionary = {
@@ -73,6 +74,7 @@ func _on_CreateObject_sprite_created(new_sprite: Sprite) -> void:
 	for mg in _valid_main_groups:
 		if new_sprite.is_in_group(mg):
 			group = mg
+			break
 	if group == "":
 		return
 	pos = _new_ConvertCoord.vector_to_array(new_sprite.position)

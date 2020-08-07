@@ -143,12 +143,17 @@ func _is_move_input(event: InputEvent) -> bool:
 
 
 func _handle_move_input() -> void:
-	if _pc_action.is_ground(_pc_pos, _direction):
-		_pc_action.move()
-	elif _pc_action.is_npc(_pc_pos, _direction):
+	if not _pc_action.is_inside_dungeon(_pc_pos, _direction):
+		return
+
+	if _pc_action.is_npc(_pc_pos, _direction):
 		_pc_action.attack()
 	elif _pc_action.is_building(_pc_pos, _direction):
-		_pc_action.interact()
+		_pc_action.interact_with_building()
+	elif _pc_action.is_trap(_pc_pos, _direction):
+		_pc_action.interact_with_trap()
+	else:
+		_pc_action.move()
 
 
 func _is_add_turn_input(event: InputEvent) -> bool:

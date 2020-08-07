@@ -24,12 +24,19 @@ var _new_DungeonSize := preload("res://library/DungeonSize.gd").new()
 
 var _source_position: Array
 var _target_position: Array
+
 var _direction_to_coord: Dictionary = {
 	_new_InputTag.MOVE_UP: [0, -1],
 	_new_InputTag.MOVE_DOWN: [0, 1],
 	_new_InputTag.MOVE_LEFT: [-1, 0],
 	_new_InputTag.MOVE_RIGHT: [1, 0],
 }
+
+var _valid_main_groups: Array = [
+	_new_MainGroupTag.ACTOR,
+	_new_MainGroupTag.BUILDING,
+	_new_MainGroupTag.TRAP,
+]
 
 
 # Refer: PlayerInput.gd.
@@ -58,13 +65,13 @@ func set_end_turn(_end_turn: bool) -> void:
 	pass
 
 
-func is_ground(source: Array, direction: String) -> bool:
+func is_inside_dungeon(source: Array, direction: String) -> bool:
 	_set_source_target_positions(source, direction)
 
 	var x: int = _target_position[0]
 	var y: int = _target_position[1]
 
-	return not _is_occupied(x, y)
+	return _new_CoordCalculator.is_inside_dungeon(x, y)
 
 
 func is_npc(source: Array, direction: String) -> bool:
@@ -81,6 +88,13 @@ func is_building(source: Array, direction: String) -> bool:
 			_target_position[0], _target_position[1])
 
 
+func is_trap(source: Array, direction: String) -> bool:
+	_set_source_target_positions(source, direction)
+
+	return _ref_DungeonBoard.has_sprite(_new_MainGroupTag.TRAP,
+			_target_position[0], _target_position[1])
+
+
 func move() -> void:
 	_ref_DungeonBoard.move_sprite(_new_MainGroupTag.ACTOR,
 			_source_position, _target_position)
@@ -93,7 +107,11 @@ func attack() -> void:
 	end_turn = true
 
 
-func interact() -> void:
+func interact_with_building() -> void:
+	pass
+
+
+func interact_with_trap() -> void:
 	pass
 
 
@@ -113,6 +131,10 @@ func _set_source_target_positions(source: Array, direction: String) -> void:
 
 
 func _is_occupied(x: int, y: int) -> bool:
-	return (not _new_CoordCalculator.is_inside_dungeon(x, y)) \
-			or _ref_DungeonBoard.has_sprite(_new_MainGroupTag.BUILDING, x, y) \
-			or _ref_DungeonBoard.has_sprite(_new_MainGroupTag.ACTOR, x, y)
+	if not _new_CoordCalculator.is_inside_dungeon(x, y):
+		return true
+
+	for i in _valid_main_groups:
+		if _ref_DungeonBoard.has_sprite(i, x, y):
+			return true
+	return false
