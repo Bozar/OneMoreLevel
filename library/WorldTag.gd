@@ -2,16 +2,16 @@ const INVALID: String = "INVALID"
 const DEMO: String = "demo"
 
 const KNIGHT: String = "knight"
-const DESERT: String = "desert"
+const CORRUPTION: String = "corruption"
 
 var _world_tag: Array = [
-	KNIGHT, DESERT,
+	KNIGHT, CORRUPTION,
 ]
 
 var _tag_to_name: Dictionary = {
 	DEMO: "Demo",
 	KNIGHT: "Knight",
-	DESERT: "Desert",
+	CORRUPTION: "Corruption",
 }
 
 
