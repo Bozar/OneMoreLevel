@@ -28,14 +28,6 @@ func get_blueprint() -> Array:
 	return _blueprint
 
 
-# {0: [false, ...], 1: [false, ...], ...}
-func _set_dungeon_board() -> void:
-	for i in range(_new_DungeonSize.MAX_X):
-		_dungeon[i] = []
-		for _j in range(_new_DungeonSize.MAX_Y):
-			_dungeon[i].push_back(false)
-
-
 func _init_wall() -> void:
 	var max_retry: int = 10000
 
@@ -224,11 +216,3 @@ func _init_knight(scene: PackedScene, tag: String) -> void:
 
 		_add_to_blueprint(scene, _new_MainGroupTag.ACTOR, tag, x, y)
 		return
-
-
-func _occupy_position(x: int, y: int) -> void:
-	_dungeon[x][y] = true
-
-
-func _is_occupied(x: int, y: int) -> bool:
-	return _dungeon[x][y]
