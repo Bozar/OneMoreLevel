@@ -1,15 +1,17 @@
 const INVALID: String = "INVALID"
-
 const DEMO: String = "demo"
+
 const KNIGHT: String = "knight"
+const DESERT: String = "desert"
 
 var _world_tag: Array = [
-	KNIGHT,
+	KNIGHT, DESERT,
 ]
 
 var _tag_to_name: Dictionary = {
 	DEMO: "Demo",
 	KNIGHT: "Knight",
+	DESERT: "Desert",
 }
 
 

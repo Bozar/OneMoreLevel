@@ -1,4 +1,4 @@
-const VERSION: String = "{0}0.0.2"
+const VERSION: String = "{0}0.0.3"
 
 const TURN: String = "Turn: {0}"
 
