@@ -1,22 +1,22 @@
 const InitDemo := preload("res://library/init/InitDemo.gd")
 const InitKnight := preload("res://library/init/InitKnight.gd")
-const InitCorruption := preload("res://library/init/InitCorruption.gd")
+const InitDesert := preload("res://library/init/InitDesert.gd")
 
 const DemoPCAction := preload("res://library/pc_action/DemoPCAction.gd")
 const KnightPCAction := preload("res://library/pc_action/KnightPCAction.gd")
-const CorruptionPCAction := preload("res://library/pc_action/CorruptionPCAction.gd")
+const DesertPCAction := preload("res://library/pc_action/DesertPCAction.gd")
 
 const DemoAI := preload("res://library/npc_ai/DemoAI.gd")
 const KnightAI := preload("res://library/npc_ai/KnightAI.gd")
-const CorruptionAI := preload("res://library/npc_ai/CorruptionAI.gd")
+const DesertAI := preload("res://library/npc_ai/DesertAI.gd")
 
 const DemoProgress := preload("res://library/game_progress/DemoProgress.gd")
 const KnightProgress := preload("res://library/game_progress/KnightProgress.gd")
-const CorruptionProgress := preload("res://library/game_progress/CorruptionProgress.gd")
+const DesertProgress := preload("res://library/game_progress/DesertProgress.gd")
 
 const DemolHelp: String = "res://user/doc/demo.md"
 const KnightHelp: String = "res://user/doc/knight.md"
-const CorruptionHelp: String = "res://user/doc/corruption.md"
+const DesertHelp: String = "res://user/doc/desert.md"
 
 var _new_WorldTag := preload("res://library/WorldTag.gd").new()
 
@@ -27,9 +27,9 @@ var _world_data: Dictionary = {
 	_new_WorldTag.KNIGHT: [
 		InitKnight, KnightPCAction, KnightAI, KnightProgress, KnightHelp
 	],
-	_new_WorldTag.CORRUPTION: [
-		InitCorruption, CorruptionPCAction, CorruptionAI, CorruptionProgress,
-		CorruptionHelp
+	_new_WorldTag.DESERT: [
+		InitDesert, DesertPCAction, DesertAI, DesertProgress,
+		DesertHelp
 	],
 }
 
