@@ -14,6 +14,10 @@ func wait() -> void:
 
 # TODO: Fill progress bar.
 func attack() -> void:
+	if _pc_is_dead():
+		_ref_EndGame.player_lose()
+		return
+
 	var x: int = _target_position[0]
 	var y: int = _target_position[1]
 	var worm: Sprite = _ref_DungeonBoard.get_sprite(
