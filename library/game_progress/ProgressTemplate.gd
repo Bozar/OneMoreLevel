@@ -12,6 +12,7 @@ var _new_DungeonSize := preload("res://library/DungeonSize.gd").new()
 var _new_CoordCalculator := preload("res://library/CoordCalculator.gd").new()
 
 
+# Refer: GameProgress.gd.
 func _init(parent_node: Node2D) -> void:
 	_ref_RandomNumber = parent_node._ref_RandomNumber
 	_ref_Schedule = parent_node._ref_Schedule

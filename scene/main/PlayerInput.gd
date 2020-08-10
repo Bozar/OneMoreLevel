@@ -62,6 +62,7 @@ func _unhandled_input(event: InputEvent) -> void:
 			get_node(RELOAD_GAME).reload()
 		return
 
+	_pc_action.set_source_position(_pc_pos)
 	if _is_move_input(event):
 		_handle_move_input()
 	elif _is_wait_input(event):
@@ -143,14 +144,15 @@ func _is_move_input(event: InputEvent) -> bool:
 
 
 func _handle_move_input() -> void:
-	if not _pc_action.is_inside_dungeon(_pc_pos, _direction):
+	_pc_action.set_target_position(_direction)
+	if not _pc_action.is_inside_dungeon():
 		return
 
-	if _pc_action.is_npc(_pc_pos, _direction):
+	if _pc_action.is_npc():
 		_pc_action.attack()
-	elif _pc_action.is_building(_pc_pos, _direction):
+	elif _pc_action.is_building():
 		_pc_action.interact_with_building()
-	elif _pc_action.is_trap(_pc_pos, _direction):
+	elif _pc_action.is_trap():
 		_pc_action.interact_with_trap()
 	else:
 		_pc_action.move()

@@ -6,7 +6,10 @@ func _init(parent_node: Node2D).(parent_node) -> void:
 
 
 func wait() -> void:
-	end_turn = false
+	if _pc_is_dead():
+		_ref_EndGame.player_lose()
+	else:
+		end_turn = false
 
 
 # TODO: Fill progress bar.
@@ -46,3 +49,18 @@ func _remove_building_or_trap(is_building: bool) -> void:
 	else:
 		_ref_RemoveObject.remove(_new_MainGroupTag.TRAP, x, y)
 	end_turn = true
+
+
+func _pc_is_dead() -> bool:
+	var x: int = _source_position[0]
+	var y: int = _source_position[1]
+	var neighbor: Array = _new_CoordCalculator.get_neighbor(x, y, 1)
+	var max_neighbor: int = 4
+	var count_neighbor: int = max_neighbor - neighbor.size()
+	var worm: Sprite
+
+	for i in neighbor:
+		worm = _ref_DungeonBoard.get_sprite(_new_MainGroupTag.ACTOR, i[0], i[1])
+		if (worm != null) and worm.is_in_group(_new_SubGroupTag.WORM):
+			count_neighbor += 1
+	return count_neighbor == max_neighbor

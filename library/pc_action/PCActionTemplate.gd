@@ -68,32 +68,24 @@ func set_end_turn(_end_turn: bool) -> void:
 	pass
 
 
-func is_inside_dungeon(source: Array, direction: String) -> bool:
-	_set_source_target_positions(source, direction)
-
+func is_inside_dungeon() -> bool:
 	var x: int = _target_position[0]
 	var y: int = _target_position[1]
 
 	return _new_CoordCalculator.is_inside_dungeon(x, y)
 
 
-func is_npc(source: Array, direction: String) -> bool:
-	_set_source_target_positions(source, direction)
-
+func is_npc() -> bool:
 	return _ref_DungeonBoard.has_sprite(_new_MainGroupTag.ACTOR,
 			_target_position[0], _target_position[1])
 
 
-func is_building(source: Array, direction: String) -> bool:
-	_set_source_target_positions(source, direction)
-
+func is_building() -> bool:
 	return _ref_DungeonBoard.has_sprite(_new_MainGroupTag.BUILDING,
 			_target_position[0], _target_position[1])
 
 
-func is_trap(source: Array, direction: String) -> bool:
-	_set_source_target_positions(source, direction)
-
+func is_trap() -> bool:
 	return _ref_DungeonBoard.has_sprite(_new_MainGroupTag.TRAP,
 			_target_position[0], _target_position[1])
 
@@ -126,11 +118,16 @@ func reset_state() -> void:
 	end_turn = false
 
 
-func _set_source_target_positions(source: Array, direction: String) -> void:
+func set_source_position(source: Array) -> void:
+	_source_position = source
+
+
+func set_target_position(direction: String) -> void:
 	var shift: Array = _direction_to_coord[direction]
 
-	_source_position = source
-	_target_position = [source[0] + shift[0], source[1] + shift[1]]
+	_target_position = [
+		_source_position[0] + shift[0], _source_position[1] + shift[1]
+	]
 
 
 func _is_occupied(x: int, y: int) -> bool:
