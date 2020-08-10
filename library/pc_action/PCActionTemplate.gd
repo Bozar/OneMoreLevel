@@ -13,6 +13,7 @@ var _ref_ObjectData: Game_ObjectData
 var _ref_RandomNumber: Game_RandomNumber
 var _ref_EndGame: Game_EndGame
 var _ref_CountDown: Game_CountDown
+var _ref_SwitchSprite: Game_SwitchSprite
 
 var _new_InputTag := preload("res://library/InputTag.gd").new()
 var _new_MainGroupTag := preload("res://library/MainGroupTag.gd").new()
@@ -21,6 +22,7 @@ var _new_CoordCalculator := preload("res://library/CoordCalculator.gd").new()
 var _new_ConvertCoord := preload("res://library/ConvertCoord.gd").new()
 var _new_ObjectStateTag := preload("res://library/ObjectStateTag.gd").new()
 var _new_DungeonSize := preload("res://library/DungeonSize.gd").new()
+var _new_SpriteTypeTag := preload("res://library/SpriteTypeTag.gd").new()
 
 var _source_position: Array
 var _target_position: Array
@@ -47,6 +49,7 @@ func _init(parent_node: Node2D) -> void:
 	_ref_RandomNumber = parent_node._ref_RandomNumber
 	_ref_EndGame = parent_node._ref_EndGame
 	_ref_CountDown = parent_node._ref_CountDown
+	_ref_SwitchSprite = parent_node._ref_SwitchSprite
 
 
 func get_message() -> String:
