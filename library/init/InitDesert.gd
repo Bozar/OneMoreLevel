@@ -4,6 +4,10 @@ extends "res://library/init/WorldTemplate.gd"
 var _spr_PC := preload("res://sprite/PC.tscn")
 var _spr_Wall := preload("res://sprite/Wall.tscn")
 var _spr_Treasure := preload("res://sprite/Treasure.tscn")
+var _spr_WormHead := preload("res://sprite/WormHead.tscn")
+var _spr_WormBody := preload("res://sprite/WormBody.tscn")
+var _spr_WormSpice := preload("res://sprite/WormSpice.tscn")
+var _spr_WormTail := preload("res://sprite/WormTail.tscn")
 
 
 func _init(parent_node: Node2D).(parent_node) -> void:
@@ -11,10 +15,38 @@ func _init(parent_node: Node2D).(parent_node) -> void:
 
 
 func get_blueprint() -> Array:
+	_init_worm()
 	_init_wall()
 	_init_pc()
 
 	return _blueprint
+
+
+func _init_worm() -> void:
+	_occupy_position(0, 0)
+	_add_to_blueprint(_spr_WormHead,
+			_new_MainGroupTag.ACTOR, _new_SubGroupTag.WORM,
+			0, 0)
+
+	_occupy_position(1, 0)
+	_add_to_blueprint(_spr_WormBody,
+			_new_MainGroupTag.ACTOR, _new_SubGroupTag.WORM,
+			1, 0)
+
+	_occupy_position(2, 0)
+	_add_to_blueprint(_spr_WormSpice,
+			_new_MainGroupTag.ACTOR, _new_SubGroupTag.SPICE,
+			2, 0)
+
+	_occupy_position(3, 0)
+	_add_to_blueprint(_spr_WormBody,
+			_new_MainGroupTag.ACTOR, _new_SubGroupTag.WORM,
+			3, 0)
+
+	_occupy_position(4, 0)
+	_add_to_blueprint(_spr_WormTail,
+			_new_MainGroupTag.ACTOR, _new_SubGroupTag.WORM,
+			4, 0)
 
 
 func _init_wall(count: int = 0) -> void:

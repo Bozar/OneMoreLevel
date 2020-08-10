@@ -1,10 +1,14 @@
 const INVALID: String = "invalid"
+const DWARF: String = "dwarf"
 
 const PC: String = "pc"
-const DWARF: String = "dwarf"
+
 const KNIGHT: String = "knight"
 const KNIGHT_CAPTAIN: String = "knight_captain"
 const KNIGHT_BOSS: String = "knight_boss"
+
+const WORM: String = "worm"
+const SPICE: String = "spice"
 
 const FLOOR: String = "floor"
 const WALL: String = "wall"
