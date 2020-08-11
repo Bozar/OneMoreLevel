@@ -58,13 +58,28 @@ func _remove_building_or_trap(is_building: bool) -> void:
 func _pc_is_dead() -> bool:
 	var x: int = _source_position[0]
 	var y: int = _source_position[1]
+
 	var neighbor: Array = _new_CoordCalculator.get_neighbor(x, y, 1)
 	var max_neighbor: int = 4
 	var count_neighbor: int = max_neighbor - neighbor.size()
-	var worm: Sprite
+
+	var actor: Sprite
+	var is_worm: bool
+	var is_spice: bool
+	var is_passive: bool
 
 	for i in neighbor:
-		worm = _ref_DungeonBoard.get_sprite(_new_MainGroupTag.ACTOR, i[0], i[1])
-		if (worm != null) and worm.is_in_group(_new_SubGroupTag.WORM):
+		actor = _ref_DungeonBoard.get_sprite(
+				_new_MainGroupTag.ACTOR, i[0], i[1])
+		if (actor == null):
+			continue
+
+		is_worm = actor.is_in_group(_new_SubGroupTag.WORM)
+		is_spice = actor.is_in_group(_new_SubGroupTag.SPICE)
+		is_passive = _ref_ObjectData.verify_state(
+				actor, _new_ObjectStateTag.PASSIVE)
+
+		if is_worm or (is_spice and is_passive):
 			count_neighbor += 1
+
 	return count_neighbor == max_neighbor
