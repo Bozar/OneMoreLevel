@@ -14,7 +14,7 @@ func _init(parent_node: Node2D).(parent_node) -> void:
 
 func get_blueprint() -> Array:
 	_init_wall()
-	_init_PC()
+	_init_pc()
 	_init_knight(_spr_KnightCaptain, _new_SubGroupTag.KNIGHT_CAPTAIN)
 
 	for _i in range(_new_KnightData.MAX_KNIGHT):

@@ -11,7 +11,7 @@ func _init(parent_node: Node2D).(parent_node) -> void:
 
 func get_blueprint() -> Array:
 	_init_wall()
-	_init_PC()
+	_init_pc()
 	_init_dwarf()
 
 	return _blueprint

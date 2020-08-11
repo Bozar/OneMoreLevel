@@ -70,7 +70,7 @@ func _init_floor() -> void:
 					i, j)
 
 
-func _init_PC() -> void:
+func _init_pc() -> void:
 	var x: int
 	var y: int
 	var neighbor: Array

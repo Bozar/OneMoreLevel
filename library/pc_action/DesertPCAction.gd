@@ -23,7 +23,7 @@ func attack() -> void:
 	var worm: Sprite = _ref_DungeonBoard.get_sprite(
 			_new_MainGroupTag.ACTOR, x, y)
 
-	if (not worm.is_in_group(_new_SubGroupTag.SPICE)) \
+	if (not worm.is_in_group(_new_SubGroupTag.WORM_SPICE)) \
 			or _ref_ObjectData.verify_state(worm, _new_ObjectStateTag.PASSIVE):
 		end_turn = false
 		return
@@ -64,7 +64,8 @@ func _pc_is_dead() -> bool:
 	var count_neighbor: int = max_neighbor - neighbor.size()
 
 	var actor: Sprite
-	var is_worm: bool
+	var is_head: bool
+	var is_body: bool
 	var is_spice: bool
 	var is_passive: bool
 
@@ -74,12 +75,13 @@ func _pc_is_dead() -> bool:
 		if (actor == null):
 			continue
 
-		is_worm = actor.is_in_group(_new_SubGroupTag.WORM)
-		is_spice = actor.is_in_group(_new_SubGroupTag.SPICE)
+		is_head = actor.is_in_group(_new_SubGroupTag.WORM_HEAD)
+		is_body = actor.is_in_group(_new_SubGroupTag.WORM_BODY)
+		is_spice = actor.is_in_group(_new_SubGroupTag.WORM_SPICE)
 		is_passive = _ref_ObjectData.verify_state(
 				actor, _new_ObjectStateTag.PASSIVE)
 
-		if is_worm or (is_spice and is_passive):
+		if is_head or is_body or (is_spice and is_passive):
 			count_neighbor += 1
 
 	return count_neighbor == max_neighbor

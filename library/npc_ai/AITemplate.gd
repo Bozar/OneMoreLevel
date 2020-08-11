@@ -1,8 +1,6 @@
 class_name Game_AITemplate
 
 
-const DIJKSTRA: String = "res://library/npc_ai/DijkstraPathFinding.gd"
-
 var print_text: String setget set_print_text, get_print_text
 
 var _ref_ObjectData: Game_ObjectData
@@ -24,7 +22,7 @@ var _new_Palette := preload("res://library/Palette.gd").new()
 var _new_DungeonSize := preload("res://library/DungeonSize.gd").new()
 var _new_PathFindingData := preload("res://library/PathFindingData.gd").new()
 
-var _new_DijkstraPathFinding := preload(DIJKSTRA).new()
+var _new_DijkstraPathFinding := preload("res://library/npc_ai/DijkstraPathFinding.gd").new()
 
 var _pc: Sprite
 var _self: Sprite

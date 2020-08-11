@@ -7,5 +7,5 @@ flags = 4
 atlas = ExtResource( 1 )
 region = Rect2( 312, 72, 24, 36 )
 
-[node name="WormHead" type="Sprite"]
+[node name="WormTail" type="Sprite"]
 texture = SubResource( 1 )
