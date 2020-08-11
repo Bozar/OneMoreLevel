@@ -13,6 +13,7 @@ var _ref_EndGame: Game_EndGame
 var _ref_RandomNumber: Game_RandomNumber
 var _ref_RemoveObject: Game_RemoveObject
 var _ref_CountDown: Game_CountDown
+var _ref_CreateObject : Game_CreateObject
 
 var _new_SubGroupTag := preload("res://library/SubGroupTag.gd").new()
 var _new_WorldTag := preload("res://library/WorldTag.gd").new()

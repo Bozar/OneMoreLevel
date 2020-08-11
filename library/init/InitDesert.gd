@@ -26,26 +26,6 @@ func _init_worm() -> void:
 			_new_MainGroupTag.ACTOR, _new_SubGroupTag.WORM_HEAD,
 			0, 0)
 
-	_occupy_position(1, 0)
-	_add_to_blueprint(_spr_WormBody,
-			_new_MainGroupTag.ACTOR, _new_SubGroupTag.WORM_BODY,
-			1, 0)
-
-	_occupy_position(2, 0)
-	_add_to_blueprint(_spr_WormSpice,
-			_new_MainGroupTag.ACTOR, _new_SubGroupTag.WORM_SPICE,
-			2, 0)
-
-	_occupy_position(3, 0)
-	_add_to_blueprint(_spr_WormBody,
-			_new_MainGroupTag.ACTOR, _new_SubGroupTag.WORM_BODY,
-			3, 0)
-
-	_occupy_position(4, 0)
-	_add_to_blueprint(_spr_WormTail,
-			_new_MainGroupTag.ACTOR, _new_SubGroupTag.WORM_BODY,
-			4, 0)
-
 
 func _init_wall(count: int = 0) -> void:
 	var max_repeat: int = 20
