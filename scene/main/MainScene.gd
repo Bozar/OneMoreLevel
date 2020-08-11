@@ -25,7 +25,7 @@ const SIGNAL_BIND: Array = [
 	[
 		"sprite_created", "_on_CreateObject_sprite_created",
 		CREATE_OBJECT,
-		PLAYER_INPUT, ENEMY_AI, SCHEDULE, DUNGEON, OBJECT_DATA, SIDEBAR_GUI,
+		PLAYER_INPUT, ENEMY_AI, SCHEDULE, DUNGEON, SIDEBAR_GUI,
 	],
 	[
 		"world_selected", "_on_InitWorld_world_selected",

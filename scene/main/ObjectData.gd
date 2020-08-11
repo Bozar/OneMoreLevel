@@ -6,30 +6,12 @@ const OBJECT_STATE: String = "ObjectState"
 const SPRITE_TYPE: String = "SpriteType"
 const HIT_POINT: String = "HitPoint"
 
-var _new_MainGroupTag := preload("res://library/MainGroupTag.gd").new()
-var _new_ObjectStateTag := preload("res://library/ObjectStateTag.gd").new()
-var _new_SpriteTypeTag := preload("res://library/SpriteTypeTag.gd").new()
-
-var _child_node: Array = [
-	OBJECT_STATE, SPRITE_TYPE, HIT_POINT,
-]
-
-
-func _on_CreateObject_sprite_created(new_sprite: Sprite) -> void:
-	if new_sprite.is_in_group(_new_MainGroupTag.INDICATOR):
-		return
-
-	var id: int = _get_id(new_sprite)
-
-	get_node(OBJECT_STATE).set_state(id, _new_ObjectStateTag.DEFAULT)
-	get_node(SPRITE_TYPE).set_sprite_type(id, _new_SpriteTypeTag.DEFAULT)
-	get_node(HIT_POINT).set_hit_point(id, 0)
-
 
 func _on_RemoveObject_sprite_removed(remove_sprite: Sprite,
 		_main_group: String, _x: int, _y: int) -> void:
-	for cn in _child_node:
-		get_node(cn).remove_data(_get_id(remove_sprite))
+	var child_node: Array = get_children()
+	for i in child_node:
+		i.remove_data(_get_id(remove_sprite))
 
 
 func get_state(sprite: Sprite) -> String:

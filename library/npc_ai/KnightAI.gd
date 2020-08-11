@@ -4,7 +4,7 @@ extends "res://library/npc_ai/AITemplate.gd"
 var _new_KnightData := preload("res://library/npc_data/KnightData.gd").new()
 
 var _id_to_danger_zone: Dictionary = {}
-var _boss_attack_count: Dictionary = {}
+var _boss_attack_count: int = 0
 var _hit_to_sprite: Dictionary
 
 
@@ -40,7 +40,6 @@ func remove_data(actor: Sprite) -> void:
 	var __
 
 	__ = _id_to_danger_zone.erase(id)
-	__ = _boss_attack_count.erase(id)
 
 
 func _attack() -> void:
@@ -51,7 +50,7 @@ func _attack() -> void:
 	_set_danger_zone(danger_zone, false)
 	_switch_ground(danger_zone)
 
-	if _can_attack_twice(id):
+	if _can_attack_twice():
 		_prepare_second_attack(id)
 	else:
 		_ref_ObjectData.set_state(_self, _new_ObjectStateTag.PASSIVE)
@@ -86,7 +85,7 @@ func _alert() -> void:
 	# 	_ref_ObjectData.add_hit_point(_self, 1)
 
 	if _is_final_boss():
-		_boss_attack_count[id] = 0
+		_boss_attack_count = 0
 
 
 func _move() -> void:
@@ -177,10 +176,10 @@ func _is_final_boss() -> bool:
 					== _new_KnightData.MAX_BOSS_HP)
 
 
-func _can_attack_twice(id: int) -> bool:
+func _can_attack_twice() -> bool:
 	if not _is_final_boss():
 		return false
-	if _boss_attack_count[id] > 0:
+	if _boss_attack_count > 0:
 		return false
 	if not _new_CoordCalculator.is_inside_range(
 			_pc_pos[0], _pc_pos[1], _self_pos[0], _self_pos[1],
@@ -196,7 +195,7 @@ func _prepare_second_attack(id: int) -> void:
 	_set_danger_zone(danger_zone, true)
 	_switch_ground(danger_zone)
 
-	_boss_attack_count[id] += 1
+	_boss_attack_count += 1
 
 
 func _set_danger_zone(danger_zone: Array, is_dangerous: bool) -> void:

@@ -2,13 +2,15 @@ extends Node2D
 class_name Game_ObjectState
 
 
+var _new_ObjectStateTag := preload("res://library/ObjectStateTag.gd").new()
+
 var _id_to_state: Dictionary = {}
 
 
 func get_state(id: int) -> String:
-	if _id_to_state.has(id):
-		return _id_to_state[id]
-	return ""
+	if not _id_to_state.has(id):
+		_id_to_state[id] = _new_ObjectStateTag.DEFAULT
+	return _id_to_state[id]
 
 
 func set_state(id: int, state: String) -> void:
