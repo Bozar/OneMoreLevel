@@ -1,8 +1,6 @@
 extends "res://library/init/WorldTemplate.gd"
 
 
-var _spr_PC := preload("res://sprite/PC.tscn")
-var _spr_Wall := preload("res://sprite/Wall.tscn")
 var _spr_Treasure := preload("res://sprite/Treasure.tscn")
 var _spr_WormHead := preload("res://sprite/WormHead.tscn")
 var _spr_WormBody := preload("res://sprite/WormBody.tscn")
@@ -17,7 +15,7 @@ func _init(parent_node: Node2D).(parent_node) -> void:
 func get_blueprint() -> Array:
 	_init_worm()
 	_init_wall()
-	_init_pc()
+	_init_PC()
 
 	return _blueprint
 
@@ -88,21 +86,3 @@ func _try_build_wall(x: int, y: int, is_treasure: bool) -> void:
 		_add_to_blueprint(_spr_Wall,
 				_new_MainGroupTag.BUILDING, _new_SubGroupTag.WALL,
 				x, y)
-
-
-func _init_pc() -> void:
-	var x: int
-	var y: int
-
-	while true:
-		x = _ref_RandomNumber.get_int(0, _new_DungeonSize.MAX_X)
-		y = _ref_RandomNumber.get_int(0, _new_DungeonSize.MAX_Y)
-
-		if _is_occupied(x, y):
-			continue
-		break
-
-	_occupy_position(x, y)
-	_add_to_blueprint(_spr_PC,
-			_new_MainGroupTag.ACTOR, _new_SubGroupTag.PC,
-			x, y)

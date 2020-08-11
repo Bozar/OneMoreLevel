@@ -7,6 +7,8 @@ class_name Game_WorldTemplate
 const SPRITE_BLUEPRINT := preload("res://library/init/SpriteBlueprint.gd")
 
 var _spr_Floor := preload("res://sprite/Floor.tscn")
+var _spr_Wall := preload("res://sprite/Wall.tscn")
+var _spr_PC := preload("res://sprite/PC.tscn")
 
 var _new_DungeonSize := preload("res://library/DungeonSize.gd").new()
 var _new_MainGroupTag := preload("res://library/MainGroupTag.gd").new()
@@ -66,3 +68,26 @@ func _init_floor() -> void:
 			_add_to_blueprint(_spr_Floor,
 					_new_MainGroupTag.GROUND, _new_SubGroupTag.FLOOR,
 					i, j)
+
+
+func _init_PC() -> void:
+	var x: int
+	var y: int
+	var neighbor: Array
+	var min_range: int = 5
+
+	while true:
+		x = _ref_RandomNumber.get_int(0, _new_DungeonSize.MAX_X)
+		y = _ref_RandomNumber.get_int(0, _new_DungeonSize.MAX_Y)
+
+		if _is_occupied(x, y):
+			continue
+		break
+
+	neighbor = _new_CoordCalculator.get_neighbor(x, y, min_range, true)
+	for i in neighbor:
+		_occupy_position(i[0], i[1])
+
+	_add_to_blueprint(_spr_PC,
+			_new_MainGroupTag.ACTOR, _new_SubGroupTag.PC,
+			x, y)

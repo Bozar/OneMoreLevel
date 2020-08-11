@@ -2,9 +2,7 @@ extends "res://library/init/WorldTemplate.gd"
 # Initialize a simple map for testing.
 
 
-var _spr_Player := preload("res://sprite/PC.tscn")
 var _spr_Dwarf := preload("res://sprite/Dwarf.tscn")
-var _spr_Wall := preload("res://sprite/Wall.tscn")
 
 
 func _init(parent_node: Node2D).(parent_node) -> void:
@@ -43,7 +41,7 @@ func _init_wall() -> void:
 
 
 func _init_PC() -> void:
-	_add_to_blueprint(_spr_Player,
+	_add_to_blueprint(_spr_PC,
 			_new_MainGroupTag.ACTOR, _new_SubGroupTag.PC,
 			0, 0)
 

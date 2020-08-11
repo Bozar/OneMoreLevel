@@ -2,15 +2,10 @@ extends "res://library/init/WorldTemplate.gd"
 # Initialize a map for Silent Knight Hall (Knight).
 
 
-var _spr_PC := preload("res://sprite/PC.tscn")
 var _spr_Knight := preload("res://sprite/Knight.tscn")
 var _spr_KnightCaptain := preload("res://sprite/KnightCaptain.tscn")
-var _spr_Wall := preload("res://sprite/Wall.tscn")
 
 var _new_KnightData := preload("res://library/npc_data/KnightData.gd")
-
-var pc_x: int
-var pc_y: int
 
 
 func _init(parent_node: Node2D).(parent_node) -> void:
@@ -165,36 +160,6 @@ func _is_valid_hole(dig_x: int, dig_y: int, \
 				or (n[1] < start_y) or (n[1] >= max_y):
 			return true
 	return false
-
-
-func _init_PC() -> void:
-	var position: Array
-	var neighbor: Array
-	var min_range: int = 5
-
-	while true:
-		position = _get_PC_position()
-		pc_x = position[0]
-		pc_y = position[1]
-
-		if _dungeon[pc_x][pc_y]:
-			continue
-		break
-
-	neighbor = _new_CoordCalculator.get_neighbor(pc_x, pc_y, min_range, true)
-	for xy in neighbor:
-		_occupy_position(xy[0], xy[1])
-
-	_add_to_blueprint(_spr_PC,
-			_new_MainGroupTag.ACTOR, _new_SubGroupTag.PC,
-			pc_x, pc_y)
-
-
-func _get_PC_position() -> Array:
-	var x: int = _ref_RandomNumber.get_int(0, _new_DungeonSize.MAX_X)
-	var y: int = _ref_RandomNumber.get_int(0, _new_DungeonSize.MAX_Y)
-
-	return [x, y]
 
 
 func _init_knight(scene: PackedScene, tag: String) -> void:
