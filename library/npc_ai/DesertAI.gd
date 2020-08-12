@@ -9,7 +9,6 @@ var _spr_Wall := preload("res://sprite/Wall.tscn")
 
 var _new_DesertData := preload("res://library/npc_data/DesertData.gd")
 
-var _wait_one_turn: bool = false
 # int: Array[Sprite]
 var _id_to_worm: Dictionary = {}
 
@@ -28,12 +27,17 @@ func take_action(actor) -> void:
 	if not _id_to_worm.has(id):
 		_init_worm(actor)
 
-	# Try to move head.
-	_random_walk()
-	if _wait_one_turn:
+	if _can_bury_worm(id):
+		_bury_worm(id)
 		return
-	# Move body.
-	_move_body(id)
+
+	# Try to move head.
+	if _try_random_walk():
+		# Move body.
+		_move_body(id)
+	else:
+		_ref_ObjectData.add_hit_point(actor, _new_DesertData.HP_WAIT)
+	_ref_ObjectData.add_hit_point(actor, _new_DesertData.HP_TURN)
 
 
 func _init_worm(head: Sprite) -> void:
@@ -76,7 +80,7 @@ func _create_body(id: int, index: int, x: int, y: int) -> void:
 			_new_MainGroupTag.ACTOR, x, y)
 
 
-func _random_walk() -> void:
+func _try_random_walk() -> bool:
 	var x: int = _self_pos[0]
 	var y: int = _self_pos[1]
 	var neighbor: Array = _new_CoordCalculator.get_neighbor(x, y, 1)
@@ -94,21 +98,20 @@ func _random_walk() -> void:
 		candidate.push_back(i)
 
 	if candidate.size() < 1:
-		_wait_one_turn = true
-		return
+		return false
 	move_to = candidate[_ref_RandomNumber.get_int(0, candidate.size())]
 
 	if _is_pc_pos(move_to[0], move_to[1]):
 		_ref_SwitchSprite.switch_sprite(_pc, _new_SpriteTypeTag.ACTIVE)
 		_ref_SwitchSprite.switch_sprite(_self, _new_SpriteTypeTag.ACTIVE)
 		_ref_EndGame.player_lose()
-		_wait_one_turn = true
-		return
+		return false
 
 	for i in remove_sprite:
 		if _ref_DungeonBoard.has_sprite(i, move_to[0], move_to[1]):
 			_ref_RemoveObject.remove(i, move_to[0], move_to[1])
 	_ref_DungeonBoard.move_sprite(_new_MainGroupTag.ACTOR, _self_pos, move_to)
+	return true
 
 
 func _is_pc_pos(x: int, y: int) -> bool:
@@ -156,3 +159,17 @@ func _bury_worm(id: int) -> void:
 					worm_position[0], worm_position[1])
 
 	__ = _id_to_worm.erase(id)
+
+
+func _can_bury_worm(id: int) -> bool:
+	var worm: Array = _id_to_worm[id]
+	var hit_point: int = _ref_ObjectData.get_hit_point(worm[0])
+
+	for i in worm:
+		if i == null:
+			break
+		if i.is_in_group(_new_SubGroupTag.WORM_SPICE) \
+				and _ref_ObjectData.verify_state(
+						i, _new_ObjectStateTag.PASSIVE):
+			hit_point += _new_DesertData.HP_SPICE
+	return hit_point > _new_DesertData.HP_BURY
