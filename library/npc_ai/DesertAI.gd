@@ -25,9 +25,10 @@ func take_action(actor) -> void:
 
 	_set_local_var(actor)
 	if not _id_to_worm.has(id):
-		_init_worm(actor)
+		_init_worm(id)
 
 	if _can_bury_worm(id):
+		_set_danger_zone(_self, false)
 		_bury_worm(id)
 		return
 
@@ -40,14 +41,14 @@ func take_action(actor) -> void:
 	_ref_ObjectData.add_hit_point(actor, _new_DesertData.HP_TURN)
 
 
-func _init_worm(head: Sprite) -> void:
-	var id: int = head.get_instance_id()
+func _init_worm(id: int) -> void:
 	var worm_length: int = _ref_RandomNumber.get_int(
 			_new_DesertData.MIN_LENGTH, _new_DesertData.MAX_LENGTH)
 
 	_id_to_worm[id] = []
 	_id_to_worm[id].resize(worm_length)
-	_id_to_worm[id][0] = head
+	_id_to_worm[id][0] = _self
+	_set_danger_zone(_self, true)
 
 
 func _create_body(id: int, index: int, x: int, y: int) -> void:
@@ -110,7 +111,10 @@ func _try_random_walk() -> bool:
 	for i in remove_sprite:
 		if _ref_DungeonBoard.has_sprite(i, move_to[0], move_to[1]):
 			_ref_RemoveObject.remove(i, move_to[0], move_to[1])
+
+	_set_danger_zone(_self, false)
 	_ref_DungeonBoard.move_sprite(_new_MainGroupTag.ACTOR, _self_pos, move_to)
+	_set_danger_zone(_self, true)
 	return true
 
 
@@ -135,28 +139,27 @@ func _move_body(id: int) -> void:
 
 
 func _bury_worm(id: int) -> void:
-	var whole_worm: Array = _id_to_worm[id]
-	var worm_position: Array
+	var worm: Array = _id_to_worm[id]
+	var pos: Array
 	var __
 
-	for i in whole_worm:
+	for i in worm:
 		if i == null:
 			return
 
-		worm_position = _new_ConvertCoord.vector_to_array(i.position)
-		_ref_RemoveObject.remove(
-				_new_MainGroupTag.ACTOR, worm_position[0], worm_position[1])
+		pos = _new_ConvertCoord.vector_to_array(i.position)
+		_ref_RemoveObject.remove(_new_MainGroupTag.ACTOR, pos[0], pos[1])
 
 		if _ref_RandomNumber.get_percent_chance(_new_DesertData.CREATE_SPICE):
 			_ref_CreateObject.create(
 					_spr_Treasure,
 					_new_MainGroupTag.TRAP, _new_SubGroupTag.TREASURE,
-					worm_position[0], worm_position[1])
+					pos[0], pos[1])
 		else:
 			_ref_CreateObject.create(
 					_spr_Wall,
 					_new_MainGroupTag.BUILDING, _new_SubGroupTag.WALL,
-					worm_position[0], worm_position[1])
+					pos[0], pos[1])
 
 	__ = _id_to_worm.erase(id)
 
@@ -173,3 +176,11 @@ func _can_bury_worm(id: int) -> bool:
 						i, _new_ObjectStateTag.PASSIVE):
 			hit_point += _new_DesertData.HP_SPICE
 	return hit_point > _new_DesertData.HP_BURY
+
+
+func _set_danger_zone(head: Sprite, is_danger: bool) -> void:
+	var pos: Array = _new_ConvertCoord.vector_to_array(head.position)
+	var neighbor: Array = _new_CoordCalculator.get_neighbor(pos[0], pos[1], 1)
+
+	for i in neighbor:
+		_ref_DangerZone.set_danger_zone(i[0], i[1], is_danger)
