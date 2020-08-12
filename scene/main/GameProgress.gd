@@ -33,3 +33,5 @@ func _on_RemoveObject_sprite_removed(remove_sprite: Sprite,
 		_progress.remove_npc(remove_sprite, x, y)
 	elif main_group == _new_MainGroupTag.BUILDING:
 		_progress.remove_building(remove_sprite, x, y)
+	elif main_group == _new_MainGroupTag.TRAP:
+		_progress.remove_trap(remove_sprite, x, y)
