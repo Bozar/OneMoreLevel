@@ -57,6 +57,8 @@ func _create_body(id: int, index: int, x: int, y: int) -> void:
 		_new_DesertData.SPICE_LEFT_END,
 		worm_length - _new_DesertData.SPICE_RIGHT_END
 	) as int
+	var is_active: bool = false
+	var worm_body: Sprite
 
 	# Create tail.
 	if index == worm_length - 1:
@@ -66,6 +68,7 @@ func _create_body(id: int, index: int, x: int, y: int) -> void:
 				x, y)
 	# Create spice.
 	elif (index > _new_DesertData.SPICE_START) and (index < spice_end):
+		is_active = _is_active_spice()
 		_ref_CreateObject.create(
 				_spr_WormSpice,
 				_new_MainGroupTag.ACTOR, _new_SubGroupTag.WORM_SPICE,
@@ -77,8 +80,12 @@ func _create_body(id: int, index: int, x: int, y: int) -> void:
 				_new_MainGroupTag.ACTOR, _new_SubGroupTag.WORM_BODY,
 				x, y)
 
-	_id_to_worm[id][index] = _ref_DungeonBoard.get_sprite(
-			_new_MainGroupTag.ACTOR, x, y)
+	worm_body = _ref_DungeonBoard.get_sprite(_new_MainGroupTag.ACTOR, x, y)
+	_id_to_worm[id][index] = worm_body
+
+	if is_active:
+		_ref_ObjectData.set_state(worm_body, _new_ObjectStateTag.ACTIVE)
+		_ref_SwitchSprite.switch_sprite(worm_body, _new_SpriteTypeTag.ACTIVE)
 
 
 func _try_random_walk() -> bool:
@@ -184,3 +191,10 @@ func _set_danger_zone(head: Sprite, is_danger: bool) -> void:
 
 	for i in neighbor:
 		_ref_DangerZone.set_danger_zone(i[0], i[1], is_danger)
+
+
+func _is_active_spice() -> bool:
+	if _ref_ObjectData.get_hit_point(_pc) < _new_DesertData.MAX_PC_HP:
+		return false
+	return _ref_RandomNumber.get_percent_chance(
+			_new_DesertData.CREATE_ACTIVE_SPICE)
