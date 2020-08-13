@@ -5,6 +5,7 @@ class_name Game_GameProgress
 var _ref_RandomNumber: Game_RandomNumber
 var _ref_Schedule: Game_Schedule
 var _ref_CreateObject : Game_CreateObject
+var _ref_RemoveObject: Game_RemoveObject
 var _ref_DungeonBoard: Game_DungeonBoard
 
 var _new_InitWorldData := preload("res://library/InitWorldData.gd").new()

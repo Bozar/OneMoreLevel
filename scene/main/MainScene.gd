@@ -83,7 +83,7 @@ const NODE_REF: Array = [
 	[
 		"_ref_RemoveObject",
 		REMOVE_OBJECT,
-		PLAYER_INPUT, ENEMY_AI,
+		PLAYER_INPUT, ENEMY_AI, GAME_PROGRESS,
 	],
 	[
 		"_ref_RandomNumber",

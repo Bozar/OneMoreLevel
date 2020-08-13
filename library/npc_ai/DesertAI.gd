@@ -194,7 +194,5 @@ func _set_danger_zone(head: Sprite, is_danger: bool) -> void:
 
 
 func _is_active_spice() -> bool:
-	if _ref_ObjectData.get_hit_point(_pc) < _new_DesertData.MAX_PC_HP:
-		return false
 	return _ref_RandomNumber.get_percent_chance(
 			_new_DesertData.CREATE_ACTIVE_SPICE)

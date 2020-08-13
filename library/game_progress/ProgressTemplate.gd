@@ -4,6 +4,7 @@ class_name Game_ProgressTemplate
 var _ref_RandomNumber: Game_RandomNumber
 var _ref_Schedule: Game_Schedule
 var _ref_CreateObject : Game_CreateObject
+var _ref_RemoveObject: Game_RemoveObject
 var _ref_DungeonBoard: Game_DungeonBoard
 
 var _new_MainGroupTag := preload("res://library/MainGroupTag.gd").new()
@@ -17,6 +18,7 @@ func _init(parent_node: Node2D) -> void:
 	_ref_RandomNumber = parent_node._ref_RandomNumber
 	_ref_Schedule = parent_node._ref_Schedule
 	_ref_CreateObject = parent_node._ref_CreateObject
+	_ref_RemoveObject = parent_node._ref_RemoveObject
 	_ref_DungeonBoard = parent_node._ref_DungeonBoard
 
 
