@@ -53,10 +53,6 @@ func _init_worm(id: int) -> void:
 
 func _create_body(id: int, index: int, x: int, y: int) -> void:
 	var worm_length: int = _id_to_worm[id].size()
-	var spice_end: int = min(
-		_new_DesertData.SPICE_LEFT_END,
-		worm_length - _new_DesertData.SPICE_RIGHT_END
-	) as int
 	var is_active: bool = false
 	var worm_body: Sprite
 
@@ -67,7 +63,8 @@ func _create_body(id: int, index: int, x: int, y: int) -> void:
 				_new_MainGroupTag.ACTOR, _new_SubGroupTag.WORM_BODY,
 				x, y)
 	# Create spice.
-	elif (index > _new_DesertData.SPICE_START) and (index < spice_end):
+	elif (index > _new_DesertData.SPICE_START) \
+			and (index < _new_DesertData.SPICE_END):
 		is_active = _is_active_spice()
 		_ref_CreateObject.create(
 				_spr_WormSpice,
