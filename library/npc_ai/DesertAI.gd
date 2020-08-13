@@ -7,7 +7,7 @@ var _spr_WormTail := preload("res://sprite/WormTail.tscn")
 var _spr_Treasure := preload("res://sprite/Treasure.tscn")
 var _spr_Wall := preload("res://sprite/Wall.tscn")
 
-var _new_DesertData := preload("res://library/npc_data/DesertData.gd")
+var _new_DesertData := preload("res://library/npc_data/DesertData.gd").new()
 
 # int: Array[Sprite]
 var _id_to_worm: Dictionary = {}

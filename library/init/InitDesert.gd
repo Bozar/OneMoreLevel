@@ -7,6 +7,8 @@ var _spr_WormBody := preload("res://sprite/WormBody.tscn")
 var _spr_WormSpice := preload("res://sprite/WormSpice.tscn")
 var _spr_WormTail := preload("res://sprite/WormTail.tscn")
 
+var _new_DesertData := preload("res://library/npc_data/DesertData.gd").new()
+
 
 func _init(parent_node: Node2D).(parent_node) -> void:
 	pass
@@ -21,13 +23,12 @@ func get_blueprint() -> Array:
 
 
 func _init_worm(count: int = 0) -> void:
-	var max_worm: int = 2
+	if count >= _new_DesertData.MAX_WORM:
+		return
+
 	var x: int
 	var y: int
 	var neighbor: Array
-
-	if count > max_worm:
-		return
 
 	while true:
 		x = _ref_RandomNumber.get_int(0, _new_DungeonSize.MAX_X)

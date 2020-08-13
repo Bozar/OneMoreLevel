@@ -1,7 +1,7 @@
 extends "res://library/pc_action/PCActionTemplate.gd"
 
 
-var _new_DesertData := preload("res://library/npc_data/DesertData.gd")
+var _new_DesertData := preload("res://library/npc_data/DesertData.gd").new()
 
 var _active_spice: int = 0
 
