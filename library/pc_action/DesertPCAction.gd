@@ -22,6 +22,8 @@ func attack() -> void:
 	var y: int = _target_position[1]
 	var worm: Sprite = _ref_DungeonBoard.get_sprite(
 			_new_MainGroupTag.ACTOR, x, y)
+	var is_active_spice: bool = _ref_ObjectData.verify_state(
+			worm, _new_ObjectStateTag.ACTIVE)
 
 	if (not worm.is_in_group(_new_SubGroupTag.WORM_SPICE)) \
 			or _ref_ObjectData.verify_state(worm, _new_ObjectStateTag.PASSIVE):
@@ -31,7 +33,12 @@ func attack() -> void:
 	_ref_ObjectData.set_state(worm, _new_ObjectStateTag.PASSIVE)
 	_ref_SwitchSprite.switch_sprite(worm, _new_SpriteTypeTag.PASSIVE)
 	_ref_CountDown.hit_bonus()
-	end_turn = true
+
+	if is_active_spice:
+		_ref_EndGame.player_win()
+		end_turn = false
+	else:
+		end_turn = true
 
 
 # TODO: Fill progress bar.

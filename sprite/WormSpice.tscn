@@ -1,4 +1,4 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://resource/curses_vector_24x36.png" type="Texture" id=1]
 
@@ -10,6 +10,11 @@ region = Rect2( 360, 108, 24, 36 )
 [sub_resource type="AtlasTexture" id=2]
 flags = 4
 atlas = ExtResource( 1 )
+region = Rect2( 360, 0, 24, 36 )
+
+[sub_resource type="AtlasTexture" id=3]
+flags = 4
+atlas = ExtResource( 1 )
 region = Rect2( 264, 72, 24, 36 )
 
 [node name="WormSpice" type="Sprite"]
@@ -17,6 +22,10 @@ region = Rect2( 264, 72, 24, 36 )
 [node name="default" type="Sprite" parent="."]
 texture = SubResource( 1 )
 
-[node name="passive" type="Sprite" parent="."]
+[node name="active" type="Sprite" parent="."]
 visible = false
 texture = SubResource( 2 )
+
+[node name="passive" type="Sprite" parent="."]
+visible = false
+texture = SubResource( 3 )
