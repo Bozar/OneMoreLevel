@@ -1,22 +1,5 @@
 # World List
 
-## A-E
-
-* corruption
 * demo
-
-## F-J
-
-
-
-## K-O
-
+* desert
 * knight
-
-## P-T
-
-
-
-## U-Z
-
-
