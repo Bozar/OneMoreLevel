@@ -33,7 +33,7 @@ func take_action(actor) -> void:
 		return
 
 	# Try to move head.
-	if _try_random_walk():
+	if _try_random_walk(id):
 		# Move body.
 		_move_body(id)
 	else:
@@ -85,15 +85,23 @@ func _create_body(id: int, index: int, x: int, y: int) -> void:
 		_ref_SwitchSprite.switch_sprite(worm_body, _new_SpriteTypeTag.ACTIVE)
 
 
-func _try_random_walk() -> bool:
+func _try_random_walk(id: int) -> bool:
 	var x: int = _self_pos[0]
 	var y: int = _self_pos[1]
 	var neighbor: Array = _new_CoordCalculator.get_neighbor(x, y, 1)
 	var candidate: Array = []
+	var neck: Array
+	var mirror: Array
 	var move_to: Array
 	var remove_sprite: Array = [
 		_new_MainGroupTag.BUILDING, _new_MainGroupTag.TRAP
 	]
+
+	if _id_to_worm[id][1] != null:
+		neck = _new_ConvertCoord.vector_to_array(_id_to_worm[id][1].position)
+		mirror = _new_CoordCalculator.get_mirror_image(neck[0], neck[1], x, y)
+		if mirror.size() > 0:
+			neighbor.push_back(mirror)
 
 	for i in neighbor:
 		if _is_pc_pos(i[0], i[1]):

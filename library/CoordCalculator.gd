@@ -43,6 +43,16 @@ func get_block(x_top_left: int, y_top_left: int, width: int, height: int) \
 	return coord
 
 
+func get_mirror_image(source_x: int, source_y: int,
+		center_x: int, center_y: int) -> Array:
+	var target_x: int = center_x * 2 - source_x
+	var target_y: int = center_y * 2 - source_y
+
+	if is_inside_dungeon(target_x, target_y):
+		return [target_x, target_y]
+	return []
+
+
 func is_inside_dungeon(x: int, y: int) -> bool:
 	return (x > -1) and (x < _new_DungeonSize.MAX_X) \
 			and (y > -1) and (y < _new_DungeonSize.MAX_Y)
