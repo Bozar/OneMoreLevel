@@ -12,8 +12,8 @@ One More Level is made by Godot engine, which natively supports keyboards and ga
 
 Following keys are available only in help screen.
 
-* Move down: Down, J, D, [Direction pad down].
-* Move up: Up, K, A, [Direction pad up].
+* Move down: Down, J, S, [Direction pad down].
+* Move up: Up, K, W, [Direction pad up].
 * Page down: PgDn, Space, F, N.
 * Page up: PgUp, B, P.
 * Scroll to top: Home, G.
