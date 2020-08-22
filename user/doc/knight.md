@@ -1,6 +1,6 @@
 # Silent Knight Hall
 
-(Press Enter or Right to view key bindings. Press Left to view general help.)
+(Press Enter to view key bindings.)
 
 Kill the boss with three symbols (S, P and D) to beat the game. However, the boss will not show up until you have killed three captains (C). Whether or not to kill knights (K) is your own choice.
 

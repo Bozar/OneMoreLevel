@@ -1,6 +1,6 @@
 # Desert
 
-(Press Enter or Right to view key bindings. Press Left to view general help.)
+(Press Enter to view key bindings.)
 
 You need to bump and collect 5 quality spices (*) from a living sandworm to beat the game. But you cannot press Space to wait in desert, which makes the collecting job a little bit harder.
 

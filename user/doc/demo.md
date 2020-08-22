@@ -1,5 +1,5 @@
 # Demo
 
-(Press Enter or Right to view key bindings. Press Left to view general help.)
+(Press Enter to view key bindings.)
 
 Demo help.
