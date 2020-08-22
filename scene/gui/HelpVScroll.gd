@@ -43,11 +43,17 @@ func scroll_to_top_or_bottom(scroll_to_bottom: bool) -> void:
 		scroll_vertical = 0
 
 
-func switch_help_text() -> void:
-	if _help_index < _help_text.size() - 1:
+func switch_help_text(switch_to_next: bool) -> void:
+	if switch_to_next:
 		_help_index += 1
 	else:
+		_help_index -= 1
+
+	if _help_index < 0:
+		_reset_index(false)
+	elif _help_index > _help_text.size() - 1:
 		_reset_index()
+
 	get_node(DUNGEON).text = _help_text[_help_index]
 	_reset_scroll_bar()
 
@@ -71,5 +77,8 @@ func _reset_scroll_bar() -> void:
 	scroll_vertical = 0
 
 
-func _reset_index() -> void:
-	_help_index = 0
+func _reset_index(reset_to_min: bool = true) -> void:
+	if reset_to_min:
+		_help_index = 0
+	else:
+		_help_index = _help_text.size() - 1

@@ -33,8 +33,10 @@ func _unhandled_input(event: InputEvent) -> void:
 	elif event.is_action_pressed(_new_InputTag.SCROLL_TO_TOP):
 		_ref_HelpVScroll.scroll_to_top_or_bottom(false)
 	# Switch help text.
-	elif event.is_action_pressed(_new_InputTag.SWITCH_HELP):
-		_ref_HelpVScroll.switch_help_text()
+	elif event.is_action_pressed(_new_InputTag.NEXT_HELP):
+		_ref_HelpVScroll.switch_help_text(true)
+	elif event.is_action_pressed(_new_InputTag.PREVIOUS_HELP):
+		_ref_HelpVScroll.switch_help_text(false)
 
 
 func _on_SwitchScreen_screen_switched(screen_tag: String) -> void:

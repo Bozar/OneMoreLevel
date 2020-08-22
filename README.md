@@ -26,6 +26,8 @@ Following keys are available only in help screen.
 * Scroll to bottom: End, Shift + G.
 * Exit help: Esc, Slash (/), [B].
 * Switch text: Enter, [A].
+* Switch to next help: Enter, Right, L, D, [A], [Direction pad right].
+* Switch to previous help: Left, H, A, [Direction pad left].
 
 These keys are available in wizard mode (see below).
 
