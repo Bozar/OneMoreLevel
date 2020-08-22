@@ -14,7 +14,9 @@ const DemoProgress := preload("res://library/game_progress/DemoProgress.gd")
 const KnightProgress := preload("res://library/game_progress/KnightProgress.gd")
 const DesertProgress := preload("res://library/game_progress/DesertProgress.gd")
 
-const DemolHelp: String = "res://user/doc/demo.md"
+const GeneralHelp: String = "res://user/doc/general.md"
+const KeyBindingHelp: String = "res://user/doc/keybinding.md"
+const DemoHelp: String = "res://user/doc/demo.md"
 const KnightHelp: String = "res://user/doc/knight.md"
 const DesertHelp: String = "res://user/doc/desert.md"
 
@@ -22,7 +24,7 @@ var _new_WorldTag := preload("res://library/WorldTag.gd").new()
 
 var _world_data: Dictionary = {
 	_new_WorldTag.DEMO: [
-		InitDemo, DemoPCAction, DemoAI, DemoProgress, DemolHelp
+		InitDemo, DemoPCAction, DemoAI, DemoProgress, DemoHelp
 	],
 	_new_WorldTag.KNIGHT: [
 		InitKnight, KnightPCAction, KnightAI, KnightProgress, KnightHelp
@@ -50,12 +52,20 @@ func get_progress(world_tag: String) -> Game_ProgressTemplate:
 	return _world_data[world_tag][3]
 
 
-func get_help(world_tag: String) -> String:
-	var help_file: File = File.new()
-	var load_path: String = _world_data[world_tag][4]
+func get_help(world_tag: String) -> Array:
+	var dungeon: String = _world_data[world_tag][4]
 
-	var __ = help_file.open(load_path, File.READ)
-	var text: String = help_file.get_as_text()
-	help_file.close()
+	return [
+		_read_file(dungeon),
+		_read_file(KeyBindingHelp),
+		_read_file(GeneralHelp)
+	]
+
+
+func _read_file(file_path: String) -> String:
+	var new_file: File = File.new()
+	var __ = new_file.open(file_path, File.READ)
+	var text: String = new_file.get_as_text()
+	new_file.close()
 
 	return text

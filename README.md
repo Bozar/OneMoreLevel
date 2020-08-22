@@ -6,7 +6,7 @@ One More Level is a turn-based Roguelike game made with [Godot engine](https://g
 
 Every time you start the game, One More Level presents you with a theme dungeon of unique mechanics and goals. This idea comes from [HyperRogue](https://store.steampowered.com/app/342610/HyperRogue/), one of the most bizarre and fascinating games I have ever played. You can beat the game in five minutes, so it never hurts to go down just one level deeper.
 
-## Keybindings
+## Key Bindings
 
 Godot engine natively supports keyboards and gamepads (Xbox, DualShock and Nintendo). Xbox buttons are shown in square brackets below.
 
@@ -18,23 +18,23 @@ Godot engine natively supports keyboards and gamepads (Xbox, DualShock and Ninte
 
 Following keys are available only in help screen.
 
-* Move down (Help): Down, J, D, [Direction pad down].
-* Move up (Help): Up, K, A, [Direction pad up].
-* Page down (Help): PgDn, Space, F, N.
-* Page up (Help): PgUp, B, P.
-* Scroll to top (Help): Home, G.
-* Scroll to bottom (Help): End, Shift + G.
+* Move down: Down, J, D, [Direction pad down].
+* Move up: Up, K, A, [Direction pad up].
+* Page down: PgDn, Space, F, N.
+* Page up: PgUp, B, P.
+* Scroll to top: Home, G.
+* Scroll to bottom: End, Shift + G.
+* Exit help: Esc, Slash (/), [B].
+* Switch text: Enter, [A].
 
 These keys are available in wizard mode (see below).
 
-* Add 1 turn (Wizard): T.
-* Force reload (Wizard): O.
+* Add 1 turn: T.
+* Force reload: O.
 
 ## Game Mechanics
 
-There is a count down timer at the top right corner of the main screen. You have 24 turns at most. When it reduces to zero, you lose the game. Every map provides a way to reverse the counter by 4 turns.
-
-Sometimes enemies and environment are able to consume your remaining turns. They might also kill you in other ways. On the other hand, every theme dungeon has a unique winning condition.
+There is a count down timer at the top right corner of the main screen. You have 24 turns at most. When it reduces to zero, you lose the game. Sometimes enemies and environment are able to consume your remaining turns. They might also kill you in other ways. On the other hand, every theme dungeon has a unique winning condition.
 
 Press `Help` key to read these mechanics. The help text is also available in `doc/`.
 

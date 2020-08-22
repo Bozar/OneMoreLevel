@@ -1,5 +1,7 @@
 # Desert
 
+(Press Enter to view key bindings.)
+
 You need to bump and collect 5 quality spices (*) from a living sandworm to beat the game. But you cannot press Space to wait in desert, which makes the collecting job a little bit harder.
 
 A sandworm has a head (diamond), a tail (-) and body segments (+). The third, fourth and fifth segment contains spice (?) or quality spice (*). You can only interact with segments that have spices. Other sandworm parts (head, body and tail) act like indestructible walls.

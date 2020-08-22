@@ -32,8 +32,10 @@ func _unhandled_input(event: InputEvent) -> void:
 		_ref_HelpVScroll.scroll_to_top_or_bottom(true)
 	elif event.is_action_pressed(_new_InputTag.SCROLL_TO_TOP):
 		_ref_HelpVScroll.scroll_to_top_or_bottom(false)
+	# Switch help text.
+	elif event.is_action_pressed(_new_InputTag.SWITCH_HELP):
+		_ref_HelpVScroll.switch_help_text()
 
 
 func _on_SwitchScreen_screen_switched(screen_tag: String) -> void:
 	set_process_unhandled_input(screen_tag == _new_ScreenTag.HELP)
-	_ref_HelpVScroll.reset_scroll_bar()

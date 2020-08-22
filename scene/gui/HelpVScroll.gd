@@ -11,6 +11,9 @@ var _new_InitWorldData := preload("res://library/InitWorldData.gd").new()
 var _scroll_line: int = 60
 var _scroll_page: int = 300
 
+var _help_text: Array
+var _help_index: int
+
 
 func _ready() -> void:
 	visible = false
@@ -40,14 +43,33 @@ func scroll_to_top_or_bottom(scroll_to_bottom: bool) -> void:
 		scroll_vertical = 0
 
 
-func reset_scroll_bar() -> void:
-	scroll_vertical = 0
+func switch_help_text() -> void:
+	if _help_index < _help_text.size() - 1:
+		_help_index += 1
+	else:
+		_reset_index()
+	get_node(DUNGEON).text = _help_text[_help_index]
+	_reset_scroll_bar()
 
 
 func _on_InitWorld_world_selected(new_world: String) -> void:
+	_help_text = _new_InitWorldData.get_help(new_world)
+	_reset_index()
+
 	get_node(DUNGEON).modulate = _new_Palette.STANDARD
-	get_node(DUNGEON).text = _new_InitWorldData.get_help(new_world)
+	get_node(DUNGEON).text = _help_text[_help_index]
 
 
 func _on_SwitchScreen_screen_switched(screen_tag: String) -> void:
+	_reset_scroll_bar()
+	_reset_index()
 	visible = (screen_tag == _new_ScreenTag.HELP)
+	get_node(DUNGEON).text = _help_text[_help_index]
+
+
+func _reset_scroll_bar() -> void:
+	scroll_vertical = 0
+
+
+func _reset_index() -> void:
+	_help_index = 0
