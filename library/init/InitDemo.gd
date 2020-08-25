@@ -40,7 +40,7 @@ func _init_wall() -> void:
 			_occupy_position(x, y)
 
 
-func _init_PC() -> void:
+func _init_pc() -> void:
 	_add_to_blueprint(_spr_PC,
 			_new_MainGroupTag.ACTOR, _new_SubGroupTag.PC,
 			0, 0)

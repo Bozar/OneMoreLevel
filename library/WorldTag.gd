@@ -3,15 +3,17 @@ const DEMO: String = "demo"
 
 const KNIGHT: String = "knight"
 const DESERT: String = "desert"
+const STYX: String = "styx"
 
 var _world_tag: Array = [
-	KNIGHT, DESERT,
+	KNIGHT, DESERT, STYX,
 ]
 
 var _tag_to_name: Dictionary = {
 	DEMO: "Demo",
 	KNIGHT: "Knight",
 	DESERT: "Desert",
+	STYX: "Styx",
 }
 
 
