@@ -30,20 +30,21 @@ func _init(parent_node: Node2D).(parent_node) -> void:
 	}
 
 
-func renew_world(_pc_x: int, _pc_y: int) -> void:
+func renew_world(pc_x: int, pc_y: int) -> void:
 	if _countdown == _new_StyxData.RENEW_MAP:
 		_countdown = 0
 		_remove_wave()
-		_create_wave()
+		_create_wave(pc_x, pc_y)
 	_countdown += 1
 
 
-func _create_wave() -> void:
+func _create_wave(pc_x: int, pc_y: int) -> void:
 	var wave: int
 	var light_range: int = 2
 	var top_x: int = _new_DungeonSize.MAX_X - 2
 	var top_y: int = 1
 	var occupy: Array
+	var ground_sprite: Sprite
 
 	occupy = _new_CoordCalculator.get_neighbor(
 			_new_DungeonSize.CENTER_X, _new_DungeonSize.CENTER_Y,
@@ -58,6 +59,15 @@ func _create_wave() -> void:
 			_ref_CreateObject.create(_wave_sprite[wave],
 					_new_MainGroupTag.GROUND, _wave_tag[wave],
 					i, j)
+
+			ground_sprite = _ref_DungeonBoard.get_sprite(
+					_new_MainGroupTag.GROUND, i, j)
+
+			if _new_CoordCalculator.is_inside_range(i, j, pc_x, pc_y,
+					_new_StyxData.PC_SIGHT):
+				ground_sprite.modulate = _new_Palette.DARK
+			else:
+				ground_sprite.modulate = _new_Palette.BACKGROUND
 
 
 func _remove_wave() -> void:

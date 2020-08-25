@@ -44,8 +44,7 @@ func move() -> void:
 	if not end_turn:
 		return
 
-	_switch_color(_source_position, true)
-	_switch_color(_target_position, false)
+	_switch_visibility()
 
 	_countdown += 1
 	if _countdown < _new_StyxData.RENEW_COUNTDOWN:
@@ -102,21 +101,20 @@ func _get_sprite_direction(sprite_position: Array) -> int:
 	return -1
 
 
-func _switch_color(position: Array, is_default_color: bool) -> void:
-	var sprite_color: String
-	var neighbor: Array
+func _switch_visibility() -> void:
 	var ground_sprite: Sprite
 
-	if is_default_color:
-		sprite_color = _new_Palette.get_default_color(_new_MainGroupTag.GROUND)
-	else:
-		sprite_color = _new_Palette.SHADOW
+	for i in range(_new_DungeonSize.MAX_X):
+		for j in range(_new_DungeonSize.MAX_Y):
+			ground_sprite = _ref_DungeonBoard.get_sprite(
+				_new_MainGroupTag.GROUND, i, j)
+			if ground_sprite == null:
+				continue
 
-	neighbor = _new_CoordCalculator.get_neighbor(
-			position[0], position[1], _new_StyxData.PC_SIGHT)
-	for i in neighbor:
-		ground_sprite = _ref_DungeonBoard.get_sprite(
-				_new_MainGroupTag.GROUND, i[0], i[1])
-		if ground_sprite == null:
-			continue
-		ground_sprite.modulate = sprite_color
+			if _new_CoordCalculator.is_inside_range(
+					i, j, _target_position[0], _target_position[1],
+					_new_StyxData.PC_SIGHT):
+				ground_sprite.modulate = _new_Palette.get_default_color(
+						_new_MainGroupTag.GROUND)
+			else:
+				ground_sprite.modulate = _new_Palette.BACKGROUND
