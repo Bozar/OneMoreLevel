@@ -11,7 +11,7 @@ var _target_direction: int
 var _drift_direction: int
 var _drift_position: Array
 
-var _pc: Sprite
+var _countdown: int = 0
 
 
 func _init(parent_node: Node2D).(parent_node) -> void:
@@ -38,29 +38,29 @@ func move() -> void:
 	_switch_color(_source_position, true)
 	_switch_color(_target_position, false)
 
-	_pc = _ref_DungeonBoard.get_sprite(_new_MainGroupTag.ACTOR,
-			_target_position[0], _target_position[1])
-
-	_ref_ObjectData.add_hit_point(_pc, 1)
-	if _ref_ObjectData.get_hit_point(_pc) < _new_StyxData.RENEW_COUNTDOWN:
+	_countdown += 1
+	if _countdown < _new_StyxData.RENEW_COUNTDOWN:
 		_ref_CountDown.add_count(1)
 	else:
-		_ref_ObjectData.set_hit_point(_pc, 0)
+		_countdown = 0
 
 
 func _try_move() -> bool:
-	_drift_position = _get_drift_position()
-
 	_source_direction = _input_tag_to_int[_input_direction]
 	_target_direction = _get_sprite_direction(_target_position)
+
+	_drift_position = _get_drift_position()
 	_drift_direction = _get_sprite_direction(_drift_position)
 
 	if _is_opposite():
 		return false
 
-	if (_source_direction == _target_direction) \
+	while (_source_direction == _target_direction) \
 			and (_target_direction == _drift_direction):
 		_target_position = _drift_position
+		_drift_position = _get_drift_position()
+		_drift_direction = _get_sprite_direction(_drift_position)
+
 	_ref_DungeonBoard.move_sprite(_new_MainGroupTag.ACTOR,
 			_source_position, _target_position)
 	return true
