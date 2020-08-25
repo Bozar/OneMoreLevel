@@ -4,3 +4,8 @@ const DEFAULT_3: String = "default_3"
 
 const ACTIVE: String = "active"
 const PASSIVE: String = "passive"
+
+const UP: String = "up"
+const DOWN: String = "down"
+const LEFT: String = "left"
+const RIGHT: String = "right"

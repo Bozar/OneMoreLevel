@@ -13,10 +13,7 @@ const WORM_SPICE: String = "worm_spice"
 
 const LIGHTHOUSE: String = "lighthouse"
 const HARBOR: String = "harbor"
-const WAVE_LEFT: String = "wave_left"
-const WAVE_RIGHT: String = "wave_right"
-const WAVE_UP: String = "wave_up"
-const WAVE_DOWN: String = "wave_down"
+const STYX_RIVER: String = "styx_river"
 
 const FLOOR: String = "floor"
 const WALL: String = "wall"

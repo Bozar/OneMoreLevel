@@ -1,9 +1,11 @@
 extends "res://library/pc_action/PCActionTemplate.gd"
 
 
+const INVALID_DIRECTION: int = -1
+
 var _new_StyxData := preload("res://library/npc_data/StyxData.gd").new()
 
-var _wave_tag_to_int: Dictionary
+var _state_tag_to_int: Dictionary
 var _input_tag_to_int: Dictionary
 
 var _source_direction: int
@@ -15,11 +17,12 @@ var _countdown: int = 0
 
 
 func _init(parent_node: Node2D).(parent_node) -> void:
-	_wave_tag_to_int = {
-		_new_SubGroupTag.WAVE_UP: 0,
-		_new_SubGroupTag.WAVE_RIGHT: 1,
-		_new_SubGroupTag.WAVE_DOWN: 2,
-		_new_SubGroupTag.WAVE_LEFT: 3,
+	_state_tag_to_int = {
+		_new_ObjectStateTag.UP: 0,
+		_new_ObjectStateTag.RIGHT: 1,
+		_new_ObjectStateTag.DOWN: 2,
+		_new_ObjectStateTag.LEFT: 3,
+		_new_ObjectStateTag.DEFAULT: INVALID_DIRECTION,
 	}
 
 	_input_tag_to_int = {
@@ -43,8 +46,6 @@ func move() -> void:
 	end_turn = _try_move()
 	if not end_turn:
 		return
-
-	_switch_visibility()
 
 	_countdown += 1
 	if _countdown < _new_StyxData.RENEW_COUNTDOWN:
@@ -82,7 +83,7 @@ func _get_drift_position() -> Array:
 
 
 func _is_opposite() -> bool:
-	if _target_direction == -1:
+	if _target_direction == INVALID_DIRECTION:
 		return false
 	return (_source_direction != _target_direction) \
 			and ((_source_direction + _target_direction) % 2 == 0)
@@ -93,28 +94,5 @@ func _get_sprite_direction(sprite_position: Array) -> int:
 			_new_MainGroupTag.GROUND, sprite_position[0], sprite_position[1])
 
 	if ground_sprite == null:
-		return -1
-
-	for i in _wave_tag_to_int.keys():
-		if ground_sprite.is_in_group(i):
-			return _wave_tag_to_int[i]
-	return -1
-
-
-func _switch_visibility() -> void:
-	var ground_sprite: Sprite
-
-	for i in range(_new_DungeonSize.MAX_X):
-		for j in range(_new_DungeonSize.MAX_Y):
-			ground_sprite = _ref_DungeonBoard.get_sprite(
-				_new_MainGroupTag.GROUND, i, j)
-			if ground_sprite == null:
-				continue
-
-			if _new_CoordCalculator.is_inside_range(
-					i, j, _target_position[0], _target_position[1],
-					_new_StyxData.PC_SIGHT):
-				ground_sprite.modulate = _new_Palette.get_default_color(
-						_new_MainGroupTag.GROUND)
-			else:
-				ground_sprite.modulate = _new_Palette.BACKGROUND
+		return INVALID_DIRECTION
+	return _state_tag_to_int[_ref_ObjectData.get_state(ground_sprite)]

@@ -93,12 +93,12 @@ const NODE_REF: Array = [
 	[
 		"_ref_ObjectData",
 		OBJECT_DATA,
-		ENEMY_AI, SWITCH_SPRITE, PLAYER_INPUT,
+		ENEMY_AI, SWITCH_SPRITE, PLAYER_INPUT, GAME_PROGRESS,
 	],
 	[
 		"_ref_SwitchSprite",
 		SWITCH_SPRITE,
-		ENEMY_AI, PLAYER_INPUT,
+		ENEMY_AI, PLAYER_INPUT, GAME_PROGRESS,
 	],
 	[
 		"_ref_DangerZone",
