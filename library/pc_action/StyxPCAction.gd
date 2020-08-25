@@ -30,6 +30,15 @@ func _init(parent_node: Node2D).(parent_node) -> void:
 	}
 
 
+func interact_with_building() -> void:
+	var building: Sprite = _ref_DungeonBoard.get_sprite(
+			_new_MainGroupTag.BUILDING,
+			_target_position[0], _target_position[1])
+
+	if building.is_in_group(_new_SubGroupTag.HARBOR):
+		_ref_EndGame.player_win()
+
+
 func move() -> void:
 	end_turn = _try_move()
 	if not end_turn:
