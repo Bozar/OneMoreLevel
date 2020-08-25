@@ -11,6 +11,8 @@ var _target_direction: int
 var _drift_direction: int
 var _drift_position: Array
 
+var _pc: Sprite
+
 
 func _init(parent_node: Node2D).(parent_node) -> void:
 	_wave_tag_to_int = {
@@ -30,9 +32,20 @@ func _init(parent_node: Node2D).(parent_node) -> void:
 
 func move() -> void:
 	end_turn = _try_move()
-	if end_turn:
-		_switch_color(_source_position, true)
-		_switch_color(_target_position, false)
+	if not end_turn:
+		return
+
+	_switch_color(_source_position, true)
+	_switch_color(_target_position, false)
+
+	_pc = _ref_DungeonBoard.get_sprite(_new_MainGroupTag.ACTOR,
+			_target_position[0], _target_position[1])
+
+	_ref_ObjectData.add_hit_point(_pc, 1)
+	if _ref_ObjectData.get_hit_point(_pc) < _new_StyxData.RENEW_COUNTDOWN:
+		_ref_CountDown.add_count(1)
+	else:
+		_ref_ObjectData.set_hit_point(_pc, 0)
 
 
 func _try_move() -> bool:
