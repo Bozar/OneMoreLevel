@@ -23,6 +23,7 @@ var _new_ConvertCoord := preload("res://library/ConvertCoord.gd").new()
 var _new_ObjectStateTag := preload("res://library/ObjectStateTag.gd").new()
 var _new_DungeonSize := preload("res://library/DungeonSize.gd").new()
 var _new_SpriteTypeTag := preload("res://library/SpriteTypeTag.gd").new()
+var _new_Palette := preload("res://library/Palette.gd").new()
 
 var _source_position: Array
 var _target_position: Array
