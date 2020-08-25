@@ -27,6 +27,7 @@ var _new_Palette := preload("res://library/Palette.gd").new()
 
 var _source_position: Array
 var _target_position: Array
+var _input_direction: String
 
 var _direction_to_coord: Dictionary = {
 	_new_InputTag.MOVE_UP: [0, -1],
@@ -129,6 +130,7 @@ func set_target_position(direction: String) -> void:
 	_target_position = [
 		_source_position[0] + shift[0], _source_position[1] + shift[1]
 	]
+	_input_direction = direction
 
 
 func _is_occupied(x: int, y: int) -> bool:

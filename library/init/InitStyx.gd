@@ -8,17 +8,24 @@ var _spr_WaveRight := preload("res://sprite/WaveRight.tscn")
 var _spr_WaveUp := preload("res://sprite/WaveUp.tscn")
 var _spr_WaveDown := preload("res://sprite/WaveDown.tscn")
 
-
-var _select_wave: Dictionary = {
-	0: _spr_WaveUp,
-	1: _spr_WaveRight,
-	2: _spr_WaveDown,
-	3: _spr_WaveLeft,
-}
+var _wave_sprite: Dictionary
+var _wave_tag: Dictionary
 
 
 func _init(parent_node: Node2D).(parent_node) -> void:
-	pass
+	_wave_sprite = {
+		0: _spr_WaveUp,
+		1: _spr_WaveRight,
+		2: _spr_WaveDown,
+		3: _spr_WaveLeft,
+	}
+
+	_wave_tag = {
+		0: _new_SubGroupTag.WAVE_UP,
+		1: _new_SubGroupTag.WAVE_RIGHT,
+		2: _new_SubGroupTag.WAVE_DOWN,
+		3: _new_SubGroupTag.WAVE_LEFT,
+	}
 
 
 func get_blueprint() -> Array:
@@ -71,6 +78,6 @@ func _init_wave() -> void:
 			if _is_occupied(i, j):
 				continue
 			wave = _ref_RandomNumber.get_int(0, 4)
-			_add_to_blueprint(_select_wave[wave],
-					_new_MainGroupTag.GROUND, _new_SubGroupTag.WAVE_LEFT,
+			_add_to_blueprint(_wave_sprite[wave],
+					_new_MainGroupTag.GROUND, _wave_tag[wave],
 					i, j)
