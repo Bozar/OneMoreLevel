@@ -30,13 +30,19 @@ func _ready() -> void:
 
 
 func has_sprite(main_group: String, x: int, y: int) -> bool:
-	return get_sprite(main_group, x, y) != null
+	if not _new_CoordCalculator.is_inside_dungeon(x, y):
+		return false
+	if not _sprite_dict.has(main_group):
+		return false
+	if not _sprite_dict[main_group].has(x):
+		return false
+	return _sprite_dict[main_group][x][y] != null
 
 
 func get_sprite(main_group: String, x: int, y: int) -> Sprite:
-	if not _new_CoordCalculator.is_inside_dungeon(x, y):
-		return null
-	return _sprite_dict[main_group][x][y]
+	if has_sprite(main_group, x, y):
+		return _sprite_dict[main_group][x][y]
+	return null
 
 
 func move_sprite(main_group: String, source: Array, target: Array) -> void:
