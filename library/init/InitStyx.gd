@@ -33,22 +33,28 @@ func _init_pc() -> void:
 
 
 func _init_building() -> void:
-	var top_x: int = _new_DungeonSize.MAX_X - 2
-	var top_y: int = 1
-	var occupy: Array = _new_CoordCalculator.get_neighbor(
-			_new_DungeonSize.CENTER_X, _new_DungeonSize.CENTER_Y,
-			_new_StyxData.LIGHTHOUSE, true)
-	occupy.push_back([top_x, top_y])
+	var lighthouse_x: int = _new_DungeonSize.CENTER_X
+	var lighthouse_y: int = _new_DungeonSize.CENTER_Y
+	var harbor_x: int = _new_DungeonSize.MAX_X - 2
+	var harbor_y: int = 1
 
-	for i in occupy:
-		_occupy_position(i[0], i[1])
+	_set_static_area(lighthouse_x, lighthouse_y, _new_StyxData.LIGHTHOUSE)
+	_set_static_area(harbor_x, harbor_y, _new_StyxData.HARBOR)
 
 	_add_to_blueprint(_spr_Lighthouse,
 			_new_MainGroupTag.BUILDING, _new_SubGroupTag.LIGHTHOUSE,
-			_new_DungeonSize.CENTER_X, _new_DungeonSize.CENTER_Y)
+			lighthouse_x, lighthouse_y)
 	_add_to_blueprint(_spr_Harbor,
 			_new_MainGroupTag.BUILDING, _new_SubGroupTag.HARBOR,
-			top_x, top_y)
+			harbor_x, harbor_y)
+
+
+func _set_static_area(x: int, y: int, max_range: int) -> void:
+	var neighbor: Array = _new_CoordCalculator.get_neighbor(
+			x, y, max_range, true)
+
+	for i in neighbor:
+		_occupy_position(i[0], i[1])
 
 
 func _init_river() -> void:
