@@ -13,7 +13,7 @@ var _target_direction: int
 var _drift_direction: int
 var _drift_position: Array
 
-var _countdown: int = 0
+var _light_is_on: bool = true
 
 
 func _init(parent_node: Node2D).(parent_node) -> void:
@@ -40,18 +40,19 @@ func interact_with_building() -> void:
 
 	if building.is_in_group(_new_SubGroupTag.HARBOR):
 		_ref_EndGame.player_win()
+	elif building.is_in_group(_new_SubGroupTag.LIGHTHOUSE) and _light_is_on:
+		building.modulate = _new_Palette.DARK
+		_light_is_on = false
+
+		_ref_CountDown.add_count(_new_StyxData.RESTORE_TURN)
+		end_turn = true
 
 
 func move() -> void:
 	end_turn = _try_move()
-	if not end_turn:
-		return
-
-	_countdown += 1
-	if _countdown < _new_StyxData.RENEW_COUNTDOWN:
-		_ref_CountDown.add_count(1)
-	else:
-		_countdown = 0
+	if end_turn:
+		_switch_color(_source_position[0], _source_position[1], true)
+		_switch_color(_target_position[0], _target_position[1], false)
 
 
 func _try_move() -> bool:
@@ -96,3 +97,21 @@ func _get_sprite_direction(sprite_position: Array) -> int:
 	if ground_sprite == null:
 		return INVALID_DIRECTION
 	return _state_tag_to_int[_ref_ObjectData.get_state(ground_sprite)]
+
+
+func _switch_color(x: int, y: int, is_default: bool) -> void:
+	var neighbor: Array = _new_CoordCalculator.get_neighbor(
+			x, y, _new_StyxData.PC_SIGHT)
+	var ground_sprite: Sprite
+
+	for i in neighbor:
+		ground_sprite = _ref_DungeonBoard.get_sprite(
+				_new_MainGroupTag.GROUND, i[0], i[1])
+		if ground_sprite == null:
+			continue
+
+		if is_default:
+			ground_sprite.modulate = _new_Palette.get_default_color(
+					_new_MainGroupTag.GROUND)
+		else:
+			ground_sprite.modulate = _new_Palette.SHADOW
