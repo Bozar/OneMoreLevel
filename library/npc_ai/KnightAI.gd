@@ -91,9 +91,10 @@ func _alert() -> void:
 func _move() -> void:
 	_init_dungeon()
 	_dungeon[_pc_pos[0]][ _pc_pos[1]] = _new_PathFindingData.DESTINATION
+	_dungeon = _new_DijkstraPathFinding.get_map(_dungeon, [_pc_pos])
 
 	var destination: Array = _new_DijkstraPathFinding.get_path(
-			_dungeon, _self_pos[0], _self_pos[1], [_pc_pos])
+			_dungeon, _self_pos[0], _self_pos[1])
 	var filter: Array = []
 	var move_to: Array = []
 
