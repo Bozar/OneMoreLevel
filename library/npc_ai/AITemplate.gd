@@ -22,8 +22,7 @@ var _new_SubGroupTag := preload("res://library/SubGroupTag.gd").new()
 var _new_Palette := preload("res://library/Palette.gd").new()
 var _new_DungeonSize := preload("res://library/DungeonSize.gd").new()
 var _new_PathFindingData := preload("res://library/PathFindingData.gd").new()
-
-var _new_DijkstraPathFinding := preload("res://library/npc_ai/DijkstraPathFinding.gd").new()
+var _new_DijkstraPathFinding := preload("res://library/DijkstraPathFinding.gd").new()
 
 var _pc: Sprite
 var _self: Sprite
