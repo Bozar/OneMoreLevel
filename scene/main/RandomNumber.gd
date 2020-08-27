@@ -17,6 +17,12 @@ func get_percent_chance(chance: int) -> bool:
 	return chance > get_int(0, 100)
 
 
+func shuffle(repeat: int) -> void:
+	var __
+	for _i in range(repeat):
+		__ = get_int(0, 10)
+
+
 func get_rng_seed() -> int:
 	return _init_seed
 

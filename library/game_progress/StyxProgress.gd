@@ -16,12 +16,13 @@ func _init(parent_node: Node2D).(parent_node) -> void:
 	}
 
 
-func renew_world(_pc_x: int, _pc_y: int) -> void:
+func renew_world(pc_x: int, pc_y: int) -> void:
 	var flow_path: Array = []
 	var select_index: int
 
 	if _countdown == _new_StyxData.RENEW_MAP:
 		_countdown = 0
+		_shuffle_rng(pc_x, pc_y)
 		_randomize_ground()
 
 		select_index = _get_select_index()
@@ -30,6 +31,11 @@ func renew_world(_pc_x: int, _pc_y: int) -> void:
 		for i in flow_path:
 			_set_flow_path(i, select_index)
 	_countdown += 1
+
+
+func _shuffle_rng(x: int, y: int) -> void:
+	var repeat: int = (x + y * _new_DungeonSize.MAX_X) % 10
+	_ref_RandomNumber.shuffle(repeat)
 
 
 func _randomize_ground() -> void:
