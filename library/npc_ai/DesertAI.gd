@@ -104,9 +104,8 @@ func _try_random_walk(id: int) -> bool:
 			neighbor.push_back(mirror)
 
 	for i in neighbor:
-		if _is_pc_pos(i[0], i[1]):
-			candidate.push_back(i)
-		elif _ref_DungeonBoard.has_sprite(_new_MainGroupTag.ACTOR, i[0], i[1]):
+		if _ref_DungeonBoard.has_sprite(_new_MainGroupTag.ACTOR, i[0], i[1]) \
+				and (not _is_pc_pos(i[0], i[1])):
 			continue
 		candidate.push_back(i)
 
