@@ -65,7 +65,8 @@ func _create_body(id: int, index: int, x: int, y: int) -> void:
 	# Create spice.
 	elif (index > _new_DesertData.SPICE_START) \
 			and (index < _new_DesertData.SPICE_END):
-		is_active = _is_active_spice()
+		is_active = _ref_RandomNumber.get_percent_chance(
+				_new_DesertData.CREATE_ACTIVE_SPICE)
 		_ref_CreateObject.create(
 				_spr_WormSpice,
 				_new_MainGroupTag.ACTOR, _new_SubGroupTag.WORM_SPICE,
@@ -151,8 +152,15 @@ func _move_body(id: int) -> void:
 
 func _bury_worm(id: int) -> void:
 	var worm: Array = _id_to_worm[id]
+	var create_spice: int = _new_DesertData.CREATE_SPICE
 	var pos: Array
 	var __
+
+	for i in range(_new_DesertData.SPICE_END):
+		if worm[i] == null:
+			break
+		if _has_spice(worm[i]) and _is_active_spice(worm[i]):
+			create_spice += _new_DesertData.BONUS_CREATE_SPICE
 
 	for i in worm:
 		if i == null:
@@ -161,7 +169,7 @@ func _bury_worm(id: int) -> void:
 		pos = _new_ConvertCoord.vector_to_array(i.position)
 		_ref_RemoveObject.remove(_new_MainGroupTag.ACTOR, pos[0], pos[1])
 
-		if _ref_RandomNumber.get_percent_chance(_new_DesertData.CREATE_SPICE):
+		if _ref_RandomNumber.get_percent_chance(create_spice):
 			_ref_CreateObject.create(
 					_spr_Treasure,
 					_new_MainGroupTag.TRAP, _new_SubGroupTag.TREASURE,
@@ -182,9 +190,7 @@ func _can_bury_worm(id: int) -> bool:
 	for i in worm:
 		if i == null:
 			break
-		if i.is_in_group(_new_SubGroupTag.WORM_SPICE) \
-				and _ref_ObjectData.verify_state(
-						i, _new_ObjectStateTag.PASSIVE):
+		if _has_spice(i) and (not _is_active_spice(i)):
 			hit_point += _new_DesertData.HP_SPICE
 	return hit_point > _new_DesertData.HP_BURY
 
@@ -197,6 +203,9 @@ func _set_danger_zone(head: Sprite, is_danger: bool) -> void:
 		_ref_DangerZone.set_danger_zone(i[0], i[1], is_danger)
 
 
-func _is_active_spice() -> bool:
-	return _ref_RandomNumber.get_percent_chance(
-			_new_DesertData.CREATE_ACTIVE_SPICE)
+func _is_active_spice(spice: Sprite) -> bool:
+	return _ref_ObjectData.verify_state(spice, _new_ObjectStateTag.ACTIVE)
+
+
+func _has_spice(body: Sprite) -> bool:
+	return body.is_in_group(_new_SubGroupTag.WORM_SPICE)
