@@ -221,7 +221,7 @@ func _try_hit_pc(danger_zone: Array) -> void:
 						victim, _new_ObjectStateTag.PASSIVE):
 			_ref_RemoveObject.remove(
 					_new_MainGroupTag.ACTOR, i[0], i[1])
-			_ref_CountDown.hit_bonus()
+			_ref_CountDown.add_count(_new_KnightData.RESTORE_TURN)
 
 
 func _is_ready_to_move() -> bool:

@@ -16,10 +16,6 @@ func get_count(fix_overflow: bool) -> int:
 	return _current_count
 
 
-func hit_bonus() -> void:
-	add_count(_new_CountDownData.HIT_BONUS)
-
-
 func add_count(add: int) -> void:
 	_current_count += add
 

@@ -37,7 +37,6 @@ func attack() -> void:
 	_ref_ObjectData.set_state(worm, _new_ObjectStateTag.PASSIVE)
 	_ref_SwitchSprite.switch_sprite(worm, _new_SpriteTypeTag.PASSIVE)
 	_ref_CountDown.add_count(_new_DesertData.RESTORE_TURN)
-	# _ref_CountDown.hit_bonus()
 
 	if is_active_spice:
 		_active_spice += 1
@@ -50,7 +49,6 @@ func attack() -> void:
 
 func interact_with_trap() -> void:
 	_ref_CountDown.add_count(_new_DesertData.RESTORE_TURN)
-	# _ref_CountDown.hit_bonus()
 	_remove_building_or_trap(false)
 
 
