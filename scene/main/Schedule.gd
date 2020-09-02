@@ -11,16 +11,20 @@ var _new_SubGroupTag := preload("res://library/SubGroupTag.gd").new()
 var _actors: Array = [null]
 var _pointer: int = 0
 var _end_game: bool = false
+var _end_current_turn: bool = true
 
 
 func end_turn() -> void:
-	# print("{0}: End turn.".format([_get_current().name]))
-	emit_signal("turn_ended", _get_current())
-
 	if _end_game:
 		return
 
-	_goto_next()
+	if _end_current_turn:
+		# print("{0}: End turn.".format([_get_current().name]))
+		emit_signal("turn_ended", _get_current())
+		_goto_next()
+	else:
+		_end_current_turn = true
+
 	emit_signal("turn_started", _get_current())
 
 
@@ -37,9 +41,13 @@ func _on_CreateObject_sprite_created(new_sprite: Sprite) -> void:
 
 
 func _on_RemoveObject_sprite_removed(remove_sprite: Sprite,
-	_main_group: String, _x: int, _y: int) -> void:
+		_main_group: String, _x: int, _y: int) -> void:
+	var current_sprite: Sprite
 
-	var current_sprite: Sprite = _get_current()
+	if remove_sprite == _get_current():
+		_end_current_turn = false
+		_goto_next()
+	current_sprite = _get_current()
 
 	_actors.erase(remove_sprite)
 	_pointer = _actors.find(current_sprite)
@@ -55,6 +63,5 @@ func _get_current() -> Sprite:
 
 func _goto_next() -> void:
 	_pointer += 1
-
-	if _pointer > len(_actors) - 1:
+	if _pointer > _actors.size() - 1:
 		_pointer = 0
