@@ -6,13 +6,13 @@ You need to bump and collect 5 quality spices (*) from a living sandworm to beat
 
 A sandworm has a head (diamond), a tail (-) and body segments (+). The third, fourth and fifth segment contains spice (?) or quality spice (*). You can only interact with segments that have spices. Other sandworm parts (head, body and tail) act like indestructible walls.
 
-Every turn a sandworm moves one grid in a random direction. Eventually it will tunnel into ground and leave a wall of dune behind. An immobilized sandworm or one with fewer than three spices are more eager to go underground. The more spices a living sandworm has, the more spices will there be in the dune left by the sandworm.
+Every turn a sandworm moves one grid in a random direction. Eventually it will tunnel into ground and leave a wall of dunes behind. An immobilized sandworm or one with fewer than three spices are more eager to go underground. The more spices a living sandworm has, the more likely are the dunes to contain spices.
 
-A dunes is composed of sand walls (#) and spices (?). You can bump and destroy a wall block or collect a spice just as from a sandworm. You do not move when bumping. It can be used as poor man's waiting key.
+A wall of dunes is composed of sand walls (#) and spices (?). You can bump and destroy a wall block or collect a spice just as from a sandworm. You do not move when bumping. It can be used as poor man's waiting key.
 
 You might lose the game due to one of three reasons.
 
-You can survive in desert for at most 24 turns. Every spice and quality spice extends your remaining time by 3 turns.
+You can survive in desert for at most 24 turns. Every spice and quality spice extends your remaining time by 5 turns.
 
 PC's symbol changes into a rectangular when being adjacent to a sandworm's head. The game ends if the sandworm intends to move into PC's position the next turn.
 
