@@ -17,4 +17,4 @@ const MAX_SPICE: int = 5
 const MAX_WORM: int = 3
 const MAX_COOLDOWN: int = 3
 
-const RESTORE_TURN: int = 6
+const RESTORE_TURN: int = 5
