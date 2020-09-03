@@ -13,7 +13,8 @@ Godot engine natively supports keyboards and gamepads (Xbox, DualShock and Ninte
 * Move: Arrow keys, Vi keys, ASDW, [Direction pad].
 * Wait: Space, Z, Period (.), [A].
 * Help: Esc, Slash (/), [B].
-* Reload: Space, [A].
+* Reload after defeat: Space, [A].
+* Force reload: O, [Y].
 * Quit: Ctrl + W, [Select].
 
 Following keys are available only in help screen.
@@ -32,7 +33,6 @@ Following keys are available only in help screen.
 These keys are available in wizard mode (see below).
 
 * Add 1 turn: T.
-* Force reload: O.
 
 ## Game Mechanics
 

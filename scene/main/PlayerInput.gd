@@ -50,17 +50,18 @@ func _unhandled_input(event: InputEvent) -> void:
 		get_tree().quit()
 		return
 
-	if _is_wizard:
-		if _is_force_reload_input(event):
-			get_node(RELOAD_GAME).reload()
-			return
-		elif _is_add_turn_input(event):
-			_ref_CountDown.add_count(1)
+	if _is_force_reload_input(event):
+		get_node(RELOAD_GAME).reload()
+		return
 
 	if _end_game:
 		if _is_reload_input(event):
 			get_node(RELOAD_GAME).reload()
 		return
+
+	if _is_wizard:
+		if _is_add_turn_input(event):
+			_ref_CountDown.add_count(1)
 
 	_pc_action.set_source_position(_pc_pos)
 	if _is_move_input(event):
