@@ -11,6 +11,8 @@ var _new_DesertData := preload("res://library/npc_data/DesertData.gd").new()
 
 # int: Array[Sprite]
 var _id_to_worm: Dictionary = {}
+# int: bool
+var _id_to_has_active_spice: Dictionary = {}
 
 
 func _init(parent_node: Node2D).(parent_node) -> void:
@@ -48,6 +50,9 @@ func _init_worm(id: int) -> void:
 	_id_to_worm[id] = []
 	_id_to_worm[id].resize(worm_length)
 	_id_to_worm[id][0] = _self
+
+	_id_to_has_active_spice[id] = false
+
 	_set_danger_zone(_self, true)
 
 
@@ -63,10 +68,11 @@ func _create_body(id: int, index: int, x: int, y: int) -> void:
 				_new_MainGroupTag.ACTOR, _new_SubGroupTag.WORM_BODY,
 				x, y)
 	# Create spice.
-	elif (index > _new_DesertData.SPICE_START) \
+	elif (index >= _new_DesertData.SPICE_START) \
 			and (index < _new_DesertData.SPICE_END):
-		is_active = _ref_RandomNumber.get_percent_chance(
-				_new_DesertData.CREATE_ACTIVE_SPICE)
+		is_active = (not _id_to_has_active_spice[id]) \
+				and _ref_RandomNumber.get_percent_chance(
+						_new_DesertData.CREATE_ACTIVE_SPICE)
 		_ref_CreateObject.create(
 				_spr_WormSpice,
 				_new_MainGroupTag.ACTOR, _new_SubGroupTag.WORM_SPICE,
@@ -84,6 +90,7 @@ func _create_body(id: int, index: int, x: int, y: int) -> void:
 	if is_active:
 		_ref_ObjectData.set_state(worm_body, _new_ObjectStateTag.ACTIVE)
 		_ref_SwitchSprite.switch_sprite(worm_body, _new_SpriteTypeTag.ACTIVE)
+		_id_to_has_active_spice[id] = true
 
 
 func _try_random_walk(id: int) -> bool:
@@ -154,7 +161,6 @@ func _bury_worm(id: int) -> void:
 	var worm: Array = _id_to_worm[id]
 	var create_spice: int = _new_DesertData.CREATE_SPICE
 	var pos: Array
-	var __
 
 	for i in range(_new_DesertData.SPICE_END):
 		if worm[i] == null:
@@ -180,7 +186,7 @@ func _bury_worm(id: int) -> void:
 					_new_MainGroupTag.BUILDING, _new_SubGroupTag.WALL,
 					pos[0], pos[1])
 
-	__ = _id_to_worm.erase(id)
+	_clear_worm_data(id)
 
 
 func _can_bury_worm(id: int) -> bool:
@@ -209,3 +215,9 @@ func _is_active_spice(spice: Sprite) -> bool:
 
 func _has_spice(body: Sprite) -> bool:
 	return body.is_in_group(_new_SubGroupTag.WORM_SPICE)
+
+
+func _clear_worm_data(id: int) -> void:
+	var __
+	__ = _id_to_worm.erase(id)
+	__ = _id_to_has_active_spice.erase(id)

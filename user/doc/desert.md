@@ -4,7 +4,7 @@
 
 You need to bump and collect 5 quality spices (*) from a living sandworm to beat the game. But you cannot press Space to wait in desert, which makes the collecting job a little bit harder.
 
-A sandworm has a head (diamond), a tail (-) and body segments (+). The third, fourth and fifth segment contains spice (?) or quality spice (*). You can only interact with segments that have spices. Other sandworm parts (head, body and tail) act like indestructible walls.
+A sandworm has a head (diamond), a tail (-) and body segments (+). The third, fourth and fifth segment contains spice (?) or quality spice (*). Every sandworm has at most one quality spice. You can only interact with segments that have spices. Other sandworm parts (head, body and tail) act like indestructible walls.
 
 Every turn a sandworm moves one grid in a random direction. Eventually it will tunnel into ground and leave a wall of dunes behind. An immobilized sandworm or one with fewer than three spices are more eager to go underground. The more spices a living sandworm has, the more likely are the dunes to contain spices.
 
