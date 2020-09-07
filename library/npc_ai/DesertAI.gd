@@ -165,7 +165,7 @@ func _bury_worm(id: int) -> void:
 	for i in range(_new_DesertData.SPICE_END):
 		if worm[i] == null:
 			break
-		if _has_spice(worm[i]) and _is_active_spice(worm[i]):
+		if _has_spice(worm[i]) and (not _is_passive_spice(worm[i])):
 			create_spice += _new_DesertData.BONUS_CREATE_SPICE
 
 	for i in worm:
@@ -196,7 +196,7 @@ func _can_bury_worm(id: int) -> bool:
 	for i in worm:
 		if i == null:
 			break
-		if _has_spice(i) and (not _is_active_spice(i)):
+		if _has_spice(i) and _is_passive_spice(i):
 			hit_point += _new_DesertData.HP_SPICE
 	return hit_point > _new_DesertData.HP_BURY
 
@@ -209,8 +209,8 @@ func _set_danger_zone(head: Sprite, is_danger: bool) -> void:
 		_ref_DangerZone.set_danger_zone(i[0], i[1], is_danger)
 
 
-func _is_active_spice(spice: Sprite) -> bool:
-	return _ref_ObjectData.verify_state(spice, _new_ObjectStateTag.ACTIVE)
+func _is_passive_spice(spice: Sprite) -> bool:
+	return _ref_ObjectData.verify_state(spice, _new_ObjectStateTag.PASSIVE)
 
 
 func _has_spice(body: Sprite) -> bool:
