@@ -49,7 +49,8 @@ func _create_worm_head(stop_loop: bool = false) -> void:
 
 	x = _ref_RandomNumber.get_int(0, _new_DungeonSize.MAX_X)
 	y = _ref_RandomNumber.get_int(0, _new_DungeonSize.MAX_Y)
-	neighbor = _new_CoordCalculator.get_neighbor(x, y, 2, true)
+	neighbor = _new_CoordCalculator.get_neighbor(x, y,
+			_new_DesertData.WORM_DISTANCE, true)
 
 	for i in neighbor:
 		if _ref_DungeonBoard.has_sprite(
