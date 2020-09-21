@@ -2,21 +2,25 @@ const InitDemo := preload("res://library/init/InitDemo.gd")
 const InitKnight := preload("res://library/init/InitKnight.gd")
 const InitDesert := preload("res://library/init/InitDesert.gd")
 const InitStyx := preload("res://library/init/InitStyx.gd")
+const InitMirror := preload("res://library/init/InitMirror.gd")
 
 const DemoPCAction := preload("res://library/pc_action/DemoPCAction.gd")
 const KnightPCAction := preload("res://library/pc_action/KnightPCAction.gd")
 const DesertPCAction := preload("res://library/pc_action/DesertPCAction.gd")
 const StyxPCAction := preload("res://library/pc_action/StyxPCAction.gd")
+const MirrorPCAction := preload("res://library/pc_action/MirrorPCAction.gd")
 
 const DemoAI := preload("res://library/npc_ai/DemoAI.gd")
 const KnightAI := preload("res://library/npc_ai/KnightAI.gd")
 const DesertAI := preload("res://library/npc_ai/DesertAI.gd")
 const StyxAI := preload("res://library/npc_ai/StyxAI.gd")
+const MirrorAI := preload("res://library/npc_ai/MirrorAI.gd")
 
 const DemoProgress := preload("res://library/game_progress/DemoProgress.gd")
 const KnightProgress := preload("res://library/game_progress/KnightProgress.gd")
 const DesertProgress := preload("res://library/game_progress/DesertProgress.gd")
 const StyxProgress := preload("res://library/game_progress/StyxProgress.gd")
+const MirrorProgress := preload("res://library/game_progress/MirrorProgress.gd")
 
 const GeneralHelp: String = "res://user/doc/general.md"
 const KeyBindingHelp: String = "res://user/doc/keybinding.md"
@@ -24,6 +28,7 @@ const DemoHelp: String = "res://user/doc/demo.md"
 const KnightHelp: String = "res://user/doc/knight.md"
 const DesertHelp: String = "res://user/doc/desert.md"
 const StyxHelp: String = "res://user/doc/styx.md"
+const MirrorHelp: String = "res://user/doc/mirror.md"
 
 var _new_WorldTag := preload("res://library/WorldTag.gd").new()
 
@@ -40,6 +45,9 @@ var _world_data: Dictionary = {
 	],
 	_new_WorldTag.STYX: [
 		InitStyx, StyxPCAction, StyxAI, StyxProgress, StyxHelp
+	],
+	_new_WorldTag.MIRROR: [
+		InitMirror, MirrorPCAction, MirrorAI, MirrorProgress, MirrorHelp
 	],
 }
 

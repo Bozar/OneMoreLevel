@@ -3,4 +3,5 @@
 * demo
 * desert
 * knight
+* mirror
 * styx

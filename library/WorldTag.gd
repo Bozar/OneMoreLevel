@@ -4,9 +4,10 @@ const DEMO: String = "demo"
 const KNIGHT: String = "knight"
 const DESERT: String = "desert"
 const STYX: String = "styx"
+const MIRROR: String = "mirror"
 
 var _world_tag: Array = [
-	KNIGHT, DESERT, STYX,
+	KNIGHT, DESERT, STYX, MIRROR,
 ]
 
 var _tag_to_name: Dictionary = {
@@ -14,6 +15,7 @@ var _tag_to_name: Dictionary = {
 	KNIGHT: "Knight",
 	DESERT: "Desert",
 	STYX: "Styx",
+	MIRROR: "Mirror",
 }
 
 
