@@ -114,15 +114,13 @@ func _create_reflection() -> void:
 
 
 func _init_pc() -> void:
-	var mirror: Array
-
 	while true:
 		_pc_x = _ref_RandomNumber.get_int(0, _new_DungeonSize.CENTER_X)
 		_pc_y = _ref_RandomNumber.get_int(0, _new_DungeonSize.MAX_Y)
 		if not _is_occupied(_pc_x, _pc_y):
 			break
 
-	mirror = _new_CoordCalculator.get_mirror_image(
+	var mirror: Array = _new_CoordCalculator.get_mirror_image(
 			_pc_x, _pc_y, _new_DungeonSize.CENTER_X, _pc_y)
 
 	_add_to_blueprint(_spr_PC,
