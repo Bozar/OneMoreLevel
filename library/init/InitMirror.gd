@@ -2,6 +2,7 @@ extends "res://library/init/WorldTemplate.gd"
 
 
 var _spr_CrystalBase := preload("res://sprite/CrystalBase.tscn")
+var _spr_PCMirrorImage := preload("res://sprite/PCMirrorImage.tscn")
 
 var _new_MirrorData := preload("res://library/npc_data/MirrorData.gd").new()
 
@@ -109,17 +110,27 @@ func _create_reflection() -> void:
 				_add_to_blueprint(_spr_Wall,
 						_new_MainGroupTag.BUILDING, _new_SubGroupTag.WALL,
 						mirror[0], mirror[1])
+				_occupy_position(mirror[0], mirror[1])
 
 
 func _init_pc() -> void:
+	var mirror: Array
+
 	while true:
 		_pc_x = _ref_RandomNumber.get_int(0, _new_DungeonSize.CENTER_X)
 		_pc_y = _ref_RandomNumber.get_int(0, _new_DungeonSize.MAX_Y)
-
 		if not _is_occupied(_pc_x, _pc_y):
 			break
+
+	mirror = _new_CoordCalculator.get_mirror_image(
+			_pc_x, _pc_y, _new_DungeonSize.CENTER_X, _pc_y)
 
 	_add_to_blueprint(_spr_PC,
 			_new_MainGroupTag.ACTOR, _new_SubGroupTag.PC,
 			_pc_x, _pc_y)
 	_occupy_position(_pc_x, _pc_y)
+
+	_add_to_blueprint(_spr_PCMirrorImage,
+			_new_MainGroupTag.TRAP, _new_SubGroupTag.PC_MIRROR_IMAGE,
+			mirror[0], mirror[1])
+	_occupy_position(mirror[0], mirror[1])
