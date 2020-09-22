@@ -5,6 +5,9 @@ var _spr_CrystalBase := preload("res://sprite/CrystalBase.tscn")
 
 var _new_MirrorData := preload("res://library/npc_data/MirrorData.gd").new()
 
+var _pc_x: int
+var _pc_y: int
+
 
 func _init(parent_node: Node2D).(parent_node) -> void:
 	pass
@@ -98,8 +101,8 @@ func _try_create_wall(neighbor: Array, wall: Array) -> bool:
 func _create_reflection() -> void:
 	var mirror: Array
 
-	for i in range(1, _new_DungeonSize.CENTER_X - 1):
-		for j in range(1, _new_DungeonSize.MAX_Y - 1):
+	for i in range(0, _new_DungeonSize.CENTER_X):
+		for j in range(0, _new_DungeonSize.MAX_Y):
 			if _is_occupied(i, j):
 				mirror = _new_CoordCalculator.get_mirror_image(
 						i, j, _new_DungeonSize.CENTER_X, j)
@@ -109,6 +112,14 @@ func _create_reflection() -> void:
 
 
 func _init_pc() -> void:
+	while true:
+		_pc_x = _ref_RandomNumber.get_int(0, _new_DungeonSize.CENTER_X)
+		_pc_y = _ref_RandomNumber.get_int(0, _new_DungeonSize.MAX_Y)
+
+		if not _is_occupied(_pc_x, _pc_y):
+			break
+
 	_add_to_blueprint(_spr_PC,
 			_new_MainGroupTag.ACTOR, _new_SubGroupTag.PC,
-			0, 0)
+			_pc_x, _pc_y)
+	_occupy_position(_pc_x, _pc_y)
