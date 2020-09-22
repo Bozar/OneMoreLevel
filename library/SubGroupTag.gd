@@ -15,6 +15,8 @@ const LIGHTHOUSE: String = "lighthouse"
 const HARBOR: String = "harbor"
 const STYX_RIVER: String = "styx_river"
 
+const CRYSTAL_BASE: String = "crystal_base"
+
 const FLOOR: String = "floor"
 const WALL: String = "wall"
 
