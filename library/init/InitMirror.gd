@@ -124,16 +124,19 @@ func _init_pc() -> void:
 
 	var mirror: Array = _new_CoordCalculator.get_mirror_image(
 			_pc_x, _pc_y, _new_DungeonSize.CENTER_X, _pc_y)
+	var neighbor: Array = _new_CoordCalculator.get_neighbor(
+			_pc_x, _pc_y, _new_MirrorData.CRYSTAL_DISTANCE, true)
+	neighbor.push_back([mirror[0], mirror[1]])
 
 	_add_to_blueprint(_spr_PC,
 			_new_MainGroupTag.ACTOR, _new_SubGroupTag.PC,
 			_pc_x, _pc_y)
-	_occupy_position(_pc_x, _pc_y)
-
 	_add_to_blueprint(_spr_PCMirrorImage,
 			_new_MainGroupTag.TRAP, _new_SubGroupTag.PC_MIRROR_IMAGE,
 			mirror[0], mirror[1])
-	_occupy_position(mirror[0], mirror[1])
+
+	for i in neighbor:
+		_occupy_position(i[0], i[1])
 
 
 func _init_crystal() -> void:
@@ -143,10 +146,7 @@ func _init_crystal() -> void:
 	while true:
 		x = _ref_RandomNumber.get_int(0, _new_DungeonSize.MAX_X)
 		y = _ref_RandomNumber.get_int(0, _new_DungeonSize.MAX_Y)
-
-		if _is_occupied(x, y) \
-				or _new_CoordCalculator.is_inside_range(
-						x, y, _pc_x, _pc_y, _new_MirrorData.CRYSTAL_DISTANCE):
+		if _is_occupied(x, y):
 			continue
 		break
 
