@@ -1,6 +1,7 @@
 extends "res://library/init/WorldTemplate.gd"
 
 
+var _spr_Crystal := preload("res://sprite/Crystal.tscn")
 var _spr_CrystalBase := preload("res://sprite/CrystalBase.tscn")
 var _spr_PCMirrorImage := preload("res://sprite/PCMirrorImage.tscn")
 
@@ -18,6 +19,7 @@ func get_blueprint() -> Array:
 	_init_middle_border()
 	_init_wall()
 	_init_pc()
+	_init_crystal()
 
 	return _blueprint
 
@@ -132,3 +134,22 @@ func _init_pc() -> void:
 			_new_MainGroupTag.TRAP, _new_SubGroupTag.PC_MIRROR_IMAGE,
 			mirror[0], mirror[1])
 	_occupy_position(mirror[0], mirror[1])
+
+
+func _init_crystal() -> void:
+	var x: int
+	var y: int
+
+	while true:
+		x = _ref_RandomNumber.get_int(0, _new_DungeonSize.MAX_X)
+		y = _ref_RandomNumber.get_int(0, _new_DungeonSize.MAX_Y)
+
+		if _is_occupied(x, y) \
+				or _new_CoordCalculator.is_inside_range(
+						x, y, _pc_x, _pc_y, _new_MirrorData.CRYSTAL_DISTANCE):
+			continue
+		break
+
+	_add_to_blueprint(_spr_Crystal,
+			_new_MainGroupTag.TRAP, _new_SubGroupTag.CRYSTAL,
+			x, y)

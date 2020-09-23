@@ -18,6 +18,8 @@ var _tag_to_color: Dictionary = {
 	_new_MainGroupTag.BUILDING: SHADOW,
 	_new_MainGroupTag.ACTOR: STANDARD,
 	_new_MainGroupTag.INDICATOR: STANDARD,
+
+	_new_SubGroupTag.CRYSTAL: STANDARD,
 }
 
 
