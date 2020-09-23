@@ -103,7 +103,7 @@ const NODE_REF: Array = [
 	[
 		"_ref_DangerZone",
 		DANGER_ZONE,
-		ENEMY_AI, PLAYER_INPUT, SIDEBAR_GUI,
+		ENEMY_AI, PLAYER_INPUT, SIDEBAR_GUI, GAME_PROGRESS,
 	],
 	[
 		"_ref_EndGame",

@@ -8,6 +8,7 @@ var _ref_RemoveObject: Game_RemoveObject
 var _ref_DungeonBoard: Game_DungeonBoard
 var _ref_SwitchSprite: Game_SwitchSprite
 var _ref_ObjectData: Game_ObjectData
+var _ref_DangerZone: Game_DangerZone
 
 var _new_MainGroupTag := preload("res://library/MainGroupTag.gd").new()
 var _new_SubGroupTag := preload("res://library/SubGroupTag.gd").new()
@@ -27,6 +28,7 @@ func _init(parent_node: Node2D) -> void:
 	_ref_DungeonBoard = parent_node._ref_DungeonBoard
 	_ref_SwitchSprite = parent_node._ref_SwitchSprite
 	_ref_ObjectData = parent_node._ref_ObjectData
+	_ref_DangerZone = parent_node._ref_DangerZone
 
 
 func renew_world(_pc_x: int, _pc_y: int) -> void:
