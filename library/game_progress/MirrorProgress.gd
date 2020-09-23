@@ -15,3 +15,7 @@ func remove_npc(_npc: Sprite, _x: int, _y: int) -> void:
 
 func remove_building(_building: Sprite, _x: int, _y: int) -> void:
 	pass
+
+
+func remove_trap(_trap: Sprite, _x: int, _y: int) -> void:
+	print("remove trap")
