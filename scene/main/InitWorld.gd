@@ -15,6 +15,7 @@ var _spr_ArrowBottom := preload("res://sprite/ArrowBottom.tscn")
 var _ref_RandomNumber: Game_RandomNumber
 var _ref_CreateObject: Game_CreateObject
 var _ref_GameSetting : Game_GameSetting
+var _ref_DangerZone: Game_DangerZone
 
 var _new_DungeonSize := preload("res://library/DungeonSize.gd").new()
 var _new_MainGroupTag := preload("res://library/MainGroupTag.gd").new()

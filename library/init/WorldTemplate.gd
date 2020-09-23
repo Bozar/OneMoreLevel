@@ -16,6 +16,7 @@ var _new_SubGroupTag := preload("res://library/SubGroupTag.gd").new()
 var _new_CoordCalculator := preload("res://library/CoordCalculator.gd").new()
 
 var _ref_RandomNumber: Game_RandomNumber
+var _ref_DangerZone: Game_DangerZone
 
 # {0: [], 1: [], ...}
 var _dungeon: Dictionary = {}
@@ -25,6 +26,7 @@ var _blueprint: Array = []
 
 func _init(parent_node: Node2D) -> void:
 	_ref_RandomNumber = parent_node._ref_RandomNumber
+	_ref_DangerZone = parent_node._ref_DangerZone
 
 	_set_dungeon_board()
 	_init_floor()
