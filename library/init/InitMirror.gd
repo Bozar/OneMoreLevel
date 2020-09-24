@@ -4,6 +4,7 @@ extends "res://library/init/WorldTemplate.gd"
 var _spr_Crystal := preload("res://sprite/Crystal.tscn")
 var _spr_CrystalBase := preload("res://sprite/CrystalBase.tscn")
 var _spr_PCMirrorImage := preload("res://sprite/PCMirrorImage.tscn")
+var _spr_Phantom := preload("res://sprite/Phantom.tscn")
 
 var _new_MirrorData := preload("res://library/npc_data/MirrorData.gd").new()
 
@@ -20,6 +21,7 @@ func get_blueprint() -> Array:
 	_init_wall()
 	_init_pc()
 	_init_crystal()
+	_init_phantom()
 
 	return _blueprint
 
@@ -51,11 +53,10 @@ func _init_middle_border() -> void:
 
 func _init_wall() -> void:
 	var count_wall: int = 0
-	var max_wall: int = 5
 	var direction: int
 	var retry: int = 0
 
-	while count_wall < max_wall:
+	while count_wall < _new_MirrorData.MAX_MIRROR:
 		if retry > 999:
 			break
 		retry += 1
@@ -124,9 +125,13 @@ func _init_pc() -> void:
 
 	var mirror: Array = _new_CoordCalculator.get_mirror_image(
 			_pc_x, _pc_y, _new_DungeonSize.CENTER_X, _pc_y)
-	var neighbor: Array = _new_CoordCalculator.get_neighbor(
-			mirror[0], mirror[1], _new_MirrorData.CRYSTAL_DISTANCE, true)
-	neighbor.push_back([_pc_x, _pc_y])
+	var neighbor: Array = \
+			_new_CoordCalculator.get_neighbor(
+					_pc_x, _pc_y,
+					_new_MirrorData.CRYSTAL_DISTANCE, true) \
+			+ _new_CoordCalculator.get_neighbor(
+					mirror[0], mirror[1],
+					_new_MirrorData.CRYSTAL_DISTANCE, true)
 
 	_add_to_blueprint(_spr_PC,
 			_new_MainGroupTag.ACTOR, _new_SubGroupTag.PC,
@@ -155,3 +160,34 @@ func _init_crystal() -> void:
 			x, y)
 	_occupy_position(x, y)
 	_ref_DangerZone.set_danger_zone(x, y, true)
+
+
+func _init_phantom() -> void:
+	var count_phantom: int = 0
+	var retry: int = 0
+	var x: int
+	var y: int
+
+	while count_phantom < _new_MirrorData.MAX_PHANTOM:
+		if retry > 999:
+			break
+		retry += 1
+
+		x = _ref_RandomNumber.get_int(0, _new_DungeonSize.CENTER_X)
+		y = _ref_RandomNumber.get_int(0, _new_DungeonSize.MAX_Y)
+		if _is_occupied(x, y):
+			continue
+
+		_create_phantom(x, y)
+		count_phantom += 1
+
+
+func _create_phantom(x: int, y: int) -> void:
+	var neighbor: Array = _new_CoordCalculator.get_neighbor(
+			x, y, _new_MirrorData.PHANTOM_SIGHT, true)
+
+	_add_to_blueprint(_spr_Phantom,
+			_new_MainGroupTag.ACTOR, _new_SubGroupTag.PHANTOM,
+			x, y)
+	for i in neighbor:
+		_occupy_position(i[0], i[1])

@@ -4,5 +4,9 @@ const CENTER_Y_3: int = 7
 const CENTER_Y_4: int = 10
 const CENTER_Y_5: int = 14
 
-const CRYSTAL_DISTANCE: int = 7
 const MAX_CRYSTAL: int = 5
+const MAX_MIRROR: int = 5
+const MAX_PHANTOM: int = 5
+
+const CRYSTAL_DISTANCE: int = 5
+const PHANTOM_SIGHT: int = 3

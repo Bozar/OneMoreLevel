@@ -18,6 +18,7 @@ const STYX_RIVER: String = "styx_river"
 const CRYSTAL: String = "crystal"
 const CRYSTAL_BASE: String = "crystal_base"
 const PC_MIRROR_IMAGE: String = "pc_mirror_image"
+const PHANTOM: String = "phantom"
 
 const FLOOR: String = "floor"
 const WALL: String = "wall"
