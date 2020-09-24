@@ -1,25 +1,19 @@
 extends "res://library/pc_action/PCActionTemplate.gd"
 
 
-var _pc_hit_trap: bool
+var _pc_hit_target: bool
 
 
 func _init(parent_node: Node2D).(parent_node) -> void:
 	pass
 
 
-func is_trap() -> bool:
-	var mirror: Array = _get_mirror(_target_position[0], _target_position[1])
+func is_npc() -> bool:
+	return _target_is_occupied(_new_MainGroupTag.ACTOR)
 
-	if _ref_DungeonBoard.has_sprite(_new_MainGroupTag.TRAP,
-			_target_position[0], _target_position[1]):
-		_pc_hit_trap = true
-		return true
-	elif _ref_DungeonBoard.has_sprite(_new_MainGroupTag.TRAP,
-			mirror[0], mirror[1]):
-		_pc_hit_trap = false
-		return true
-	return false
+
+func is_trap() -> bool:
+	return _target_is_occupied(_new_MainGroupTag.TRAP)
 
 
 func move() -> void:
@@ -41,11 +35,24 @@ func move() -> void:
 	end_turn = true
 
 
+func attack() -> void:
+	var mirror: Array
+
+	if _pc_hit_target:
+		# TODO: More things shall happen when PC hits a phantom.
+		_ref_RemoveObject.remove(_new_MainGroupTag.ACTOR,
+				_target_position[0], _target_position[1])
+	else:
+		mirror = _get_mirror(_target_position[0], _target_position[1])
+		_ref_RemoveObject.remove(_new_MainGroupTag.ACTOR, mirror[0], mirror[1])
+	end_turn = true
+
+
 func interact_with_trap() -> void:
 	var crystal: Sprite
 	var mirror: Array
 
-	if _pc_hit_trap:
+	if _pc_hit_target:
 		crystal = _ref_DungeonBoard.get_sprite(
 				_new_MainGroupTag.TRAP,
 				_target_position[0], _target_position[1])
@@ -59,3 +66,17 @@ func interact_with_trap() -> void:
 func _get_mirror(x: int, y: int) -> Array:
 	return _new_CoordCalculator.get_mirror_image(
 			x, y, _new_DungeonSize.CENTER_X, y)
+
+
+func _target_is_occupied(main_group_tag: String) -> bool:
+	var mirror: Array = _get_mirror(_target_position[0], _target_position[1])
+
+	if _ref_DungeonBoard.has_sprite(main_group_tag,
+			_target_position[0], _target_position[1]):
+		_pc_hit_target = true
+		return true
+	elif _ref_DungeonBoard.has_sprite(main_group_tag,
+			mirror[0], mirror[1]):
+		_pc_hit_target = false
+		return true
+	return false
