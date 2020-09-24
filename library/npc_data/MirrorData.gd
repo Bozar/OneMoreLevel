@@ -5,3 +5,4 @@ const CENTER_Y_4: int = 10
 const CENTER_Y_5: int = 14
 
 const CRYSTAL_DISTANCE: int = 7
+const MAX_CRYSTAL: int = 5

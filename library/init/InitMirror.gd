@@ -125,8 +125,8 @@ func _init_pc() -> void:
 	var mirror: Array = _new_CoordCalculator.get_mirror_image(
 			_pc_x, _pc_y, _new_DungeonSize.CENTER_X, _pc_y)
 	var neighbor: Array = _new_CoordCalculator.get_neighbor(
-			_pc_x, _pc_y, _new_MirrorData.CRYSTAL_DISTANCE, true)
-	neighbor.push_back([mirror[0], mirror[1]])
+			mirror[0], mirror[1], _new_MirrorData.CRYSTAL_DISTANCE, true)
+	neighbor.push_back([_pc_x, _pc_y])
 
 	_add_to_blueprint(_spr_PC,
 			_new_MainGroupTag.ACTOR, _new_SubGroupTag.PC,

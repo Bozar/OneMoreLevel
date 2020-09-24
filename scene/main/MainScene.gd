@@ -108,7 +108,7 @@ const NODE_REF: Array = [
 	[
 		"_ref_EndGame",
 		END_GAME,
-		ENEMY_AI, PLAYER_INPUT, COUNT_DOWN,
+		ENEMY_AI, PLAYER_INPUT, COUNT_DOWN, GAME_PROGRESS,
 	],
 	[
 		"_ref_CountDown",
