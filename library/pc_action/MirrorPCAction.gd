@@ -117,42 +117,18 @@ func _create_image_on_the_other_side(x: int, y: int) -> void:
 
 func _create_image_on_the_same_side(x: int, y: int) -> void:
 	var wall: Array = []
-	var ray_cast: int
 	var mirror: Array
 	var actor: Sprite
 	var crystal: Sprite
 
-	# Cast a ray upwards.
-	for i in range(y, 0, -1):
-		ray_cast = _cast_ray(x, i, 0, -1)
-		if ray_cast > 0:
-			if ray_cast == 2:
-				wall.push_back([x, i])
-			break
-
-	# Cast a ray downwards.
-	for i in range(y, _new_DungeonSize.MAX_Y):
-		ray_cast = _cast_ray(x, i, 0, 1)
-		if ray_cast > 0:
-			if ray_cast == 2:
-				wall.push_back([x, i])
-			break
-
+	# Cast a ray to the top.
+	wall += _get_mirror_position(x, y, 0, -1, 0)
+	# Cast a ray to the bottom.
+	wall += _get_mirror_position(x, y, 0, 1, _new_DungeonSize.MAX_Y)
 	# Cast a ray to the left.
-	for i in range(x, 0, -1):
-		ray_cast = _cast_ray(i, y, -1, 0)
-		if ray_cast > 0:
-			if ray_cast == 2:
-				wall.push_back([i, y])
-			break
-
+	wall += _get_mirror_position(x, y, -1, 0, 0)
 	# Cast a ray to the right.
-	for i in range(x, _new_DungeonSize.MAX_X):
-		ray_cast = _cast_ray(i, y, 1, 0)
-		if ray_cast > 0:
-			if ray_cast == 2:
-				wall.push_back([i, y])
-			break
+	wall += _get_mirror_position(x, y, 1, 0, _new_DungeonSize.MAX_X)
 
 	for i in wall:
 		# Continue if the image is outside the dungeon.
@@ -184,6 +160,30 @@ func _create_image_on_the_same_side(x: int, y: int) -> void:
 					_new_MainGroupTag.TRAP, mirror[0], mirror[1])
 			_ref_SwitchSprite.switch_sprite(actor, _new_SpriteTypeTag.ACTIVE)
 			crystal.visible = false
+
+
+func _get_mirror_position(x: int, y: int, x_shift: int, y_shift: int,
+		end_point: int) -> Array:
+	var mirror: Array = []
+	var cast_result: int
+
+	# Cast a ray vertically.
+	if x_shift == 0:
+		for i in range(y, end_point, y_shift):
+			cast_result = _cast_ray(x, i, x_shift, y_shift)
+			if cast_result> 0:
+				if cast_result == 2:
+					mirror.push_back([x, i])
+				break
+	# Cast a ray horizontally.
+	else:
+		for i in range(x, end_point, x_shift):
+			cast_result = _cast_ray(i, y, x_shift, y_shift)
+			if cast_result > 0:
+				if cast_result == 2:
+					mirror.push_back([i, y])
+				break
+	return mirror
 
 
 # 0: Continue. 1: Stop ray cast. 2: Stop ray cast and store current position.
