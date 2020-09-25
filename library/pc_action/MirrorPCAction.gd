@@ -144,6 +144,10 @@ func _create_image_on_the_same_side(x: int, y: int) -> void:
 		elif _ref_DungeonBoard.has_sprite(
 				_new_MainGroupTag.ACTOR, mirror[0], mirror[1]):
 			continue
+		# Continue if the phantom and its image are on different sides.
+		elif ((x - _new_DungeonSize.CENTER_X) \
+				* (mirror[0] - _new_DungeonSize.CENTER_X)) < 0:
+			continue
 
 		# Create a new actor.
 		_ref_CreateObject.create(
