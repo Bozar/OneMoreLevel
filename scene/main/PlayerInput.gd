@@ -14,6 +14,7 @@ var _ref_SwitchSprite: Game_SwitchSprite
 var _ref_EndGame: Game_EndGame
 var _ref_CountDown: Game_CountDown
 var _ref_SwitchScreen: Game_SwitchScreen
+var _ref_CreateObject : Game_CreateObject
 
 var _new_ConvertCoord := preload("res://library/ConvertCoord.gd").new()
 var _new_WorldTag := preload("res://library/WorldTag.gd").new()

@@ -14,6 +14,7 @@ var _ref_RandomNumber: Game_RandomNumber
 var _ref_EndGame: Game_EndGame
 var _ref_CountDown: Game_CountDown
 var _ref_SwitchSprite: Game_SwitchSprite
+var _ref_CreateObject : Game_CreateObject
 
 var _new_InputTag := preload("res://library/InputTag.gd").new()
 var _new_MainGroupTag := preload("res://library/MainGroupTag.gd").new()
@@ -52,6 +53,7 @@ func _init(parent_node: Node2D) -> void:
 	_ref_EndGame = parent_node._ref_EndGame
 	_ref_CountDown = parent_node._ref_CountDown
 	_ref_SwitchSprite = parent_node._ref_SwitchSprite
+	_ref_CreateObject = parent_node._ref_CreateObject
 
 
 func get_message() -> String:

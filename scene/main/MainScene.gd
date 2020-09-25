@@ -118,7 +118,7 @@ const NODE_REF: Array = [
 	[
 		"_ref_CreateObject",
 		CREATE_OBJECT,
-		INIT_WORLD, GAME_PROGRESS, ENEMY_AI,
+		INIT_WORLD, GAME_PROGRESS, ENEMY_AI, PLAYER_INPUT,
 	],
 	[
 		"_ref_GameSetting",
