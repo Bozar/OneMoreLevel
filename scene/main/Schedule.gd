@@ -29,7 +29,23 @@ func end_turn() -> void:
 
 
 func count_npc() -> int:
-	return _actors.size() - 1
+	var count: int = 0
+
+	for i in _actors:
+		if i.is_in_group(_new_SubGroupTag.PC):
+			continue
+		count += 1
+	return count
+
+
+func get_npc() -> Array:
+	var npc: Array = []
+
+	for i in _actors:
+		if i.is_in_group(_new_SubGroupTag.PC):
+			continue
+		npc.push_back(i)
+	return npc
 
 
 func _on_CreateObject_sprite_created(new_sprite: Sprite) -> void:
