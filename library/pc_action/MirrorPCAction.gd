@@ -105,8 +105,9 @@ func _create_image_on_the_other_side(x: int, y: int) -> void:
 			_new_MainGroupTag.ACTOR, mirror[0], mirror[1]):
 		_ref_RemoveObject.remove(_new_MainGroupTag.ACTOR, mirror[0], mirror[1])
 
-	# Move the phantom to the other side and set its color to grey.
+	# Move the phantom to the other side. State: passive. Color: grey.
 	_ref_DungeonBoard.move_sprite(_new_MainGroupTag.ACTOR, [x, y], mirror)
+	_ref_ObjectData.set_state(actor, _new_ObjectStateTag.PASSIVE)
 	actor.modulate = _new_Palette.SHADOW
 
 	# On the other side: Remove a trap.
