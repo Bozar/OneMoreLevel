@@ -9,7 +9,7 @@ func _init(parent_node: Node2D).(parent_node) -> void:
 
 
 func take_action(actor: Sprite) -> void:
-	if _ref_ObjectData.verify_state(_self, _new_ObjectStateTag.PASSIVE):
+	if _ref_ObjectData.verify_state(actor, _new_ObjectStateTag.PASSIVE):
 		return
 
 	_set_local_var(actor)
