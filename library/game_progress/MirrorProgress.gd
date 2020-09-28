@@ -52,10 +52,10 @@ func _try_set_pc(pc_x: int, pc_y: int) -> void:
 func _replenish_crystal() -> void:
 	var x: int
 	var y: int
-	var actor: Sprite
 	var pc_pos: Array = _new_ConvertCoord.vector_to_array(_pc.position)
 	var mirror: Array = _new_CoordCalculator.get_mirror_image(
 			pc_pos[0], pc_pos[1], _new_DungeonSize.CENTER_X, pc_pos[1])
+	var has_npc: int = 0
 
 	while true:
 		# x = _ref_RandomNumber.get_int(
@@ -64,13 +64,16 @@ func _replenish_crystal() -> void:
 		y = _ref_RandomNumber.get_int(0, _new_DungeonSize.MAX_Y)
 
 		if _new_CoordCalculator.is_inside_range(
+				x, y, pc_pos[0], pc_pos[1], _new_MirrorData.CRYSTAL_DISTANCE):
+			continue
+		elif _new_CoordCalculator.is_inside_range(
 				x, y, mirror[0], mirror[1], _new_MirrorData.CRYSTAL_DISTANCE):
 			continue
 		elif _ref_DungeonBoard.has_sprite(_new_MainGroupTag.BUILDING, x, y):
 			continue
 		elif _ref_DungeonBoard.has_sprite(_new_MainGroupTag.ACTOR, x, y):
-			actor = _ref_DungeonBoard.get_sprite(_new_MainGroupTag.ACTOR, x, y)
-			if actor.is_in_group(_new_SubGroupTag.PC):
+			if has_npc < 100:
+				has_npc += 1
 				continue
 			else:
 				_ref_RemoveObject.remove(_new_MainGroupTag.ACTOR, x, y)
