@@ -10,4 +10,5 @@ const MAX_PHANTOM: int = 5
 
 const CRYSTAL_DISTANCE: int = 5
 const PHANTOM_SIGHT: int = 3
+const ATTACK_RANGE: int = 1
 const RESTORE_TURN: int = 5
