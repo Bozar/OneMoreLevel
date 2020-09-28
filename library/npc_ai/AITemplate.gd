@@ -12,6 +12,7 @@ var _ref_RandomNumber: Game_RandomNumber
 var _ref_RemoveObject : Game_RemoveObject
 var _ref_CountDown : Game_CountDown
 var _ref_CreateObject : Game_CreateObject
+var _ref_Schedule: Game_Schedule
 
 var _new_ConvertCoord := preload("res://library/ConvertCoord.gd").new()
 var _new_CoordCalculator := preload("res://library/CoordCalculator.gd").new()
@@ -43,6 +44,7 @@ func _init(parent_node: Node2D) -> void:
 	_ref_RemoveObject = parent_node._ref_RemoveObject
 	_ref_CountDown = parent_node._ref_CountDown
 	_ref_CreateObject = parent_node._ref_CreateObject
+	_ref_Schedule = parent_node._ref_Schedule
 
 	for x in range(_new_DungeonSize.MAX_X):
 		_dungeon[x] = []

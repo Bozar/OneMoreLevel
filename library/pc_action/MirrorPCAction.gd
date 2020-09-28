@@ -30,7 +30,7 @@ func move() -> void:
 
 	_ref_DungeonBoard.move_sprite(_new_MainGroupTag.ACTOR,
 			_source_position, _target_position)
-	_ref_DungeonBoard.move_sprite(_new_MainGroupTag.TRAP,
+	_ref_DungeonBoard.move_sprite(_new_MainGroupTag.ACTOR,
 			source_mirror, target_mirror)
 
 	if crystal != null:

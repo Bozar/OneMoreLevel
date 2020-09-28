@@ -137,7 +137,7 @@ func _init_pc() -> void:
 			_new_MainGroupTag.ACTOR, _new_SubGroupTag.PC,
 			_pc_x, _pc_y)
 	_add_to_blueprint(_spr_PCMirrorImage,
-			_new_MainGroupTag.TRAP, _new_SubGroupTag.PC_MIRROR_IMAGE,
+			_new_MainGroupTag.ACTOR, _new_SubGroupTag.PC_MIRROR_IMAGE,
 			mirror[0], mirror[1])
 
 	for i in neighbor:

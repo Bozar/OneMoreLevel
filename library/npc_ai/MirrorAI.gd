@@ -3,6 +3,8 @@ extends "res://library/npc_ai/AITemplate.gd"
 
 var _new_MirrorData := preload("res://library/npc_data/MirrorData.gd").new()
 
+var _trap_pos: Array
+
 
 func _init(parent_node: Node2D).(parent_node) -> void:
 	pass
@@ -11,8 +13,11 @@ func _init(parent_node: Node2D).(parent_node) -> void:
 func take_action(actor: Sprite) -> void:
 	if _ref_ObjectData.verify_state(actor, _new_ObjectStateTag.PASSIVE):
 		return
+	if actor.is_in_group(_new_SubGroupTag.PC_MIRROR_IMAGE):
+		return
 
 	_set_local_var(actor)
+	_trap_pos = []
 
 	var distance: int = _new_CoordCalculator.get_range(
 			_self_pos[0], _self_pos[1],
@@ -25,9 +30,12 @@ func take_action(actor: Sprite) -> void:
 	else:
 		_move()
 
+	_try_remove_trap()
+
 
 func _attack() -> void:
-	return
+	_switch_pc_and_image()
+	_set_npc_state()
 
 
 func _move() -> void:
@@ -48,3 +56,43 @@ func _move() -> void:
 	if trap != null:
 		_ref_SwitchSprite.switch_sprite(_self, _new_SpriteTypeTag.ACTIVE)
 		trap.visible = false
+
+
+func _switch_pc_and_image() -> void:
+	var mirror: Array = _new_CoordCalculator.get_mirror_image(
+			_pc_pos[0], _pc_pos[1], _new_DungeonSize.CENTER_X, _pc_pos[1])
+
+	if _ref_DungeonBoard.has_sprite(
+			_new_MainGroupTag.TRAP, _pc_pos[0], _pc_pos[1]):
+		_ref_SwitchSprite.switch_sprite(_pc, _new_SpriteTypeTag.DEFAULT)
+		_trap_pos = _pc_pos
+
+	_ref_DungeonBoard.swap_sprite(_new_MainGroupTag.ACTOR, _pc_pos, mirror)
+
+
+func _set_npc_state() -> void:
+	var npc: Array = _ref_Schedule.get_npc()
+	var npc_pos: Array
+
+	for i in npc:
+		if i.is_in_group(_new_SubGroupTag.PC_MIRROR_IMAGE):
+			continue
+
+		if _ref_ObjectData.verify_state(i, _new_ObjectStateTag.DEFAULT):
+			_ref_ObjectData.set_state(i, _new_ObjectStateTag.PASSIVE)
+			i.modulate = _new_Palette.SHADOW
+
+			npc_pos = _new_ConvertCoord.vector_to_array(i.position)
+			if _ref_DungeonBoard.has_sprite(
+					_new_MainGroupTag.TRAP, npc_pos[0], npc_pos[1]):
+				_ref_SwitchSprite.switch_sprite(i, _new_SpriteTypeTag.DEFAULT)
+				_trap_pos = npc_pos
+		else:
+			_ref_ObjectData.set_state(i, _new_ObjectStateTag.DEFAULT)
+			i.modulate = _new_Palette.STANDARD
+
+
+func _try_remove_trap() -> void:
+	if _trap_pos.size() == 2:
+		_ref_RemoveObject.remove(
+				_new_MainGroupTag.TRAP, _trap_pos[0], _trap_pos[1])

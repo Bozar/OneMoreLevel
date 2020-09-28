@@ -20,6 +20,7 @@ var _tag_to_color: Dictionary = {
 	_new_MainGroupTag.INDICATOR: STANDARD,
 
 	_new_SubGroupTag.CRYSTAL: STANDARD,
+	_new_SubGroupTag.PC_MIRROR_IMAGE: SHADOW,
 }
 
 
