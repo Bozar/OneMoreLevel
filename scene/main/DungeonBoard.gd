@@ -47,7 +47,6 @@ func get_sprite(main_group: String, x: int, y: int) -> Sprite:
 
 func move_sprite(main_group: String, source: Array, target: Array) -> void:
 	var sprite: Sprite = get_sprite(main_group, source[0], source[1])
-
 	if sprite == null:
 		return
 
@@ -55,14 +54,26 @@ func move_sprite(main_group: String, source: Array, target: Array) -> void:
 	_sprite_dict[main_group][target[0]][target[1]] = sprite
 	sprite.position = _new_ConvertCoord.index_to_vector(target[0], target[1])
 
-	# Move arrow indicators when PC moves.
-	if sprite.is_in_group(_new_SubGroupTag.PC):
-		_sub_group_to_sprite[_new_SubGroupTag.ARROW_LEFT] \
-				.position.y = sprite.position.y
-		_sub_group_to_sprite[_new_SubGroupTag.ARROW_TOP] \
-				.position.x = sprite.position.x
-		_sub_group_to_sprite[_new_SubGroupTag.ARROW_BOTTOM] \
-				.position.x = sprite.position.x
+	_try_move_arrow(sprite)
+
+
+func swap_sprite(main_group: String, source: Array, target: Array) -> void:
+	var source_sprite: Sprite = get_sprite(main_group, source[0], source[1])
+	var target_sprite: Sprite = get_sprite(main_group, target[0], target[1])
+
+	if (source_sprite == null) or (target_sprite == null):
+		return
+
+	_sprite_dict[main_group][source[0]][source[1]] = target_sprite
+	_sprite_dict[main_group][target[0]][target[1]] = source_sprite
+
+	source_sprite.position = _new_ConvertCoord.index_to_vector(
+			target[0], target[1])
+	target_sprite.position = _new_ConvertCoord.index_to_vector(
+			source[0], source[1])
+
+	_try_move_arrow(source_sprite)
+	_try_move_arrow(target_sprite)
 
 
 func _on_CreateObject_sprite_created(new_sprite: Sprite) -> void:
@@ -98,3 +109,16 @@ func _init_dict() -> void:
 		for x in range(_new_DungeonSize.MAX_X):
 			_sprite_dict[mg][x] = []
 			_sprite_dict[mg][x].resize(_new_DungeonSize.MAX_Y)
+
+
+# Move arrow indicators when PC moves.
+func _try_move_arrow(sprite: Sprite) -> void:
+	if not sprite.is_in_group(_new_SubGroupTag.PC):
+		return
+
+	_sub_group_to_sprite[_new_SubGroupTag.ARROW_LEFT] \
+			.position.y = sprite.position.y
+	_sub_group_to_sprite[_new_SubGroupTag.ARROW_TOP] \
+			.position.x = sprite.position.x
+	_sub_group_to_sprite[_new_SubGroupTag.ARROW_BOTTOM] \
+			.position.x = sprite.position.x
