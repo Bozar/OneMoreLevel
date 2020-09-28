@@ -9,8 +9,8 @@ func renew_world(_pc_x: int, _pc_y: int) -> void:
 	print("renew world")
 
 
-func remove_npc(_npc: Sprite, _x: int, _y: int) -> void:
-	print("remove npc")
+func remove_actor(_actor: Sprite, _x: int, _y: int) -> void:
+	print("remove actor")
 
 
 func remove_building(_building: Sprite, _x: int, _y: int) -> void:

@@ -28,8 +28,8 @@ func renew_world(_pc_x: int, _pc_y: int) -> void:
 		_respawn_counter[i] -= 1
 
 
-func remove_npc(npc: Sprite, _x: int, _y: int) -> void:
-	if not npc.is_in_group(_new_SubGroupTag.WORM_HEAD):
+func remove_actor(actor: Sprite, _x: int, _y: int) -> void:
+	if not actor.is_in_group(_new_SubGroupTag.WORM_HEAD):
 		return
 
 	for i in range(_respawn_counter.size()):

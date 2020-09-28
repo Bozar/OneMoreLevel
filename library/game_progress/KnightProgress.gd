@@ -50,8 +50,8 @@ func renew_world(pc_x: int, pc_y: int) -> void:
 		_spawn_npc(_spr_Knight, _new_SubGroupTag.KNIGHT)
 
 
-func remove_npc(npc: Sprite, _x: int, _y: int) -> void:
-	if npc.is_in_group(_new_SubGroupTag.KNIGHT_CAPTAIN):
+func remove_actor(actor: Sprite, _x: int, _y: int) -> void:
+	if actor.is_in_group(_new_SubGroupTag.KNIGHT_CAPTAIN):
 		_dead_captain += 1
 
 		if _dead_captain == 1:
