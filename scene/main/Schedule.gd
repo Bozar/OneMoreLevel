@@ -12,6 +12,7 @@ var _actors: Array = [null]
 var _pointer: int = 0
 var _end_game: bool = false
 var _end_current_turn: bool = true
+var _start_first_turn: bool = true
 
 
 func end_turn() -> void:
@@ -26,6 +27,12 @@ func end_turn() -> void:
 		_end_current_turn = true
 
 	emit_signal("turn_started", _get_current())
+
+
+func init_schedule() -> void:
+	if _start_first_turn:
+		emit_signal("turn_started", _get_current())
+		_start_first_turn = false
 
 
 func count_npc() -> int:

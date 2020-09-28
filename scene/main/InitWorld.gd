@@ -16,6 +16,7 @@ var _ref_RandomNumber: Game_RandomNumber
 var _ref_CreateObject: Game_CreateObject
 var _ref_GameSetting : Game_GameSetting
 var _ref_DangerZone: Game_DangerZone
+var _ref_Schedule: Game_Schedule
 
 var _new_DungeonSize := preload("res://library/DungeonSize.gd").new()
 var _new_MainGroupTag := preload("res://library/MainGroupTag.gd").new()
@@ -45,6 +46,7 @@ func init_world() -> void:
 			_init_indicator(sb.x, sb.y)
 		_ref_CreateObject.create(
 				sb.scene, sb.main_group, sb.sub_group, sb.x, sb.y)
+	_ref_Schedule.init_schedule()
 
 
 func _on_GameSetting_setting_loaded(
