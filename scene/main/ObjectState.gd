@@ -20,7 +20,7 @@ func set_state(id: int, state: String) -> void:
 func verify_state(id: int, state: String) -> bool:
 	if _id_to_state.has(id):
 		return _id_to_state[id] == state
-	return false
+	return state == _new_ObjectStateTag.DEFAULT
 
 
 func remove_data(id: int) -> void:
