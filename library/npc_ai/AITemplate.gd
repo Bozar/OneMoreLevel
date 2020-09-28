@@ -73,6 +73,30 @@ func _set_local_var(actor: Sprite) -> void:
 	_self_pos = _new_ConvertCoord.vector_to_array(_self.position)
 
 
+func _approach_pc() -> void:
+	_init_dungeon()
+	_dungeon[_pc_pos[0]][ _pc_pos[1]] = _new_PathFindingData.DESTINATION
+	_dungeon = _new_DijkstraPathFinding.get_map(_dungeon, [_pc_pos])
+
+	var destination: Array = _new_DijkstraPathFinding.get_path(
+			_dungeon, _self_pos[0], _self_pos[1])
+	var filter: Array = []
+	var move_to: Array = []
+
+	for i in destination:
+		if _ref_DungeonBoard.has_sprite(_new_MainGroupTag.ACTOR, i[0], i[1]):
+			continue
+		filter.push_back(i)
+	if filter.size() < 1:
+		return
+	elif filter.size() > 1:
+		move_to = filter[_ref_RandomNumber.get_int(0, filter.size())]
+	else:
+		move_to = filter[0]
+
+	_ref_DungeonBoard.move_sprite(_new_MainGroupTag.ACTOR, _self_pos, move_to)
+
+
 func _init_dungeon() -> void:
 	for x in range(_new_DungeonSize.MAX_X):
 		for y in range(_new_DungeonSize.MAX_Y):
