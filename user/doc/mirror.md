@@ -19,11 +19,11 @@ There is a long wall of mirrors (#) that splits the map. You will also encounter
 
 A phantom (p) in the real world moves towards PC (@) when he is nearby. A phantom's image (p, grey) in the mirror world never moves.
 
-When PC moves in the real world, his image (@, grey) in the mirror world also moves symmetrically. If either PC or his image is blocked by a mirror, a phantom or a phantom's image, neither of them can move. See Bumping an Target, below.
+When PC moves in the real world, his image (@, grey) in the mirror world also moves symmetrically. If either PC or his image is blocked by a mirror, a phantom or a phantom's image, neither of them can move. See Bumping a Target, below.
 
 You can press Space to wait 1 turn.
 
-## Bumping an Target
+## Bumping a Target
 
 When a phantom in the real world bumps adjacent PC, the real world swaps with the mirror world.
 
