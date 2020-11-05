@@ -6,56 +6,71 @@ func _init(parent_node: Node2D).(parent_node) -> void:
 
 
 func get_blueprint() -> Array:
-	for _i in range(0, 5):
-		_init_building()
-	_init_pc()
+	var width: int = floor(_new_DungeonSize.MAX_X / 3.0) as int
+	var middle_y: int = _new_DungeonSize.CENTER_Y
+	var bottom_y: int = _new_DungeonSize.MAX_Y
+	var left_top: int = 1
+	var right_bottom: int = 3
+	var pc_index: int
+	var sprite_position: Array
+
+	var valid_position: Array = [
+		[
+			left_top, width - right_bottom,
+			left_top, middle_y - right_bottom
+		],
+		[
+			width + left_top, width * 2 - right_bottom,
+			left_top, middle_y - right_bottom
+		],
+		[
+			width * 2 + left_top, width * 3 - right_bottom,
+			left_top, middle_y - right_bottom
+		],
+		[
+			left_top, width - right_bottom,
+			middle_y + left_top, bottom_y - right_bottom
+		],
+		[
+			width + left_top, width * 2 - right_bottom,
+			middle_y + left_top, bottom_y - right_bottom
+		],
+		[
+			width * 2 + left_top, width * 3 - right_bottom,
+			middle_y + left_top, bottom_y - right_bottom
+		],
+	]
+
+	pc_index = _ref_RandomNumber.get_int(0, valid_position.size())
+	for i in range(0, valid_position.size()):
+		sprite_position = _get_position(
+			valid_position[i][0],
+			valid_position[i][1],
+			valid_position[i][2],
+			valid_position[i][3]
+		)
+		if i == pc_index:
+			_add_to_blueprint(_spr_PC,
+					_new_MainGroupTag.ACTOR, _new_SubGroupTag.PC,
+					sprite_position[0], sprite_position[1])
+		else:
+			_build_wall_beacon(sprite_position[0], sprite_position[1])
 
 	return _blueprint
 
 
-func _init_pc() -> void:
-	_add_to_blueprint(_spr_PC,
-			_new_MainGroupTag.ACTOR, _new_SubGroupTag.PC,
-			0, 0)
+func _get_position(min_x: int, max_x: int, min_y: int, max_y: int) -> Array:
+	var x: int = _ref_RandomNumber.get_int(min_x, max_x)
+	var y: int = _ref_RandomNumber.get_int(min_y, max_y)
+
+	return [x, y]
 
 
-func _init_building() -> void:
-	var x: int
-	var y: int
-	var neighbor: Array
-	var is_occupied: bool
+func _build_wall_beacon(x: int, y: int) -> void:
+	var wall: Array = [[x, y], [x + 2, y], [x + 2, y + 2], [x, y + 2]]
+	# var beacon: Array = [x + 1, y + 1]
 
-	while true:
-		x = _ref_RandomNumber.get_int(0, _new_DungeonSize.MAX_X - 4)
-		y = _ref_RandomNumber.get_int(0, _new_DungeonSize.MAX_Y - 4)
-		neighbor = _new_CoordCalculator.get_block(x, y, 5, 5)
-		is_occupied = false
-
-		for i in neighbor:
-			if _is_occupied(i[0], i[1]):
-				is_occupied = true
-				break
-
-		if is_occupied:
-			continue
-
-		for i in neighbor:
-			_occupy_position(i[0], i[1])
-
-		x += 1
-		y += 1
-
+	for i in wall:
 		_add_to_blueprint(_spr_Wall,
 				_new_MainGroupTag.BUILDING, _new_SubGroupTag.WALL,
-				x, y)
-		_add_to_blueprint(_spr_Wall,
-				_new_MainGroupTag.BUILDING, _new_SubGroupTag.WALL,
-				x + 2, y)
-		_add_to_blueprint(_spr_Wall,
-				_new_MainGroupTag.BUILDING, _new_SubGroupTag.WALL,
-				x + 2, y + 2)
-		_add_to_blueprint(_spr_Wall,
-				_new_MainGroupTag.BUILDING, _new_SubGroupTag.WALL,
-			x, y + 2)
-
-		break
+				i[0], i[1])
