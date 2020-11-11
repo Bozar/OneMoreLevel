@@ -1,6 +1,10 @@
 extends "res://library/init/WorldTemplate.gd"
 
 
+var _spr_PCBalloon := preload("res://sprite/PCBalloon.tscn")
+var _spr_Treasure := preload("res://sprite/Treasure.tscn")
+
+
 func _init(parent_node: Node2D).(parent_node) -> void:
 	pass
 
@@ -50,7 +54,7 @@ func get_blueprint() -> Array:
 			valid_position[i][3]
 		)
 		if i == pc_index:
-			_add_to_blueprint(_spr_PC,
+			_add_to_blueprint(_spr_PCBalloon,
 					_new_MainGroupTag.ACTOR, _new_SubGroupTag.PC,
 					sprite_position[0], sprite_position[1])
 		else:
@@ -68,9 +72,12 @@ func _get_position(min_x: int, max_x: int, min_y: int, max_y: int) -> Array:
 
 func _build_wall_beacon(x: int, y: int) -> void:
 	var wall: Array = [[x, y], [x + 2, y], [x + 2, y + 2], [x, y + 2]]
-	# var beacon: Array = [x + 1, y + 1]
+	var beacon: Array = [x + 1, y + 1]
 
 	for i in wall:
 		_add_to_blueprint(_spr_Wall,
 				_new_MainGroupTag.BUILDING, _new_SubGroupTag.WALL,
 				i[0], i[1])
+	_add_to_blueprint(_spr_Treasure,
+			_new_MainGroupTag.TRAP, _new_SubGroupTag.TREASURE,
+			beacon[0], beacon[1])
