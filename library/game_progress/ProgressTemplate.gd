@@ -52,8 +52,9 @@ func remove_trap(_trap: Sprite, _x: int, _y: int) -> void:
 	pass
 
 
-func create_actor(_actor: Sprite) -> void:
-	pass
+func create_actor(actor: Sprite) -> void:
+	if actor.is_in_group(_new_SubGroupTag.PC):
+		_pc = actor
 
 
 func create_building(_building: Sprite) -> void:

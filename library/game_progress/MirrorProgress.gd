@@ -24,11 +24,6 @@ func renew_world(pc_x: int, _pc_y: int) -> void:
 		_ref_EndGame.player_lose()
 
 
-func create_actor(actor: Sprite) -> void:
-	if actor.is_in_group(_new_SubGroupTag.PC):
-		_pc = actor
-
-
 func create_trap(trap: Sprite) -> void:
 	var trap_pos: Array
 
