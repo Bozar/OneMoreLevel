@@ -3,6 +3,7 @@ extends "res://library/pc_action/PCActionTemplate.gd"
 
 var _teleport_x: Dictionary
 var _teleport_y: Dictionary
+var _state_to_input: Dictionary
 
 
 func _init(parent_node: Node2D).(parent_node) -> void:
@@ -10,9 +11,17 @@ func _init(parent_node: Node2D).(parent_node) -> void:
 		-1: _new_DungeonSize.MAX_X - 1,
 		_new_DungeonSize.MAX_X: 0,
 	}
+
 	_teleport_y = {
 		-1: _new_DungeonSize.MAX_Y - 1,
 		_new_DungeonSize.MAX_Y: 0,
+	}
+
+	_state_to_input = {
+		_new_ObjectStateTag.UP: _new_InputTag.MOVE_UP,
+		_new_ObjectStateTag.DOWN: _new_InputTag.MOVE_DOWN,
+		_new_ObjectStateTag.LEFT: _new_InputTag.MOVE_LEFT,
+		_new_ObjectStateTag.RIGHT: _new_InputTag.MOVE_RIGHT,
 	}
 
 
