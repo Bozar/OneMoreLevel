@@ -26,7 +26,6 @@ var _new_InitWorldData := preload("res://library/InitWorldData.gd").new()
 var _new_ScreenTag: = preload("res://library/ScreenTag.gd").new()
 
 var _pc: Sprite
-var _pc_pos: Array
 var _pc_action: Game_PCActionTemplate
 var _direction: String
 var _end_game: bool = false
@@ -64,7 +63,7 @@ func _unhandled_input(event: InputEvent) -> void:
 		if _is_add_turn_input(event):
 			_ref_CountDown.add_count(1)
 
-	_pc_action.set_source_position(_pc_pos)
+	_pc_action.set_source_position(_pc)
 	if _is_move_input(event):
 		_handle_move_input()
 	elif _is_wait_input(event):
@@ -89,7 +88,6 @@ func _on_InitWorld_world_selected(new_world: String) -> void:
 func _on_CreateObject_sprite_created(new_sprite: Sprite) -> void:
 	if new_sprite.is_in_group(_new_SubGroupTag.PC):
 		_pc = new_sprite
-		_pc_pos = _new_ConvertCoord.vector_to_array(_pc.position)
 		set_process_unhandled_input(true)
 
 
@@ -97,13 +95,7 @@ func _on_Schedule_turn_started(current_sprite: Sprite) -> void:
 	if not current_sprite.is_in_group(_new_SubGroupTag.PC):
 		return
 
-	_pc_pos = _new_ConvertCoord.vector_to_array(_pc.position)
-
-	if _ref_DangerZone.is_in_danger(_pc_pos[0], _pc_pos[1]):
-		_ref_SwitchSprite.switch_sprite(_pc, _new_SpriteTypeTag.ACTIVE)
-	else:
-		_ref_SwitchSprite.switch_sprite(_pc, _new_SpriteTypeTag.DEFAULT)
-
+	_pc_action.switch_sprite(_pc)
 	set_process_unhandled_input(true)
 
 

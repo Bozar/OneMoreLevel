@@ -15,6 +15,7 @@ var _ref_EndGame: Game_EndGame
 var _ref_CountDown: Game_CountDown
 var _ref_SwitchSprite: Game_SwitchSprite
 var _ref_CreateObject : Game_CreateObject
+var _ref_DangerZone: Game_DangerZone
 
 var _new_InputTag := preload("res://library/InputTag.gd").new()
 var _new_MainGroupTag := preload("res://library/MainGroupTag.gd").new()
@@ -54,6 +55,7 @@ func _init(parent_node: Node2D) -> void:
 	_ref_CountDown = parent_node._ref_CountDown
 	_ref_SwitchSprite = parent_node._ref_SwitchSprite
 	_ref_CreateObject = parent_node._ref_CreateObject
+	_ref_DangerZone = parent_node._ref_DangerZone
 
 
 func get_message() -> String:
@@ -122,8 +124,8 @@ func reset_state() -> void:
 	end_turn = false
 
 
-func set_source_position(source: Array) -> void:
-	_source_position = source
+func set_source_position(pc: Sprite) -> void:
+	_source_position = _new_ConvertCoord.vector_to_array(pc.position)
 
 
 func set_target_position(direction: String) -> void:
@@ -133,6 +135,15 @@ func set_target_position(direction: String) -> void:
 		_source_position[0] + shift[0], _source_position[1] + shift[1]
 	]
 	_input_direction = direction
+
+
+func switch_sprite(pc: Sprite) -> void:
+	var pc_position: Array = _new_ConvertCoord.vector_to_array(pc.position)
+
+	if _ref_DangerZone.is_in_danger(pc_position[0], pc_position[1]):
+		_ref_SwitchSprite.switch_sprite(pc, _new_SpriteTypeTag.ACTIVE)
+	else:
+		_ref_SwitchSprite.switch_sprite(pc, _new_SpriteTypeTag.DEFAULT)
 
 
 func _is_occupied(x: int, y: int) -> bool:
