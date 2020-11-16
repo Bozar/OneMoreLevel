@@ -44,11 +44,11 @@ func get_block(x_top_left: int, y_top_left: int, width: int, height: int) \
 
 
 func get_mirror_image(source_x: int, source_y: int,
-		center_x: int, center_y: int) -> Array:
+		center_x: int, center_y: int, force_output: bool = false) -> Array:
 	var target_x: int = center_x * 2 - source_x
 	var target_y: int = center_y * 2 - source_y
 
-	if is_inside_dungeon(target_x, target_y):
+	if force_output or is_inside_dungeon(target_x, target_y):
 		return [target_x, target_y]
 	return []
 
