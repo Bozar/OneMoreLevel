@@ -33,10 +33,9 @@ func _init(parent_node: Node2D).(parent_node) -> void:
 
 
 func renew_world(_pc_x: int, _pc_y: int) -> void:
-	if _wind_duration == 0:
+	if _wind_duration < 1:
 		_set_wind_direction()
-		_wind_duration = _ref_RandomNumber.get_int(
-				_new_BalloonData.MIN_DURATION, _new_BalloonData.MAX_DURATION)
+		_wind_duration = _new_BalloonData.WIND_DURATION
 	else:
 		_wind_duration -= 1
 
