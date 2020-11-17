@@ -4,6 +4,7 @@ extends "res://library/game_progress/ProgressTemplate.gd"
 var _new_BalloonData := preload("res://library/npc_data/BalloonData.gd").new()
 
 var _wind_duration: int = 0
+var _count_trap: int = 0
 var _vailid_direction: Array
 var _opposite_direction: Dictionary
 var _state_to_sprite: Dictionary
@@ -38,6 +39,12 @@ func renew_world(_pc_x: int, _pc_y: int) -> void:
 				_new_BalloonData.MIN_DURATION, _new_BalloonData.MAX_DURATION)
 	else:
 		_wind_duration -= 1
+
+
+func remove_trap(_trap: Sprite, _x: int, _y: int) -> void:
+	_count_trap += 1
+	if _count_trap == _new_BalloonData.MAX_TRAP:
+		_ref_EndGame.player_win()
 
 
 func _set_wind_direction() -> void:

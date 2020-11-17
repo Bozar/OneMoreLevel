@@ -1,6 +1,8 @@
 extends "res://library/pc_action/PCActionTemplate.gd"
 
 
+var _new_BalloonData := preload("res://library/npc_data/BalloonData.gd").new()
+
 var _teleport_x: Dictionary
 var _teleport_y: Dictionary
 var _state_to_coord: Dictionary
@@ -33,7 +35,7 @@ func wait() -> void:
 	_wind_blow()
 	if _ref_DungeonBoard.has_sprite(_new_MainGroupTag.TRAP,
 			_source_position[0], _source_position[1]):
-		_reach_destination()
+		_reach_destination(_source_position[0], _source_position[1])
 
 	end_turn = true
 
@@ -48,7 +50,7 @@ func interact_with_building() -> void:
 func interact_with_trap() -> void:
 	_ref_DungeonBoard.move_sprite(_new_MainGroupTag.ACTOR,
 			_source_position, _target_position)
-	_reach_destination()
+	_reach_destination(_target_position[0], _target_position[1])
 
 	end_turn = true
 
@@ -91,8 +93,9 @@ func _try_move_over_border(position: Array) -> Array:
 	return [x, y]
 
 
-func _reach_destination() -> void:
-	print("Trap")
+func _reach_destination(x: int, y: int) -> void:
+	_ref_RemoveObject.remove(_new_MainGroupTag.TRAP, x, y)
+	_ref_CountDown.add_count(_new_BalloonData.RESTORE_TURN)
 
 
 func _bounce_off(pc_x: int, pc_y: int, wall_x: int, wall_y: int) -> void:
