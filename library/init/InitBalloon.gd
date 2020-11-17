@@ -4,6 +4,8 @@ extends "res://library/init/WorldTemplate.gd"
 var _spr_PCBalloon := preload("res://sprite/PCBalloon.tscn")
 var _spr_Treasure := preload("res://sprite/Treasure.tscn")
 
+var _new_BalloonData := preload("res://library/npc_data/BalloonData.gd")
+
 
 func _init(parent_node: Node2D).(parent_node) -> void:
 	pass
@@ -57,8 +59,11 @@ func get_blueprint() -> Array:
 			_add_to_blueprint(_spr_PCBalloon,
 					_new_MainGroupTag.ACTOR, _new_SubGroupTag.PC,
 					sprite_position[0], sprite_position[1])
+			_occupy_position(sprite_position[0], sprite_position[1])
 		else:
 			_build_wall_beacon(sprite_position[0], sprite_position[1])
+
+	_build_single_wall(0, 0)
 
 	return _blueprint
 
@@ -78,6 +83,39 @@ func _build_wall_beacon(x: int, y: int) -> void:
 		_add_to_blueprint(_spr_Wall,
 				_new_MainGroupTag.BUILDING, _new_SubGroupTag.WALL,
 				i[0], i[1])
+		_occupy_position(i[0], i[1])
+
 	_add_to_blueprint(_spr_Treasure,
 			_new_MainGroupTag.TRAP, _new_SubGroupTag.TREASURE,
 			beacon[0], beacon[1])
+	_occupy_position(beacon[0], beacon[1])
+
+
+func _build_single_wall(retry: int, count_wall: int) -> void:
+	var max_retry: int = 500
+	var block_size: int = 3
+	var move_to_center: int = 1
+	var build_wall: bool = true
+	var x: int
+	var y: int
+
+	if (count_wall > _new_BalloonData.MAX_WALL) or (retry > max_retry):
+		return
+
+	x = _ref_RandomNumber.get_int(0, _new_DungeonSize.MAX_X - block_size)
+	y = _ref_RandomNumber.get_int(0, _new_DungeonSize.MAX_Y - block_size)
+	for i in range(x, x + block_size):
+		for j in range(y, y + block_size):
+			if _is_occupied(i, j):
+				build_wall = false
+				break
+
+	if build_wall:
+		_add_to_blueprint(_spr_Wall,
+				_new_MainGroupTag.BUILDING, _new_SubGroupTag.WALL,
+				x + move_to_center, y + move_to_center)
+		_occupy_position(x + move_to_center, y + move_to_center)
+		count_wall += 1
+
+	retry += 1
+	_build_single_wall(retry, count_wall)
