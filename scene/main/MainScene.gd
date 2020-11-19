@@ -50,7 +50,7 @@ const SIGNAL_BIND: Array = [
 	[
 		"game_is_over", "_on_EndGame_game_is_over",
 		END_GAME,
-		SCHEDULE, PLAYER_INPUT, SIDEBAR_GUI,
+		SCHEDULE, PLAYER_INPUT, SIDEBAR_GUI, GAME_PROGRESS,
 	],
 	[
 		"setting_loaded", "_on_GameSetting_setting_loaded",

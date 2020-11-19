@@ -63,3 +63,7 @@ func create_building(_building: Sprite) -> void:
 
 func create_trap(_trap: Sprite) -> void:
 	pass
+
+
+func game_is_over(_win: bool) -> void:
+	pass
