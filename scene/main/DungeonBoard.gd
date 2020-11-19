@@ -45,6 +45,10 @@ func get_sprite(main_group: String, x: int, y: int) -> Sprite:
 	return null
 
 
+func get_sprites_by_tag(group_tag: String) -> Array:
+	return get_tree().get_nodes_in_group(group_tag)
+
+
 func move_sprite(main_group: String, source: Array, target: Array) -> void:
 	var sprite: Sprite = get_sprite(main_group, source[0], source[1])
 	if sprite == null:
