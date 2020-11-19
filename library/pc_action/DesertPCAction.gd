@@ -3,8 +3,6 @@ extends "res://library/pc_action/PCActionTemplate.gd"
 
 var _new_DesertData := preload("res://library/npc_data/DesertData.gd").new()
 
-var _active_spice: int = 0
-
 
 func _init(parent_node: Node2D).(parent_node) -> void:
 	pass
@@ -22,12 +20,12 @@ func attack() -> void:
 		_ref_EndGame.player_lose()
 		return
 
-	var x: int = _target_position[0]
-	var y: int = _target_position[1]
-	var worm: Sprite = _ref_DungeonBoard.get_sprite(
-			_new_MainGroupTag.ACTOR, x, y)
+	var worm: Sprite = _ref_DungeonBoard.get_sprite(_new_MainGroupTag.ACTOR,
+			_target_position[0], _target_position[1])
 	var is_active_spice: bool = _ref_ObjectData.verify_state(
 			worm, _new_ObjectStateTag.ACTIVE)
+	var pc: Sprite = _ref_DungeonBoard.get_sprite(_new_MainGroupTag.ACTOR,
+			_source_position[0], _source_position[1])
 
 	if (not worm.is_in_group(_new_SubGroupTag.WORM_SPICE)) \
 			or _ref_ObjectData.verify_state(worm, _new_ObjectStateTag.PASSIVE):
@@ -39,8 +37,8 @@ func attack() -> void:
 	_ref_CountDown.add_count(_new_DesertData.RESTORE_TURN)
 
 	if is_active_spice:
-		_active_spice += 1
-	if _active_spice < _new_DesertData.MAX_SPICE:
+		_ref_ObjectData.add_hit_point(pc, 1)
+	if _ref_ObjectData.get_hit_point(pc) < _new_DesertData.MAX_SPICE:
 		end_turn = true
 	else:
 		_ref_EndGame.player_win()
