@@ -49,13 +49,6 @@ func interact_with_building() -> void:
 
 
 func move() -> void:
-	end_turn = _try_move()
-	if end_turn:
-		_switch_color(_source_position[0], _source_position[1], true)
-		_switch_color(_target_position[0], _target_position[1], false)
-
-
-func _try_move() -> bool:
 	_source_direction = _input_tag_to_int[_input_direction]
 	_target_direction = _get_sprite_direction(_target_position)
 
@@ -63,7 +56,8 @@ func _try_move() -> bool:
 	_drift_direction = _get_sprite_direction(_drift_position)
 
 	if _is_opposite():
-		return false
+		end_turn = false
+		return
 
 	while (_source_direction == _target_direction) \
 			and (_target_direction == _drift_direction):
@@ -73,7 +67,8 @@ func _try_move() -> bool:
 
 	_ref_DungeonBoard.move_sprite(_new_MainGroupTag.ACTOR,
 			_source_position, _target_position)
-	return true
+	end_turn = true
+	return
 
 
 func _get_drift_position() -> Array:
@@ -97,21 +92,3 @@ func _get_sprite_direction(sprite_position: Array) -> int:
 	if ground_sprite == null:
 		return INVALID_DIRECTION
 	return _state_tag_to_int[_ref_ObjectData.get_state(ground_sprite)]
-
-
-func _switch_color(x: int, y: int, is_default: bool) -> void:
-	var neighbor: Array = _new_CoordCalculator.get_neighbor(
-			x, y, _new_StyxData.PC_SIGHT)
-	var ground_sprite: Sprite
-
-	for i in neighbor:
-		ground_sprite = _ref_DungeonBoard.get_sprite(
-				_new_MainGroupTag.GROUND, i[0], i[1])
-		if ground_sprite == null:
-			continue
-
-		if is_default:
-			ground_sprite.modulate = _new_Palette.get_default_color(
-					_new_MainGroupTag.GROUND)
-		else:
-			ground_sprite.modulate = _new_Palette.SHADOW

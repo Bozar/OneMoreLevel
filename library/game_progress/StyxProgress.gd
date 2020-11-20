@@ -5,6 +5,7 @@ var _new_StyxData := preload("res://library/npc_data/StyxData.gd").new()
 
 var _direction_sprite_state: Dictionary
 var _countdown: int = _new_StyxData.RENEW_MAP
+var _grounds: Array = []
 
 
 func _init(parent_node: Node2D).(parent_node) -> void:
@@ -17,6 +18,11 @@ func _init(parent_node: Node2D).(parent_node) -> void:
 
 
 func renew_world(pc_x: int, pc_y: int) -> void:
+	_change_water_flow(pc_x, pc_y)
+	_cast_light(pc_x, pc_y)
+
+
+func _change_water_flow(pc_x: int, pc_y: int) -> void:
 	var flow_path: Array = []
 	var select_index: int
 
@@ -31,6 +37,26 @@ func renew_world(pc_x: int, pc_y: int) -> void:
 		for i in flow_path:
 			_set_flow_path(i, select_index)
 	_countdown += 1
+
+
+func _cast_light(pc_x: int, pc_y: int) -> void:
+	var ground_position: Array
+	var distance: int
+
+	if _grounds.size() == 0:
+		_grounds = _ref_DungeonBoard.get_sprites_by_tag(
+				_new_SubGroupTag.STYX_RIVER)
+
+	for i in _grounds:
+		ground_position = _new_ConvertCoord.vector_to_array(i.position)
+		distance = _new_CoordCalculator.get_range(
+				ground_position[0], ground_position[1], pc_x, pc_y)
+
+		if (distance > _new_StyxData.PC_SIGHT) or (distance == 0):
+			i.modulate = _new_Palette.get_default_color(
+					_new_MainGroupTag.GROUND)
+		else:
+			i.modulate = _new_Palette.SHADOW
 
 
 func _shuffle_rng(x: int, y: int) -> void:
