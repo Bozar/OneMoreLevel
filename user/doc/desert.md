@@ -10,6 +10,8 @@ Every turn a sandworm moves one grid in a random direction. Eventually it will t
 
 A wall of dunes is composed of sand walls (#) and spices (?). You can bump and destroy a wall block or collect a spice just as from a sandworm. You do not move when bumping. It can be used as poor man's waiting key.
 
+There is one and at most one special spice in the dunes that looks like a number. It shows how many quality spices you have collected so far. After this counter is removed, a new one will appear somewhere else in the desert if possible.
+
 You might lose the game due to one of three reasons.
 
 You can survive in desert for at most 24 turns. Every spice and quality spice extends your remaining time by 4 turns.
