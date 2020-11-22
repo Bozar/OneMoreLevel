@@ -62,7 +62,7 @@ func _try_add_new_worm() -> void:
 			continue
 
 		if _respawn_counter[i] == 0:
-			_create_worm_head()
+			_create_worm_head(false, 0)
 		_respawn_counter[i] -= 1
 
 
@@ -100,13 +100,14 @@ func _switch_spice_counter() -> void:
 			_hp_to_sprite[_ref_ObjectData.get_hit_point(_pc)])
 
 
-func _create_worm_head(stop_loop: bool = false) -> void:
+func _create_worm_head(stop_loop: bool, avoid_building: int) -> void:
 	if stop_loop:
 		return
 
 	var x: int
 	var y: int
 	var neighbor: Array
+	var max_retry: int = 3
 
 	x = _ref_RandomNumber.get_int(0, _new_DungeonSize.MAX_X)
 	y = _ref_RandomNumber.get_int(0, _new_DungeonSize.MAX_Y)
@@ -116,8 +117,13 @@ func _create_worm_head(stop_loop: bool = false) -> void:
 	for i in neighbor:
 		if _ref_DungeonBoard.has_sprite(
 				_new_MainGroupTag.ACTOR, i[0], i[1]):
-			_create_worm_head(false)
+			_create_worm_head(false, avoid_building)
 			return
+
+	if _ref_DungeonBoard.has_sprite(_new_MainGroupTag.BUILDING, x, y) \
+			and (avoid_building < max_retry):
+		_create_worm_head(false, avoid_building + 1)
+		return
 
 	for j in _remove_sprite:
 		if _ref_DungeonBoard.has_sprite(j, x, y):
@@ -126,4 +132,4 @@ func _create_worm_head(stop_loop: bool = false) -> void:
 			_spr_WormHead,
 			_new_MainGroupTag.ACTOR, _new_SubGroupTag.WORM_HEAD,
 			x, y)
-	_create_worm_head(true)
+	_create_worm_head(true, avoid_building)
