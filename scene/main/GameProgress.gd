@@ -41,6 +41,14 @@ func _on_Schedule_turn_started(current_sprite: Sprite) -> void:
 		_progress.renew_world(_pc_pos[0], _pc_pos[1])
 
 
+func _on_Schedule_turn_ended(current_sprite: Sprite) -> void:
+	var _pc_pos: Array
+
+	if current_sprite.is_in_group(_new_SubGroupTag.PC):
+		_pc_pos = _new_ConvertCoord.vector_to_array(current_sprite.position)
+		_progress.end_world(_pc_pos[0], _pc_pos[1])
+
+
 func _on_RemoveObject_sprite_removed(remove_sprite: Sprite,
 		main_group: String, x: int, y: int) -> void:
 	if main_group == _new_MainGroupTag.ACTOR:

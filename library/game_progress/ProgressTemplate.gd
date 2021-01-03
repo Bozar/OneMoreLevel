@@ -40,6 +40,10 @@ func renew_world(_pc_x: int, _pc_y: int) -> void:
 	pass
 
 
+func end_world(_pc_x: int, _pc_y: int) -> void:
+	pass
+
+
 func remove_actor(_actor: Sprite, _x: int, _y: int) -> void:
 	pass
 

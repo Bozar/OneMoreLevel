@@ -40,7 +40,7 @@ const SIGNAL_BIND: Array = [
 	[
 		"turn_ended", "_on_Schedule_turn_ended",
 		SCHEDULE,
-		COUNT_DOWN,
+		COUNT_DOWN, GAME_PROGRESS,
 	],
 	[
 		"sprite_removed", "_on_RemoveObject_sprite_removed",
