@@ -45,8 +45,33 @@ func get_sprite(main_group: String, x: int, y: int) -> Sprite:
 	return null
 
 
+# When we call `foobar.queue_free()`, the node foobar will be deleted at the end
+# of the current frame if there are no references to it.
+#
+# However, if we set a reference to foobar in the same frame by, let's say,
+# `get_tree().get_nodes_in_group()`, foobar will not be deleted when the current
+# frame ends.
+#
+# Therefore, after calling `get_tree().get_nodes_in_group()`, we need to check
+# if such nodes will be deleted with `foobar.is_queued_for_deletion()` to avoid
+# potential bugs.
+#
+# You can reproduce such a bug in v0.1.3 with the seed 1888400396. Refer to this
+# video for more information.
+#
+# https://youtu.be/agqdag6GqpU
 func get_sprites_by_tag(group_tag: String) -> Array:
-	return get_tree().get_nodes_in_group(group_tag)
+	var sprites: Array = []
+	var verify: Sprite
+
+	sprites = get_tree().get_nodes_in_group(group_tag)
+	for _i in range(sprites.size()):
+		verify = sprites.pop_front()
+		if verify.is_queued_for_deletion():
+			continue
+		sprites.push_back(verify)
+	return sprites
+	# return get_tree().get_nodes_in_group(group_tag)
 
 
 func move_sprite(main_group: String, source: Array, target: Array) -> void:
