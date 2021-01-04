@@ -5,7 +5,6 @@ var _new_StyxData := preload("res://library/npc_data/StyxData.gd").new()
 
 var _direction_sprite_state: Dictionary
 var _countdown: int = _new_StyxData.RENEW_MAP
-var _grounds: Array = []
 
 
 func _init(parent_node: Node2D).(parent_node) -> void:
@@ -40,23 +39,27 @@ func _change_water_flow(pc_x: int, pc_y: int) -> void:
 
 
 func _cast_light(pc_x: int, pc_y: int) -> void:
-	var ground_position: Array
+	var ground: Sprite
 	var distance: int
+	var new_color: String
 
-	if _grounds.size() == 0:
-		_grounds = _ref_DungeonBoard.get_sprites_by_tag(
-				_new_SubGroupTag.STYX_RIVER)
+	for i in range(_new_DungeonSize.MAX_X):
+		for j in range(_new_DungeonSize.MAX_Y):
+			ground = _ref_DungeonBoard.get_sprite(
+					_new_MainGroupTag.GROUND, i, j)
+			if ground == null:
+				continue
 
-	for i in _grounds:
-		ground_position = _new_ConvertCoord.vector_to_array(i.position)
-		distance = _new_CoordCalculator.get_range(
-				ground_position[0], ground_position[1], pc_x, pc_y)
-
-		if (distance > _new_StyxData.PC_SIGHT) or (distance == 0):
-			i.modulate = _new_Palette.get_default_color(
-					_new_MainGroupTag.GROUND)
-		else:
-			i.modulate = _new_Palette.SHADOW
+			distance = _new_CoordCalculator.get_range(
+				i, j, pc_x, pc_y)
+			if distance > _new_StyxData.PC_MAX_SIGHT:
+				new_color = _new_Palette.BACKGROUND
+			elif (distance > _new_StyxData.PC_SIGHT) or (distance == 0):
+				new_color = _new_Palette.get_default_color(
+						_new_MainGroupTag.GROUND)
+			else:
+				new_color = _new_Palette.SHADOW
+			ground.modulate = new_color
 
 
 func _shuffle_rng(x: int, y: int) -> void:
