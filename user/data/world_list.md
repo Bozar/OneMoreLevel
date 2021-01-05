@@ -4,6 +4,7 @@
 
 * balloon
 * desert
+* frog
 * knight
 * mirror
 * styx
