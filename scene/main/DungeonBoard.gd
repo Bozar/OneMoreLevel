@@ -63,13 +63,19 @@ func get_sprite(main_group: String, x: int, y: int) -> Sprite:
 func get_sprites_by_tag(group_tag: String) -> Array:
 	var sprites: Array = []
 	var verify: Sprite
+	var counter: int = 0
 
 	sprites = get_tree().get_nodes_in_group(group_tag)
-	for _i in range(sprites.size()):
-		verify = sprites.pop_front()
+	# Filter elements in a more efficent way based on `u/kleonc`'s suggestion.
+	# https://www.reddit.com/r/godot/comments/kq4c91/beware_that_foobarqueue_free_removes_foobar_at/gi3femf
+	for i in range(sprites.size()):
+		verify = sprites[i]
 		if verify.is_queued_for_deletion():
 			continue
-		sprites.push_back(verify)
+		sprites[counter] = verify
+		counter += 1
+	sprites.resize(counter)
+
 	return sprites
 	# return get_tree().get_nodes_in_group(group_tag)
 
