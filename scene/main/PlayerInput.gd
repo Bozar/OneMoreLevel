@@ -63,7 +63,7 @@ func _unhandled_input(event: InputEvent) -> void:
 		if _is_add_turn_input(event):
 			_ref_CountDown.add_count(1)
 
-	_pc_action.set_source_position(_pc)
+	_pc_action.set_source_position()
 	if _is_move_input(event):
 		_handle_move_input()
 	elif _is_wait_input(event):
@@ -88,6 +88,7 @@ func _on_InitWorld_world_selected(new_world: String) -> void:
 func _on_CreateObject_sprite_created(new_sprite: Sprite) -> void:
 	if new_sprite.is_in_group(_new_SubGroupTag.PC):
 		_pc = new_sprite
+		_pc_action.set_pc_sprite(new_sprite)
 		set_process_unhandled_input(true)
 
 
@@ -95,8 +96,12 @@ func _on_Schedule_turn_started(current_sprite: Sprite) -> void:
 	if not current_sprite.is_in_group(_new_SubGroupTag.PC):
 		return
 
-	_pc_action.switch_sprite(_pc)
-	set_process_unhandled_input(true)
+	_pc_action.switch_sprite()
+	if not _pc_action.allow_input():
+		_pc_action.pass_turn()
+		_ref_Schedule.end_turn()
+	else:
+		set_process_unhandled_input(true)
 
 
 func _on_EndGame_game_is_over(win: bool) -> void:

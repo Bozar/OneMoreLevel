@@ -27,7 +27,7 @@ func _init(parent_node: Node2D).(parent_node) -> void:
 	}
 
 
-func switch_sprite(_pc: Sprite) -> void:
+func switch_sprite() -> void:
 	pass
 
 

@@ -27,6 +27,7 @@ var _new_DungeonSize := preload("res://library/DungeonSize.gd").new()
 var _new_SpriteTypeTag := preload("res://library/SpriteTypeTag.gd").new()
 var _new_Palette := preload("res://library/Palette.gd").new()
 
+var _pc: Sprite
 var _source_position: Array
 var _target_position: Array
 var _input_direction: String
@@ -58,11 +59,23 @@ func _init(parent_node: Node2D) -> void:
 	_ref_DangerZone = parent_node._ref_DangerZone
 
 
+func set_pc_sprite(pc: Sprite) -> void:
+	_pc = pc
+
+
 func get_message() -> String:
 	return message
 
 
 func set_message(_message: String) -> void:
+	pass
+
+
+func allow_input() -> bool:
+	return true
+
+
+func pass_turn() -> void:
 	pass
 
 
@@ -124,8 +137,8 @@ func reset_state() -> void:
 	end_turn = false
 
 
-func set_source_position(pc: Sprite) -> void:
-	_source_position = _new_ConvertCoord.vector_to_array(pc.position)
+func set_source_position() -> void:
+	_source_position = _new_ConvertCoord.vector_to_array(_pc.position)
 
 
 func set_target_position(direction: String) -> void:
@@ -137,13 +150,13 @@ func set_target_position(direction: String) -> void:
 	_input_direction = direction
 
 
-func switch_sprite(pc: Sprite) -> void:
-	var pc_position: Array = _new_ConvertCoord.vector_to_array(pc.position)
+func switch_sprite() -> void:
+	var pc_position: Array = _new_ConvertCoord.vector_to_array(_pc.position)
 
 	if _ref_DangerZone.is_in_danger(pc_position[0], pc_position[1]):
-		_ref_SwitchSprite.switch_sprite(pc, _new_SpriteTypeTag.ACTIVE)
+		_ref_SwitchSprite.switch_sprite(_pc, _new_SpriteTypeTag.ACTIVE)
 	else:
-		_ref_SwitchSprite.switch_sprite(pc, _new_SpriteTypeTag.DEFAULT)
+		_ref_SwitchSprite.switch_sprite(_pc, _new_SpriteTypeTag.DEFAULT)
 
 
 func _is_occupied(x: int, y: int) -> bool:
