@@ -1,6 +1,8 @@
 extends "res://library/init/WorldTemplate.gd"
 
 
+var _spr_PCFrog := preload("res://sprite/PCFrog.tscn")
+
 var _new_FrogData  := preload("res://library/npc_data/FrogData.gd").new()
 
 
@@ -77,7 +79,7 @@ func _init_pc() -> void:
 	var x: int = _ref_RandomNumber.get_int(0, _new_DungeonSize.MAX_X)
 	var y: int = _ref_RandomNumber.get_int(0, _new_DungeonSize.MAX_Y)
 
-	_add_to_blueprint(_spr_PC,
+	_add_to_blueprint(_spr_PCFrog,
 			_new_MainGroupTag.ACTOR, _new_SubGroupTag.PC, x, y)
 
 
