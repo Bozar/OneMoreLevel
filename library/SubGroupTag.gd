@@ -21,6 +21,7 @@ const PC_MIRROR_IMAGE: String = "pc_mirror_image"
 const PHANTOM: String = "phantom"
 
 const FLOOR: String = "floor"
+const LAND: String = "land"
 const WALL: String = "wall"
 
 const TREASURE: String = "treasure"
