@@ -30,3 +30,6 @@ const ARROW_LEFT: String = "arrow_left"
 const ARROW_TOP: String = "arrow_top"
 const ARROW_BOTTOM: String = "arrow_bottom"
 const COUNTER: String = "counter"
+
+const FROG: String = "frog"
+const FROG_PRINCESS: String = "frog_princess"

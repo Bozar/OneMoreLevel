@@ -2,6 +2,7 @@ extends "res://library/init/WorldTemplate.gd"
 
 
 var _spr_PCFrog := preload("res://sprite/PCFrog.tscn")
+var _spr_Frog := preload("res://sprite/Frog.tscn")
 
 var _new_FrogData  := preload("res://library/npc_data/FrogData.gd").new()
 
@@ -84,4 +85,5 @@ func _init_pc() -> void:
 
 
 func _init_frog() -> void:
-	pass
+	_add_to_blueprint(_spr_Frog,
+			_new_MainGroupTag.ACTOR, _new_SubGroupTag.FROG, 0, 0)
