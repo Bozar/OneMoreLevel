@@ -15,3 +15,8 @@ func swap_element(source_array: Array,
 	tmp = source_array[left_index]
 	source_array[left_index] = source_array[right_index]
 	source_array[right_index] = tmp
+
+
+func merge(source_array: Array, merge_into_left: Array) -> void:
+	for i in merge_into_left:
+		source_array.push_back(i)
