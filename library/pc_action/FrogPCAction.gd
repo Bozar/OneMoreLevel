@@ -26,16 +26,17 @@ func move() -> void:
 
 
 func switch_sprite() -> void:
-	var pc_pos: Array = _new_ConvertCoord.vector_to_array(_pc.position)
+	var pc: Sprite = _ref_DungeonBoard.get_pc()
+	var pc_pos: Array = _new_ConvertCoord.vector_to_array(pc.position)
 	var x: int = pc_pos[0]
 	var y: int = pc_pos[1]
 
 	if _ref_DangerZone.is_in_danger(x, y):
-		_ref_SwitchSprite.switch_sprite(_pc, _new_SpriteTypeTag.ACTIVE)
+		_ref_SwitchSprite.switch_sprite(pc, _new_SpriteTypeTag.ACTIVE)
 	elif not _is_on_land(x, y):
-		_ref_SwitchSprite.switch_sprite(_pc, _new_SpriteTypeTag.PASSIVE)
+		_ref_SwitchSprite.switch_sprite(pc, _new_SpriteTypeTag.PASSIVE)
 	else:
-		_ref_SwitchSprite.switch_sprite(_pc, _new_SpriteTypeTag.DEFAULT)
+		_ref_SwitchSprite.switch_sprite(pc, _new_SpriteTypeTag.DEFAULT)
 
 
 func _is_on_land(x: int, y: int) -> bool:

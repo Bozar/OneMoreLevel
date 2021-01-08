@@ -47,7 +47,8 @@ func remove_trap(_trap: Sprite, _x: int, _y: int) -> void:
 
 
 func _set_wind_direction() -> void:
-	var current_direction: String = _ref_ObjectData.get_state(_pc)
+	var pc: Sprite = _ref_DungeonBoard.get_pc()
+	var current_direction: String = _ref_ObjectData.get_state(pc)
 	var candidate: Array = []
 	var new_index: int
 	var new_direction: String
@@ -64,5 +65,5 @@ func _set_wind_direction() -> void:
 	new_index = _ref_RandomNumber.get_int(0, candidate.size())
 	new_direction = candidate[new_index]
 
-	_ref_ObjectData.set_state(_pc, new_direction)
-	_ref_SwitchSprite.switch_sprite(_pc, _state_to_sprite[new_direction])
+	_ref_ObjectData.set_state(pc, new_direction)
+	_ref_SwitchSprite.switch_sprite(pc, _state_to_sprite[new_direction])

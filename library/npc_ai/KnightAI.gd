@@ -16,9 +16,7 @@ func _init(parent_node: Node2D).(parent_node) -> void:
 	}
 
 
-func take_action(actor: Sprite) -> void:
-	_set_local_var(actor)
-
+func take_action() -> void:
 	# Active -> Passive.
 	if _ref_ObjectData.verify_state(_self, _new_ObjectStateTag.ACTIVE):
 		_attack()

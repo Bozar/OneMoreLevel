@@ -10,13 +10,12 @@ func _init(parent_node: Node2D).(parent_node) -> void:
 	pass
 
 
-func take_action(actor: Sprite) -> void:
-	if _ref_ObjectData.verify_state(actor, _new_ObjectStateTag.PASSIVE):
+func take_action() -> void:
+	if _ref_ObjectData.verify_state(_self, _new_ObjectStateTag.PASSIVE):
 		return
-	if actor.is_in_group(_new_SubGroupTag.PC_MIRROR_IMAGE):
+	if _self.is_in_group(_new_SubGroupTag.PC_MIRROR_IMAGE):
 		return
 
-	_set_local_var(actor)
 	_trap_pos = []
 
 	var distance: int = _new_CoordCalculator.get_range(
@@ -61,10 +60,11 @@ func _move() -> void:
 func _switch_pc_and_image() -> void:
 	var mirror: Array = _new_CoordCalculator.get_mirror_image(
 			_pc_pos[0], _pc_pos[1], _new_DungeonSize.CENTER_X, _pc_pos[1])
+	var pc: Sprite = _ref_DungeonBoard.get_pc()
 
 	if _ref_DungeonBoard.has_sprite(
 			_new_MainGroupTag.TRAP, _pc_pos[0], _pc_pos[1]):
-		_ref_SwitchSprite.switch_sprite(_pc, _new_SpriteTypeTag.DEFAULT)
+		_ref_SwitchSprite.switch_sprite(pc, _new_SpriteTypeTag.DEFAULT)
 		_trap_pos = _pc_pos
 
 	_ref_DungeonBoard.swap_sprite(_new_MainGroupTag.ACTOR, _pc_pos, mirror)

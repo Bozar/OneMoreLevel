@@ -25,7 +25,6 @@ var _new_Palette := preload("res://library/Palette.gd").new()
 var _new_InitWorldData := preload("res://library/InitWorldData.gd").new()
 var _new_ScreenTag: = preload("res://library/ScreenTag.gd").new()
 
-var _pc: Sprite
 var _pc_action: Game_PCActionTemplate
 var _direction: String
 var _end_game: bool = false
@@ -87,8 +86,6 @@ func _on_InitWorld_world_selected(new_world: String) -> void:
 
 func _on_CreateObject_sprite_created(new_sprite: Sprite) -> void:
 	if new_sprite.is_in_group(_new_SubGroupTag.PC):
-		_pc = new_sprite
-		_pc_action.set_pc_sprite(new_sprite)
 		set_process_unhandled_input(true)
 
 
@@ -105,8 +102,10 @@ func _on_Schedule_turn_started(current_sprite: Sprite) -> void:
 
 
 func _on_EndGame_game_is_over(win: bool) -> void:
+	var pc: Sprite = _ref_DungeonBoard.get_pc()
+
 	if not win:
-		_pc.modulate = _new_Palette.SHADOW
+		pc.modulate = _new_Palette.SHADOW
 
 	_end_game = true
 	set_process_unhandled_input(true)

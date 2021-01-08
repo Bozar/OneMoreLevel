@@ -33,16 +33,17 @@ func create_trap(trap: Sprite) -> void:
 
 
 func remove_trap(_trap: Sprite, x: int, y: int) -> void:
-	var hp: int = _ref_ObjectData.get_hit_point(_pc)
+	var pc: Sprite = _ref_DungeonBoard.get_pc()
+	var hp: int = _ref_ObjectData.get_hit_point(pc)
 	var crystal_base: Sprite = _ref_DungeonBoard.get_sprite(
 			_new_MainGroupTag.BUILDING,
 			_new_DungeonSize.CENTER_X, _crystal_base_y[hp])
 
 	_ref_SwitchSprite.switch_sprite(crystal_base, _new_SpriteTypeTag.ACTIVE)
-	_ref_ObjectData.add_hit_point(_pc, 1)
+	_ref_ObjectData.add_hit_point(pc, 1)
 	_ref_DangerZone.set_danger_zone(x, y, false)
 
-	if _ref_ObjectData.get_hit_point(_pc) == _new_MirrorData.MAX_CRYSTAL:
+	if _ref_ObjectData.get_hit_point(pc) == _new_MirrorData.MAX_CRYSTAL:
 		_ref_EndGame.player_win()
 	else:
 		_replenish_crystal()
@@ -51,7 +52,8 @@ func remove_trap(_trap: Sprite, x: int, y: int) -> void:
 func _replenish_crystal() -> void:
 	var x: int
 	var y: int
-	var pc_pos: Array = _new_ConvertCoord.vector_to_array(_pc.position)
+	var pc: Sprite = _ref_DungeonBoard.get_pc()
+	var pc_pos: Array = _new_ConvertCoord.vector_to_array(pc.position)
 	var mirror: Array = _new_CoordCalculator.get_mirror_image(
 			pc_pos[0], pc_pos[1], _new_DungeonSize.CENTER_X, pc_pos[1])
 	var has_npc: int = 0

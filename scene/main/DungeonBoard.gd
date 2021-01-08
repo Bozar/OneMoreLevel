@@ -10,6 +10,7 @@ var _new_CoordCalculator := preload("res://library/CoordCalculator.gd").new()
 
 # <main_group: String, <column: int, [sprite]>>
 var _sprite_dict: Dictionary
+var _pc: Sprite
 
 var _valid_main_groups: Array = [
 	_new_MainGroupTag.GROUND,
@@ -43,6 +44,18 @@ func get_sprite(main_group: String, x: int, y: int) -> Sprite:
 	if has_sprite(main_group, x, y):
 		return _sprite_dict[main_group][x][y]
 	return null
+
+
+# There should be only one sprite in the group `_new_SubGroupTag.PC`.
+# The PC sprite should not be removed throughout the game.
+func get_pc() -> Sprite:
+	var find_pc: Array
+
+	if _pc == null:
+		find_pc = get_sprites_by_tag(_new_SubGroupTag.PC)
+		if find_pc.size() > 0:
+			_pc = find_pc[0]
+	return _pc
 
 
 # When we call `foobar.queue_free()`, the node foobar will be deleted at the end

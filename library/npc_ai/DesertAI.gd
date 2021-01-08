@@ -19,13 +19,12 @@ func _init(parent_node: Node2D).(parent_node) -> void:
 	pass
 
 
-func take_action(actor) -> void:
-	if not actor.is_in_group(_new_SubGroupTag.WORM_HEAD):
+func take_action() -> void:
+	if not _self.is_in_group(_new_SubGroupTag.WORM_HEAD):
 		return
 
-	var id: int = actor.get_instance_id()
+	var id: int = _self.get_instance_id()
 
-	_set_local_var(actor)
 	if not _id_to_worm.has(id):
 		_init_worm(id)
 
@@ -39,8 +38,8 @@ func take_action(actor) -> void:
 		# Move body.
 		_move_body(id)
 	else:
-		_ref_ObjectData.add_hit_point(actor, _new_DesertData.HP_WAIT)
-	_ref_ObjectData.add_hit_point(actor, _new_DesertData.HP_TURN)
+		_ref_ObjectData.add_hit_point(_self, _new_DesertData.HP_WAIT)
+	_ref_ObjectData.add_hit_point(_self, _new_DesertData.HP_TURN)
 
 
 func _init_worm(id: int) -> void:
@@ -101,6 +100,7 @@ func _try_random_walk(id: int) -> bool:
 	var neck: Array
 	var mirror: Array
 	var move_to: Array
+	var pc: Sprite = _ref_DungeonBoard.get_pc()
 	var remove_sprite: Array = [
 		_new_MainGroupTag.BUILDING, _new_MainGroupTag.TRAP
 	]
@@ -122,7 +122,7 @@ func _try_random_walk(id: int) -> bool:
 	move_to = candidate[_ref_RandomNumber.get_int(0, candidate.size())]
 
 	if _is_pc_pos(move_to[0], move_to[1]):
-		_ref_SwitchSprite.switch_sprite(_pc, _new_SpriteTypeTag.ACTIVE)
+		_ref_SwitchSprite.switch_sprite(pc, _new_SpriteTypeTag.ACTIVE)
 		_ref_SwitchSprite.switch_sprite(_self, _new_SpriteTypeTag.ACTIVE)
 		_ref_EndGame.player_lose()
 		return false

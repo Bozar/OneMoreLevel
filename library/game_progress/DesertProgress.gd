@@ -96,8 +96,10 @@ func _try_add_new_counter() -> void:
 
 
 func _switch_spice_counter() -> void:
+	var pc: Sprite = _ref_DungeonBoard.get_pc()
+
 	_ref_SwitchSprite.switch_sprite(_spice_counter,
-			_hp_to_sprite[_ref_ObjectData.get_hit_point(_pc)])
+			_hp_to_sprite[_ref_ObjectData.get_hit_point(pc)])
 
 
 func _create_worm_head(stop_loop: bool, avoid_building: int) -> void:

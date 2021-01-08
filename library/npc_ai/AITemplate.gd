@@ -25,7 +25,6 @@ var _new_DungeonSize := preload("res://library/DungeonSize.gd").new()
 var _new_PathFindingData := preload("res://library/PathFindingData.gd").new()
 var _new_DijkstraPathFinding := preload("res://library/DijkstraPathFinding.gd").new()
 
-var _pc: Sprite
 var _self: Sprite
 var _pc_pos: Array
 var _self_pos: Array
@@ -34,7 +33,6 @@ var _dungeon: Dictionary
 
 # Refer: EnemyAI.gd.
 func _init(parent_node: Node2D) -> void:
-	_pc = parent_node._pc
 	_ref_ObjectData = parent_node._ref_ObjectData
 	_ref_DungeonBoard = parent_node._ref_DungeonBoard
 	_ref_SwitchSprite = parent_node._ref_SwitchSprite
@@ -52,7 +50,7 @@ func _init(parent_node: Node2D) -> void:
 
 
 # Override.
-func take_action(_actor: Sprite) -> void:
+func take_action() -> void:
 	pass
 
 
@@ -69,10 +67,12 @@ func set_print_text(_text: String) -> void:
 	return
 
 
-func _set_local_var(actor: Sprite) -> void:
+func set_local_var(actor: Sprite) -> void:
+	var pc = _ref_DungeonBoard.get_pc()
+
 	_self = actor
-	_pc_pos = _new_ConvertCoord.vector_to_array(_pc.position)
 	_self_pos = _new_ConvertCoord.vector_to_array(_self.position)
+	_pc_pos = _new_ConvertCoord.vector_to_array(pc.position)
 
 
 func _approach_pc() -> void:

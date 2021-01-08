@@ -27,7 +27,6 @@ var _new_DungeonSize := preload("res://library/DungeonSize.gd").new()
 var _new_SpriteTypeTag := preload("res://library/SpriteTypeTag.gd").new()
 var _new_Palette := preload("res://library/Palette.gd").new()
 
-var _pc: Sprite
 var _source_position: Array
 var _target_position: Array
 var _input_direction: String
@@ -57,10 +56,6 @@ func _init(parent_node: Node2D) -> void:
 	_ref_SwitchSprite = parent_node._ref_SwitchSprite
 	_ref_CreateObject = parent_node._ref_CreateObject
 	_ref_DangerZone = parent_node._ref_DangerZone
-
-
-func set_pc_sprite(pc: Sprite) -> void:
-	_pc = pc
 
 
 func get_message() -> String:
@@ -138,7 +133,8 @@ func reset_state() -> void:
 
 
 func set_source_position() -> void:
-	_source_position = _new_ConvertCoord.vector_to_array(_pc.position)
+	var pc: Sprite = _ref_DungeonBoard.get_pc()
+	_source_position = _new_ConvertCoord.vector_to_array(pc.position)
 
 
 func set_target_position(direction: String) -> void:
@@ -151,12 +147,13 @@ func set_target_position(direction: String) -> void:
 
 
 func switch_sprite() -> void:
-	var pc_position: Array = _new_ConvertCoord.vector_to_array(_pc.position)
+	var pc: Sprite = _ref_DungeonBoard.get_pc()
+	var pc_position: Array = _new_ConvertCoord.vector_to_array(pc.position)
 
 	if _ref_DangerZone.is_in_danger(pc_position[0], pc_position[1]):
-		_ref_SwitchSprite.switch_sprite(_pc, _new_SpriteTypeTag.ACTIVE)
+		_ref_SwitchSprite.switch_sprite(pc, _new_SpriteTypeTag.ACTIVE)
 	else:
-		_ref_SwitchSprite.switch_sprite(_pc, _new_SpriteTypeTag.DEFAULT)
+		_ref_SwitchSprite.switch_sprite(pc, _new_SpriteTypeTag.DEFAULT)
 
 
 func _is_occupied(x: int, y: int) -> bool:

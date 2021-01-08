@@ -25,7 +25,7 @@ const SIGNAL_BIND: Array = [
 	[
 		"sprite_created", "_on_CreateObject_sprite_created",
 		CREATE_OBJECT,
-		PLAYER_INPUT, ENEMY_AI, SCHEDULE, DUNGEON, SIDEBAR_GUI, GAME_PROGRESS,
+		PLAYER_INPUT, ENEMY_AI, SCHEDULE, DUNGEON, GAME_PROGRESS,
 	],
 	[
 		"world_selected", "_on_InitWorld_world_selected",
@@ -73,7 +73,7 @@ const NODE_REF: Array = [
 	[
 		"_ref_DungeonBoard",
 		DUNGEON,
-		PLAYER_INPUT, REMOVE_OBJECT, ENEMY_AI, GAME_PROGRESS,
+		PLAYER_INPUT, REMOVE_OBJECT, ENEMY_AI, GAME_PROGRESS, SIDEBAR_GUI,
 	],
 	[
 		"_ref_Schedule",

@@ -20,8 +20,6 @@ var _new_Palette := preload("res://library/Palette.gd").new()
 var _new_SpriteTypeTag := preload("res://library/SpriteTypeTag.gd").new()
 var _new_ObjectStateTag := preload("res://library/ObjectStateTag.gd").new()
 
-var _pc: Sprite
-
 
 # Refer: GameProgress.gd.
 func _init(parent_node: Node2D) -> void:
@@ -56,9 +54,8 @@ func remove_trap(_trap: Sprite, _x: int, _y: int) -> void:
 	pass
 
 
-func create_actor(actor: Sprite) -> void:
-	if actor.is_in_group(_new_SubGroupTag.PC):
-		_pc = actor
+func create_actor(_actor: Sprite) -> void:
+	pass
 
 
 func create_building(_building: Sprite) -> void:

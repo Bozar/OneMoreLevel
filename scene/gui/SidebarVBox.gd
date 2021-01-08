@@ -19,6 +19,7 @@ var _new_ScreenTag := preload("res://library/ScreenTag.gd").new()
 var _ref_RandomNumber: Game_RandomNumber
 var _ref_DangerZone: Game_DangerZone
 var _ref_CountDown: Game_CountDown
+var _ref_DungeonBoard: Game_DungeonBoard
 
 var _node_to_color: Dictionary = {
 	TURN: _new_Palette.STANDARD,
@@ -29,7 +30,6 @@ var _node_to_color: Dictionary = {
 	SEED: _new_Palette.SHADOW,
 }
 
-var _pc: Sprite
 var _is_wizard: bool
 
 
@@ -43,11 +43,6 @@ func _on_InitWorld_world_selected(new_world: String) -> void:
 	get_node(HELP).text = _new_SidebarText.HELP
 	get_node(VERSION).text = _get_version()
 	get_node(SEED).text = _get_seed()
-
-
-func _on_CreateObject_sprite_created(new_sprite: Sprite) -> void:
-	if new_sprite.is_in_group(_new_SubGroupTag.PC):
-		_pc = new_sprite
 
 
 func _on_Schedule_turn_started(current_sprite: Sprite) -> void:
@@ -84,9 +79,10 @@ func _get_turn() -> String:
 
 
 func _get_warning() -> String:
-	var _pc_pos: Array = _new_ConvertCoord.vector_to_array(_pc.position)
+	var pc: Sprite = _ref_DungeonBoard.get_pc()
+	var pc_pos: Array = _new_ConvertCoord.vector_to_array(pc.position)
 
-	if _ref_DangerZone.is_in_danger(_pc_pos[0], _pc_pos[1]):
+	if _ref_DangerZone.is_in_danger(pc_pos[0], pc_pos[1]):
 		return _new_SidebarText.DANGER
 	return  ""
 
