@@ -40,6 +40,15 @@ func has_sprite(main_group: String, x: int, y: int) -> bool:
 	return _sprite_dict[main_group][x][y] != null
 
 
+func has_sprite_with_sub_tag(main_group: String, sub_group: String,
+		x: int, y: int) -> bool:
+	var find_sprite: Sprite = get_sprite(main_group, x, y)
+
+	if find_sprite == null:
+		return false
+	return find_sprite.is_in_group(sub_group)
+
+
 func get_sprite(main_group: String, x: int, y: int) -> Sprite:
 	if has_sprite(main_group, x, y):
 		return _sprite_dict[main_group][x][y]

@@ -18,13 +18,12 @@ func allow_input() -> bool:
 
 
 func is_npc() -> bool:
-	var pc: Sprite = _ref_DungeonBoard.get_pc()
 	var reach_x: int = (_target_position[0] - _source_position[0]) * 2 \
 			+ _source_position[0]
 	var reach_y: int = (_target_position[1] - _source_position[1]) * 2 \
 			+ _source_position[1]
 
-	if _ref_ObjectData.verify_state(pc, _new_ObjectStateTag.ACTIVE):
+	if _ref_DangerZone.is_in_danger(_source_position[0], _source_position[1]):
 		return false
 	elif _ref_DungeonBoard.has_sprite(_new_MainGroupTag.ACTOR,
 			_target_position[0], _target_position[1]):
@@ -46,7 +45,16 @@ func is_trap() -> bool:
 
 
 func move() -> void:
-	if not _is_on_land(_source_position[0], _source_position[1]):
+	var x: int = _source_position[0]
+	var y: int = _source_position[1]
+
+	# If PC is in danger zone, `is_npc()` does not check whether target position
+	# is occupied by an NPC.
+	if _ref_DungeonBoard.has_sprite(_new_MainGroupTag.ACTOR,
+			_target_position[0], _target_position[1]):
+		return
+
+	if _ref_DangerZone.is_in_danger(x, y) or _is_in_swamp(x, y):
 		_pass_next_turn = true
 	.move()
 
@@ -64,14 +72,12 @@ func switch_sprite() -> void:
 
 	if _ref_DangerZone.is_in_danger(x, y):
 		_ref_SwitchSprite.switch_sprite(pc, _new_SpriteTypeTag.ACTIVE)
-	elif not _is_on_land(x, y):
+	elif _is_in_swamp(x, y):
 		_ref_SwitchSprite.switch_sprite(pc, _new_SpriteTypeTag.PASSIVE)
 	else:
 		_ref_SwitchSprite.switch_sprite(pc, _new_SpriteTypeTag.DEFAULT)
 
 
-func _is_on_land(x: int, y: int) -> bool:
-	var ground_sprite: Sprite = _ref_DungeonBoard.get_sprite(
-			_new_MainGroupTag.GROUND, x, y)
-
-	return ground_sprite.is_in_group(_new_SubGroupTag.LAND)
+func _is_in_swamp(x: int, y: int) -> bool:
+	return _ref_DungeonBoard.has_sprite_with_sub_tag(
+			_new_MainGroupTag.GROUND, _new_SubGroupTag.FLOOR, x, y)
