@@ -1,6 +1,8 @@
 extends "res://library/pc_action/PCActionTemplate.gd"
 
 
+var _new_FrogData := preload("res://library/npc_data/FrogData.gd").new()
+
 var _pass_next_turn: bool
 
 
@@ -15,14 +17,43 @@ func allow_input() -> bool:
 	return true
 
 
-# func pass_turn() -> void:
-# 	print("pass this turn")
+func is_npc() -> bool:
+	var pc: Sprite = _ref_DungeonBoard.get_pc()
+	var reach_x: int = (_target_position[0] - _source_position[0]) * 2 \
+			+ _source_position[0]
+	var reach_y: int = (_target_position[1] - _source_position[1]) * 2 \
+			+ _source_position[1]
+
+	if _ref_ObjectData.verify_state(pc, _new_ObjectStateTag.ACTIVE):
+		return false
+	elif _ref_DungeonBoard.has_sprite(_new_MainGroupTag.ACTOR,
+			_target_position[0], _target_position[1]):
+		return true
+	elif _ref_DungeonBoard.has_sprite(_new_MainGroupTag.ACTOR,
+			reach_x, reach_y):
+		_target_position[0] = reach_x
+		_target_position[1] = reach_y
+		return true
+	return false
+
+
+func is_building() -> bool:
+	return false
+
+
+func is_trap() -> bool:
+	return false
 
 
 func move() -> void:
 	if not _is_on_land(_source_position[0], _source_position[1]):
 		_pass_next_turn = true
 	.move()
+
+
+func attack() -> void:
+	_ref_CountDown.add_count(_new_FrogData.RESTORE_TURN)
+	.attack()
 
 
 func switch_sprite() -> void:
