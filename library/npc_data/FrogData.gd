@@ -6,5 +6,6 @@ const MAX_FROG: int = 8
 const HALF_FROG: int = 4
 const SIGHT: int = 6
 const PRINCESS_SIGHT: int = 12
+const ATTACK_RANGE: int = 1
 
 const RESTORE_TURN: int = 7

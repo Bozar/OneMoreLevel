@@ -64,6 +64,20 @@ func attack() -> void:
 	.attack()
 
 
+func wait() -> void:
+	var pc: Sprite = _ref_DungeonBoard.get_pc()
+
+	_ref_ObjectData.set_state(pc, _new_ObjectStateTag.PASSIVE)
+	.wait()
+
+
+func reset_state() -> void:
+	var pc: Sprite = _ref_DungeonBoard.get_pc()
+
+	_ref_ObjectData.set_state(pc, _new_ObjectStateTag.DEFAULT)
+	.reset_state()
+
+
 func switch_sprite() -> void:
 	var pc: Sprite = _ref_DungeonBoard.get_pc()
 	var pc_pos: Array = _new_ConvertCoord.vector_to_array(pc.position)
