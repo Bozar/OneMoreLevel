@@ -21,7 +21,6 @@ const PC_MIRROR_IMAGE: String = "pc_mirror_image"
 const PHANTOM: String = "phantom"
 
 const FLOOR: String = "floor"
-const LAND: String = "land"
 const WALL: String = "wall"
 
 const TREASURE: String = "treasure"
@@ -33,3 +32,5 @@ const COUNTER: String = "counter"
 
 const FROG: String = "frog"
 const FROG_PRINCESS: String = "frog_princess"
+const LAND: String = "land"
+const SWAMP: String = "swamp"

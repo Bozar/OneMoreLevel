@@ -35,7 +35,7 @@ func _init_swamp() -> void:
 						i, j)
 			else:
 				_add_to_blueprint(_spr_Floor,
-						_new_MainGroupTag.GROUND, _new_SubGroupTag.FLOOR,
+						_new_MainGroupTag.GROUND, _new_SubGroupTag.SWAMP,
 						i, j)
 
 

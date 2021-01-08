@@ -32,7 +32,7 @@ func remove_actor(_actor: Sprite, _x: int, _y: int) -> void:
 
 func _create_frog(pc_x: int, pc_y: int, is_princess: bool) -> void:
 	var swamp: Array = _ref_DungeonBoard.get_sprites_by_tag(
-			_new_SubGroupTag.FLOOR)
+			_new_SubGroupTag.SWAMP)
 	var counter: int = 0
 	var tmp_index: int
 	var tmp_pos: Array
@@ -82,4 +82,4 @@ func _submerge_land() -> void:
 
 		_ref_RemoveObject.remove(_new_MainGroupTag.GROUND, x, y)
 		_ref_CreateObject.create(_spr_Floor,
-				_new_MainGroupTag.GROUND, _new_SubGroupTag.FLOOR, x, y)
+				_new_MainGroupTag.GROUND, _new_SubGroupTag.SWAMP, x, y)
