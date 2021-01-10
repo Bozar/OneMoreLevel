@@ -60,8 +60,9 @@ func move() -> void:
 			or _ref_DangerZone.is_in_danger(tar_x, tar_y):
 		return
 
-	if _ref_DangerZone.is_in_danger(sor_x, sor_y) \
-			or _is_in_swamp(sor_x, sor_y):
+	if _ref_DangerZone.is_in_danger(sor_x, sor_y):
+		_pass_next_turn = true
+	elif _is_in_swamp(sor_x, sor_y):
 		_step_counter += 1
 		if _step_counter == _new_FrogData.SINK_IN_MUD:
 			_pass_next_turn = true
