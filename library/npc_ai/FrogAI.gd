@@ -91,11 +91,9 @@ func _random_walk() -> void:
 	var x: int = _self_pos[0]
 	var y: int = _self_pos[1]
 	var neighbor: Array = _new_CoordCalculator.get_neighbor(x, y, 1, false)
-	var swamp: Array = []
 
-	_new_ArrayHelper.filter_element(neighbor, self, "_filter_random_walk",
-			[swamp])
-	_new_ArrayHelper.merge(neighbor, swamp)
+	_new_ArrayHelper.filter_element(neighbor, self, "_filter_rand_walk", [])
+	_new_ArrayHelper.duplicate_element(neighbor, self, "_dup_rand_walk", [])
 	if neighbor.size() < 1:
 		return
 
@@ -121,14 +119,16 @@ func _filter_grapple(source: Array, index: int, opt_arg: Array) -> bool:
 	return source[index] in pc_move
 
 
-func _filter_random_walk(source: Array, index: int, opt_arg: Array) -> bool:
-	var swamp: Array = opt_arg[0]
-
+func _filter_rand_walk(source: Array, index: int, _opt_arg: Array) -> bool:
 	if _ref_DungeonBoard.has_sprite(_new_MainGroupTag.ACTOR,
 			source[index][0], source[index][1]):
 		return false
+	return true
+
+
+func _dup_rand_walk(source: Array, index: int, _opt_arg: Array) -> int:
 	if _ref_DungeonBoard.has_sprite_with_sub_tag(
 			_new_MainGroupTag.GROUND, _new_SubGroupTag.SWAMP,
 			source[index][0], source[index][1]):
-		swamp.push_back(source[index])
-	return true
+		return 2
+	return 1
