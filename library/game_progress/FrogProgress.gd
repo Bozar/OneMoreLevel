@@ -142,7 +142,7 @@ func _filter_create_princess(source: Array, index: int, opt_arg: Array) -> bool:
 	var pc_y: int = opt_arg[1]
 
 	if _new_CoordCalculator.is_inside_range(sor_x, sor_y, pc_x, pc_y,
-			_new_FrogData.SIGHT) \
+			_new_FrogData.ATTACK_RANGE) \
 					or _ref_DungeonBoard.has_sprite(
 							_new_MainGroupTag.ACTOR, sor_x, sor_y):
 		return false
