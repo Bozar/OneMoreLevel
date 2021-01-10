@@ -13,6 +13,9 @@ func _init(parent_node: Node2D).(parent_node) -> void:
 func allow_input() -> bool:
 	if _pass_next_turn:
 		_pass_next_turn = false
+		# A frog does not attack when PC is ACTIVE. The state is reset to
+		# DEFAULT when PC's turn starts normally.
+		_set_pc_state(_new_ObjectStateTag.ACTIVE)
 		return false
 	return true
 
@@ -45,16 +48,19 @@ func is_trap() -> bool:
 
 
 func move() -> void:
-	var x: int = _source_position[0]
-	var y: int = _source_position[1]
+	var sor_x: int = _source_position[0]
+	var sor_y: int = _source_position[1]
+	var tar_x: int = _target_position[0]
+	var tar_y: int = _target_position[1]
 
 	# If PC is in danger zone, `is_npc()` does not check whether target position
-	# is occupied by an NPC.
-	if _ref_DungeonBoard.has_sprite(_new_MainGroupTag.ACTOR,
-			_target_position[0], _target_position[1]):
+	# is occupied by an NPC or is dangerous.
+	if _ref_DungeonBoard.has_sprite(_new_MainGroupTag.ACTOR, tar_x, tar_y) \
+			or _ref_DangerZone.is_in_danger(tar_x, tar_y):
 		return
 
-	if _ref_DangerZone.is_in_danger(x, y) or _is_in_swamp(x, y):
+	if _ref_DangerZone.is_in_danger(sor_x, sor_y) \
+			or _is_in_swamp(sor_x, sor_y):
 		_pass_next_turn = true
 	.move()
 
@@ -65,16 +71,12 @@ func attack() -> void:
 
 
 func wait() -> void:
-	var pc: Sprite = _ref_DungeonBoard.get_pc()
-
-	_ref_ObjectData.set_state(pc, _new_ObjectStateTag.PASSIVE)
+	_set_pc_state(_new_ObjectStateTag.PASSIVE)
 	.wait()
 
 
 func reset_state() -> void:
-	var pc: Sprite = _ref_DungeonBoard.get_pc()
-
-	_ref_ObjectData.set_state(pc, _new_ObjectStateTag.DEFAULT)
+	_set_pc_state(_new_ObjectStateTag.DEFAULT)
 	.reset_state()
 
 
@@ -95,3 +97,8 @@ func switch_sprite() -> void:
 func _is_in_swamp(x: int, y: int) -> bool:
 	return _ref_DungeonBoard.has_sprite_with_sub_tag(
 			_new_MainGroupTag.GROUND, _new_SubGroupTag.SWAMP, x, y)
+
+
+func _set_pc_state(state_tag: String) -> void:
+	var pc: Sprite = _ref_DungeonBoard.get_pc()
+	_ref_ObjectData.set_state(pc, state_tag)

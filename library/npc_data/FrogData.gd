@@ -4,8 +4,9 @@ const SUBMERGE_LAND: int = 20
 
 const MAX_FROG: int = 8
 const HALF_FROG: int = 4
-const SIGHT: int = 6
-const PRINCESS_SIGHT: int = 12
-const ATTACK_RANGE: int = 1
+const SIGHT: int = 4
+const ATTACK_RANGE: int = 2
+const MIN_WAIT: int = 1
+const MAX_WAIT: int = 4
 
-const RESTORE_TURN: int = 7
+const RESTORE_TURN: int = 9
