@@ -18,7 +18,6 @@ var _new_ArrayHelper := preload("res://library/ArrayHelper.gd").new()
 var _start_next_wave: bool = true
 var _wave_counter: int = 0
 var _kill_counter: int = 0
-var _valid_frog_wave_counter: Array = [0, 2, 3]
 
 
 func _init(parent_node: Node2D).(parent_node) -> void:
@@ -31,7 +30,13 @@ func renew_world(pc_x: int, pc_y: int) -> void:
 
 		if _wave_counter == 0:
 			_create_frog(pc_x, pc_y)
-		elif _wave_counter == 1:
+
+
+func end_world(pc_x: int, pc_y: int) -> void:
+	if _start_next_wave:
+		_start_next_wave = false
+
+		if _wave_counter == 1:
 			_submerge_land()
 			_remove_frog()
 			_create_princess(pc_x, pc_y)
@@ -50,7 +55,8 @@ func remove_actor(actor: Sprite, _x: int, _y: int) -> void:
 		_kill_counter += 1
 		if _kill_counter == _new_FrogData.HALF_FROG:
 			_kill_counter = 0
-			if _wave_counter in _valid_frog_wave_counter:
+			if (_wave_counter == 0) or (_wave_counter == 2) \
+					or (_wave_counter == 3):
 				_wave_counter += 1
 				_start_next_wave = true
 	elif actor.is_in_group(_new_SubGroupTag.FROG_PRINCESS):
