@@ -13,7 +13,12 @@ var _new_ArrayHelper := preload("res://library/ArrayHelper.gd").new()
 # 1: princess, submerge land
 # 2: 8 frogs
 # 3: princess, 4 frogs, submerge land
+# -3: princess dies before other frogs
+# 4: princess
+var _start_next_wave: bool = true
 var _wave_counter: int = 0
+var _kill_counter: int = 0
+var _valid_frog_wave_counter: Array = [0, 2, 3]
 
 
 func _init(parent_node: Node2D).(parent_node) -> void:
@@ -21,14 +26,42 @@ func _init(parent_node: Node2D).(parent_node) -> void:
 
 
 func renew_world(pc_x: int, pc_y: int) -> void:
-	if _wave_counter == 0:
-		# _create_princess(pc_x, pc_y)
-		_create_frog(pc_x, pc_y)
-		_wave_counter += 1
+	if _start_next_wave:
+		_start_next_wave = false
+
+		if _wave_counter == 0:
+			_create_frog(pc_x, pc_y)
+		elif _wave_counter == 1:
+			_submerge_land()
+			_remove_frog()
+			_create_princess(pc_x, pc_y)
+		elif _wave_counter == 2:
+			_create_frog(pc_x, pc_y)
+		elif _wave_counter == 3:
+			_submerge_land()
+			_create_princess(pc_x, pc_y)
+		elif _wave_counter == -3:
+			_create_princess(pc_x, pc_y)
+			_wave_counter = 3
 
 
-func remove_actor(_actor: Sprite, _x: int, _y: int) -> void:
-	print("remove actor")
+func remove_actor(actor: Sprite, _x: int, _y: int) -> void:
+	if actor.is_in_group(_new_SubGroupTag.FROG):
+		_kill_counter += 1
+		if _kill_counter == _new_FrogData.HALF_FROG:
+			_kill_counter = 0
+			if _wave_counter in _valid_frog_wave_counter:
+				_wave_counter += 1
+				_start_next_wave = true
+	elif actor.is_in_group(_new_SubGroupTag.FROG_PRINCESS):
+		if _wave_counter == 1:
+			_wave_counter += 1
+			_start_next_wave = true
+		elif _wave_counter == 3:
+			_wave_counter = -3
+			_start_next_wave = true
+		elif _wave_counter == 4:
+			_ref_EndGame.player_win()
 
 
 func _create_frog(pc_x: int, pc_y: int) -> void:
@@ -83,6 +116,16 @@ func _submerge_land() -> void:
 		_ref_RemoveObject.remove(_new_MainGroupTag.GROUND, x, y)
 		_ref_CreateObject.create(_spr_Floor,
 				_new_MainGroupTag.GROUND, _new_SubGroupTag.SWAMP, x, y)
+
+
+func _remove_frog() -> void:
+	var frog: Array = _ref_DungeonBoard.get_sprites_by_tag(
+			_new_SubGroupTag.FROG)
+	var pos: Array
+
+	for i in frog:
+		pos = _new_ConvertCoord.vector_to_array(i.position)
+		_ref_RemoveObject.remove(_new_MainGroupTag.ACTOR, pos[0], pos[1])
 
 
 func _filter_create_frog(source: Array, index: int, opt_arg: Array) -> bool:
