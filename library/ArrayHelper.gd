@@ -10,7 +10,7 @@ func random_picker(source_array: Array, num_of_element: int,
 
 # filter_in_func(source_array: Array, current_index: int,
 #> optional_arg: Array) -> bool
-# Returns true if we need an array element.
+# Return true if we need an array element.
 func filter_element(source_array: Array, func_host: Object,
 		filter_in_func: String, optional_arg: Array) -> void:
 	var filter_in := funcref(func_host, filter_in_func)
@@ -23,6 +23,22 @@ func filter_element(source_array: Array, func_host: Object,
 	source_array.resize(counter)
 
 
+# get_counter_func(source_array: Array, current_index: int,
+#> optional_arg: Array) -> int
+# Return how many times an element should appear in the new array.
+func duplicate_element(source_array: Array, func_host: Object,
+		get_counter_func: String, optional_arg: Array) -> void:
+	var get_counter := funcref(func_host, get_counter_func)
+	var counter: int
+	var tmp: Array = []
+
+	for i in range(source_array.size()):
+		counter = get_counter.call_func(source_array, i, optional_arg) - 1
+		for _j in range(counter):
+			tmp.push_back(source_array[i])
+	merge(source_array, tmp)
+
+
 func swap_element(source_array: Array,
 		left_index: int, right_index: int) -> void:
 	var tmp
@@ -33,5 +49,9 @@ func swap_element(source_array: Array,
 
 
 func merge(source_array: Array, merge_into_left: Array) -> void:
-	for i in merge_into_left:
-		source_array.push_back(i)
+	var source_size: int = source_array.size()
+	var merge_size: int = merge_into_left.size()
+
+	source_array.resize(source_size + merge_size)
+	for i in range(merge_size):
+		source_array[i + source_size] = merge_into_left[i]
