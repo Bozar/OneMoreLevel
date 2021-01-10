@@ -4,6 +4,7 @@ extends "res://library/pc_action/PCActionTemplate.gd"
 var _new_FrogData := preload("res://library/npc_data/FrogData.gd").new()
 
 var _pass_next_turn: bool
+var _step_counter: int = 0
 
 
 func _init(parent_node: Node2D).(parent_node) -> void:
@@ -61,7 +62,10 @@ func move() -> void:
 
 	if _ref_DangerZone.is_in_danger(sor_x, sor_y) \
 			or _is_in_swamp(sor_x, sor_y):
-		_pass_next_turn = true
+		_step_counter += 1
+		if _step_counter == _new_FrogData.SINK_IN_MUD:
+			_pass_next_turn = true
+			_step_counter = 0
 	.move()
 
 
