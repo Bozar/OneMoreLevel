@@ -64,13 +64,14 @@ func move() -> void:
 		_pass_next_turn = true
 	elif _is_in_swamp(sor_x, sor_y):
 		_step_counter += 1
-		if _step_counter == _new_FrogData.SINK_IN_MUD:
+		if _step_counter >= _new_FrogData.SINK_IN_MUD:
 			_pass_next_turn = true
 			_step_counter = 0
 	.move()
 
 
 func attack() -> void:
+	_step_counter = 0
 	_ref_CountDown.add_count(_new_FrogData.RESTORE_TURN)
 	.attack()
 

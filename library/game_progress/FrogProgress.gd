@@ -9,11 +9,11 @@ var _new_FrogData := preload("res://library/npc_data/FrogData.gd").new()
 var _new_ArrayHelper := preload("res://library/ArrayHelper.gd").new()
 
 # wave counter:
-# 0: 8 frogs
-# 1: princess, submerge land
-# 2: 8 frogs
-# 3: princess, 4 frogs, submerge land
-# -3: princess dies before other frogs
+# 0: 8 frogs | when 4 frogs disappear ->
+# 1: princess, submerge land | when princess disappears ->
+# 2: 8 frogs | when 4 frogs disappear ->
+# 3: princess, 4 frogs, submerge land | when 4 frogs disappear ->
+# -3: princess disappears before other frogs
 # 4: princess
 var _start_next_wave: bool = true
 var _wave_counter: int = 0

@@ -90,10 +90,13 @@ func _grapple(id: int) -> void:
 func _random_walk() -> void:
 	var x: int = _self_pos[0]
 	var y: int = _self_pos[1]
+	var max_distance: int = _new_CoordCalculator.get_range(
+			x, y, _pc_pos[0], _pc_pos[1])
 	var neighbor: Array = _new_CoordCalculator.get_neighbor(x, y, 1, false)
 
 	_new_ArrayHelper.filter_element(neighbor, self, "_filter_rand_walk", [])
-	_new_ArrayHelper.duplicate_element(neighbor, self, "_dup_rand_walk", [])
+	_new_ArrayHelper.duplicate_element(neighbor, self, "_dup_rand_walk",
+			[max_distance])
 	if neighbor.size() < 1:
 		return
 
@@ -126,9 +129,17 @@ func _filter_rand_walk(source: Array, index: int, _opt_arg: Array) -> bool:
 	return true
 
 
-func _dup_rand_walk(source: Array, index: int, _opt_arg: Array) -> int:
+func _dup_rand_walk(source: Array, index: int, opt_arg: Array) -> int:
+	var repeat: int = 1
+	var x: int = source[index][0]
+	var y: int = source[index][1]
+	var pc_x: int = _pc_pos[0]
+	var pc_y: int = _pc_pos[1]
+	var max_distance: int = opt_arg[0]
+
+	if _new_CoordCalculator.is_inside_range(x, y, pc_x, pc_y, max_distance):
+		repeat += 1
 	if _ref_DungeonBoard.has_sprite_with_sub_tag(
-			_new_MainGroupTag.GROUND, _new_SubGroupTag.SWAMP,
-			source[index][0], source[index][1]):
-		return 2
-	return 1
+			_new_MainGroupTag.GROUND, _new_SubGroupTag.SWAMP, x, y):
+		repeat += 1
+	return repeat

@@ -10,5 +10,5 @@ const ATTACK_RANGE: int = 2
 const MIN_WAIT: int = 1
 const MAX_WAIT: int = 4
 
-const RESTORE_TURN: int = 11
+const RESTORE_TURN: int = 9
 const SINK_IN_MUD: int = 3
