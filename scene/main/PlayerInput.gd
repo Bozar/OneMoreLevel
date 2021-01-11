@@ -61,6 +61,8 @@ func _unhandled_input(event: InputEvent) -> void:
 	if _is_wizard:
 		if _is_add_turn_input(event):
 			_ref_CountDown.add_count(1)
+		elif _is_fully_restore_turn_input(event):
+			_ref_CountDown.add_count(99)
 
 	_pc_action.set_source_position()
 	if _is_move_input(event):
@@ -158,6 +160,10 @@ func _handle_move_input() -> void:
 
 func _is_add_turn_input(event: InputEvent) -> bool:
 	return event.is_action_pressed(_new_InputTag.ADD_TURN)
+
+
+func _is_fully_restore_turn_input(event: InputEvent) -> bool:
+	return event.is_action_pressed(_new_InputTag.FULLY_RESTORE_TURN)
 
 
 func _is_quit_input(event: InputEvent) -> bool:

@@ -26,3 +26,4 @@ Following keys are available only in help screen.
 These keys are available in wizard mode (see general help).
 
 * Add 1 turn: T.
+* Fully restore turns: F.
