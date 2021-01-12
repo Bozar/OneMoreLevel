@@ -12,6 +12,7 @@ const DOWN: String = "down"
 const LEFT: String = "left"
 const RIGHT: String = "right"
 
+const ZERO: String = "zero"
 const ONE: String = "one"
 const TWO: String = "two"
 const THREE: String = "three"

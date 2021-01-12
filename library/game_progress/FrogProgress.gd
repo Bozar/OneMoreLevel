@@ -4,6 +4,7 @@ extends "res://library/game_progress/ProgressTemplate.gd"
 var _spr_Frog := preload("res://sprite/Frog.tscn")
 var _spr_FrogPrincess := preload("res://sprite/FrogPrincess.tscn")
 var _spr_Floor := preload("res://sprite/Floor.tscn")
+var _spr_Counter := preload("res://sprite/Counter.tscn")
 
 var _new_FrogData := preload("res://library/npc_data/FrogData.gd").new()
 var _new_ArrayHelper := preload("res://library/ArrayHelper.gd").new()
@@ -27,6 +28,7 @@ func _init(parent_node: Node2D).(parent_node) -> void:
 func renew_world(pc_x: int, pc_y: int) -> void:
 	if _start_next_wave:
 		_start_next_wave = false
+		_refresh_counter()
 
 		if _wave_counter == 0:
 			_create_frog(pc_x, pc_y)
@@ -35,6 +37,7 @@ func renew_world(pc_x: int, pc_y: int) -> void:
 func end_world(pc_x: int, pc_y: int) -> void:
 	if _start_next_wave:
 		_start_next_wave = false
+		_refresh_counter()
 
 		if _wave_counter == 1:
 			_submerge_land(_new_FrogData.SUBMERGE_LAND)
@@ -125,6 +128,29 @@ func _remove_frog() -> void:
 	for i in frog:
 		pos = _new_ConvertCoord.vector_to_array(i.position)
 		_ref_RemoveObject.remove(_new_MainGroupTag.ACTOR, pos[0], pos[1])
+
+
+func _refresh_counter() -> void:
+	var x: int = _new_DungeonSize.MAX_X - 1
+	var y: int = _new_DungeonSize.MAX_Y - 1
+	var ground: Sprite
+	var wave_to_sprite: Dictionary = {
+		1: _new_SpriteTypeTag.ONE,
+		2: _new_SpriteTypeTag.TWO,
+		3: _new_SpriteTypeTag.THREE,
+		4: _new_SpriteTypeTag.FOUR,
+	}
+
+	if _wave_counter < 0:
+		return
+
+	if _wave_counter == 0:
+		_ref_RemoveObject.remove(_new_MainGroupTag.GROUND, x, y)
+		_ref_CreateObject.create(_spr_Counter,
+				_new_MainGroupTag.GROUND, _new_SubGroupTag.COUNTER, x, y)
+	else:
+		ground = _ref_DungeonBoard.get_sprite(_new_MainGroupTag.GROUND, x, y)
+		_ref_SwitchSprite.switch_sprite(ground, wave_to_sprite[_wave_counter])
 
 
 func _filter_create_frog(source: Array, index: int, opt_arg: Array) -> bool:
