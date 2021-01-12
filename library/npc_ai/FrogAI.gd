@@ -65,11 +65,22 @@ func _reset_hit_point() -> void:
 
 
 func _can_grapple(pc: Sprite) -> bool:
+	var self_x: int = _self_pos[0]
+	var self_y: int = _self_pos[1]
+	var pc_x: int = _pc_pos[0]
+	var pc_y: int = _pc_pos[1]
+	var middle_x: int = ((self_x + pc_x) / 2.0) as int
+	var middle_y: int = ((self_y + pc_y) / 2.0) as int
+
 	if _ref_ObjectData.verify_state(pc, _new_ObjectStateTag.PASSIVE):
 		return false
-	return _new_CoordCalculator.is_inside_range(
-			_self_pos[0], _self_pos[1], _pc_pos[0], _pc_pos[1],
-			_new_FrogData.ATTACK_RANGE)
+	if _new_CoordCalculator.is_inside_range(self_x, self_y, pc_x, pc_y,
+			_new_FrogData.ATTACK_RANGE):
+		if _ref_DungeonBoard.has_sprite(_new_MainGroupTag.ACTOR,
+				middle_x, middle_y):
+			return false
+		return true
+	return false
 
 
 func _grapple(id: int) -> void:
