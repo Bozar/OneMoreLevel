@@ -95,7 +95,10 @@ func switch_sprite() -> void:
 	if _ref_DangerZone.is_in_danger(x, y):
 		_ref_SwitchSprite.switch_sprite(pc, _new_SpriteTypeTag.ACTIVE)
 	elif _is_in_swamp(x, y):
-		_ref_SwitchSprite.switch_sprite(pc, _new_SpriteTypeTag.PASSIVE)
+		if _step_counter == _new_FrogData.SINK_IN_MUD - 1:
+			_ref_SwitchSprite.switch_sprite(pc, _new_SpriteTypeTag.PASSIVE_1)
+		else:
+			_ref_SwitchSprite.switch_sprite(pc, _new_SpriteTypeTag.PASSIVE)
 	else:
 		_ref_SwitchSprite.switch_sprite(pc, _new_SpriteTypeTag.DEFAULT)
 
