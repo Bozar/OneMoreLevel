@@ -29,7 +29,7 @@ func renew_world(pc_x: int, pc_y: int) -> void:
 		_start_next_wave = false
 
 		if _wave_counter == 0:
-			_create_frog(pc_x, pc_y, false)
+			_create_frog(pc_x, pc_y)
 
 
 func end_world(pc_x: int, pc_y: int) -> void:
@@ -37,16 +37,16 @@ func end_world(pc_x: int, pc_y: int) -> void:
 		_start_next_wave = false
 
 		if _wave_counter == 1:
-			_submerge_land()
+			_submerge_land(_new_FrogData.SUBMERGE_LAND)
 			_remove_frog()
-			_create_frog(pc_x, pc_y, true)
+			_create_princess(pc_x, pc_y)
 		elif _wave_counter == 2:
-			_create_frog(pc_x, pc_y, false)
+			_create_frog(pc_x, pc_y)
 		elif _wave_counter == 3:
-			_submerge_land()
-			_create_frog(pc_x, pc_y, true)
+			_submerge_land(_new_FrogData.SUBMERGE_MORE_LAND)
+			_create_princess(pc_x, pc_y)
 		elif _wave_counter == -3:
-			_create_frog(pc_x, pc_y, true)
+			_create_princess(pc_x, pc_y)
 			_wave_counter = 3
 
 
@@ -70,41 +70,48 @@ func remove_actor(actor: Sprite, _x: int, _y: int) -> void:
 			_ref_EndGame.player_win()
 
 
-func _create_frog(pc_x: int, pc_y: int, is_princess: bool) -> void:
-	var max_distance: int = _new_FrogData.PRINCESS_MAX_DISTANCE \
-			if is_princess else _new_FrogData.MAX_DISTANCE
+func _create_frog(pc_x: int, pc_y: int) -> void:
 	var neighbor: Array = _new_CoordCalculator.get_neighbor(
-			pc_x, pc_y, max_distance)
-	var max_frog: int = 1 if is_princess else _new_FrogData.MAX_FROG
-	var frog_sprite: PackedScene = _spr_FrogPrincess \
-			if is_princess else _spr_Frog
-	var sub_tag: String = _new_SubGroupTag.FROG_PRINCESS \
-			if is_princess else _new_SubGroupTag.FROG
+			pc_x, pc_y, _new_FrogData.MAX_DISTANCE)
 
 	_new_ArrayHelper.filter_element(neighbor, self, "_filter_create_frog",
 			[pc_x, pc_y])
-	_new_ArrayHelper.random_picker(neighbor, max_frog, _ref_RandomNumber)
+	_new_ArrayHelper.random_picker(neighbor, _new_FrogData.MAX_FROG,
+			_ref_RandomNumber)
 
 	for i in neighbor:
-		_ref_CreateObject.create(frog_sprite, _new_MainGroupTag.ACTOR, sub_tag,
+		_ref_CreateObject.create(_spr_Frog,
+				_new_MainGroupTag.ACTOR, _new_SubGroupTag.FROG,
 				i[0], i[1])
 
 
-func _submerge_land() -> void:
+func _create_princess(pc_x: int, pc_y: int) -> void:
+	var neighbor: Array = _new_CoordCalculator.get_neighbor(
+			pc_x, pc_y, _new_FrogData.MAX_PRINCESS_DISTANCE)
+
+	_new_ArrayHelper.filter_element(neighbor, self, "_filter_create_frog",
+			[pc_x, pc_y])
+	_new_ArrayHelper.duplicate_element(neighbor, self, "_dup_create_princess",
+			[])
+	_new_ArrayHelper.random_picker(neighbor, 1, _ref_RandomNumber)
+
+	_ref_CreateObject.create(_spr_FrogPrincess,
+			_new_MainGroupTag.ACTOR, _new_SubGroupTag.FROG_PRINCESS,
+			neighbor[0][0], neighbor[0][1])
+
+
+func _submerge_land(submerge: int) -> void:
 	var land_sprite: Array = _ref_DungeonBoard.get_sprites_by_tag(
 			_new_SubGroupTag.LAND)
 	var land_pos: Array
 	var x: int
 	var y: int
 
-	_new_ArrayHelper.random_picker(land_sprite, _new_FrogData.SUBMERGE_LAND,
-			_ref_RandomNumber)
-
+	_new_ArrayHelper.random_picker(land_sprite, submerge, _ref_RandomNumber)
 	for i in land_sprite:
 		land_pos = _new_ConvertCoord.vector_to_array(i.position)
 		x = land_pos[0]
 		y = land_pos[1]
-
 		_ref_RemoveObject.remove(_new_MainGroupTag.GROUND, x, y)
 		_ref_CreateObject.create(_spr_Floor,
 				_new_MainGroupTag.GROUND, _new_SubGroupTag.SWAMP, x, y)
@@ -132,3 +139,13 @@ func _filter_create_frog(source: Array, index: int, opt_arg: Array) -> bool:
 							_new_MainGroupTag.ACTOR, x, y):
 		return false
 	return true
+
+
+func _dup_create_princess(source: Array, index: int, _opt_arg: Array) -> int:
+	var x: int = source[index][0]
+	var y: int = source[index][1]
+
+	if _ref_DungeonBoard.has_sprite_with_sub_tag(
+			_new_MainGroupTag.GROUND, _new_SubGroupTag.SWAMP, x, y):
+		return 2
+	return 1
