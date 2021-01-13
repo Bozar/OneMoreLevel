@@ -69,17 +69,12 @@ func _can_grapple(pc: Sprite) -> bool:
 	var self_y: int = _self_pos[1]
 	var pc_x: int = _pc_pos[0]
 	var pc_y: int = _pc_pos[1]
-	var middle_x: int = ((self_x + pc_x) / 2.0) as int
-	var middle_y: int = ((self_y + pc_y) / 2.0) as int
 
 	if _ref_ObjectData.verify_state(pc, _new_ObjectStateTag.PASSIVE):
 		return false
 	if _new_CoordCalculator.is_inside_range(self_x, self_y, pc_x, pc_y,
 			_new_FrogData.ATTACK_RANGE):
-		if _ref_DungeonBoard.has_sprite(_new_MainGroupTag.ACTOR,
-				middle_x, middle_y):
-			return false
-		return true
+		return _path_is_clear()
 	return false
 
 
@@ -126,6 +121,31 @@ func _set_danger_zone(x: int, y: int, danger: bool) -> void:
 		_ref_SwitchSprite.switch_sprite(ground, _new_SpriteTypeTag.ACTIVE)
 	else:
 		_ref_SwitchSprite.switch_sprite(ground, _new_SpriteTypeTag.DEFAULT)
+
+
+func _path_is_clear() -> bool:
+	var x: int
+	var y: int
+	var counter: int
+	var cast_ray: Array = [[0, 1], [0, -1], [1, 0], [-1, 0]]
+
+	for i in cast_ray:
+		x = _self_pos[0]
+		y = _self_pos[1]
+		counter = 0
+		for _j in _new_FrogData.ATTACK_RANGE:
+			x += i[0]
+			y += i[1]
+			if not _new_CoordCalculator.is_inside_dungeon(x, y):
+				break
+			if _ref_DungeonBoard.has_sprite_with_sub_tag(
+					_new_MainGroupTag.ACTOR, _new_SubGroupTag.PC, x, y):
+				if counter > 0:
+					return false
+				break
+			if _ref_DungeonBoard.has_sprite(_new_MainGroupTag.ACTOR, x, y):
+				counter += 1
+	return true
 
 
 func _filter_grapple(source: Array, index: int, opt_arg: Array) -> bool:
