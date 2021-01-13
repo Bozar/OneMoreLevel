@@ -133,7 +133,7 @@ func _path_is_clear() -> bool:
 		x = _self_pos[0]
 		y = _self_pos[1]
 		counter = 0
-		for _j in _new_FrogData.ATTACK_RANGE:
+		for _j in range(_new_FrogData.ATTACK_RANGE):
 			x += i[0]
 			y += i[1]
 			if not _new_CoordCalculator.is_inside_dungeon(x, y):
