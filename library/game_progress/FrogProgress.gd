@@ -40,13 +40,13 @@ func end_world(pc_x: int, pc_y: int) -> void:
 		_refresh_counter()
 
 		if _wave_counter == 1:
-			_submerge_land()
+			_submerge_land(_new_FrogData.SUBMERGE_LAND)
 			_remove_frog()
 			_create_princess(pc_x, pc_y)
 		elif _wave_counter == 2:
 			_create_frog(pc_x, pc_y)
 		elif _wave_counter == 3:
-			_submerge_land()
+			_submerge_land(_new_FrogData.SUBMERGE_MORE_LAND)
 			_create_princess(pc_x, pc_y)
 		elif _wave_counter == -3:
 			_create_princess(pc_x, pc_y)
@@ -103,15 +103,14 @@ func _create_princess(pc_x: int, pc_y: int) -> void:
 			neighbor[0][0], neighbor[0][1])
 
 
-func _submerge_land() -> void:
+func _submerge_land(submerge: int) -> void:
 	var land_sprite: Array = _ref_DungeonBoard.get_sprites_by_tag(
 			_new_SubGroupTag.LAND)
 	var land_pos: Array
 	var x: int
 	var y: int
 
-	_new_ArrayHelper.random_picker(land_sprite, _new_FrogData.SUBMERGE_LAND,
-			_ref_RandomNumber)
+	_new_ArrayHelper.random_picker(land_sprite, submerge, _ref_RandomNumber)
 	for i in land_sprite:
 		land_pos = _new_ConvertCoord.vector_to_array(i.position)
 		x = land_pos[0]
