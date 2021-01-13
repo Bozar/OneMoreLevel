@@ -103,7 +103,7 @@ func _random_walk() -> void:
 	var y: int = _self_pos[1]
 	var max_distance: int = _new_CoordCalculator.get_range(
 			x, y, _pc_pos[0], _pc_pos[1])
-	var neighbor: Array = _new_CoordCalculator.get_neighbor(x, y, 1, false)
+	var neighbor: Array = _new_CoordCalculator.get_neighbor(x, y, 2, false)
 
 	_new_ArrayHelper.filter_element(neighbor, self, "_filter_rand_walk", [])
 	_new_ArrayHelper.duplicate_element(neighbor, self, "_dup_rand_walk",
@@ -134,23 +134,38 @@ func _filter_grapple(source: Array, index: int, opt_arg: Array) -> bool:
 
 
 func _filter_rand_walk(source: Array, index: int, _opt_arg: Array) -> bool:
-	if _ref_DungeonBoard.has_sprite(_new_MainGroupTag.ACTOR,
-			source[index][0], source[index][1]):
+	var self_x: int = _self_pos[0]
+	var self_y: int = _self_pos[1]
+	var sor_x: int = source[index][0]
+	var sor_y: int = source[index][1]
+
+	if (self_x == sor_x) or (self_y == sor_y) or _ref_DungeonBoard.has_sprite(
+			_new_MainGroupTag.ACTOR, sor_x, sor_y):
 		return false
 	return true
 
 
 func _dup_rand_walk(source: Array, index: int, opt_arg: Array) -> int:
-	var repeat: int = 1
-	var x: int = source[index][0]
-	var y: int = source[index][1]
+	var self_x: int = _self_pos[0]
+	var self_y: int = _self_pos[1]
+	var sor_x: int = source[index][0]
+	var sor_y: int = source[index][1]
 	var pc_x: int = _pc_pos[0]
 	var pc_y: int = _pc_pos[1]
 	var max_distance: int = opt_arg[0]
+	var repeat: int = 1
+	var swamp: int = 1 if _ref_DungeonBoard.has_sprite_with_sub_tag(
+			_new_MainGroupTag.GROUND, _new_SubGroupTag.SWAMP, sor_x, sor_y) \
+			else 0
 
-	if _new_CoordCalculator.is_inside_range(x, y, pc_x, pc_y, max_distance):
+	# If a frog is not too far away from PC, it favors swamp grids.
+	if _new_CoordCalculator.is_inside_range(self_x, self_y, pc_x, pc_y,
+			_new_FrogData.MID_DISTANCE):
+		repeat += swamp
+	# If a frog is far away from PC, it favors grids that are closer to PC,
+	# especially when the grid is swamp.
+	elif _new_CoordCalculator.is_inside_range(sor_x, sor_y, pc_x, pc_y,
+			max_distance):
 		repeat += 1
-	if _ref_DungeonBoard.has_sprite_with_sub_tag(
-			_new_MainGroupTag.GROUND, _new_SubGroupTag.SWAMP, x, y):
-		repeat += 1
+		repeat += swamp
 	return repeat

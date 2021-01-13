@@ -1,11 +1,12 @@
 const MAX_LAND: int = 90
 const PATH_LENGTH: int = 5
-const SUBMERGE_LAND: int = 10
+const SUBMERGE_LAND: int = 15
 const SUBMERGE_MORE_LAND: int = 20
 
 const MAX_FROG: int = 8
 const HALF_FROG: int = 4
 const MIN_DISTANCE: int = 4
+const MID_DISTANCE: int = 16
 const MAX_DISTANCE: int = 24
 const MAX_PRINCESS_DISTANCE: int = 6
 const ATTACK_RANGE: int = 2
