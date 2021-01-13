@@ -159,8 +159,10 @@ func _filter_rand_walk(source: Array, index: int, _opt_arg: Array) -> bool:
 	var sor_x: int = source[index][0]
 	var sor_y: int = source[index][1]
 
-	if (self_x == sor_x) or (self_y == sor_y) or _ref_DungeonBoard.has_sprite(
-			_new_MainGroupTag.ACTOR, sor_x, sor_y):
+	if (self_x == sor_x) or (self_y == sor_y) \
+			or _ref_DangerZone.is_in_danger(sor_x, sor_y) \
+			or _ref_DungeonBoard.has_sprite(
+					_new_MainGroupTag.ACTOR, sor_x, sor_y):
 		return false
 	return true
 
