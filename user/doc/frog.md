@@ -2,13 +2,13 @@
 
 (Press Enter to view key bindings.)
 
-Our princess and her knights are turned into frogs by an evil wizard. Finn the human and Jack the dog, take the spear that wounds and heals someone with the same stab. Venture into the swamp, remove the curse and save our kingdom from doom.
+> Our princess and her knights are turned into frogs by an evil wizard. Finn the human and Jack the dog, take the spear that wounds and heals someone with the same stab. Venture into the swamp, remove the curse and save our kingdom from doom.
 
-There is one frog princess and twelve frog knights that come in five waves. Remove all their curses to beat the game. You might lose the game due to running out of turns or being swallowed by a frog.
+There is one frog princess and twelve frog knights that come in five waves. Remove all their curses to beat the game. You might lose due to running out of turns or being swallowed by a frog.
 
 ## Move in Swamp
 
-Strip of land (#, grey hashtag) are surrounded by swamp (-, grey dash) in the dungeon. PC has four symbol that shows his current state.
+Strips of land (#, grey hashtag) are surrounded by swamp (-, grey dash) in the dungeon. PC has four symbols that shows his current state.
 
 * @: You stand on land.
 * Three horizonal lines: You stand in swamp.
