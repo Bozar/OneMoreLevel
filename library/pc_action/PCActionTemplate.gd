@@ -67,6 +67,9 @@ func set_message(_message: String) -> void:
 
 
 func allow_input() -> bool:
+	if _is_checkmate():
+		_ref_EndGame.player_lose()
+		return false
 	return true
 
 

@@ -17,6 +17,10 @@ func attack() -> void:
 	elif _ref_ObjectData.verify_state(npc, _new_ObjectStateTag.ACTIVE):
 		end_turn = _roll()
 	elif _ref_ObjectData.verify_state(npc, _new_ObjectStateTag.PASSIVE):
+		if _ref_DangerZone.is_in_danger(
+				_source_position[0], _source_position[1]):
+			end_turn = false
+			return
 		if npc.is_in_group(_new_SubGroupTag.KNIGHT_BOSS):
 			_hit_boss(npc)
 		else:
@@ -25,6 +29,45 @@ func attack() -> void:
 		end_turn = true
 	else:
 		end_turn = false
+
+
+func move() -> void:
+	if _ref_DangerZone.is_in_danger(_target_position[0], _target_position[1]):
+		return
+	.move()
+
+
+func wait() -> void:
+	if _ref_DangerZone.is_in_danger(_source_position[0], _source_position[1]):
+		return
+	.wait()
+
+
+func _is_checkmate() -> bool:
+	var x: int = _source_position[0]
+	var y: int = _source_position[1]
+	var neighbor: Array = _new_CoordCalculator.get_neighbor(x, y, 1)
+	var actor: Sprite
+	var mirror: Array
+
+	if not _ref_DangerZone.is_in_danger(x, y):
+		return false
+	for i in neighbor:
+		if not (_ref_DangerZone.is_in_danger(i[0], i[1]) \
+				or _is_occupied(i[0], i[1])):
+			return false
+		elif _ref_DungeonBoard.has_sprite(_new_MainGroupTag.ACTOR,
+				i[0], i[1]):
+			actor = _ref_DungeonBoard.get_sprite(_new_MainGroupTag.ACTOR,
+					i[0], i[1])
+			if _ref_ObjectData.verify_state(actor,
+					_new_ObjectStateTag.ACTIVE):
+				mirror = _new_CoordCalculator.get_mirror_image(
+						x, y, i[0], i[1])
+				if (mirror.size() >= 2) \
+						and (not _is_occupied(mirror[0], mirror[1])):
+					return false
+	return true
 
 
 func _hit_knight() -> void:
