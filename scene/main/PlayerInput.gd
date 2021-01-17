@@ -95,6 +95,7 @@ func _on_Schedule_turn_started(current_sprite: Sprite) -> void:
 	if not current_sprite.is_in_group(_new_SubGroupTag.PC):
 		return
 
+	_pc_action.set_source_position()
 	_pc_action.switch_sprite()
 	if not _pc_action.allow_input():
 		_pc_action.pass_turn()

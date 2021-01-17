@@ -12,6 +12,9 @@ func _init(parent_node: Node2D).(parent_node) -> void:
 
 
 func allow_input() -> bool:
+	if _is_checkmate():
+		_ref_EndGame.player_lose()
+		return false
 	if _pass_next_turn:
 		_pass_next_turn = false
 		# A frog does not attack when PC is ACTIVE. The state is reset to
@@ -77,6 +80,8 @@ func attack() -> void:
 
 
 func wait() -> void:
+	if _ref_DangerZone.is_in_danger(_source_position[0], _source_position[1]):
+		return
 	_set_pc_state(_new_ObjectStateTag.PASSIVE)
 	.wait()
 
@@ -88,9 +93,8 @@ func reset_state() -> void:
 
 func switch_sprite() -> void:
 	var pc: Sprite = _ref_DungeonBoard.get_pc()
-	var pc_pos: Array = _new_ConvertCoord.vector_to_array(pc.position)
-	var x: int = pc_pos[0]
-	var y: int = pc_pos[1]
+	var x: int = _source_position[0]
+	var y: int = _source_position[1]
 
 	if _ref_DangerZone.is_in_danger(x, y):
 		_ref_SwitchSprite.switch_sprite(pc, _new_SpriteTypeTag.ACTIVE)
@@ -111,3 +115,18 @@ func _is_in_swamp(x: int, y: int) -> bool:
 func _set_pc_state(state_tag: String) -> void:
 	var pc: Sprite = _ref_DungeonBoard.get_pc()
 	_ref_ObjectData.set_state(pc, state_tag)
+
+
+func _is_checkmate() -> bool:
+	var x: int = _source_position[0]
+	var y: int = _source_position[1]
+	var neighbor: Array = _new_CoordCalculator.get_neighbor(x, y, 1)
+
+	if _ref_DangerZone.is_in_danger(x, y):
+		for i in neighbor:
+			if not (_ref_DangerZone.is_in_danger(i[0], i[1]) \
+					or _ref_DungeonBoard.has_sprite(
+							_new_MainGroupTag.ACTOR, i[0], i[1])):
+				return false
+		return true
+	return false

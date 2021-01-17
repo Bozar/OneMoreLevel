@@ -148,9 +148,8 @@ func set_target_position(direction: String) -> void:
 
 func switch_sprite() -> void:
 	var pc: Sprite = _ref_DungeonBoard.get_pc()
-	var pc_position: Array = _new_ConvertCoord.vector_to_array(pc.position)
 
-	if _ref_DangerZone.is_in_danger(pc_position[0], pc_position[1]):
+	if _ref_DangerZone.is_in_danger(_source_position[0], _source_position[1]):
 		_ref_SwitchSprite.switch_sprite(pc, _new_SpriteTypeTag.ACTIVE)
 	else:
 		_ref_SwitchSprite.switch_sprite(pc, _new_SpriteTypeTag.DEFAULT)
@@ -163,4 +162,8 @@ func _is_occupied(x: int, y: int) -> bool:
 	for i in _valid_main_groups:
 		if _ref_DungeonBoard.has_sprite(i, x, y):
 			return true
+	return false
+
+
+func _is_checkmate() -> bool:
 	return false

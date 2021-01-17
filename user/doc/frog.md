@@ -17,7 +17,7 @@ Strips of land (#, grey hashtag) are surrounded by swamp (-, grey dash). PC has 
 
 Press arrow keys to move one step if there are no frogs nearby. Moving out of land costs 1 turn. Leaving swamp costs 1 or 2 turns based on an internal counter. The counter starts from zero and adds by one every time before you leave a swamp grid. When it reaches three, moving costs 2 turns and the counter resets to zero. Otherwise it costs 1 turn to move. Hitting a frog also resets the counter to zero. (Please beware that the counter is only affected by moving away from swamp and hitting a frog. It has nothing to do with grapple, wait or any other factors.)
 
-Press Space to wait 1 turn.
+Press Space to wait 1 turn. You cannot wait when grappled. You automatically lose the game if you can take no actions.
 
 ## Hit a Frog
 
