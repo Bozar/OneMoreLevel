@@ -8,10 +8,7 @@ const MIRROR: String = "mirror"
 const BALLOON: String = "balloon"
 const FROG: String = "frog"
 
-var _world_tag: Array = [
-	KNIGHT, DESERT, STYX, MIRROR, BALLOON, FROG,
-]
-
+var _exclude_world: Array = [DEMO]
 var _tag_to_name: Dictionary = {
 	DEMO: "Demo",
 	KNIGHT: "Knight",
@@ -30,8 +27,14 @@ func get_world_name(world_tag: String) -> String:
 
 
 func get_full_world_tag() -> Array:
-	return _world_tag
+	var full_tag: Array = []
+
+	for i in _tag_to_name.keys():
+		if i in _exclude_world:
+			continue
+		full_tag.push_back(i)
+	return full_tag
 
 
 func is_valid_world_tag(world_tag: String) -> bool:
-	return (world_tag == DEMO) or (world_tag in _world_tag)
+	return world_tag in _tag_to_name.keys()
