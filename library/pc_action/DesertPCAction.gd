@@ -9,17 +9,10 @@ func _init(parent_node: Node2D).(parent_node) -> void:
 
 
 func wait() -> void:
-	if _pc_is_dead():
-		_ref_EndGame.player_lose()
-	else:
-		end_turn = false
+	end_turn = false
 
 
 func attack() -> void:
-	if _pc_is_dead():
-		_ref_EndGame.player_lose()
-		return
-
 	var worm: Sprite = _ref_DungeonBoard.get_sprite(_new_MainGroupTag.ACTOR,
 			_target_position[0], _target_position[1])
 	var is_active_spice: bool = _ref_ObjectData.verify_state(
@@ -65,7 +58,7 @@ func _remove_building_or_trap(is_building: bool) -> void:
 	end_turn = true
 
 
-func _pc_is_dead() -> bool:
+func _is_checkmate() -> bool:
 	var x: int = _source_position[0]
 	var y: int = _source_position[1]
 
