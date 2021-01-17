@@ -18,7 +18,7 @@ You can survive in desert for at most 24 turns. Every spice and quality spice ex
 
 PC's symbol changes into a rectangular when being adjacent to a sandworm's head. The game ends if the sandworm intends to move into PC's position the next turn.
 
-When your turn starts, if you are surrounded by four solid blocks, either press Space or bump into a sandworm segment to end the game.
+When your turn starts, if you are surrounded by four solid blocks, the game ends automatically.
 
     . # .   North (O): Sand wall.
     . @ +   East (X): Sandworm segment.
