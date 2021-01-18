@@ -55,7 +55,7 @@ const SIGNAL_BIND: Array = [
 	[
 		"setting_loaded", "_on_GameSetting_setting_loaded",
 		GAME_SETTING,
-		RANDOM, INIT_WORLD, PLAYER_INPUT, SIDEBAR_GUI,
+		RANDOM,
 	],
 	[
 		"screen_switched", "_on_SwitchScreen_screen_switched",
@@ -123,7 +123,7 @@ const NODE_REF: Array = [
 	[
 		"_ref_GameSetting",
 		GAME_SETTING,
-		INIT_WORLD,
+		INIT_WORLD, PLAYER_INPUT, SIDEBAR_GUI, RANDOM,
 	],
 	[
 		"_ref_SwitchScreen",

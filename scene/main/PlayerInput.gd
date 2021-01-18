@@ -14,7 +14,8 @@ var _ref_SwitchSprite: Game_SwitchSprite
 var _ref_EndGame: Game_EndGame
 var _ref_CountDown: Game_CountDown
 var _ref_SwitchScreen: Game_SwitchScreen
-var _ref_CreateObject : Game_CreateObject
+var _ref_CreateObject: Game_CreateObject
+var _ref_GameSetting: Game_GameSetting
 
 var _new_ConvertCoord := preload("res://library/ConvertCoord.gd").new()
 var _new_WorldTag := preload("res://library/WorldTag.gd").new()
@@ -28,7 +29,6 @@ var _new_ScreenTag: = preload("res://library/ScreenTag.gd").new()
 var _pc_action: Game_PCActionTemplate
 var _direction: String
 var _end_game: bool = false
-var _is_wizard: bool
 
 var _move_inputs: Array = [
 	_new_InputTag.MOVE_LEFT,
@@ -58,7 +58,7 @@ func _unhandled_input(event: InputEvent) -> void:
 			get_node(RELOAD_GAME).reload()
 		return
 
-	if _is_wizard:
+	if _ref_GameSetting.get_wizard_mode():
 		if _is_add_turn_input(event):
 			_ref_CountDown.add_count(1)
 		elif _is_fully_restore_turn_input(event):
@@ -112,11 +112,6 @@ func _on_EndGame_game_is_over(win: bool) -> void:
 
 	_end_game = true
 	set_process_unhandled_input(true)
-
-
-func _on_GameSetting_setting_loaded(
-		setting: Game_GameSetting.PlayerSetting) -> void:
-	_is_wizard = setting.wizard_mode
 
 
 func _on_SwitchScreen_screen_switched(screen_tag: String) -> void:

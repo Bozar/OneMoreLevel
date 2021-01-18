@@ -2,7 +2,7 @@ extends Node2D
 class_name Game_GameSetting
 
 
-signal setting_loaded(setting)
+signal setting_loaded()
 
 const WIZARD: String = "wizard_mode"
 const SEED: String = "rng_seed"
@@ -13,43 +13,9 @@ const RES_PATH: String = "res://bin/data/setting.json"
 
 var _new_WorldTag := preload("res://library/WorldTag.gd").new()
 
-
-class PlayerSetting extends Resource:
-
-
-	var wizard_mode: bool setget set_wizard_mode, get_wizard_mode
-	var rng_seed: int setget set_rng_seed, get_rng_seed
-	var world_tag: String setget set_world_tag, get_world_tag
-
-
-	func _init(wizard: bool, random: int, world: String) -> void:
-		wizard_mode = wizard
-		rng_seed = random
-		world_tag = world
-
-
-	func get_wizard_mode() -> bool:
-		return wizard_mode
-
-
-	func set_wizard_mode(__) -> void:
-		return
-
-
-	func get_rng_seed() -> int:
-		return rng_seed
-
-
-	func set_rng_seed(__) -> void:
-		return
-
-
-	func get_world_tag() -> String:
-		return world_tag
-
-
-	func set_world_tag(__) -> void:
-		return
+var _wizard_mode: bool
+var _rng_seed: int
+var _world_tag: String
 
 
 func load_setting() -> void:
@@ -57,10 +23,6 @@ func load_setting() -> void:
 	var load_path: String = ""
 	var setting_data: Dictionary
 	var __
-
-	var wizard: bool
-	var world: String
-	var random: int
 
 	for i in [EXE_PATH, RES_PATH]:
 		if setting_file.file_exists(i):
@@ -73,32 +35,41 @@ func load_setting() -> void:
 		setting_data = JSON.parse(setting_file.get_as_text()).get_result()
 		setting_file.close()
 
-	wizard = _get_wizard(setting_data)
-	random = _get_seed(setting_data)
-	world = _get_world(setting_data)
+	_wizard_mode = _set_wizard_mode(setting_data)
+	_rng_seed = _set_rng_seed(setting_data)
+	_world_tag = _set_world_tag(setting_data)
 
-	emit_signal("setting_loaded", PlayerSetting.new(wizard, random, world))
+	emit_signal("setting_loaded")
 
 
-func _get_wizard(setting) -> bool:
+func get_wizard_mode() -> bool:
+	return _wizard_mode
+
+
+func get_rng_seed() -> int:
+	return _rng_seed
+
+
+func get_world_tag() -> String:
+	return _world_tag
+
+
+func _set_wizard_mode(setting) -> bool:
 	if not setting.has(WIZARD):
 		return false
 	return setting[WIZARD] as bool
 
 
-func _get_seed(setting) -> int:
+func _set_rng_seed(setting) -> int:
 	var random: int
 
 	if not setting.has(SEED):
-		return -1
-
+		return 0
 	random = setting[SEED] as int
-	if random < 1:
-		return -1
-	return random
+	return 0 if random < 1 else random
 
 
-func _get_world(setting) -> String:
+func _set_world_tag(setting) -> String:
 	if not setting.has(WORLD):
 		return ""
 	if not _new_WorldTag.is_valid_world_tag(setting[WORLD]):

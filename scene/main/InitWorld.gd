@@ -25,8 +25,7 @@ var _new_InputTag := preload("res://library/InputTag.gd").new()
 var _new_WorldTag := preload("res://library/WorldTag.gd").new()
 var _new_InitWorldData := preload("res://library/InitWorldData.gd").new()
 
-var _world_name: String
-var _world: Game_WorldTemplate
+var _world_template: Game_WorldTemplate
 
 
 # func _unhandled_input(event: InputEvent) -> void:
@@ -38,10 +37,10 @@ var _world: Game_WorldTemplate
 
 func init_world() -> void:
 	_ref_GameSetting.load_setting()
-	_world = _get_world()
+	_world_template = _get_world()
 
 	# sb: SpriteBlueprint
-	for sb in _world.get_blueprint():
+	for sb in _world_template.get_blueprint():
 		if _is_pc(sb.sub_group):
 			_init_indicator(sb.x, sb.y)
 		_ref_CreateObject.create(
@@ -49,24 +48,17 @@ func init_world() -> void:
 	_ref_Schedule.init_schedule()
 
 
-func _on_GameSetting_setting_loaded(
-		setting: Game_GameSetting.PlayerSetting) -> void:
-	_world_name = setting.world_tag
-
-
 func _get_world() -> Game_WorldTemplate:
 	var full_tag: Array = _new_WorldTag.get_full_world_tag()
 	var tag_index: int = _ref_RandomNumber.get_int(0, full_tag.size())
-	var candidate: String
+	var world_tag: String = _ref_GameSetting.get_world_tag()
 	var world_template: Game_WorldTemplate
 
-	if _world_name == "":
-		candidate = full_tag[tag_index]
-	else:
-		candidate = _world_name
-	emit_signal("world_selected", candidate)
+	if world_tag == "":
+		world_tag = full_tag[tag_index]
+	emit_signal("world_selected", world_tag)
 
-	world_template = _new_InitWorldData.get_world_template(candidate).new(self)
+	world_template = _new_InitWorldData.get_world_template(world_tag).new(self)
 	return world_template
 
 

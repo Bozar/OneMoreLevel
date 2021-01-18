@@ -20,6 +20,7 @@ var _ref_RandomNumber: Game_RandomNumber
 var _ref_DangerZone: Game_DangerZone
 var _ref_CountDown: Game_CountDown
 var _ref_DungeonBoard: Game_DungeonBoard
+var _ref_GameSetting: Game_GameSetting
 
 var _node_to_color: Dictionary = {
 	TURN: _new_Palette.STANDARD,
@@ -29,8 +30,6 @@ var _node_to_color: Dictionary = {
 	VERSION: _new_Palette.SHADOW,
 	SEED: _new_Palette.SHADOW,
 }
-
-var _is_wizard: bool
 
 
 func _on_InitWorld_world_selected(new_world: String) -> void:
@@ -58,11 +57,6 @@ func _on_EndGame_game_is_over(win: bool) -> void:
 		get_node(MESSAGE).text = _new_SidebarText.WIN
 	else:
 		get_node(MESSAGE).text = _new_SidebarText.LOSE
-
-
-func _on_GameSetting_setting_loaded(
-		setting: Game_GameSetting.PlayerSetting) -> void:
-	_is_wizard = setting.wizard_mode
 
 
 func _on_SwitchScreen_screen_switched(screen_tag: String) -> void:
@@ -97,6 +91,6 @@ func _get_seed() -> String:
 
 
 func _get_version() -> String:
-	if _is_wizard:
+	if _ref_GameSetting.get_wizard_mode():
 		return _new_SidebarText.VERSION.format([_new_SidebarText.WIZARD])
 	return _new_SidebarText.VERSION.format([""])
