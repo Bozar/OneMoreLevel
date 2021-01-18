@@ -20,9 +20,9 @@ var _valid_main_groups: Array = [
 ]
 
 var _sub_group_to_sprite: Dictionary = {
-	_new_SubGroupTag.ARROW_LEFT: null,
-	_new_SubGroupTag.ARROW_TOP: null,
-	_new_SubGroupTag.ARROW_BOTTOM: null,
+	_new_SubGroupTag.ARROW_RIGHT: null,
+	_new_SubGroupTag.ARROW_DOWN: null,
+	_new_SubGroupTag.ARROW_UP: null,
 }
 
 
@@ -173,9 +173,9 @@ func _try_move_arrow(sprite: Sprite) -> void:
 	if not sprite.is_in_group(_new_SubGroupTag.PC):
 		return
 
-	_sub_group_to_sprite[_new_SubGroupTag.ARROW_LEFT] \
+	_sub_group_to_sprite[_new_SubGroupTag.ARROW_RIGHT] \
 			.position.y = sprite.position.y
-	_sub_group_to_sprite[_new_SubGroupTag.ARROW_TOP] \
+	_sub_group_to_sprite[_new_SubGroupTag.ARROW_DOWN] \
 			.position.x = sprite.position.x
-	_sub_group_to_sprite[_new_SubGroupTag.ARROW_BOTTOM] \
+	_sub_group_to_sprite[_new_SubGroupTag.ARROW_UP] \
 			.position.x = sprite.position.x

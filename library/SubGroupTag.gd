@@ -13,7 +13,6 @@ const WORM_SPICE: String = "worm_spice"
 
 const LIGHTHOUSE: String = "lighthouse"
 const HARBOR: String = "harbor"
-const STYX_RIVER: String = "styx_river"
 
 const CRYSTAL: String = "crystal"
 const CRYSTAL_BASE: String = "crystal_base"
@@ -25,9 +24,12 @@ const WALL: String = "wall"
 
 const TREASURE: String = "treasure"
 
+const ARROW: String = "arrow"
 const ARROW_LEFT: String = "arrow_left"
-const ARROW_TOP: String = "arrow_top"
-const ARROW_BOTTOM: String = "arrow_bottom"
+const ARROW_RIGHT: String = "arrow_right"
+const ARROW_UP: String = "arrow_up"
+const ARROW_DOWN: String = "arrow_down"
+
 const COUNTER: String = "counter"
 
 const FROG: String = "frog"

@@ -3,7 +3,7 @@ extends "res://library/init/WorldTemplate.gd"
 
 var _spr_Lighthouse := preload("res://sprite/Lighthouse.tscn")
 var _spr_Harbor := preload("res://sprite/Harbor.tscn")
-var _spr_StyxRiver := preload("res://sprite/StyxRiver.tscn")
+var _spr_Arrow := preload("res://sprite/Arrow.tscn")
 
 var _new_StyxData := preload("res://library/npc_data/StyxData.gd").new()
 
@@ -62,6 +62,6 @@ func _init_river() -> void:
 		for j in range(_new_DungeonSize.MAX_Y):
 			if _is_occupied(i, j):
 				continue
-			_add_to_blueprint(_spr_StyxRiver,
-					_new_MainGroupTag.GROUND, _new_SubGroupTag.STYX_RIVER,
+			_add_to_blueprint(_spr_Arrow,
+					_new_MainGroupTag.GROUND, _new_SubGroupTag.ARROW,
 					i, j)
