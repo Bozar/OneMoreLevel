@@ -43,4 +43,9 @@ Press `Help` key to read these mechanics. The help text is also available in `do
 
 ## Change Game Settings
 
-Edit `data/setting.json` for play testing. Set `wizard_mode` to `true` to enable wizard keys. `rng_seed` accepts a positive integer as RNG seed. Feed `world_tag` with a string in `data/world_list.md` to specify the dungeon type.
+Edit `data/setting.json` for play testing.
+
+* Set `wizard_mode` to `true` to enable wizard keys.
+* `rng_seed` accepts a positive integer as random number generator seed.
+* Feed `world_tag` with a string in `data/world_list.md` to specify the dungeon type.
+* Add world names from `data/world_list.md` to `exclude_world` to filter out these worlds from rotation.

@@ -1,5 +1,8 @@
 {
     "wizard_mode": false,
     "rng_seed": 0,
-    "world_tag": ""
+    "world_tag": "",
+    "exclude_world": [
+        "demo"
+    ]
 }

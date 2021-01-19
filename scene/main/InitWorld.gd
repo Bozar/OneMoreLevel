@@ -24,6 +24,7 @@ var _new_SubGroupTag := preload("res://library/SubGroupTag.gd").new()
 var _new_InputTag := preload("res://library/InputTag.gd").new()
 var _new_WorldTag := preload("res://library/WorldTag.gd").new()
 var _new_InitWorldData := preload("res://library/InitWorldData.gd").new()
+var _new_ArrayHelper := preload("res://library/ArrayHelper.gd").new()
 
 var _world_template: Game_WorldTemplate
 
@@ -50,16 +51,20 @@ func init_world() -> void:
 
 func _get_world() -> Game_WorldTemplate:
 	var full_tag: Array = _new_WorldTag.get_full_world_tag()
-	var tag_index: int = _ref_RandomNumber.get_int(0, full_tag.size())
+	var exclude_world: Array = _ref_GameSetting.get_exclude_world()
 	var world_tag: String = _ref_GameSetting.get_world_tag()
-	var world_template: Game_WorldTemplate
+
+	_new_ArrayHelper.filter_element(full_tag, self, "_filter_get_world",
+			[exclude_world])
+	if full_tag.size() == 0:
+		full_tag = [_new_WorldTag.DEMO]
+	_new_ArrayHelper.random_picker(full_tag, 1, _ref_RandomNumber)
 
 	if world_tag == "":
-		world_tag = full_tag[tag_index]
+		world_tag = full_tag[0]
 	emit_signal("world_selected", world_tag)
 
-	world_template = _new_InitWorldData.get_world_template(world_tag).new(self)
-	return world_template
+	return _new_InitWorldData.get_world_template(world_tag).new(self)
 
 
 func _init_indicator(x: int, y: int) -> void:
@@ -78,3 +83,8 @@ func _init_indicator(x: int, y: int) -> void:
 
 func _is_pc(group_name: String) -> bool:
 	return group_name == _new_SubGroupTag.PC
+
+
+func _filter_get_world(source: Array, index: int, opt_arg: Array) -> bool:
+	var exclude: Array = opt_arg[0]
+	return not source[index] in exclude

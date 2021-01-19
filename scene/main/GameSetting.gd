@@ -6,7 +6,8 @@ signal setting_loaded()
 
 const WIZARD: String = "wizard_mode"
 const SEED: String = "rng_seed"
-const WORLD: String = "world_tag"
+const WORLD_TAG: String = "world_tag"
+const EXCLUDE_WORLD: String = "exclude_world"
 
 const EXE_PATH: String = "data/setting.json"
 const RES_PATH: String = "res://bin/data/setting.json"
@@ -16,6 +17,7 @@ var _new_WorldTag := preload("res://library/WorldTag.gd").new()
 var _wizard_mode: bool
 var _rng_seed: int
 var _world_tag: String
+var _exclude_world: Array
 
 
 func load_setting() -> void:
@@ -38,6 +40,7 @@ func load_setting() -> void:
 	_wizard_mode = _set_wizard_mode(setting_data)
 	_rng_seed = _set_rng_seed(setting_data)
 	_world_tag = _set_world_tag(setting_data)
+	_exclude_world = _set_exclude_world(setting_data)
 
 	emit_signal("setting_loaded")
 
@@ -52,6 +55,10 @@ func get_rng_seed() -> int:
 
 func get_world_tag() -> String:
 	return _world_tag
+
+
+func get_exclude_world() -> Array:
+	return _exclude_world
 
 
 func _set_wizard_mode(setting) -> bool:
@@ -70,8 +77,20 @@ func _set_rng_seed(setting) -> int:
 
 
 func _set_world_tag(setting) -> String:
-	if not setting.has(WORLD):
+	if not setting.has(WORLD_TAG):
 		return ""
-	if not _new_WorldTag.is_valid_world_tag(setting[WORLD]):
+	if not _new_WorldTag.is_valid_world_tag(setting[WORLD_TAG]):
 		return ""
-	return setting[WORLD] as String
+	return setting[WORLD_TAG] as String
+
+
+func _set_exclude_world(setting) -> Array:
+	var exclude: Array = []
+
+	if not setting.has(EXCLUDE_WORLD):
+		return []
+
+	exclude = setting[EXCLUDE_WORLD] as Array
+	for i in range(exclude.size()):
+		exclude[i] = exclude[i] as String
+	return exclude
