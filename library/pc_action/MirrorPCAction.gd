@@ -4,6 +4,7 @@ extends "res://library/pc_action/PCActionTemplate.gd"
 var _spr_Phantom := preload("res://sprite/Phantom.tscn")
 
 var _new_MirrorData := preload("res://library/npc_data/MirrorData.gd").new()
+var _new_ArrayHelper := preload("res://library/ArrayHelper.gd").new()
 
 var _pc_hit_target: bool
 
@@ -94,6 +95,9 @@ func _create_image_on_the_other_side(x: int, y: int) -> void:
 	var trap: Sprite = _ref_DungeonBoard.get_sprite(
 			_new_MainGroupTag.TRAP, x, y)
 	var mirror: Array = _get_mirror(x, y)
+	var images: Array
+	var remove: int
+	var position: Array
 
 	# On this side: Make trap visible. Switch phantom's sprite into default.
 	if trap != null:
@@ -114,6 +118,18 @@ func _create_image_on_the_other_side(x: int, y: int) -> void:
 	if _ref_DungeonBoard.has_sprite(
 			_new_MainGroupTag.TRAP, mirror[0], mirror[1]):
 		_ref_RemoveObject.remove(_new_MainGroupTag.TRAP, mirror[0], mirror[1])
+
+	# There can be at most 5 phantom images.
+	images = _ref_DungeonBoard.get_sprites_by_tag(_new_SubGroupTag.PHANTOM)
+	_new_ArrayHelper.filter_element(images, self, "_filter_create_image",
+			[actor])
+	remove = images.size() + 1 - _new_MirrorData.MAX_PHANTOM
+	if remove > 0:
+		_new_ArrayHelper.random_picker(images, remove, _ref_RandomNumber)
+		for i in images:
+			position = _new_ConvertCoord.vector_to_array(i.position)
+			_ref_RemoveObject.remove(_new_MainGroupTag.ACTOR,
+					position[0], position[1])
 
 
 func _create_image_on_the_same_side(x: int, y: int) -> void:
@@ -208,3 +224,11 @@ func _cast_ray(x: int, y: int, x_shift: int, y_shift: int) -> int:
 		return 1
 	# Keep casting the ray if nothing happens.
 	return 0
+
+
+func _filter_create_image(source: Array, index: int, opt_arg: Array) -> bool:
+	var actor: Sprite = opt_arg[0]
+
+	return (source[index] != actor) \
+			and _ref_ObjectData.verify_state(source[index],
+					_new_ObjectStateTag.PASSIVE)
