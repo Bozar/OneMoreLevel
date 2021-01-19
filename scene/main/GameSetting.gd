@@ -88,7 +88,7 @@ func _set_exclude_world(setting) -> Array:
 	var exclude: Array = []
 
 	if not setting.has(EXCLUDE_WORLD):
-		return []
+		return [_new_WorldTag.DEMO]
 
 	exclude = setting[EXCLUDE_WORLD] as Array
 	for i in range(exclude.size()):
