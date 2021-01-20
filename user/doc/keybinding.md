@@ -7,6 +7,7 @@ One More Level is made with Godot engine, which natively supports keyboards and 
 * Move: Arrow keys, Vi keys, ASDW, [Direction pad].
 * Wait: Space, Z, Period (.), [A].
 * Help: Esc, Slash (/), [B].
+* Copy RNG seed: Ctrl + C, Ctrl + Y.
 * Reload after defeat: Space, [A].
 * Force reload: O, [Y].
 * Quit: Ctrl + W, [Select].

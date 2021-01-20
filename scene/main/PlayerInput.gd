@@ -53,6 +53,9 @@ func _unhandled_input(event: InputEvent) -> void:
 		get_node(RELOAD_GAME).reload()
 		return
 
+	if _is_copy_seed_input(event):
+		OS.set_clipboard(_ref_RandomNumber.get_rng_seed() as String)
+
 	if _end_game:
 		if _is_reload_input(event):
 			get_node(RELOAD_GAME).reload()
@@ -137,6 +140,10 @@ func _is_move_input(event: InputEvent) -> bool:
 			return true
 	_direction = ""
 	return false
+
+
+func _is_copy_seed_input(event: InputEvent) -> bool:
+	return event.is_action_pressed(_new_InputTag.COPY_SEED)
 
 
 func _handle_move_input() -> void:

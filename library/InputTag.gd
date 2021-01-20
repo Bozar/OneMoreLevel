@@ -7,6 +7,7 @@ const WAIT: String = "wait"
 const RELOAD: String = "reload"
 const QUIT: String = "quit"
 const HELP: String = "help"
+const COPY_SEED: String = "copy_seed"
 
 const INIT_WORLD: String = "init_world"
 const FORCE_RELOAD: String = "force_reload"

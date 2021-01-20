@@ -13,6 +13,7 @@ Godot engine natively supports keyboards and gamepads (Xbox, DualShock and Ninte
 * Move: Arrow keys, Vi keys, ASDW, [Direction pad].
 * Wait: Space, Z, Period (.), [A].
 * Help: Esc, Slash (/), [B].
+* Copy RNG seed: Ctrl + C, Ctrl + Y.
 * Reload after defeat: Space, [A].
 * Force reload: O, [Y].
 * Quit: Ctrl + W, [Select].
