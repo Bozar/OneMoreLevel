@@ -55,3 +55,9 @@ func merge(source_array: Array, merge_into_left: Array) -> void:
 	source_array.resize(source_size + merge_size)
 	for i in range(merge_size):
 		source_array[i + source_size] = merge_into_left[i]
+
+
+func reverse_key_value_in_dict(source_dict: Dictionary,
+		reverse_dict: Dictionary) -> void:
+	for i in source_dict.keys():
+		reverse_dict[source_dict[i]] = i
