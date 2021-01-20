@@ -35,13 +35,11 @@ func set_rng_seed(_rng_seed: int) -> void:
 
 func _on_GameSetting_setting_loaded() -> void:
 	# _rng.seed = 123
-	var set_seed: int = _ref_GameSetting.get_rng_seed()
+	_init_seed = _ref_GameSetting.get_rng_seed()
 
-	if set_seed > 0:
-		_rng.seed = set_seed
-	else:
+	while _init_seed <= 0:
 		_rng.randomize()
-		_rng.seed = _rng.randi()
+		_init_seed = _rng.randi()
 
-	_init_seed = _rng.seed
-	print("seed: {0}".format([_rng.seed]))
+	_rng.seed = _init_seed
+	print("seed: {0}".format([_init_seed]))
