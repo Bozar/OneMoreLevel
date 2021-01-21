@@ -3,6 +3,7 @@ extends "res://library/init/WorldTemplate.gd"
 
 var _spr_PCBalloon := preload("res://sprite/PCBalloon.tscn")
 var _spr_Treasure := preload("res://sprite/Treasure.tscn")
+var _spr_Arrow := preload("res://sprite/Arrow.tscn")
 
 var _new_BalloonData := preload("res://library/npc_data/BalloonData.gd")
 
@@ -12,14 +13,37 @@ func _init(parent_node: Node2D).(parent_node) -> void:
 
 
 func get_blueprint() -> Array:
+	var valid_position: Array = _get_zone_coord()
+	var pc_index: int
+	var sprite_position: Array
+
+	_build_indicator()
+	_build_floor()
+
+	pc_index = _ref_RandomNumber.get_int(0, valid_position.size())
+	for i in range(0, valid_position.size()):
+		sprite_position = _get_position(
+			valid_position[i][0],
+			valid_position[i][1],
+			valid_position[i][2],
+			valid_position[i][3]
+		)
+		if i == pc_index:
+			_build_pc(sprite_position[0], sprite_position[1])
+		else:
+			_build_wall_beacon(sprite_position[0], sprite_position[1])
+
+	_build_single_wall(0, 0)
+
+	return _blueprint
+
+
+func _get_zone_coord() -> Array:
 	var width: int = floor(_new_DungeonSize.MAX_X / 3.0) as int
 	var middle_y: int = _new_DungeonSize.CENTER_Y
 	var bottom_y: int = _new_DungeonSize.MAX_Y
 	var left_top: int = 1
 	var right_bottom: int = 3
-	var pc_index: int
-	var sprite_position: Array
-
 	var valid_position: Array = [
 		[
 			left_top, width - right_bottom,
@@ -47,32 +71,50 @@ func get_blueprint() -> Array:
 		],
 	]
 
-	pc_index = _ref_RandomNumber.get_int(0, valid_position.size())
-	for i in range(0, valid_position.size()):
-		sprite_position = _get_position(
-			valid_position[i][0],
-			valid_position[i][1],
-			valid_position[i][2],
-			valid_position[i][3]
-		)
-		if i == pc_index:
-			_add_to_blueprint(_spr_PCBalloon,
-					_new_MainGroupTag.ACTOR, _new_SubGroupTag.PC,
-					sprite_position[0], sprite_position[1])
-			_occupy_position(sprite_position[0], sprite_position[1])
-		else:
-			_build_wall_beacon(sprite_position[0], sprite_position[1])
-
-	_build_single_wall(0, 0)
-
-	return _blueprint
+	return valid_position
 
 
 func _get_position(min_x: int, max_x: int, min_y: int, max_y: int) -> Array:
-	var x: int = _ref_RandomNumber.get_int(min_x, max_x)
-	var y: int = _ref_RandomNumber.get_int(min_y, max_y)
+	var x: int
+	var y: int
 
+	while true:
+		x = _ref_RandomNumber.get_int(min_x, max_x)
+		y = _ref_RandomNumber.get_int(min_y, max_y)
+		if not _is_occupied(x, y):
+			break
 	return [x, y]
+
+
+func _build_indicator() -> void:
+	for x in range(2):
+		_add_to_blueprint(_spr_Arrow,
+				_new_MainGroupTag.GROUND, _new_SubGroupTag.ARROW, x, 0)
+		_occupy_position(x, 0)
+	for y in range(1, 3):
+		_add_to_blueprint(_spr_Arrow,
+				_new_MainGroupTag.GROUND, _new_SubGroupTag.ARROW, 0, y)
+		_occupy_position(0, y)
+
+
+func _init_floor() -> void:
+	pass
+
+
+func _build_floor() -> void:
+	for i in range(_new_DungeonSize.MAX_X):
+		for j in range(_new_DungeonSize.MAX_Y):
+			if _is_occupied(i, j):
+				continue
+			_add_to_blueprint(_spr_Floor,
+					_new_MainGroupTag.GROUND, _new_SubGroupTag.FLOOR,
+					i, j)
+
+
+func _build_pc(x: int, y: int) -> void:
+	_add_to_blueprint(_spr_PCBalloon,
+			_new_MainGroupTag.ACTOR, _new_SubGroupTag.PC, x, y)
+	_occupy_position(x, y)
 
 
 func _build_wall_beacon(x: int, y: int) -> void:
