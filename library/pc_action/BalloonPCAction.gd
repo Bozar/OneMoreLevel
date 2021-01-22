@@ -99,9 +99,18 @@ func _reach_destination(x: int, y: int) -> void:
 
 
 func _bounce_off(pc_x: int, pc_y: int, wall_x: int, wall_y: int) -> void:
+	var wall: Sprite = _ref_DungeonBoard.get_sprite(_new_MainGroupTag.BUILDING,
+			wall_x, wall_y)
 	var new_position: Array = _new_CoordCalculator.get_mirror_image(
 			wall_x, wall_y, pc_x, pc_y, true)
 	new_position = _try_move_over_border(new_position)
+
+	if _ref_ObjectData.verify_state(wall, _new_ObjectStateTag.ACTIVE):
+		_ref_RemoveObject.remove(_new_MainGroupTag.BUILDING, wall_x, wall_y)
+		_ref_CountDown.add_count(_new_BalloonData.MINOR_RESTORE_TURN)
+	else:
+		_ref_ObjectData.set_state(wall, _new_ObjectStateTag.ACTIVE)
+		_ref_SwitchSprite.switch_sprite(wall, _new_SpriteTypeTag.ACTIVE)
 
 	if _ref_DungeonBoard.has_sprite(_new_MainGroupTag.BUILDING,
 			new_position[0], new_position[1]):
