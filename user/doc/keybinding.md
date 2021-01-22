@@ -4,11 +4,16 @@
 
 One More Level is made with Godot engine, which natively supports keyboards and gamepads (Xbox, DualShock and Nintendo). Xbox buttons are shown in square brackets below.
 
+General gameplay:
+
 * Move: Arrow keys, Vi keys, ASDW, [Direction pad].
 * Wait: Space, Z, Period (.), [A].
 * Help: Esc, Slash (/), [B].
 * Reload after defeat: Space, [A].
 * Quit: Ctrl + W, [Select].
+
+Function keys:
+
 * Force reload: O, [Y].
 * Replay dungeon: R, [X].
 * Copy RNG seed: Ctrl + C, Ctrl + Y.
