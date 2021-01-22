@@ -28,12 +28,11 @@ Following keys are available only in help screen.
 
 * Move down: Down, J, S, [Direction pad down].
 * Move up: Up, K, W, [Direction pad up].
-* Page down: PgDn, Space, F, N.
-* Page up: PgUp, B, P.
-* Scroll to top: Home, G.
-* Scroll to bottom: End, Shift + G.
+* Page down: PgDn, Space, F, N, [RB].
+* Page up: PgUp, B, P, [LB].
+* Scroll to bottom: End, Shift + G, [RT].
+* Scroll to top: Home, G, [LT].
 * Exit help: Esc, Slash (/), [B].
-* Switch text: Enter, [A].
 * Switch to next help: Enter, Right, L, D, [A], [Direction pad right].
 * Switch to previous help: Left, H, A, [Direction pad left].
 
