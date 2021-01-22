@@ -5,6 +5,7 @@ const MOVE_DOWN: String = "move_down"
 const WAIT: String = "wait"
 
 const RELOAD: String = "reload"
+const REPLAY_DUNGEON: String = "replay_dungeon"
 const QUIT: String = "quit"
 const HELP: String = "help"
 const COPY_SEED: String = "copy_seed"

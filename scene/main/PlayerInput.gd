@@ -53,6 +53,11 @@ func _unhandled_input(event: InputEvent) -> void:
 		get_node(RELOAD_GAME).reload()
 		return
 
+	if _is_replay_dungeon_input(event):
+		_ref_GameSetting.save_setting()
+		get_node(RELOAD_GAME).reload()
+		return
+
 	if _is_copy_seed_input(event):
 		OS.set_clipboard(_ref_RandomNumber.get_rng_seed() as String)
 
@@ -144,6 +149,10 @@ func _is_move_input(event: InputEvent) -> bool:
 
 func _is_copy_seed_input(event: InputEvent) -> bool:
 	return event.is_action_pressed(_new_InputTag.COPY_SEED)
+
+
+func _is_replay_dungeon_input(event: InputEvent) -> bool:
+	return event.is_action_pressed(_new_InputTag.REPLAY_DUNGEON)
 
 
 func _handle_move_input() -> void:

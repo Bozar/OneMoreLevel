@@ -3,6 +3,7 @@ class_name Game_GameSetting
 
 
 signal setting_loaded()
+signal setting_saved(save_data)
 
 const WIZARD: String = "wizard_mode"
 const SEED: String = "rng_seed"
@@ -11,6 +12,9 @@ const EXCLUDE_WORLD: String = "exclude_world"
 
 const EXE_PATH: String = "data/setting.json"
 const RES_PATH: String = "res://bin/data/setting.json"
+
+const TRANSFER_SCENE: String = "res://scene/transfer_data/TransferData.tscn"
+const TRANSFER_NODE: String = "/root/TransferData"
 
 var _new_WorldTag := preload("res://library/WorldTag.gd").new()
 
@@ -25,6 +29,7 @@ func load_setting() -> void:
 	var load_path: String = ""
 	var setting_data: Dictionary
 	var __
+	var transfer: Game_TransferData
 
 	for i in [EXE_PATH, RES_PATH]:
 		if setting_file.file_exists(i):
@@ -42,7 +47,22 @@ func load_setting() -> void:
 	_world_tag = _set_world_tag(setting_data)
 	_exclude_world = _set_exclude_world(setting_data)
 
+	if get_tree().root.has_node(TRANSFER_NODE):
+		transfer = get_tree().root.get_node(TRANSFER_NODE)
+		_rng_seed = transfer.rng_seed
+		_world_tag = transfer.world_tag
+
+		get_tree().root.remove_child(transfer)
+		transfer.queue_free()
+
 	emit_signal("setting_loaded")
+
+
+func save_setting() -> void:
+	var transfer: Game_TransferData = load(TRANSFER_SCENE).instance()
+
+	emit_signal("setting_saved", transfer)
+	get_tree().root.add_child(transfer)
 
 
 func get_wizard_mode() -> bool:

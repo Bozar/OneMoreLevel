@@ -58,6 +58,11 @@ const SIGNAL_BIND: Array = [
 		RANDOM,
 	],
 	[
+		"setting_saved", "_on_GameSetting_setting_saved",
+		GAME_SETTING,
+		RANDOM, INIT_WORLD,
+	],
+	[
 		"screen_switched", "_on_SwitchScreen_screen_switched",
 		SWITCH_SCREEN,
 		PLAYER_INPUT, CREATE_OBJECT, SIDEBAR_GUI, HELP_INPUT, HELP_GUI,

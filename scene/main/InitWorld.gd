@@ -26,6 +26,7 @@ var _new_WorldTag := preload("res://library/WorldTag.gd").new()
 var _new_InitWorldData := preload("res://library/InitWorldData.gd").new()
 var _new_ArrayHelper := preload("res://library/ArrayHelper.gd").new()
 
+var _world_tag: String
 var _world_template: Game_WorldTemplate
 
 
@@ -49,10 +50,13 @@ func init_world() -> void:
 	_ref_Schedule.init_schedule()
 
 
+func _on_GameSetting_setting_saved(save_data: Game_TransferData) -> void:
+	save_data.world_tag = _world_tag
+
+
 func _get_world() -> Game_WorldTemplate:
 	var full_tag: Array = _new_WorldTag.get_full_world_tag()
 	var exclude_world: Array = _ref_GameSetting.get_exclude_world()
-	var world_tag: String = _ref_GameSetting.get_world_tag()
 
 	_new_ArrayHelper.filter_element(full_tag, self, "_filter_get_world",
 			[exclude_world])
@@ -60,11 +64,12 @@ func _get_world() -> Game_WorldTemplate:
 		full_tag = [_new_WorldTag.DEMO]
 	_new_ArrayHelper.random_picker(full_tag, 1, _ref_RandomNumber)
 
-	if world_tag == "":
-		world_tag = full_tag[0]
-	emit_signal("world_selected", world_tag)
+	_world_tag = _ref_GameSetting.get_world_tag()
+	if _world_tag == "":
+		_world_tag = full_tag[0]
+	emit_signal("world_selected", _world_tag)
 
-	return _new_InitWorldData.get_world_template(world_tag).new(self)
+	return _new_InitWorldData.get_world_template(_world_tag).new(self)
 
 
 func _init_indicator(x: int, y: int) -> void:
