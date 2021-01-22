@@ -2,14 +2,13 @@ extends ScrollContainer
 class_name Game_HelpVScroll
 
 
+const SCROLL_LINE: int = 60
+const SCROLL_PAGE: int = 300
 const DUNGEON: String = "HelpHBox/Dungeon"
 
 var _new_Palette := preload("res://library/Palette.gd").new()
 var _new_ScreenTag: = preload("res://library/ScreenTag.gd").new()
 var _new_InitWorldData := preload("res://library/InitWorldData.gd").new()
-
-var _scroll_line: int = 60
-var _scroll_page: int = 300
 
 var _help_text: Array
 var _help_index: int
@@ -24,14 +23,14 @@ func slide_scroll_bar(scroll_line: bool, scroll_down: bool) -> void:
 
 	if scroll_line:
 		if scroll_down:
-			distance = _scroll_line
+			distance = SCROLL_LINE
 		else:
-			distance = -_scroll_line
+			distance = -SCROLL_LINE
 	else:
 		if scroll_down:
-			distance = _scroll_page
+			distance = SCROLL_PAGE
 		else:
-			distance = -_scroll_page
+			distance = -SCROLL_PAGE
 
 	scroll_vertical += distance
 

@@ -1,4 +1,4 @@
-extends Node2D
+extends "res://library/InputTemplate.gd"
 class_name Game_PlayerInput
 
 
@@ -38,52 +38,45 @@ var _move_inputs: Array = [
 ]
 
 
-func _ready() -> void:
-	set_process_unhandled_input(false)
-
-
 func _unhandled_input(event: InputEvent) -> void:
+	var may_have_conflict: bool = true
+
 	_pc_action.reset_state()
 
-	if _is_quit_input(event):
+	if _verify_input(event, _new_InputTag.QUIT):
 		get_tree().quit()
-		return
-
-	if _is_force_reload_input(event):
+	elif _verify_input(event, _new_InputTag.FORCE_RELOAD):
 		get_node(RELOAD_GAME).reload()
-		return
-
-	if _is_replay_dungeon_input(event):
+	elif _verify_input(event, _new_InputTag.REPLAY_DUNGEON):
 		_ref_GameSetting.save_setting()
 		get_node(RELOAD_GAME).reload()
-		return
-
-	if _is_copy_seed_input(event):
+	elif _verify_input(event, _new_InputTag.COPY_SEED):
 		OS.set_clipboard(_ref_RandomNumber.get_rng_seed() as String)
-
-	if _end_game:
-		if _is_reload_input(event):
+	elif _verify_input(event, _new_InputTag.HELP):
+		_ref_SwitchScreen.switch_to_screen(_new_ScreenTag.HELP)
+	elif _end_game:
+		if _verify_input(event, _new_InputTag.RELOAD):
 			get_node(RELOAD_GAME).reload()
+	else:
+		may_have_conflict = false
+	if may_have_conflict:
 		return
 
 	if _ref_GameSetting.get_wizard_mode():
-		if _is_add_turn_input(event):
+		if _verify_input(event, _new_InputTag.ADD_TURN):
 			_ref_CountDown.add_count(1)
-		elif _is_fully_restore_turn_input(event):
+		elif _verify_input(event, _new_InputTag.FULLY_RESTORE_TURN):
 			_ref_CountDown.add_count(99)
 
 	_pc_action.set_source_position()
 	if _is_move_input(event):
 		_handle_move_input()
-	elif _is_wait_input(event):
+	elif _verify_input(event, _new_InputTag.WAIT):
 		_pc_action.wait()
-	elif _is_help_input(event):
-		_ref_SwitchScreen.switch_to_screen(_new_ScreenTag.HELP)
 
 	# Do not end PC's turn if game ends.
 	if _end_game:
 		return
-
 	if _pc_action.end_turn:
 		set_process_unhandled_input(false)
 		_ref_Schedule.end_turn()
@@ -117,25 +110,12 @@ func _on_EndGame_game_is_over(win: bool) -> void:
 
 	if not win:
 		pc.modulate = _new_Palette.SHADOW
-
 	_end_game = true
 	set_process_unhandled_input(true)
 
 
 func _on_SwitchScreen_screen_switched(screen_tag: String) -> void:
 	set_process_unhandled_input(screen_tag == _new_ScreenTag.MAIN)
-
-
-func _is_reload_input(event: InputEvent) -> bool:
-	return event.is_action_pressed(_new_InputTag.RELOAD)
-
-
-func _is_force_reload_input(event: InputEvent) -> bool:
-	return event.is_action_pressed(_new_InputTag.FORCE_RELOAD)
-
-
-func _is_wait_input(event: InputEvent) -> bool:
-	return event.is_action_pressed(_new_InputTag.WAIT)
 
 
 func _is_move_input(event: InputEvent) -> bool:
@@ -145,14 +125,6 @@ func _is_move_input(event: InputEvent) -> bool:
 			return true
 	_direction = ""
 	return false
-
-
-func _is_copy_seed_input(event: InputEvent) -> bool:
-	return event.is_action_pressed(_new_InputTag.COPY_SEED)
-
-
-func _is_replay_dungeon_input(event: InputEvent) -> bool:
-	return event.is_action_pressed(_new_InputTag.REPLAY_DUNGEON)
 
 
 func _handle_move_input() -> void:
@@ -168,19 +140,3 @@ func _handle_move_input() -> void:
 		_pc_action.interact_with_trap()
 	else:
 		_pc_action.move()
-
-
-func _is_add_turn_input(event: InputEvent) -> bool:
-	return event.is_action_pressed(_new_InputTag.ADD_TURN)
-
-
-func _is_fully_restore_turn_input(event: InputEvent) -> bool:
-	return event.is_action_pressed(_new_InputTag.FULLY_RESTORE_TURN)
-
-
-func _is_quit_input(event: InputEvent) -> bool:
-	return event.is_action_pressed(_new_InputTag.QUIT)
-
-
-func _is_help_input(event: InputEvent) -> bool:
-	return event.is_action_pressed(_new_InputTag.HELP)

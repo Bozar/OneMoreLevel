@@ -31,6 +31,7 @@ const SIGNAL_BIND: Array = [
 		"world_selected", "_on_InitWorld_world_selected",
 		INIT_WORLD,
 		PLAYER_INPUT, ENEMY_AI, SIDEBAR_GUI, GAME_PROGRESS, HELP_GUI,
+		HELP_INPUT,
 	],
 	[
 		"turn_started", "_on_Schedule_turn_started",
