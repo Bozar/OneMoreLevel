@@ -91,6 +91,8 @@ func _get_seed() -> String:
 
 
 func _get_version() -> String:
-	if _ref_GameSetting.get_wizard_mode():
+	if _ref_GameSetting.get_json_parse_error():
+		return _new_SidebarText.VERSION.format([_new_SidebarText.PARSE_ERROR])
+	elif _ref_GameSetting.get_wizard_mode():
 		return _new_SidebarText.VERSION.format([_new_SidebarText.WIZARD])
 	return _new_SidebarText.VERSION.format([""])

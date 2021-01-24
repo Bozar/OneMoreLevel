@@ -22,11 +22,13 @@ var _wizard_mode: bool
 var _rng_seed: int
 var _world_tag: String
 var _exclude_world: Array
+var _json_parse_error: bool
 
 
 func load_setting() -> void:
 	var setting_file: File = File.new()
 	var load_path: String = ""
+	var parse_result: JSONParseResult
 	var setting_data: Dictionary
 	var __
 	var transfer: Game_TransferData
@@ -39,7 +41,13 @@ func load_setting() -> void:
 		setting_data = {}
 	else:
 		__ = setting_file.open(load_path, File.READ)
-		setting_data = JSON.parse(setting_file.get_as_text()).get_result()
+		parse_result = JSON.parse(setting_file.get_as_text())
+		if parse_result.error == OK:
+			setting_data = parse_result.get_result()
+			_json_parse_error = false
+		else:
+			setting_data = {}
+			_json_parse_error = true
 		setting_file.close()
 
 	_wizard_mode = _set_wizard_mode(setting_data)
@@ -79,6 +87,10 @@ func get_world_tag() -> String:
 
 func get_exclude_world() -> Array:
 	return _exclude_world
+
+
+func get_json_parse_error() -> bool:
+	return _json_parse_error
 
 
 func _set_wizard_mode(setting) -> bool:
