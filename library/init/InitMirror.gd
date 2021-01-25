@@ -9,9 +9,6 @@ var _spr_Phantom := preload("res://sprite/Phantom.tscn")
 var _new_MirrorData := preload("res://library/npc_data/MirrorData.gd").new()
 var _new_ArrayHelper := preload("res://library/ArrayHelper.gd").new()
 
-var _pc_x: int
-var _pc_y: int
-
 
 func _init(parent_node: Node2D).(parent_node) -> void:
 	pass
@@ -20,7 +17,6 @@ func _init(parent_node: Node2D).(parent_node) -> void:
 func get_blueprint() -> Array:
 	_init_middle_border()
 	_init_wall()
-	_init_reflection()
 	_init_pc()
 	_init_crystal()
 	_init_phantom()
@@ -86,39 +82,44 @@ func _init_wall() -> void:
 		index = _ref_RandomNumber.get_int(0, candidate.size())
 		for j in candidate[index]:
 			_create_mirror(i[0] + j[0], i[1] + j[1])
+			_create_reflection(i[0] + j[0], i[1] + j[1])
 
 
-func _init_reflection() -> void:
-	var mirror: Array
+func _create_reflection(x: int, y: int) -> void:
+	var mirror: Array = _new_CoordCalculator.get_mirror_image(x, y,
+			_new_DungeonSize.CENTER_X, y)
+	_create_mirror(mirror[0], mirror[1])
 
-	for i in range(0, _new_DungeonSize.CENTER_X):
-		for j in range(0, _new_DungeonSize.MAX_Y):
-			if _is_occupied(i, j):
-				mirror = _new_CoordCalculator.get_mirror_image(
-						i, j, _new_DungeonSize.CENTER_X, j)
-				_create_mirror(mirror[0], mirror[1])
+
+func _create_mirror(x: int, y: int) -> void:
+	_add_to_blueprint(_spr_Wall,
+			_new_MainGroupTag.BUILDING, _new_SubGroupTag.WALL,
+			x, y)
+	_occupy_position(x, y)
 
 
 func _init_pc() -> void:
+	var pc_x: int
+	var pc_y: int
+	var mirror: Array
+	var neighbor: Array
+
 	while true:
-		_pc_x = _ref_RandomNumber.get_int(0, _new_DungeonSize.CENTER_X)
-		_pc_y = _ref_RandomNumber.get_int(0, _new_DungeonSize.MAX_Y)
-		if not _is_occupied(_pc_x, _pc_y):
+		pc_x = _ref_RandomNumber.get_int(0, _new_DungeonSize.CENTER_X)
+		pc_y = _ref_RandomNumber.get_int(0, _new_DungeonSize.MAX_Y)
+		if not _is_occupied(pc_x, pc_y):
 			break
 
-	var mirror: Array = _new_CoordCalculator.get_mirror_image(
-			_pc_x, _pc_y, _new_DungeonSize.CENTER_X, _pc_y)
-	var neighbor: Array = \
-			_new_CoordCalculator.get_neighbor(
-					_pc_x, _pc_y,
+	mirror = _new_CoordCalculator.get_mirror_image(pc_x, pc_y,
+			_new_DungeonSize.CENTER_X, pc_y)
+	neighbor = _new_CoordCalculator.get_neighbor(pc_x, pc_y,
 					_new_MirrorData.CRYSTAL_DISTANCE, true) \
-			+ _new_CoordCalculator.get_neighbor(
-					mirror[0], mirror[1],
+			+ _new_CoordCalculator.get_neighbor(mirror[0], mirror[1],
 					_new_MirrorData.CRYSTAL_DISTANCE, true)
 
 	_add_to_blueprint(_spr_PC,
 			_new_MainGroupTag.ACTOR, _new_SubGroupTag.PC,
-			_pc_x, _pc_y)
+			pc_x, pc_y)
 	_add_to_blueprint(_spr_PCMirrorImage,
 			_new_MainGroupTag.ACTOR, _new_SubGroupTag.PC_MIRROR_IMAGE,
 			mirror[0], mirror[1])
@@ -163,13 +164,6 @@ func _init_phantom() -> void:
 
 		_create_phantom(x, y)
 		count_phantom += 1
-
-
-func _create_mirror(x: int, y: int) -> void:
-	_add_to_blueprint(_spr_Wall,
-			_new_MainGroupTag.BUILDING, _new_SubGroupTag.WALL,
-			x, y)
-	_occupy_position(x, y)
 
 
 func _create_phantom(x: int, y: int) -> void:
