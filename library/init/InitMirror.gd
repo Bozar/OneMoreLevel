@@ -7,6 +7,7 @@ var _spr_PCMirrorImage := preload("res://sprite/PCMirrorImage.tscn")
 var _spr_Phantom := preload("res://sprite/Phantom.tscn")
 
 var _new_MirrorData := preload("res://library/npc_data/MirrorData.gd").new()
+var _new_ArrayHelper := preload("res://library/ArrayHelper.gd").new()
 
 var _pc_x: int
 var _pc_y: int
@@ -19,6 +20,7 @@ func _init(parent_node: Node2D).(parent_node) -> void:
 func get_blueprint() -> Array:
 	_init_middle_border()
 	_init_wall()
+	_init_reflection()
 	_init_pc()
 	_init_crystal()
 	_init_phantom()
@@ -52,57 +54,41 @@ func _init_middle_border() -> void:
 
 
 func _init_wall() -> void:
-	var count_wall: int = 0
-	var direction: int
-	var retry: int = 0
+	var valid_x: Array = []
+	var valid_y: Array = []
+	var valid_coord: Array = []
+	var block_size: int = 4
+	var max_mirror: int = 5
+	var index: int
+	var candidate: Array = [
+		[[1, 1], [1, 2]],
+		[[2, 1], [2, 2]],
+		[[1, 1], [2, 1]],
+		[[1, 2], [2, 2]],
+	]
 
-	while count_wall < _new_MirrorData.MAX_MIRROR:
-		if retry > 999:
+	for i in range(1, _new_DungeonSize.CENTER_X, block_size):
+		if i + block_size < _new_DungeonSize.CENTER_X:
+			valid_x.push_back(i)
+		else:
 			break
-		retry += 1
+	for j in range(1, _new_DungeonSize.MAX_Y, block_size):
+		if j + block_size < _new_DungeonSize.MAX_Y:
+			valid_y.push_back(j)
+		else:
+			break
+	for i in valid_x:
+		for j in valid_y:
+			valid_coord.push_back([i, j])
+	_new_ArrayHelper.random_picker(valid_coord, max_mirror, _ref_RandomNumber)
 
-		direction = _ref_RandomNumber.get_int(0, 2)
-		if direction == 0:
-			if _try_create_horizonal_wall():
-				count_wall += 1
-		elif direction == 1:
-			if _try_create_vertical_wall():
-				count_wall += 1
-
-	_create_reflection()
-
-
-func _try_create_horizonal_wall() -> bool:
-	var x: int = _ref_RandomNumber.get_int(2, _new_DungeonSize.CENTER_X - 3)
-	var y: int = _ref_RandomNumber.get_int(2, _new_DungeonSize.MAX_Y - 2)
-	var neighbor: Array = _new_CoordCalculator.get_block(x - 2, y - 2, 6, 5)
-	var wall: Array = [[x, y], [x + 1, y]]
-
-	return _try_create_wall(neighbor, wall)
+	for i in valid_coord:
+		index = _ref_RandomNumber.get_int(0, candidate.size())
+		for j in candidate[index]:
+			_create_mirror(i[0] + j[0], i[1] + j[1])
 
 
-func _try_create_vertical_wall() -> bool:
-	var x: int = _ref_RandomNumber.get_int(2, _new_DungeonSize.CENTER_X - 2)
-	var y: int = _ref_RandomNumber.get_int(2, _new_DungeonSize.MAX_Y - 3)
-	var neighbor: Array = _new_CoordCalculator.get_block(x - 2, y - 2, 5, 6)
-	var wall: Array = [[x, y], [x, y + 1]]
-
-	return _try_create_wall(neighbor, wall)
-
-
-func _try_create_wall(neighbor: Array, wall: Array) -> bool:
-	for i in neighbor:
-		if _is_occupied(i[0], i[1]):
-			return false
-	for i in wall:
-		_add_to_blueprint(_spr_Wall,
-				_new_MainGroupTag.BUILDING, _new_SubGroupTag.WALL,
-				i[0], i[1])
-		_occupy_position(i[0], i[1])
-	return true
-
-
-func _create_reflection() -> void:
+func _init_reflection() -> void:
 	var mirror: Array
 
 	for i in range(0, _new_DungeonSize.CENTER_X):
@@ -110,10 +96,7 @@ func _create_reflection() -> void:
 			if _is_occupied(i, j):
 				mirror = _new_CoordCalculator.get_mirror_image(
 						i, j, _new_DungeonSize.CENTER_X, j)
-				_add_to_blueprint(_spr_Wall,
-						_new_MainGroupTag.BUILDING, _new_SubGroupTag.WALL,
-						mirror[0], mirror[1])
-				_occupy_position(mirror[0], mirror[1])
+				_create_mirror(mirror[0], mirror[1])
 
 
 func _init_pc() -> void:
@@ -180,6 +163,13 @@ func _init_phantom() -> void:
 
 		_create_phantom(x, y)
 		count_phantom += 1
+
+
+func _create_mirror(x: int, y: int) -> void:
+	_add_to_blueprint(_spr_Wall,
+			_new_MainGroupTag.BUILDING, _new_SubGroupTag.WALL,
+			x, y)
+	_occupy_position(x, y)
 
 
 func _create_phantom(x: int, y: int) -> void:
