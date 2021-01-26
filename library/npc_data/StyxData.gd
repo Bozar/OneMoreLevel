@@ -4,6 +4,5 @@ const LIGHTHOUSE: int = 2
 const HARBOR: int = 1
 const RESTORE_TURN: int = 6
 
-const RENEW_MAP: int = 3
 const FLOW_LENGTH: int = 4
 const MAX_FLOW: int = 20

@@ -4,7 +4,7 @@ extends "res://library/game_progress/ProgressTemplate.gd"
 var _new_StyxData := preload("res://library/npc_data/StyxData.gd").new()
 
 var _direction_sprite_state: Dictionary
-var _countdown: int = _new_StyxData.RENEW_MAP
+var _init_world: bool = true
 
 
 func _init(parent_node: Node2D).(parent_node) -> void:
@@ -17,49 +17,53 @@ func _init(parent_node: Node2D).(parent_node) -> void:
 
 
 func renew_world(pc_x: int, pc_y: int) -> void:
+	var pc: Sprite = _ref_DungeonBoard.get_pc()
+
+	# NOTE: Enable _cast_light() later.
+	# _cast_light(pc_x, pc_y)
+
+	if _init_world:
+		_init_world = false
+	elif _ref_ObjectData.verify_state(pc, _new_ObjectStateTag.ACTIVE):
+		_ref_ObjectData.set_state(pc, _new_ObjectStateTag.DEFAULT)
+	else:
+		return
 	_change_water_flow(pc_x, pc_y)
-	_cast_light(pc_x, pc_y)
 
 
 func _change_water_flow(pc_x: int, pc_y: int) -> void:
 	var flow_path: Array = []
 	var select_index: int
 
-	if _countdown == _new_StyxData.RENEW_MAP:
-		_countdown = 0
-		_shuffle_rng(pc_x, pc_y)
-		_randomize_ground()
+	_shuffle_rng(pc_x, pc_y)
+	_randomize_ground()
 
-		select_index = _get_select_index()
-		for _i in range(_new_StyxData.MAX_FLOW):
-			flow_path.push_back(_get_flow_path(select_index))
-		for i in flow_path:
-			_set_flow_path(i, select_index)
-	_countdown += 1
+	select_index = _get_select_index()
+	for _i in range(_new_StyxData.MAX_FLOW):
+		flow_path.push_back(_get_flow_path(select_index))
+	for i in flow_path:
+		_set_flow_path(i, select_index)
 
 
 func _cast_light(pc_x: int, pc_y: int) -> void:
-	var ground: Sprite
+	var ground: Array = _ref_DungeonBoard.get_sprites_by_tag(
+			_new_MainGroupTag.GROUND)
+	var pos: Array
 	var distance: int
 	var new_color: String
 
-	for i in range(_new_DungeonSize.MAX_X):
-		for j in range(_new_DungeonSize.MAX_Y):
-			ground = _ref_DungeonBoard.get_sprite(
-					_new_MainGroupTag.GROUND, i, j)
-			if ground == null:
-				continue
-
-			distance = _new_CoordCalculator.get_range(
-				i, j, pc_x, pc_y)
-			if distance > _new_StyxData.PC_MAX_SIGHT:
-				new_color = _new_Palette.BACKGROUND
-			elif (distance > _new_StyxData.PC_SIGHT) or (distance == 0):
-				new_color = _new_Palette.get_default_color(
-						_new_MainGroupTag.GROUND)
-			else:
-				new_color = _new_Palette.SHADOW
-			ground.modulate = new_color
+	for i in ground:
+		pos = _new_ConvertCoord.vector_to_array(i.position)
+		distance = _new_CoordCalculator.get_range(
+			pos[0], pos[1], pc_x, pc_y)
+		if distance > _new_StyxData.PC_MAX_SIGHT:
+			new_color = _new_Palette.BACKGROUND
+		elif (distance > _new_StyxData.PC_SIGHT) or (distance == 0):
+			new_color = _new_Palette.get_default_color(
+					_new_MainGroupTag.GROUND)
+		else:
+			new_color = _new_Palette.SHADOW
+		i.modulate = new_color
 
 
 func _shuffle_rng(x: int, y: int) -> void:

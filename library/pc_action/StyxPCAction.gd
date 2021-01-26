@@ -49,6 +49,13 @@ func interact_with_building() -> void:
 		end_turn = true
 
 
+func wait() -> void:
+	var pc: Sprite = _ref_DungeonBoard.get_pc()
+
+	_ref_ObjectData.set_state(pc, _new_ObjectStateTag.ACTIVE)
+	.wait()
+
+
 func move() -> void:
 	var x: int
 	var y: int
