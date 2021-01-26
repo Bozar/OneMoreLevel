@@ -40,6 +40,13 @@ func renew_world(pc_x: int, pc_y: int) -> void:
 	_cast_light(pc_x, pc_y)
 
 
+func game_is_over(_win: bool) -> void:
+	var pc: Sprite = _ref_DungeonBoard.get_pc()
+	var pos: Array = _new_ConvertCoord.vector_to_array(pc.position)
+
+	_cast_light(pos[0], pos[1])
+
+
 func _change_water_flow() -> void:
 	var ground: Array = _ref_DungeonBoard.get_sprites_by_tag(
 			_new_MainGroupTag.GROUND)
