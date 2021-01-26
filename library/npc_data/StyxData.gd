@@ -4,5 +4,5 @@ const LIGHTHOUSE: int = 2
 const HARBOR: int = 1
 
 const FLOW_LENGTH: int = 2
-const EXTRA_TURN_COUNTER: int = 4
+const EXTRA_TURN_COUNTER: int = 2
 const EXTRA_TURN: int = -1
