@@ -1,7 +1,9 @@
-# Styx
+# Styx Ferryman
 
 (Press Enter to view key bindings.)
 
-As a ferryman, you need to sail across Styx and bump the harbor (H) at the top right corner before the lantern goes out. Your lantern lasts 24 turns. Every action (move or wait) takes one turn. Restore 5 turns for once by bumping the lighthouse in the center.
+Sail across Styx and reach the harbor (H) at the top right corner in 24 turns. Press arrow keys to move or Space to wait. When the lighthouse (L) at the center turns grey, your next movement costs 2 turns. Otherwise it takes 1 turn to move. Waiting 1 turn refreshes the map and resets the movement counter. [1]
 
-The river flow changes its direction every three turns. You cannot enter a grid that has an opposing arrow. On the other hand, if you move in the same direction as a line of arrows, you can cover a long distance in a single turn.
+You cannot enter a grid that has an opposing arrow. After entering an available grid, the water flow might carry you along to another place.
+
+[1] The movement counter starts from zero and adds by one every time you move. It goes back to zero after reaching three. Waiting also resets it to zero.
