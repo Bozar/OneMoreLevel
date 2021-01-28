@@ -2,7 +2,7 @@
 
 (Press Enter to view key bindings.)
 
-You need to bump and collect 4 quality spices (*) from a living sandworm, but you cannot press Space to wait in desert, which makes the collecting job a little bit harder.
+You need to bump and collect 3 quality spices (*) from a living sandworm, but you cannot press Space to wait in desert, which makes the collecting job a little bit harder.
 
 A sandworm has a head (diamond), a tail (-) and body segments (+). The third, fourth and fifth segment contains spice (?) or quality spice (*). Every sandworm has at most one quality spice. You can only interact with segments that have spices. Other sandworm parts (head, body and tail) act like indestructible walls.
 
@@ -18,7 +18,7 @@ You can survive in desert for at most 24 turns. Every spice and quality spice ex
 
 PC's symbol changes into a rectangular when being adjacent to a sandworm's head. The game ends if the sandworm intends to move into PC's position the next turn.
 
-When your turn starts, if you are surrounded by four solid blocks, the game ends automatically.
+If you are surrounded by four solid blocks when your turn starts, the game ends automatically.
 
     . # .   North (O): Sand wall.
     . @ +   East (X): Sandworm segment.
