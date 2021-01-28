@@ -6,4 +6,4 @@ Sail across Styx and reach the harbor (H) at the top right corner in 24 turns. P
 
 You cannot enter a grid that has an opposing arrow. After entering an available grid, the water flow might carry you along to another place.
 
-[1] The movement counter starts from zero and adds by one every time you move. It goes back to zero after reaching three. Waiting also resets it to zero.
+[1] The movement counter starts from zero and adds by one every time you move. It goes back to zero after reaching three. Waiting also resets it to zero. The counter goes more slowly when PC is on the right side of the dungeon.
