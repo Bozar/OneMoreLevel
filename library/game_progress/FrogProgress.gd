@@ -19,10 +19,17 @@ var _new_ArrayHelper := preload("res://library/ArrayHelper.gd").new()
 var _start_next_wave: bool = true
 var _wave_counter: int = 0
 var _kill_counter: int = 0
+var _wave_to_sprite: Dictionary
 
 
 func _init(parent_node: Node2D).(parent_node) -> void:
-	pass
+	_wave_to_sprite = {
+		1: _new_SpriteTypeTag.ONE,
+		2: _new_SpriteTypeTag.TWO,
+		3: _new_SpriteTypeTag.THREE,
+		4: _new_SpriteTypeTag.FOUR,
+		5: _new_SpriteTypeTag.FIVE,
+	}
 
 
 func renew_world(pc_x: int, pc_y: int) -> void:
@@ -134,23 +141,15 @@ func _refresh_counter() -> void:
 	var x: int = _new_DungeonSize.MAX_X - 1
 	var y: int = _new_DungeonSize.MAX_Y - 1
 	var ground: Sprite
-	var wave_to_sprite: Dictionary = {
-		1: _new_SpriteTypeTag.ONE,
-		2: _new_SpriteTypeTag.TWO,
-		3: _new_SpriteTypeTag.THREE,
-		4: _new_SpriteTypeTag.FOUR,
-	}
 
 	if _wave_counter < 0:
 		return
-
-	if _wave_counter == 0:
+	elif _wave_counter == 0:
 		_ref_RemoveObject.remove(_new_MainGroupTag.GROUND, x, y)
 		_ref_CreateObject.create(_spr_Counter,
 				_new_MainGroupTag.GROUND, _new_SubGroupTag.COUNTER, x, y)
-	else:
-		ground = _ref_DungeonBoard.get_sprite(_new_MainGroupTag.GROUND, x, y)
-		_ref_SwitchSprite.switch_sprite(ground, wave_to_sprite[_wave_counter])
+	ground = _ref_DungeonBoard.get_sprite(_new_MainGroupTag.GROUND, x, y)
+	_ref_SwitchSprite.switch_sprite(ground, _wave_to_sprite[_wave_counter + 1])
 
 
 func _filter_create_frog(source: Array, index: int, opt_arg: Array) -> bool:

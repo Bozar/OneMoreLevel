@@ -53,14 +53,14 @@ If a frog cannot grapple or swallow PC, it moves diagonally to a grid exactly 2 
 
 ## Five Waves of Frogs
 
-Frogs emerge in five waves. There is a counter in the bottom right corner of the map which shows the current wave number. The counter acts as a swamp grid.
+Frogs emerge in five waves. There is a counter in the bottom right corner of the map which shows the current wave number. The counter acts as a land grid and it cannot be submerged.
 
-Wave 0. This is the initial wave. There are 8 frog knights. When 4 of them disappear due to being hit, enter wave 1.
+Wave 1. This is the initial wave. There are 8 frog knights. When 4 of them disappear due to being hit, enter wave 2.
 
-Wave 1. Some land is submerged by swamp. The remaining frog knights disappear. Princess appears the first time. Hit the princess to enter wave 2.
+Wave 2. Some land is submerged by swamp. The remaining frog knights disappear. Princess appears the first time. Hit the princess to enter wave 3.
 
-Wave 2. Once again there are 8 knights. Hit 4 of them to enter wave 3.
+Wave 3. Once again there are 8 knights. Hit 4 of them to enter wave 4.
 
-Wave 3. More land is submerged. The princess reappears. Hit the remaining 4 knights to enter wave 4. If you hit the princess when there are still knights in the dungeon, she reappears somewhere close to PC.
+Wave 4. More land is submerged. The princess reappears. Hit the remaining 4 knights to enter wave 5. If you hit the princess when there are still knights in the dungeon, she reappears somewhere close to PC.
 
-Wave 4. Hit the frog princess to beat the game.
+Wave 5. This is the final wave. Hit the frog princess to beat the game.
