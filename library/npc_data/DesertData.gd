@@ -5,7 +5,7 @@ const SPICE_START: int = 2
 const SPICE_END: int = 5
 
 const CREATE_SPICE: int = 15
-const BONUS_CREATE_SPICE: int = 5
+const BONUS_CREATE_SPICE: int = 10
 const CREATE_ACTIVE_SPICE: int = 20
 
 const HP_TURN: int = 1
