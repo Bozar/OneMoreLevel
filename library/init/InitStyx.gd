@@ -35,18 +35,22 @@ func _init_pc() -> void:
 func _init_building() -> void:
 	var lighthouse_x: int = _new_DungeonSize.CENTER_X
 	var lighthouse_y: int = _new_DungeonSize.CENTER_Y
-	var harbor_x: int = _new_DungeonSize.MAX_X - 2
-	var harbor_y: int = 1
-
-	_set_static_area(lighthouse_x, lighthouse_y, _new_StyxData.LIGHTHOUSE)
-	_set_static_area(harbor_x, harbor_y, _new_StyxData.HARBOR)
+	var harbor: Array = [
+		[1, 1],
+		[_new_DungeonSize.MAX_X - 2, 1],
+		[_new_DungeonSize.MAX_X - 2, _new_DungeonSize.MAX_Y - 2],
+	]
 
 	_add_to_blueprint(_spr_Lighthouse,
 			_new_MainGroupTag.BUILDING, _new_SubGroupTag.LIGHTHOUSE,
 			lighthouse_x, lighthouse_y)
-	_add_to_blueprint(_spr_Harbor,
-			_new_MainGroupTag.BUILDING, _new_SubGroupTag.HARBOR,
-			harbor_x, harbor_y)
+	_set_static_area(lighthouse_x, lighthouse_y, _new_StyxData.LIGHTHOUSE)
+
+	for i in harbor:
+		_add_to_blueprint(_spr_Harbor,
+				_new_MainGroupTag.BUILDING, _new_SubGroupTag.HARBOR,
+				i[0], i[1])
+		_set_static_area(i[0], i[1], _new_StyxData.HARBOR)
 
 
 func _set_static_area(x: int, y: int, max_range: int) -> void:

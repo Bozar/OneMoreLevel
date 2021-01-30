@@ -38,7 +38,7 @@ func wait() -> void:
 
 	_ref_ObjectData.set_state(pc, _new_ObjectStateTag.ACTIVE)
 	_extra_turn_counter = 0
-	_switch_lighthouse_color(-1)
+	_switch_lighthouse_color()
 
 	.wait()
 
@@ -49,7 +49,6 @@ func move() -> void:
 	var source_direction: int = _input_to_int[_input_direction]
 	var target_direction: int = _get_ground_direction(
 			_target_position[0], _target_position[1])
-	var max_turn: int
 
 	if _is_opposite_direction(source_direction, target_direction):
 		end_turn = false
@@ -69,17 +68,12 @@ func move() -> void:
 	_ref_DungeonBoard.move_sprite(_new_MainGroupTag.ACTOR,
 			_source_position, [x, y])
 
-	if _source_position[0] > _new_DungeonSize.CENTER_X:
-		max_turn = _new_StyxData.RIGHT_COUNTER
-	else:
-		max_turn = _new_StyxData.LEFT_COUNTER
-	_try_reduce_extra_turn(max_turn)
-	_switch_lighthouse_color(max_turn)
-
 	if _pc_is_near_harbor(x, y):
 		_ref_EndGame.player_win()
 		end_turn = false
 	else:
+		_try_reduce_extra_turn()
+		_switch_lighthouse_color()
 		end_turn = true
 
 
@@ -98,20 +92,20 @@ func _get_ground_direction(x: int, y: int) -> int:
 	return _state_to_int[_ref_ObjectData.get_state(ground)]
 
 
-func _try_reduce_extra_turn(max_turn: int) -> void:
-	if _extra_turn_counter == max_turn:
+func _try_reduce_extra_turn() -> void:
+	if _extra_turn_counter < _new_StyxData.EXTRA_TURN_COUNTER:
+		_extra_turn_counter += 1
+	else:
 		_ref_CountDown.add_count(_new_StyxData.EXTRA_TURN)
 		_extra_turn_counter = 0
-	else:
-		_extra_turn_counter += 1
 
 
-func _switch_lighthouse_color(max_turn: int) -> void:
+func _switch_lighthouse_color() -> void:
 	var lighthouse: Sprite = _ref_DungeonBoard.get_sprite(
 			_new_MainGroupTag.BUILDING,
 			_new_DungeonSize.CENTER_X, _new_DungeonSize.CENTER_Y)
 
-	if _extra_turn_counter == max_turn:
+	if _extra_turn_counter == _new_StyxData.EXTRA_TURN_COUNTER:
 		lighthouse.modulate = _new_Palette.DARK
 	else:
 		lighthouse.modulate = _new_Palette.get_default_color(
