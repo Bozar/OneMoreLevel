@@ -11,7 +11,7 @@ const WORLD_TAG: String = "world_tag"
 const EXCLUDE_WORLD: String = "exclude_world"
 
 const EXE_PATH: String = "data/setting.json"
-const RES_PATH: String = "res://bin/data/setting.json"
+const RES_PATH: String = "res://bin/setting.json"
 
 const TRANSFER_SCENE: String = "res://scene/transfer_data/TransferData.tscn"
 const TRANSFER_NODE: String = "/root/TransferData"
