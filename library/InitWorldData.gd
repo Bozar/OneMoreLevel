@@ -1,96 +1,51 @@
-const InitDemo := preload("res://library/init/InitDemo.gd")
-const InitKnight := preload("res://library/init/InitKnight.gd")
-const InitDesert := preload("res://library/init/InitDesert.gd")
-const InitStyx := preload("res://library/init/InitStyx.gd")
-const InitMirror := preload("res://library/init/InitMirror.gd")
-const InitBalloon := preload("res://library/init/InitBalloon.gd")
-const InitFrog := preload("res://library/init/InitFrog.gd")
+const PLACEHOLDER: String = "%str%"
 
-const DemoPCAction := preload("res://library/pc_action/DemoPCAction.gd")
-const KnightPCAction := preload("res://library/pc_action/KnightPCAction.gd")
-const DesertPCAction := preload("res://library/pc_action/DesertPCAction.gd")
-const StyxPCAction := preload("res://library/pc_action/StyxPCAction.gd")
-const MirrorPCAction := preload("res://library/pc_action/MirrorPCAction.gd")
-const BalloonPCAction := preload("res://library/pc_action/BalloonPCAction.gd")
-const FrogPCAction := preload("res://library/pc_action/FrogPCAction.gd")
+const INIT_PATH: String = "res://library/init/Init%str%.gd"
+const ACTION_PATH: String = "res://library/pc_action/%str%PCAction.gd"
+const AI_PATH: String = "res://library/npc_ai/%str%AI.gd"
+const PROGRESS_PATH: String = "res://library/game_progress/%str%Progress.gd"
+const HELP_PATH: String = "res://user/doc/%str%.md"
 
-const DemoAI := preload("res://library/npc_ai/DemoAI.gd")
-const KnightAI := preload("res://library/npc_ai/KnightAI.gd")
-const DesertAI := preload("res://library/npc_ai/DesertAI.gd")
-const StyxAI := preload("res://library/npc_ai/StyxAI.gd")
-const MirrorAI := preload("res://library/npc_ai/MirrorAI.gd")
-const BalloonAI := preload("res://library/npc_ai/BalloonAI.gd")
-const FrogAI := preload("res://library/npc_ai/FrogAI.gd")
-
-const DemoProgress := preload("res://library/game_progress/DemoProgress.gd")
-const KnightProgress := preload("res://library/game_progress/KnightProgress.gd")
-const DesertProgress := preload("res://library/game_progress/DesertProgress.gd")
-const StyxProgress := preload("res://library/game_progress/StyxProgress.gd")
-const MirrorProgress := preload("res://library/game_progress/MirrorProgress.gd")
-const BalloonProgress := preload("res://library/game_progress/BalloonProgress.gd")
-const FrogProgress := preload("res://library/game_progress/FrogProgress.gd")
-
-const GeneralHelp: String = "res://user/doc/general.md"
-const KeyBindingHelp: String = "res://user/doc/keybinding.md"
-const DemoHelp: String = "res://user/doc/demo.md"
-const KnightHelp: String = "res://user/doc/knight.md"
-const DesertHelp: String = "res://user/doc/desert.md"
-const StyxHelp: String = "res://user/doc/styx.md"
-const MirrorHelp: String = "res://user/doc/mirror.md"
-const BalloonHelp: String = "res://user/doc/balloon.md"
-const FrogHelp: String = "res://user/doc/frog.md"
+const GENERAL_HELP: String = "res://user/doc/general.md"
+const KEY_BINDING_HELP: String = "res://user/doc/keybinding.md"
 
 var _new_WorldTag := preload("res://library/WorldTag.gd").new()
 
-var _world_data: Dictionary = {
-	_new_WorldTag.DEMO: [
-		InitDemo, DemoPCAction, DemoAI, DemoProgress, DemoHelp
-	],
-	_new_WorldTag.KNIGHT: [
-		InitKnight, KnightPCAction, KnightAI, KnightProgress, KnightHelp
-	],
-	_new_WorldTag.DESERT: [
-		InitDesert, DesertPCAction, DesertAI, DesertProgress,
-		DesertHelp
-	],
-	_new_WorldTag.STYX: [
-		InitStyx, StyxPCAction, StyxAI, StyxProgress, StyxHelp
-	],
-	_new_WorldTag.MIRROR: [
-		InitMirror, MirrorPCAction, MirrorAI, MirrorProgress, MirrorHelp
-	],
-	_new_WorldTag.BALLOON: [
-		InitBalloon, BalloonPCAction, BalloonAI, BalloonProgress, BalloonHelp
-	],
-	_new_WorldTag.FROG: [
-		InitFrog, FrogPCAction, FrogAI, FrogProgress, FrogHelp
-	],
+var _world_to_file: Dictionary = {
+	_new_WorldTag.DEMO: "Demo",
+	_new_WorldTag.KNIGHT: "Knight",
+	_new_WorldTag.DESERT: "Desert",
+	_new_WorldTag.STYX: "Styx",
+	_new_WorldTag.MIRROR: "Mirror",
+	_new_WorldTag.BALLOON: "Balloon",
+	_new_WorldTag.FROG: "Frog",
 }
 
 
 func get_world_template(world_tag: String) -> Game_WorldTemplate:
-	return _world_data[world_tag][0]
+	return _load_data(INIT_PATH, world_tag)
 
 
 func get_pc_action(world_tag: String) -> Game_PCActionTemplate:
-	return _world_data[world_tag][1]
+	return _load_data(ACTION_PATH, world_tag)
 
 
 func get_enemy_ai(world_tag: String) -> Game_AITemplate:
-	return _world_data[world_tag][2]
+	return _load_data(AI_PATH, world_tag)
 
 
 func get_progress(world_tag: String) -> Game_ProgressTemplate:
-	return _world_data[world_tag][3]
+	return _load_data(PROGRESS_PATH, world_tag)
 
 
 func get_help(world_tag: String) -> Array:
-	var dungeon: String = _world_data[world_tag][4]
+	var dungeon: String = HELP_PATH.replace(PLACEHOLDER,
+			_world_to_file[world_tag].to_lower())
 
 	return [
 		_read_file(dungeon),
-		_read_file(KeyBindingHelp),
-		_read_file(GeneralHelp)
+		_read_file(KEY_BINDING_HELP),
+		_read_file(GENERAL_HELP)
 	]
 
 
@@ -101,3 +56,9 @@ func _read_file(file_path: String) -> String:
 	new_file.close()
 
 	return text
+
+
+func _load_data(file_path: String, world_tag: String):
+	var full_path: String = file_path.replace(PLACEHOLDER,
+			_world_to_file[world_tag])
+	return load(full_path)
