@@ -7,6 +7,7 @@ const STYX: String = "styx"
 const MIRROR: String = "mirror"
 const BALLOON: String = "balloon"
 const FROG: String = "frog"
+const RAILGUN: String = "railgun"
 
 var _tag_to_name: Dictionary = {
 	DEMO: "Demo",
@@ -16,6 +17,7 @@ var _tag_to_name: Dictionary = {
 	MIRROR: "Mirror",
 	BALLOON: "Balloon",
 	FROG: "Frog",
+	RAILGUN: "Railgun",
 }
 
 

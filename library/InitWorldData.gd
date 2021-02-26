@@ -11,16 +11,6 @@ const KEY_BINDING_HELP: String = "res://user/doc/keybinding.md"
 
 var _new_WorldTag := preload("res://library/WorldTag.gd").new()
 
-var _world_to_file: Dictionary = {
-	_new_WorldTag.DEMO: "Demo",
-	_new_WorldTag.KNIGHT: "Knight",
-	_new_WorldTag.DESERT: "Desert",
-	_new_WorldTag.STYX: "Styx",
-	_new_WorldTag.MIRROR: "Mirror",
-	_new_WorldTag.BALLOON: "Balloon",
-	_new_WorldTag.FROG: "Frog",
-}
-
 
 func get_world_template(world_tag: String) -> Game_WorldTemplate:
 	return _load_data(INIT_PATH, world_tag)
@@ -39,8 +29,8 @@ func get_progress(world_tag: String) -> Game_ProgressTemplate:
 
 
 func get_help(world_tag: String) -> Array:
-	var dungeon: String = HELP_PATH.replace(PLACEHOLDER,
-			_world_to_file[world_tag].to_lower())
+	var world_name: String = _new_WorldTag.get_world_name(world_tag).to_lower()
+	var dungeon: String = HELP_PATH.replace(PLACEHOLDER, world_name)
 
 	return [
 		_read_file(dungeon),
@@ -59,6 +49,7 @@ func _read_file(file_path: String) -> String:
 
 
 func _load_data(file_path: String, world_tag: String):
-	var full_path: String = file_path.replace(PLACEHOLDER,
-			_world_to_file[world_tag])
+	var world_name: String = _new_WorldTag.get_world_name(world_tag)
+	var full_path: String = file_path.replace(PLACEHOLDER, world_name)
+
 	return load(full_path)
