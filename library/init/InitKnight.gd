@@ -4,8 +4,11 @@ extends "res://library/init/WorldTemplate.gd"
 
 var _spr_Knight := preload("res://sprite/Knight.tscn")
 var _spr_KnightCaptain := preload("res://sprite/KnightCaptain.tscn")
+var _spr_Counter := preload("res://sprite/Counter.tscn")
 
-var _new_KnightData := preload("res://library/npc_data/KnightData.gd")
+var _new_KnightData := preload("res://library/npc_data/KnightData.gd").new()
+
+var _has_counter: bool = false
 
 
 func _init(parent_node: Node2D).(parent_node) -> void:
@@ -49,6 +52,9 @@ func _create_solid_wall() -> void:
 
 	var block: Array
 
+	var new_sprite: PackedScene
+	var new_sub_tag: String
+
 	# Initialize data.
 	# Start from [-1, -1] as the block will be shrinked later.
 	min_start = -1
@@ -91,8 +97,17 @@ func _create_solid_wall() -> void:
 			continue
 
 		# Add wall blocks to blueprint and set dungeon board.
-		_add_to_blueprint(_spr_Wall,
-				_new_MainGroupTag.BUILDING, _new_SubGroupTag.WALL,
+		# The first wall block is replaced by a counter.
+		if _has_counter:
+			new_sprite = _spr_Wall
+			new_sub_tag = _new_SubGroupTag.WALL
+		else:
+			new_sprite = _spr_Counter
+			new_sub_tag = _new_SubGroupTag.COUNTER
+			_has_counter = true
+
+		_add_to_blueprint(new_sprite,
+				_new_MainGroupTag.BUILDING, new_sub_tag,
 				xy[0], xy[1])
 		_occupy_position(xy[0], xy[1])
 

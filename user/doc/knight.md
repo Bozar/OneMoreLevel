@@ -2,7 +2,7 @@
 
 (Press Enter to view key bindings.)
 
-Kill the boss with three symbols (S, P and D) to beat the game. However, the boss will not show up until you have killed three captains (C). Whether or not to kill knights (K) is your own choice.
+Kill the boss with three symbols (S, P and D) to beat the game. However, the boss will not show up until you have killed three captains (C). There is a counter that behaves like a wall and shows the number of dead captains. Whether or not to kill knights (K) is your own choice.
 
 You lose the game either because of running out of time or being killed by an enemy. You have at most 24 turns. Every action (move, roll over, attack and wait) costs exactly 1 turn. Whenever an enemy dies, your remaining time extends by 4 turns.
 

@@ -12,10 +12,14 @@ var _spawn_captain: bool = false
 var _spawn_boss: bool = false
 var _pc_x: int
 var _pc_y: int
+var _counter: Sprite
+var _switch_number: Array
 
 
 func _init(parent_node: Node2D).(parent_node) -> void:
-	pass
+	_switch_number = [
+		_new_SpriteTypeTag.ONE, _new_SpriteTypeTag.TWO, _new_SpriteTypeTag.THREE
+	]
 
 
 func renew_world(pc_x: int, pc_y: int) -> void:
@@ -51,15 +55,21 @@ func renew_world(pc_x: int, pc_y: int) -> void:
 
 
 func remove_actor(actor: Sprite, _x: int, _y: int) -> void:
-	if actor.is_in_group(_new_SubGroupTag.KNIGHT_CAPTAIN):
-		_dead_captain += 1
+	if not actor.is_in_group(_new_SubGroupTag.KNIGHT_CAPTAIN):
+		return
 
-		if _dead_captain == 1:
-			_spawn_captain = true
-			_spawn_boss = false
-		elif _dead_captain == _new_KnightData.MAX_CAPTAIN:
-			_spawn_captain = false
-			_spawn_boss = true
+	_dead_captain += 1
+	if _dead_captain == 1:
+		_spawn_captain = true
+		_spawn_boss = false
+	elif _dead_captain == _new_KnightData.MAX_CAPTAIN:
+		_spawn_captain = false
+		_spawn_boss = true
+
+	if _counter == null:
+		_counter = _ref_DungeonBoard.get_sprites_by_tag(
+				_new_SubGroupTag.COUNTER)[0]
+	_ref_SwitchSprite.switch_sprite(_counter, _switch_number[_dead_captain - 1])
 
 
 func _spawn_npc(scene: PackedScene, sub_tag: String) -> void:
