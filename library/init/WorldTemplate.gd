@@ -54,6 +54,10 @@ func _occupy_position(x: int, y: int) -> void:
 	_dungeon[x][y] = true
 
 
+func _reverse_occupy(x: int, y: int) -> void:
+	_dungeon[x][y] = not _dungeon[x][y]
+
+
 func _is_occupied(x: int, y: int) -> bool:
 	return _dungeon[x][y]
 
