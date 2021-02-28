@@ -1,8 +1,7 @@
 extends "res://library/init/WorldTemplate.gd"
-# Initialize a simple map for testing.
 
 
-var _spr_Dwarf := preload("res://sprite/Dwarf.tscn")
+var _newRailgunData := preload("res://library/npc_data/RailgunData.gd").new()
 
 
 func _init(parent_node: Node2D).(parent_node) -> void:
@@ -12,17 +11,8 @@ func _init(parent_node: Node2D).(parent_node) -> void:
 func get_blueprint() -> Array:
 	_init_wall()
 	_init_pc()
-	_init_dwarf()
 
 	return _blueprint
-
-
-# {0: [false, ...], 1: [false, ...], ...}
-func _set_dungeon_board() -> void:
-	for i in range(_new_DungeonSize.MAX_X):
-		_dungeon[i] = []
-		for _j in range(_new_DungeonSize.MAX_Y):
-			_dungeon[i].push_back(false)
 
 
 func _init_wall() -> void:
@@ -41,33 +31,21 @@ func _init_wall() -> void:
 
 
 func _init_pc() -> void:
-	_add_to_blueprint(_spr_PC,
-			_new_MainGroupTag.ACTOR, _new_SubGroupTag.PC,
-			0, 0)
-
-
-func _init_dwarf() -> void:
-	var dwarf: int = _ref_RandomNumber.get_int(3, 6)
 	var x: int
 	var y: int
+	var neighbor: Array
 
-	while dwarf > 0:
-		x = _ref_RandomNumber.get_int(1, _new_DungeonSize.MAX_X - 1)
-		y = _ref_RandomNumber.get_int(1, _new_DungeonSize.MAX_Y - 1)
+	while true:
+		x = _ref_RandomNumber.get_int(0, _new_DungeonSize.MAX_X)
+		y = _ref_RandomNumber.get_int(0, _new_DungeonSize.MAX_Y)
 
-		if _is_occupied(x, y):
-			continue
-		_add_to_blueprint(_spr_Dwarf,
-				_new_MainGroupTag.ACTOR, _new_SubGroupTag.DWARF,
-				x, y)
-		_occupy_position(x, y)
+		if not _is_occupied(x, y):
+			_add_to_blueprint(_spr_PC,
+					_new_MainGroupTag.ACTOR, _new_SubGroupTag.PC,
+					x, y)
 
-		dwarf -= 1
-
-
-func _occupy_position(x: int, y: int) -> void:
-	_dungeon[x][y] = true
-
-
-func _is_occupied(x: int, y: int) -> bool:
-	return _dungeon[x][y]
+			neighbor = _new_CoordCalculator.get_neighbor(x, y,
+					_newRailgunData.NPC_SIGHT, true)
+			for i in neighbor:
+				_occupy_position(i[0], i[1])
+			break
