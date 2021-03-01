@@ -101,9 +101,13 @@ func _add_wall_blueprint() -> void:
 			_reverse_occupy(i, j)
 			if _is_occupied(i, j):
 				# TODO: Replace wall sprite with indicators.
-				if (j == 0) and (not i in separator):
-					new_sprite = _spr_Floor
-					new_sub_group = _new_SubGroupTag.COUNTER
+				if j == 0:
+					if i in separator:
+						new_sprite = _spr_Wall
+						new_sub_group = _new_SubGroupTag.SEPARATOR
+					else:
+						new_sprite = _spr_Floor
+						new_sub_group = _new_SubGroupTag.COUNTER
 				else:
 					new_sprite = _spr_Wall
 					new_sub_group = _new_SubGroupTag.WALL

@@ -31,6 +31,7 @@ const ARROW_UP: String = "arrow_up"
 const ARROW_DOWN: String = "arrow_down"
 
 const COUNTER: String = "counter"
+const SEPARATOR: String = "separator"
 
 const FROG: String = "frog"
 const FROG_PRINCESS: String = "frog_princess"
