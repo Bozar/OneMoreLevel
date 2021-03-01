@@ -15,9 +15,14 @@ func _init(parent_node: Node2D).(parent_node) -> void:
 
 func get_blueprint() -> Array:
 	_init_wall()
+	_init_ground()
 	_init_pc()
 
 	return _blueprint
+
+
+func _init_floor() -> void:
+	pass
 
 
 func _init_wall() -> void:
@@ -136,3 +141,13 @@ func _init_pc() -> void:
 			for i in neighbor:
 				_occupy_position(i[0], i[1])
 			break
+
+
+func _init_ground() -> void:
+	for i in range(_new_DungeonSize.MAX_X):
+		for j in range(_new_DungeonSize.MAX_Y):
+			if _is_occupied(i, j):
+				continue
+			_add_to_blueprint(_spr_Floor,
+					_new_MainGroupTag.GROUND, _new_SubGroupTag.FLOOR,
+					i, j)

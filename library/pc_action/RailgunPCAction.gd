@@ -6,9 +6,9 @@ const MEMORY_MARKER: int = 1
 
 var _new_RailgunData := preload("res://library/npc_data/RailgunData.gd").new()
 var _new_LinearFOV := preload("res://library/LinearFOV.gd").new()
+var _new_ArrayHelper := preload("res://library/ArrayHelper.gd").new()
 
-var _wall_sprite: Array
-var _floor_sprite: Array
+var _floor_wall_sprite: Array
 var _face_direction: Array = [0, -1]
 
 
@@ -31,10 +31,8 @@ func render_fov() -> void:
 			HALF_SIGHT_WIDTH,
 			self, "_is_obstacle", [])
 
-	for i in _wall_sprite:
+	for i in _floor_wall_sprite:
 		_set_color(i, _new_Palette.SHADOW, _new_Palette.DARK, true)
-	for i in _floor_sprite:
-		_set_color(i, _new_Palette.DARK, _new_Palette.DARK, true)
 
 
 func _is_obstacle(x: int, y: int, _opt_arg: Array) -> bool:
@@ -42,16 +40,16 @@ func _is_obstacle(x: int, y: int, _opt_arg: Array) -> bool:
 
 
 func _reset_sprite() -> void:
-	if _wall_sprite.size() == 0:
-		_wall_sprite = _ref_DungeonBoard.get_sprites_by_tag(
-				_new_SubGroupTag.WALL)
-		for i in _wall_sprite:
-			i.modulate = _new_Palette.BACKGROUND
+	var tmp_sprite: Array
 
-	if _floor_sprite.size() == 0:
-		_floor_sprite = _ref_DungeonBoard.get_sprites_by_tag(
+	if _floor_wall_sprite.size() == 0:
+		_floor_wall_sprite = _ref_DungeonBoard.get_sprites_by_tag(
 				_new_MainGroupTag.GROUND)
-		for i in _floor_sprite:
+		tmp_sprite = _ref_DungeonBoard.get_sprites_by_tag(
+				_new_SubGroupTag.WALL)
+		_new_ArrayHelper.merge(_floor_wall_sprite, tmp_sprite)
+
+		for i in _floor_wall_sprite:
 			i.modulate = _new_Palette.BACKGROUND
 
 
@@ -61,9 +59,9 @@ func _set_color(set_this: Sprite, in_sight: String, out_of_sight: String,
 
 	if _new_LinearFOV.is_in_sight(pos[0], pos[1]):
 		set_this.modulate = in_sight
-		if has_memory \
-				and (_ref_ObjectData.get_hit_point(set_this) < MEMORY_MARKER):
+		if has_memory and (_ref_ObjectData.get_hit_point(set_this) \
+				< MEMORY_MARKER):
 			_ref_ObjectData.set_hit_point(set_this, MEMORY_MARKER)
-	elif has_memory and \
-		(_ref_ObjectData.get_hit_point(set_this) == MEMORY_MARKER):
+	elif has_memory and (_ref_ObjectData.get_hit_point(set_this) \
+			== MEMORY_MARKER):
 		set_this.modulate = out_of_sight
