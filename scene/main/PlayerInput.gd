@@ -98,6 +98,7 @@ func _on_Schedule_turn_started(current_sprite: Sprite) -> void:
 
 	_pc_action.set_source_position()
 	_pc_action.switch_sprite()
+	_pc_action.render_fov()
 	if not _pc_action.allow_input():
 		_pc_action.pass_turn()
 		_ref_Schedule.end_turn()

@@ -149,6 +149,10 @@ func set_target_position(direction: String) -> void:
 	_input_direction = direction
 
 
+func render_fov() -> void:
+	pass
+
+
 func switch_sprite() -> void:
 	var pc: Sprite = _ref_DungeonBoard.get_pc()
 
