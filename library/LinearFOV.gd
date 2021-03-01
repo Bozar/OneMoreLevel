@@ -11,7 +11,7 @@
 #
 # Call set_rectangular_sight() to set local data.
 # Then call is_in_sight() to check whether a given position is in sight.
-# Make sure that nothing changes between these two calls.
+# Make sure that PC does not move between these two calls.
 
 
 var _new_CoordCalculator := preload("res://library/CoordCalculator.gd").new()
