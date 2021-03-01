@@ -27,7 +27,7 @@ func render_fov() -> void:
 	_new_LinearFOV.set_rectangular_sight(
 			_source_position[0], _source_position[1],
 			_face_direction[0], _face_direction[1],
-			_new_DungeonSize.MAX_X, _new_RailgunData.NPC_SIGHT,
+			_new_RailgunData.PC_FRONT_SIGHT, _new_RailgunData.PC_SIDE_SIGHT,
 			HALF_SIGHT_WIDTH,
 			self, "_is_obstacle", [])
 
