@@ -9,6 +9,8 @@ var _new_LinearFOV := preload("res://library/LinearFOV.gd").new()
 var _new_ArrayHelper := preload("res://library/ArrayHelper.gd").new()
 
 var _floor_wall_sprite: Array
+var _counter_sprite: Array = []
+var _kill_count: int = _new_RailgunData.MAX_KILL_COUNT
 var _face_direction: Array = [0, -1]
 
 
@@ -22,7 +24,8 @@ func set_target_position(direction: String) -> void:
 
 
 func render_fov() -> void:
-	_reset_sprite()
+	_init_sprite()
+	_render_counter(_kill_count)
 
 	_new_LinearFOV.set_rectangular_sight(
 			_source_position[0], _source_position[1],
@@ -39,7 +42,7 @@ func _is_obstacle(x: int, y: int, _opt_arg: Array) -> bool:
 	return _ref_DungeonBoard.has_sprite(_new_MainGroupTag.BUILDING, x, y)
 
 
-func _reset_sprite() -> void:
+func _init_sprite() -> void:
 	var tmp_sprite: Array
 
 	if _floor_wall_sprite.size() == 0:
@@ -51,6 +54,14 @@ func _reset_sprite() -> void:
 
 		for i in _floor_wall_sprite:
 			i.modulate = _new_Palette.BACKGROUND
+
+	if _counter_sprite.size() == 0:
+		for x in range(_new_DungeonSize.MAX_X - _new_RailgunData.COUNTER_WIDTH,
+				_new_DungeonSize.MAX_X):
+			_counter_sprite.push_back(_ref_DungeonBoard.get_sprite(
+					_new_MainGroupTag.BUILDING,
+					x, _new_DungeonSize.MAX_Y - 1))
+			_counter_sprite.back().modulate = _new_Palette.DARK
 
 
 func _set_color(set_this: Sprite, in_sight: String, out_of_sight: String,
@@ -65,3 +76,20 @@ func _set_color(set_this: Sprite, in_sight: String, out_of_sight: String,
 	elif has_memory and (_ref_ObjectData.get_hit_point(set_this) \
 			== MEMORY_MARKER):
 		set_this.modulate = out_of_sight
+
+
+func _render_counter(kill: int) -> void:
+	var counter: Array = []
+	var sprite_type: String
+
+	for _i in range(_new_RailgunData.COUNTER_WIDTH):
+		if kill > _new_RailgunData.COUNTER_DIGIT:
+			counter.push_front(_new_RailgunData.COUNTER_DIGIT)
+		else:
+			counter.push_front(kill)
+		kill -= _new_RailgunData.COUNTER_DIGIT
+		kill = max(kill, 0) as int
+
+	for i in range(counter.size()):
+		sprite_type = _new_SpriteTypeTag.convert_digit_to_tag(counter[i])
+		_ref_SwitchSprite.switch_sprite(_counter_sprite[i], sprite_type)

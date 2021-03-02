@@ -22,3 +22,14 @@ const SIX: String = "six"
 const SEVEN: String = "seven"
 const EIGHT: String = "eight"
 const NINE: String = "nine"
+
+# Helper functions.
+
+var _ordered_sprite_type: Array = [
+    ZERO, ONE, TWO, THREE, FOUR, FIVE, SIX, SEVEN, EIGHT, NINE,
+]
+
+
+func convert_digit_to_tag(digit: int) -> String:
+    digit = digit if digit < _ordered_sprite_type.size() else 0
+    return _ordered_sprite_type[digit]

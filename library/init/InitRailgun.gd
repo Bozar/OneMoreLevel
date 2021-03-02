@@ -1,12 +1,11 @@
 extends "res://library/init/WorldTemplate.gd"
 
 
-const MIN_X: int = 1
-const MIN_Y: int = 2
 const PATH_LENGTH: int = 16
 const MAX_FLOOR: int = 150
 
-var _newRailgunData := preload("res://library/npc_data/RailgunData.gd").new()
+var _spr_Counter := preload("res://sprite/Counter.tscn")
+var _new_RailgunData := preload("res://library/npc_data/RailgunData.gd").new()
 
 
 func _init(parent_node: Node2D).(parent_node) -> void:
@@ -36,8 +35,8 @@ func _init_wall() -> void:
 
 
 func _set_start_point(end_point: Array) -> void:
-	var x: int = _ref_RandomNumber.get_int(MIN_X, _new_DungeonSize.MAX_X)
-	var y: int = _ref_RandomNumber.get_int(MIN_Y, _new_DungeonSize.MAX_Y)
+	var x: int = _ref_RandomNumber.get_int(1, _new_DungeonSize.MAX_X)
+	var y: int = _ref_RandomNumber.get_int(0, _new_DungeonSize.MAX_Y)
 
 	if _is_even(x):
 		x -= 1
@@ -48,7 +47,7 @@ func _set_start_point(end_point: Array) -> void:
 
 
 func _create_path(end_point: Array) -> int:
-	var selcet: int
+	var select: int
 	var x: int
 	var y: int
 	var multi_x: int
@@ -56,11 +55,11 @@ func _create_path(end_point: Array) -> int:
 	var step: int
 	var counter: int = 0
 
-	selcet = _ref_RandomNumber.get_int(0, end_point.size())
-	if _is_odd(selcet):
-		selcet -= 1
-	x = end_point[selcet]
-	y = end_point[selcet + 1]
+	select = _ref_RandomNumber.get_int(0, end_point.size())
+	if _is_odd(select):
+		select -= 1
+	x = end_point[select]
+	y = end_point[select + 1]
 
 	multi_x = _ref_RandomNumber.get_int(0, 2)
 	multi_y = 0 if multi_x > 0 else 1
@@ -72,7 +71,7 @@ func _create_path(end_point: Array) -> int:
 		y += multi_y * step
 
 		if (not _new_CoordCalculator.is_inside_dungeon(x, y)) \
-				or (y == 0) or _is_occupied(x, y):
+				or _is_occupied(x, y) or (_is_counter(x, y)):
 			break
 		else:
 			counter += 1
@@ -96,8 +95,12 @@ func _is_odd(number: int) -> bool:
 	return number % 2 != 0
 
 
+func _is_counter(x: int, y: int) -> bool:
+	return (x >= _new_DungeonSize.MAX_X - _new_RailgunData.COUNTER_WIDTH) \
+			and (y == _new_DungeonSize.MAX_Y - 1)
+
+
 func _add_wall_blueprint() -> void:
-	var separator: Array = [0, 4, 9, 14, 20]
 	var new_sprite: PackedScene
 	var new_sub_group: String
 
@@ -105,14 +108,9 @@ func _add_wall_blueprint() -> void:
 		for j in range(0, _new_DungeonSize.MAX_Y):
 			_reverse_occupy(i, j)
 			if _is_occupied(i, j):
-				# TODO: Replace wall sprite with indicators.
-				if j == 0:
-					if i in separator:
-						new_sprite = _spr_Wall
-						new_sub_group = _new_SubGroupTag.SEPARATOR
-					else:
-						new_sprite = _spr_Floor
-						new_sub_group = _new_SubGroupTag.COUNTER
+				if _is_counter(i, j):
+					new_sprite = _spr_Counter
+					new_sub_group = _new_SubGroupTag.COUNTER
 				else:
 					new_sprite = _spr_Wall
 					new_sub_group = _new_SubGroupTag.WALL
@@ -137,7 +135,7 @@ func _init_pc() -> void:
 					x, y)
 
 			neighbor = _new_CoordCalculator.get_neighbor(x, y,
-					_newRailgunData.MIN_DISTANCE, true)
+					_new_RailgunData.MIN_DISTANCE, true)
 			for i in neighbor:
 				_occupy_position(i[0], i[1])
 			break
