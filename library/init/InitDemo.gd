@@ -4,6 +4,8 @@ extends "res://library/init/WorldTemplate.gd"
 
 var _spr_Dwarf := preload("res://sprite/Dwarf.tscn")
 
+var _dungeon: Dictionary = {}
+
 
 func _init(parent_node: Node2D).(parent_node) -> void:
 	pass
@@ -18,11 +20,12 @@ func get_blueprint() -> Array:
 
 
 # {0: [false, ...], 1: [false, ...], ...}
-func _set_dungeon_board() -> void:
+func _init_dungeon_board() -> void:
 	for i in range(_new_DungeonSize.MAX_X):
 		_dungeon[i] = []
-		for _j in range(_new_DungeonSize.MAX_Y):
-			_dungeon[i].push_back(false)
+		_dungeon[i].resize(_new_DungeonSize.MAX_Y)
+		for j in range(_new_DungeonSize.MAX_Y):
+			_dungeon[i][j] = false
 
 
 func _init_wall() -> void:

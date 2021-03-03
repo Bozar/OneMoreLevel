@@ -1,6 +1,6 @@
 class_name Game_WorldTemplate
 # Scripts such as Init[DungeonType].gd inherit this script.
-# Override get_blueprint() and _set_dungeon_board().
+# Override get_blueprint() and _init_dungeon_board().
 # The child should also implement _init() to pass arguments.
 
 
@@ -18,8 +18,10 @@ var _new_CoordCalculator := preload("res://library/CoordCalculator.gd").new()
 var _ref_RandomNumber: Game_RandomNumber
 var _ref_DangerZone: Game_DangerZone
 
-# {0: [], 1: [], ...}
-var _dungeon: Dictionary = {}
+# {0: [false, ...], 1: [false, ...], ...}
+var _dungeon_with_bool: Dictionary = {}
+# {0: [0, ...], 1: [0, ...], ...}
+var _dungeon_with_int: Dictionary = {}
 # [SpriteBlueprint, ...]
 var _blueprint: Array = []
 
@@ -28,7 +30,7 @@ func _init(parent_node: Node2D) -> void:
 	_ref_RandomNumber = parent_node._ref_RandomNumber
 	_ref_DangerZone = parent_node._ref_DangerZone
 
-	_set_dungeon_board()
+	_init_dungeon_board()
 	_init_floor()
 
 
@@ -42,24 +44,44 @@ func get_blueprint() -> Array:
 	return _blueprint
 
 
-# {0: [false, ...], 1: [false, ...], ...}
-func _set_dungeon_board() -> void:
+# Use `_occupy` functions by default. If use `_terrain_marker` functions,
+# overwrite `_init_dungeon_board()` in a child script.
+func _init_dungeon_board() -> void:
+	_fill_dungeon_board(true)
+
+
+func _fill_dungeon_board(with_bool: bool) -> void:
+	var dungeon: Dictionary = _dungeon_with_bool if with_bool \
+			else _dungeon_with_int
+
 	for i in range(_new_DungeonSize.MAX_X):
-		_dungeon[i] = []
-		for _j in range(_new_DungeonSize.MAX_Y):
-			_dungeon[i].push_back(false)
+		dungeon[i] = []
+		dungeon[i].resize(_new_DungeonSize.MAX_Y)
+		for j in range(_new_DungeonSize.MAX_Y):
+			if with_bool:
+				dungeon[i][j] = false
+			else:
+				dungeon[i][j] = 0
 
 
 func _occupy_position(x: int, y: int) -> void:
-	_dungeon[x][y] = true
+	_dungeon_with_bool[x][y] = true
 
 
 func _reverse_occupy(x: int, y: int) -> void:
-	_dungeon[x][y] = not _dungeon[x][y]
+	_dungeon_with_bool[x][y] = not _dungeon_with_bool[x][y]
 
 
 func _is_occupied(x: int, y: int) -> bool:
-	return _dungeon[x][y]
+	return _dungeon_with_bool[x][y]
+
+
+func _set_terrain_marker(x: int, y: int, marker: int) -> void:
+	_dungeon_with_int[x][y] = marker
+
+
+func _get_terrain_marker(x: int, y: int) -> int:
+	return _dungeon_with_int[x][y]
 
 
 func _add_to_blueprint(scene: PackedScene,
