@@ -4,7 +4,7 @@
 
 (Press Enter to view dungeon help.)
 
-One More Level is a turn-based Roguelike game made with Godot engine. The GUI font, Fira Code, is created by Nikita Prokopov. The tileset, curses_vector, is created by DragonDePlatino for Dwarf Fortress.
+One More Level is a turn-based Roguelike game made with Godot engine. It is available on GitHub. The GUI font, Fira Code, is created by Nikita Prokopov. The tileset, curses_vector, is created by DragonDePlatino for Dwarf Fortress.
 
 Every time you start the game, One More Level presents you with a theme dungeon of unique mechanics and goals. This idea comes from HyperRogue, one of the most bizarre and fascinating games I have ever played. You can beat the game in five minutes, so it never hurts to go down just one level deeper.
 
