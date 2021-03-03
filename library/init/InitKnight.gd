@@ -2,6 +2,19 @@ extends "res://library/init/WorldTemplate.gd"
 # Initialize a map for Silent Knight Hall (Knight).
 
 
+const DEFAULT_MARKER: int = 0
+const PATH_MARKER: int = 1
+const WALL_MARKER: int = 2
+
+const MIN_BLOCK_SIZE: int = 4
+const MAX_BLOCK_SIZE: int = 5
+const MAX_BLOCK_COUNT: int = 6
+
+const MIN_PC_DISTANCE: int = 5
+const MIN_NPC_DISTANCE: int = 3
+
+const MAX_RETRY: int = 999
+
 var _spr_Knight := preload("res://sprite/Knight.tscn")
 var _spr_KnightCaptain := preload("res://sprite/KnightCaptain.tscn")
 var _spr_Counter := preload("res://sprite/Counter.tscn")
@@ -15,88 +28,57 @@ func _init(parent_node: Node2D).(parent_node) -> void:
 	pass
 
 
-func get_blueprint() -> Array:
-	_init_wall()
-	_init_pc()
-	_init_knight(_spr_KnightCaptain, _new_SubGroupTag.KNIGHT_CAPTAIN)
+func _init_dungeon_board() -> void:
+	_fill_dungeon_board(false)
 
+
+func get_blueprint() -> Array:
+	for _i in range(MAX_RETRY):
+		_init_wall()
+	_fill_hole()
+
+	_init_actor(_spr_PC, _new_SubGroupTag.PC, MIN_PC_DISTANCE)
+	_init_actor(_spr_KnightCaptain, _new_SubGroupTag.KNIGHT_CAPTAIN,
+			MIN_NPC_DISTANCE)
 	for _i in range(_new_KnightData.MAX_KNIGHT):
-		_init_knight(_spr_Knight, _new_SubGroupTag.KNIGHT)
+		_init_actor(_spr_Knight, _new_SubGroupTag.KNIGHT, MIN_NPC_DISTANCE)
 
 	return _blueprint
 
 
 func _init_wall() -> void:
-	var max_retry: int = 10000
-
-	for _i in range(max_retry):
-		_create_solid_wall()
-
-
-func _create_solid_wall() -> void:
-	var min_start: int
-	var start_x: int
-	var start_y: int
-	var max_x: int
-	var max_y: int
-
-	var min_size: int
-	var max_size: int
-	var width: int
-	var height: int
-	var shrinked: Array
-
-	var dig: Array
-	var dig_x: int
-	var dig_y: int
-
+	# The start point of a wall block can be slightly out of dungeon board.
+	# Because the minimum block size is greater than 1 and it will be shrinked
+	# by 1 grid later.
+	var x: int = _ref_RandomNumber.get_int(-MAX_BLOCK_SIZE + 2,
+			_new_DungeonSize.MAX_X - 1)
+	var y: int = _ref_RandomNumber.get_int(-MAX_BLOCK_SIZE + 2,
+			_new_DungeonSize.MAX_Y - 1)
+	var width: int = MAX_BLOCK_SIZE
+	var height: int = MAX_BLOCK_SIZE
 	var block: Array
-
 	var new_sprite: PackedScene
 	var new_sub_tag: String
 
-	# Initialize data.
-	# Start from [-1, -1] as the block will be shrinked later.
-	min_start = -1
-	start_x = _ref_RandomNumber.get_int(min_start, _new_DungeonSize.MAX_X)
-	start_y = _ref_RandomNumber.get_int(min_start, _new_DungeonSize.MAX_Y)
-	# The actual border length is from 2 to 3.
-	min_size = 4
-	max_size = 6
-	width = _ref_RandomNumber.get_int(min_size, max_size)
-	height = _ref_RandomNumber.get_int(min_size, max_size)
+	# A 3*3 square block is too big.
+	while width + height == MAX_BLOCK_SIZE * 2:
+		width = _ref_RandomNumber.get_int(MIN_BLOCK_SIZE, MAX_BLOCK_SIZE + 1)
+		height = _ref_RandomNumber.get_int(MIN_BLOCK_SIZE, MAX_BLOCK_SIZE + 1)
 
-	# Verify the starting point and size. The block can extend over the edge of
-	# the map, but cannot overlap existing blocks.
-	if not _is_valid_block([start_x, start_y], width, height):
-		return
+	# Cannot overlap existing blocks.
+	block = _new_CoordCalculator.get_block(x, y, width, height)
+	_new_ArrayHelper.filter_element(block, self, "_is_empty_space", [])
+	for i in block:
+		_set_terrain_marker(i[0], i[1], PATH_MARKER)
 
-	# Shrink the wall block in four directions by 1 grid.
-	shrinked = _shrink_block(start_x, start_y, width, height)
-	start_x = shrinked[0]
-	start_y = shrinked[1]
-	max_x = shrinked[2]
-	max_y = shrinked[3]
+	# Shrink by 1 grid in four directions. Leave paths around the block.
+	_new_ArrayHelper.filter_element(block, self, "_is_building_site",
+			[x, y, width, height])
+	# Dig a grid when necessary to generate a more zigzagging terrain.
+	if block.size() == MAX_BLOCK_COUNT:
+		_new_ArrayHelper.rand_picker(block, block.size() - 1, _ref_RandomNumber)
 
-	# Decide which grid to dig.
-	dig = _dig_border(start_x, start_y, max_x, max_y)
-	dig_x = dig[0]
-	dig_y = dig[1]
-
-	if not _is_valid_hole(dig_x, dig_y, start_x, start_y, max_x, max_y):
-		dig_x = -1
-		dig_y = -1
-
-	# Set blueprint and dungeon board.
-	block = _new_CoordCalculator.get_block(
-			start_x, start_y, max_x - start_x, max_y - start_y)
-
-	for xy in block:
-		# Every wall block might lose one grid.
-		if (xy[0] == dig_x) and (xy[1] == dig_y):
-			continue
-
-		# Add wall blocks to blueprint and set dungeon board.
+	for i in block:
 		# The first wall block is replaced by a counter.
 		if _has_counter:
 			new_sprite = _spr_Wall
@@ -105,94 +87,68 @@ func _create_solid_wall() -> void:
 			new_sprite = _spr_Counter
 			new_sub_tag = _new_SubGroupTag.COUNTER
 			_has_counter = true
-
+		_set_terrain_marker(i[0], i[1], WALL_MARKER)
 		_add_to_blueprint(new_sprite,
-				_new_MainGroupTag.BUILDING, new_sub_tag,
-				xy[0], xy[1])
-		_occupy_position(xy[0], xy[1])
+				_new_MainGroupTag.BUILDING, new_sub_tag, i[0], i[1])
 
 
-func _is_valid_block(start: Array, width: int, height: int) \
-		-> bool:
-	var block: Array = _new_CoordCalculator.get_block(
-			start[0], start[1], width, height)
+func _is_empty_space(coord: Array, index: int, _opt_arg: Array) -> bool:
+	var x: int = coord[index][0]
+	var y: int = coord[index][1]
+	return _get_terrain_marker(x, y) == DEFAULT_MARKER
 
-	for xy in block:
-		if _is_occupied(xy[0], xy[1]):
-			return false
+
+func _is_building_site(coord: Array, index: int, opt_arg: Array) -> bool:
+	var x: int = coord[index][0]
+	var y: int = coord[index][1]
+	var start_x: int = opt_arg[0]
+	var start_y: int = opt_arg[1]
+	var width: int = opt_arg[2]
+	var height: int = opt_arg[3]
+
+	if (x == start_x) or (x == start_x + width - 1) \
+			or (y == start_y) or (y == start_y + height - 1):
+		return false
 	return true
 
 
-func _shrink_block(start_x: int, start_y: int, width: int, height: int) \
-		-> Array:
-	start_x += 1
-	start_y += 1
-	var max_x: int = start_x + width - 2
-	var max_y: int = start_y + height - 2
+func _fill_hole() -> void:
+	var neighbor: Array
+	var fill_this: bool
 
-	return [start_x, start_y, max_x, max_y]
+	for x in range(_new_DungeonSize.MAX_X):
+		for y in range(_new_DungeonSize.MAX_Y):
+			if _get_terrain_marker(x, y) == WALL_MARKER:
+				continue
+			elif (x != 0) and (x != _new_DungeonSize.MAX_X - 1) \
+					and (y != 0) and (y != _new_DungeonSize.MAX_Y - 1):
+				continue
 
-
-func _dig_border(start_x: int, start_y: int, max_x: int, max_y: int) -> Array:
-	var dig_x: int
-	var dig_y: int
-	var border: int = _ref_RandomNumber.get_int(0, 5)
-
-	match border:
-		# Top.
-		0:
-			dig_x = _ref_RandomNumber.get_int(start_x, max_x)
-			dig_y = start_y
-		# Right.
-		1:
-			dig_x = max_x - 1
-			dig_y = _ref_RandomNumber.get_int(start_y, max_y)
-		# Bottom.
-		2:
-			dig_x = _ref_RandomNumber.get_int(start_x, max_x)
-			dig_y = max_y - 1
-		# Left.
-		3:
-			dig_x = start_x
-			dig_y = _ref_RandomNumber.get_int(start_y, max_y)
-		# Do not dig.
-		4:
-			dig_x = -1
-			dig_y = -1
-
-	return [dig_x, dig_y]
+			neighbor = _new_CoordCalculator.get_neighbor(x, y, 1)
+			fill_this = true
+			for i in neighbor:
+				if _get_terrain_marker(i[0], i[1]) != WALL_MARKER:
+					fill_this = false
+					break
+			if fill_this:
+				_set_terrain_marker(x, y, WALL_MARKER)
+				_add_to_blueprint(_spr_Wall,
+						_new_MainGroupTag.BUILDING, _new_SubGroupTag.WALL,
+						x, y)
 
 
-func _is_valid_hole(dig_x: int, dig_y: int, \
-		start_x: int, start_y: int, max_x: int, max_y: int) -> bool:
-	if not _new_CoordCalculator.is_inside_dungeon(dig_x, dig_y):
-		return false
-
-	var neighbor: Array = _new_CoordCalculator.get_neighbor(dig_x, dig_y, 1)
-
-	for n in neighbor:
-		if (n[0] < start_x) or (n[0] >= max_x) \
-				or (n[1] < start_y) or (n[1] >= max_y):
-			return true
-	return false
-
-
-func _init_knight(scene: PackedScene, tag: String) -> void:
+func _init_actor(scene: PackedScene, sub_tag: String, distance: int) -> void:
 	var x: int
 	var y: int
 	var neighbor: Array
-	var min_range: int = 3
 
 	while true:
-		x = _ref_RandomNumber.get_int(1, _new_DungeonSize.MAX_X - 1)
-		y = _ref_RandomNumber.get_int(1, _new_DungeonSize.MAX_Y - 1)
+		x = _ref_RandomNumber.get_int(0, _new_DungeonSize.MAX_X)
+		y = _ref_RandomNumber.get_int(0, _new_DungeonSize.MAX_Y)
+		if _get_terrain_marker(x, y) != WALL_MARKER:
+			break
 
-		if _is_occupied(x, y):
-			continue
-
-		neighbor = _new_CoordCalculator.get_neighbor(x, y, min_range, true)
-		for xy in neighbor:
-			_occupy_position(xy[0], xy[1])
-
-		_add_to_blueprint(scene, _new_MainGroupTag.ACTOR, tag, x, y)
-		return
+	neighbor = _new_CoordCalculator.get_neighbor(x, y, distance, true)
+	for i in neighbor:
+		_set_terrain_marker(i[0], i[1], WALL_MARKER)
+	_add_to_blueprint(scene, _new_MainGroupTag.ACTOR, sub_tag, x, y)
