@@ -57,29 +57,40 @@ func _init_wall() -> void:
 	var width: int = MAX_BLOCK_SIZE
 	var height: int = MAX_BLOCK_SIZE
 	var block: Array
+	var dup_block: Array
 	var new_sprite: PackedScene
 	var new_sub_tag: String
 
-	# A 3*3 square block is too big.
+	# Draw a rectangular. A 3*3 square block is too big.
 	while width + height == MAX_BLOCK_SIZE * 2:
 		width = _ref_RandomNumber.get_int(MIN_BLOCK_SIZE, MAX_BLOCK_SIZE + 1)
 		height = _ref_RandomNumber.get_int(MIN_BLOCK_SIZE, MAX_BLOCK_SIZE + 1)
+	block = _new_CoordCalculator.get_block(x, y, width, height)
 
 	# Cannot overlap existing blocks.
-	block = _new_CoordCalculator.get_block(x, y, width, height)
 	_new_ArrayHelper.filter_element(block, self, "_is_empty_space", [])
+	if block.size() == 0:
+		return
+	dup_block = block.duplicate()
 	for i in block:
 		_set_terrain_marker(i[0], i[1], PATH_MARKER)
 
 	# Shrink by 1 grid in four directions. Leave paths around the block.
 	_new_ArrayHelper.filter_element(block, self, "_is_building_site",
 			[x, y, width, height])
+
+	# Reset markers to default if fail to build any walls.
+	if block.size() == 0:
+		for i in dup_block:
+			_set_terrain_marker(i[0], i[1], DEFAULT_MARKER)
+		return
+
 	# Dig a grid when necessary to generate a more zigzagging terrain.
 	if block.size() == MAX_BLOCK_COUNT:
 		_new_ArrayHelper.rand_picker(block, block.size() - 1, _ref_RandomNumber)
 
+	# Add walls to blueprint. The first wall is replaced by a counter.
 	for i in block:
-		# The first wall block is replaced by a counter.
 		if _has_counter:
 			new_sprite = _spr_Wall
 			new_sub_tag = _new_SubGroupTag.WALL
