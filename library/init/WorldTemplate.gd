@@ -14,6 +14,7 @@ var _new_DungeonSize := preload("res://library/DungeonSize.gd").new()
 var _new_MainGroupTag := preload("res://library/MainGroupTag.gd").new()
 var _new_SubGroupTag := preload("res://library/SubGroupTag.gd").new()
 var _new_CoordCalculator := preload("res://library/CoordCalculator.gd").new()
+var _new_ArrayHelper := preload("res://library/ArrayHelper.gd").new()
 
 var _ref_RandomNumber: Game_RandomNumber
 var _ref_DangerZone: Game_DangerZone

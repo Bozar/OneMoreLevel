@@ -62,7 +62,7 @@ func _change_water_flow() -> void:
 		if not _ref_ObjectData.verify_state(i, _new_ObjectStateTag.DEFAULT):
 			continue
 		valid_state = _state_to_coord.keys()
-		_new_ArrayHelper.random_picker(valid_state, 1, _ref_RandomNumber)
+		_new_ArrayHelper.rand_picker(valid_state, 1, _ref_RandomNumber)
 		direction = valid_state[0]
 		_rotate_sprite(i, direction)
 

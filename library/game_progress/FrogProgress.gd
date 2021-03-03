@@ -86,7 +86,7 @@ func _create_frog(pc_x: int, pc_y: int) -> void:
 
 	_new_ArrayHelper.filter_element(neighbor, self, "_filter_create_frog",
 			[pc_x, pc_y])
-	_new_ArrayHelper.random_picker(neighbor, _new_FrogData.MAX_FROG,
+	_new_ArrayHelper.rand_picker(neighbor, _new_FrogData.MAX_FROG,
 			_ref_RandomNumber)
 
 	for i in neighbor:
@@ -103,7 +103,7 @@ func _create_princess(pc_x: int, pc_y: int) -> void:
 			[pc_x, pc_y])
 	_new_ArrayHelper.duplicate_element(neighbor, self, "_dup_create_princess",
 			[])
-	_new_ArrayHelper.random_picker(neighbor, 1, _ref_RandomNumber)
+	_new_ArrayHelper.rand_picker(neighbor, 1, _ref_RandomNumber)
 
 	_ref_CreateObject.create(_spr_FrogPrincess,
 			_new_MainGroupTag.ACTOR, _new_SubGroupTag.FROG_PRINCESS,
@@ -117,7 +117,7 @@ func _submerge_land(submerge: int) -> void:
 	var x: int
 	var y: int
 
-	_new_ArrayHelper.random_picker(land_sprite, submerge, _ref_RandomNumber)
+	_new_ArrayHelper.rand_picker(land_sprite, submerge, _ref_RandomNumber)
 	for i in land_sprite:
 		land_pos = _new_ConvertCoord.vector_to_array(i.position)
 		x = land_pos[0]

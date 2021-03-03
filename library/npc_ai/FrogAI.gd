@@ -106,7 +106,7 @@ func _random_walk() -> void:
 	if neighbor.size() < 1:
 		return
 
-	_new_ArrayHelper.random_picker(neighbor, 1, _ref_RandomNumber)
+	_new_ArrayHelper.rand_picker(neighbor, 1, _ref_RandomNumber)
 	x = neighbor[0][0]
 	y = neighbor[0][1]
 	_ref_DungeonBoard.move_sprite(_new_MainGroupTag.ACTOR, _self_pos, [x, y])

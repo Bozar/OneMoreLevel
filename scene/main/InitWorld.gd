@@ -62,7 +62,7 @@ func _get_world() -> Game_WorldTemplate:
 			[exclude_world])
 	if full_tag.size() == 0:
 		full_tag = [_new_WorldTag.DEMO]
-	_new_ArrayHelper.random_picker(full_tag, 1, _ref_RandomNumber)
+	_new_ArrayHelper.rand_picker(full_tag, 1, _ref_RandomNumber)
 
 	_world_tag = _ref_GameSetting.get_world_tag()
 	if _world_tag == "":

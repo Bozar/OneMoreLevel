@@ -1,4 +1,4 @@
-func random_picker(source_array: Array, num_of_element: int,
+func rand_picker(source_array: Array, num_of_element: int,
 		rand: Game_RandomNumber) -> void:
 	var counter: int
 

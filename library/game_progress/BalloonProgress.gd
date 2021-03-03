@@ -72,7 +72,7 @@ func _set_wind_direction() -> void:
 			candidate.push_back(i)
 	_new_ArrayHelper.duplicate_element(candidate, self, "_dup_set_wind",
 			[_wind_forecast[0]])
-	_new_ArrayHelper.random_picker(candidate, 1, _ref_RandomNumber)
+	_new_ArrayHelper.rand_picker(candidate, 1, _ref_RandomNumber)
 	_wind_forecast[1] = candidate[0]
 
 	_ref_ObjectData.set_state(pc, _wind_forecast[0])

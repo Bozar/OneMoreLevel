@@ -125,7 +125,7 @@ func _create_image_on_the_other_side(x: int, y: int) -> void:
 			[actor])
 	remove = images.size() + 1 - _new_MirrorData.MAX_PHANTOM
 	if remove > 0:
-		_new_ArrayHelper.random_picker(images, remove, _ref_RandomNumber)
+		_new_ArrayHelper.rand_picker(images, remove, _ref_RandomNumber)
 		for i in images:
 			position = _new_ConvertCoord.vector_to_array(i.position)
 			_ref_RemoveObject.remove(_new_MainGroupTag.ACTOR,
