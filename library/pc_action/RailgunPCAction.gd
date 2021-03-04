@@ -42,6 +42,23 @@ func render_fov() -> void:
 		_set_color(i, _new_Palette.SHADOW, _new_Palette.DARK, true)
 
 
+# is_npc(): Is in aim mode?
+# attack():
+# 	Has enough ammo? Is valid direction? Ammo - 1
+# 	Update _target_position && attack && hit a target if possible
+# move():
+#	Is NOT occupied by NPC? Move.
+func interact_with_trap() -> void:
+	_ref_RemoveObject.remove(_new_MainGroupTag.TRAP,
+			_target_position[0], _target_position[1])
+	_ref_DungeonBoard.move_sprite(_new_MainGroupTag.ACTOR,
+			_source_position, _target_position)
+
+	_ref_CountDown.add_count(_new_RailgunData.RESTORE_TURN)
+	# TODO: Restore ammo.
+	end_turn = true
+
+
 func _is_obstacle(x: int, y: int, _opt_arg: Array) -> bool:
 	return _ref_DungeonBoard.has_sprite(_new_MainGroupTag.BUILDING, x, y)
 

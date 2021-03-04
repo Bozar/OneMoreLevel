@@ -14,4 +14,4 @@ const MAX_AMMO: int = 5
 const AMMO_COOLDOWN: int = 3
 
 const RESTORE_AMMO: int = 3
-const RESTORE_TURN: int = 10
+const RESTORE_TURN: int = 11
