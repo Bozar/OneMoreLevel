@@ -2,7 +2,7 @@ extends Node2D
 class_name Game_CreateObject
 
 
-signal sprite_created(new_sprite)
+signal sprite_created(new_sprite, main_group, sub_group, x, y)
 
 var _new_Palette := preload("res://library/Palette.gd").new()
 var _new_ZIndex := preload("res://library/ZIndex.gd").new()
@@ -25,7 +25,7 @@ func create(prefab: PackedScene, main_group: String, sub_group: String,
 	new_sprite.modulate = sprite_color
 
 	add_child(new_sprite)
-	emit_signal("sprite_created", new_sprite)
+	emit_signal("sprite_created", new_sprite, main_group, sub_group, x, y)
 
 
 func _on_SwitchScreen_screen_switched(screen_tag: String) -> void:

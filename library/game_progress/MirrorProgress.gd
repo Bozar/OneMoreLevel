@@ -24,12 +24,9 @@ func renew_world(pc_x: int, _pc_y: int) -> void:
 		_ref_EndGame.player_lose()
 
 
-func create_trap(trap: Sprite) -> void:
-	var trap_pos: Array
-
-	if trap.is_in_group(_new_SubGroupTag.CRYSTAL):
-		trap_pos = _new_ConvertCoord.vector_to_array(trap.position)
-		_trap_x = trap_pos[0]
+func create_trap(_trap: Sprite, sub_group: String, x: int, _y: int) -> void:
+	if sub_group == _new_SubGroupTag.CRYSTAL:
+		_trap_x = x
 
 
 func remove_trap(_trap: Sprite, x: int, y: int) -> void:

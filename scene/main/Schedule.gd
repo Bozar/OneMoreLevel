@@ -55,9 +55,10 @@ func get_npc() -> Array:
 	return npc
 
 
-func _on_CreateObject_sprite_created(new_sprite: Sprite) -> void:
-	if new_sprite.is_in_group(_new_MainGroupTag.ACTOR):
-		if new_sprite.is_in_group(_new_SubGroupTag.PC):
+func _on_CreateObject_sprite_created(new_sprite: Sprite,
+		main_group: String, sub_group: String, _x: int, _y: int) -> void:
+	if main_group == _new_MainGroupTag.ACTOR:
+		if sub_group == _new_SubGroupTag.PC:
 			_actors[0] = new_sprite
 		else:
 			_actors.append(new_sprite)

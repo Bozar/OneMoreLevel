@@ -133,26 +133,23 @@ func swap_sprite(main_group: String, source: Array, target: Array) -> void:
 	_try_move_arrow(target_sprite)
 
 
-func _on_CreateObject_sprite_created(new_sprite: Sprite) -> void:
+func _on_CreateObject_sprite_created(new_sprite: Sprite,
+		main_group: String, sub_group: String, _x: int, _y: int) -> void:
 	var pos: Array
-	var group: String
 
 	# Save references to arrow indicators.
-	if new_sprite.is_in_group(_new_MainGroupTag.INDICATOR):
-		for sg in _sub_group_to_sprite.keys():
-			if new_sprite.is_in_group(sg):
-				_sub_group_to_sprite[sg] = new_sprite
+	if main_group == _new_MainGroupTag.INDICATOR:
+		for i in _sub_group_to_sprite.keys():
+			if i == sub_group:
+				_sub_group_to_sprite[i] = new_sprite
 		return
 
 	# Save references to dungeon sprites.
-	for mg in _valid_main_groups:
-		if new_sprite.is_in_group(mg):
-			group = mg
-			break
-	if group == "":
-		return
-	pos = _new_ConvertCoord.vector_to_array(new_sprite.position)
-	_sprite_dict[group][pos[0]][pos[1]] = new_sprite
+	for i in _valid_main_groups:
+		if i == main_group:
+			pos = _new_ConvertCoord.vector_to_array(new_sprite.position)
+			_sprite_dict[i][pos[0]][pos[1]] = new_sprite
+			return
 
 
 func _on_RemoveObject_sprite_removed(_sprite: Sprite, main_group: String,
@@ -161,11 +158,11 @@ func _on_RemoveObject_sprite_removed(_sprite: Sprite, main_group: String,
 
 
 func _init_dict() -> void:
-	for mg in _valid_main_groups:
-		_sprite_dict[mg] = {}
+	for i in _valid_main_groups:
+		_sprite_dict[i] = {}
 		for x in range(_new_DungeonSize.MAX_X):
-			_sprite_dict[mg][x] = []
-			_sprite_dict[mg][x].resize(_new_DungeonSize.MAX_Y)
+			_sprite_dict[i][x] = []
+			_sprite_dict[i][x].resize(_new_DungeonSize.MAX_Y)
 
 
 # Move arrow indicators when PC moves.

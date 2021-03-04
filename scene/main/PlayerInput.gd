@@ -87,8 +87,9 @@ func _on_InitWorld_world_selected(new_world: String) -> void:
 	_pc_action = _new_InitWorldData.get_pc_action(new_world).new(self)
 
 
-func _on_CreateObject_sprite_created(new_sprite: Sprite) -> void:
-	if new_sprite.is_in_group(_new_SubGroupTag.PC):
+func _on_CreateObject_sprite_created(_new_sprite: Sprite,
+		_main_group: String, sub_group: String, _x: int, _y: int) -> void:
+	if sub_group == _new_SubGroupTag.PC:
 		set_process_unhandled_input(true)
 
 

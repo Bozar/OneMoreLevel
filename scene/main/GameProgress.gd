@@ -24,13 +24,14 @@ func _on_InitWorld_world_selected(new_world: String) -> void:
 	_progress = _new_InitWorldData.get_progress(new_world).new(self)
 
 
-func _on_CreateObject_sprite_created(new_sprite: Sprite) -> void:
-	if new_sprite.is_in_group(_new_MainGroupTag.ACTOR):
-		_progress.create_actor(new_sprite)
-	elif new_sprite.is_in_group(_new_MainGroupTag.BUILDING):
-			_progress.create_building(new_sprite)
-	elif new_sprite.is_in_group(_new_MainGroupTag.TRAP):
-		_progress.create_trap(new_sprite)
+func _on_CreateObject_sprite_created(new_sprite: Sprite,
+		main_group: String, sub_group: String, x: int, y: int) -> void:
+	if main_group == _new_MainGroupTag.ACTOR:
+		_progress.create_actor(new_sprite, sub_group, x, y)
+	elif main_group == _new_MainGroupTag.BUILDING:
+		_progress.create_building(new_sprite, sub_group, x, y)
+	elif main_group == _new_MainGroupTag.TRAP:
+		_progress.create_trap(new_sprite, sub_group, x, y)
 
 
 func _on_Schedule_turn_started(current_sprite: Sprite) -> void:
