@@ -4,6 +4,8 @@ class_name Game_WorldTemplate
 # The child should also implement _init() to pass arguments.
 
 
+const DEFAULT_MARKER: int = 0
+const OCCUPIED_MARKER: int = 1
 const SPRITE_BLUEPRINT := preload("res://library/init/SpriteBlueprint.gd")
 
 var _spr_Floor := preload("res://sprite/Floor.tscn")
@@ -19,8 +21,6 @@ var _new_ArrayHelper := preload("res://library/ArrayHelper.gd").new()
 var _ref_RandomNumber: Game_RandomNumber
 var _ref_DangerZone: Game_DangerZone
 
-# {0: [false, ...], 1: [false, ...], ...}
-var _dungeon_with_bool: Dictionary = {}
 # {0: [0, ...], 1: [0, ...], ...}
 var _dungeon_with_int: Dictionary = {}
 # [SpriteBlueprint, ...]
@@ -44,36 +44,27 @@ func get_blueprint() -> Array:
 	return _blueprint
 
 
-# Use `_occupy` functions by default. If use `_terrain_marker` functions,
-# overwrite `_init_dungeon_board()` in a child script.
 func _init_dungeon_board() -> void:
-	_fill_dungeon_board(true)
-
-
-func _fill_dungeon_board(with_bool: bool) -> void:
-	var dungeon: Dictionary = _dungeon_with_bool if with_bool \
-			else _dungeon_with_int
-
 	for i in range(_new_DungeonSize.MAX_X):
-		dungeon[i] = []
-		dungeon[i].resize(_new_DungeonSize.MAX_Y)
+		_dungeon_with_int[i] = []
+		_dungeon_with_int[i].resize(_new_DungeonSize.MAX_Y)
 		for j in range(_new_DungeonSize.MAX_Y):
-			if with_bool:
-				dungeon[i][j] = false
-			else:
-				dungeon[i][j] = 0
+			_dungeon_with_int[i][j] = DEFAULT_MARKER
 
 
 func _occupy_position(x: int, y: int) -> void:
-	_dungeon_with_bool[x][y] = true
+	_dungeon_with_int[x][y] = OCCUPIED_MARKER
 
 
 func _reverse_occupy(x: int, y: int) -> void:
-	_dungeon_with_bool[x][y] = not _dungeon_with_bool[x][y]
+	var new_marker: int = DEFAULT_MARKER \
+			if _dungeon_with_int[x][y] == OCCUPIED_MARKER \
+			else OCCUPIED_MARKER
+	_dungeon_with_int[x][y] = new_marker
 
 
 func _is_occupied(x: int, y: int) -> bool:
-	return _dungeon_with_bool[x][y]
+	return _dungeon_with_int[x][y] == OCCUPIED_MARKER
 
 
 func _set_terrain_marker(x: int, y: int, marker: int) -> void:

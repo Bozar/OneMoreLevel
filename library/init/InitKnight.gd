@@ -2,7 +2,6 @@ extends "res://library/init/WorldTemplate.gd"
 # Initialize a map for Silent Knight Hall (Knight).
 
 
-const DEFAULT_MARKER: int = 0
 const PATH_MARKER: int = 1
 const WALL_MARKER: int = 2
 
@@ -26,10 +25,6 @@ var _has_counter: bool = false
 
 func _init(parent_node: Node2D).(parent_node) -> void:
 	pass
-
-
-func _init_dungeon_board() -> void:
-	_fill_dungeon_board(false)
 
 
 func get_blueprint() -> Array:
