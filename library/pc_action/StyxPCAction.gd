@@ -39,7 +39,6 @@ func _init(parent_node: Node2D).(parent_node) -> void:
 func render_fov() -> void:
 	var pos: Array
 	var distance: int
-	var new_color: String
 
 	if SHOW_FULL_MAP:
 		return
@@ -51,14 +50,15 @@ func render_fov() -> void:
 		pos = _new_ConvertCoord.vector_to_array(i.position)
 		distance = _new_CoordCalculator.get_range(
 			pos[0], pos[1], _source_position[0], _source_position[1])
+		i.visible = true
+
 		if distance > _new_StyxData.PC_MAX_SIGHT:
-			new_color = _new_Palette.BACKGROUND
+			i.visible = false
 		elif (distance > _new_StyxData.PC_SIGHT) or (distance == 0):
-			new_color = _new_Palette.get_default_color(
+			i.modulate = _new_Palette.get_default_color(
 					_new_MainGroupTag.GROUND)
 		else:
-			new_color = _new_Palette.SHADOW
-		i.modulate = new_color
+			i.modulate = _new_Palette.SHADOW
 
 
 func game_is_over(win: bool) -> void:

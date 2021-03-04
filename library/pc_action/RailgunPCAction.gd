@@ -69,7 +69,7 @@ func _init_sprite() -> void:
 		_new_ArrayHelper.merge(_floor_wall_sprite, tmp_sprite)
 
 		for i in _floor_wall_sprite:
-			i.modulate = _new_Palette.BACKGROUND
+			i.visible = false
 
 
 func _set_color(set_this: Sprite, in_sight: String, out_of_sight: String,
@@ -78,12 +78,14 @@ func _set_color(set_this: Sprite, in_sight: String, out_of_sight: String,
 
 	if _new_LinearFOV.is_in_sight(pos[0], pos[1]):
 		set_this.modulate = in_sight
+		set_this.visible = true
 		if has_memory and (_ref_ObjectData.get_hit_point(set_this) \
 				< MEMORY_MARKER):
 			_ref_ObjectData.set_hit_point(set_this, MEMORY_MARKER)
 	elif has_memory and (_ref_ObjectData.get_hit_point(set_this) \
 			== MEMORY_MARKER):
 		set_this.modulate = out_of_sight
+		set_this.visible = true
 
 
 func _render_counter(kill: int) -> void:

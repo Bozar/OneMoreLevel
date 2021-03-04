@@ -10,18 +10,12 @@ func _init(parent_node: Node2D).(parent_node) -> void:
 
 func render_fov() -> void:
 	var floor_sprite: Sprite
-	var new_color: String
 
 	for x in range(0, _new_DungeonSize.MAX_X):
 		for y in range(0, _new_DungeonSize.MAX_Y):
 			floor_sprite = _ref_DungeonBoard.get_sprite(
 					_new_MainGroupTag.GROUND, x, y)
-			if _is_building_or_trap(x, y):
-				new_color = _new_Palette.BACKGROUND
-			else:
-				new_color = _new_Palette.get_default_color(
-						_new_MainGroupTag.GROUND)
-			floor_sprite.modulate = new_color
+			floor_sprite.visible = not _is_building_or_trap(x, y)
 
 
 func wait() -> void:
