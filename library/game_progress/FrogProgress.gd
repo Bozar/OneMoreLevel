@@ -6,7 +6,6 @@ var _spr_FrogPrincess := preload("res://sprite/FrogPrincess.tscn")
 var _spr_Counter := preload("res://sprite/Counter.tscn")
 
 var _new_FrogData := preload("res://library/npc_data/FrogData.gd").new()
-var _new_ArrayHelper := preload("res://library/ArrayHelper.gd").new()
 
 # wave counter:
 # 0: 8 frogs | when 4 frogs disappear ->

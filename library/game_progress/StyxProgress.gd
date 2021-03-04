@@ -2,7 +2,6 @@ extends "res://library/game_progress/ProgressTemplate.gd"
 
 
 var _new_StyxData := preload("res://library/npc_data/StyxData.gd").new()
-var _new_ArrayHelper := preload("res://library/ArrayHelper.gd").new()
 
 var _init_world: bool = true
 var _state_to_coord: Dictionary

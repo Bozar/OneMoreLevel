@@ -2,7 +2,6 @@ extends "res://library/game_progress/ProgressTemplate.gd"
 
 
 var _new_BalloonData := preload("res://library/npc_data/BalloonData.gd").new()
-var _new_ArrayHelper := preload("res://library/ArrayHelper.gd").new()
 
 var _wind_duration: int = 0
 var _count_trap: int = 0

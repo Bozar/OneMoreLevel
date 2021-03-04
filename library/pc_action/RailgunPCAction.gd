@@ -8,7 +8,6 @@ const SHOW_FULL_MAP: bool = false
 
 var _new_RailgunData := preload("res://library/npc_data/RailgunData.gd").new()
 var _new_LinearFOV := preload("res://library/LinearFOV.gd").new()
-var _new_ArrayHelper := preload("res://library/ArrayHelper.gd").new()
 
 var _floor_wall_sprite: Array
 var _counter_sprite: Array = []

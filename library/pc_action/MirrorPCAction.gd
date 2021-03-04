@@ -4,7 +4,6 @@ extends "res://library/pc_action/PCActionTemplate.gd"
 var _spr_Phantom := preload("res://sprite/Phantom.tscn")
 
 var _new_MirrorData := preload("res://library/npc_data/MirrorData.gd").new()
-var _new_ArrayHelper := preload("res://library/ArrayHelper.gd").new()
 
 var _pc_hit_target: bool
 

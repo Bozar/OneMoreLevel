@@ -2,7 +2,6 @@ extends "res://library/npc_ai/AITemplate.gd"
 
 
 var _new_FrogData := preload("res://library/npc_data/FrogData.gd").new()
-var _new_ArrayHelper := preload("res://library/ArrayHelper.gd").new()
 
 var _id_to_danger_zone: Dictionary = {}
 

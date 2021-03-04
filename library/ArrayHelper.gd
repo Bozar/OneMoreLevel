@@ -1,10 +1,15 @@
-func rand_picker(source_array: Array, num_of_element: int,
-		rand: Game_RandomNumber) -> void:
+const RAND_WARNING: String = "Rand is not of type Game_RandomNumber."
+
+
+func rand_picker(source_array: Array, num_of_element: int, rand) -> void:
 	var counter: int
 
-	for i in range(num_of_element):
-		counter = rand.get_int(i, source_array.size())
-		swap_element(source_array, i, counter)
+	if rand is Game_RandomNumber:
+		for i in range(num_of_element):
+			counter = rand.get_int(i, source_array.size())
+			swap_element(source_array, i, counter)
+	else:
+		push_warning(RAND_WARNING)
 	source_array.resize(num_of_element)
 
 

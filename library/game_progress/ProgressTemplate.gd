@@ -21,6 +21,7 @@ var _new_CoordCalculator := preload("res://library/CoordCalculator.gd").new()
 var _new_Palette := preload("res://library/Palette.gd").new()
 var _new_SpriteTypeTag := preload("res://library/SpriteTypeTag.gd").new()
 var _new_ObjectStateTag := preload("res://library/ObjectStateTag.gd").new()
+var _new_ArrayHelper := preload("res://library/ArrayHelper.gd").new()
 
 
 # Refer: GameProgress.gd.
