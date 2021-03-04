@@ -16,6 +16,7 @@ func _init(parent_node: Node2D).(parent_node) -> void:
 func get_blueprint() -> Array:
 	_init_middle_border()
 	_init_wall()
+	_init_floor()
 	_init_pc()
 	_init_crystal()
 	_init_phantom()
@@ -92,8 +93,7 @@ func _create_reflection(x: int, y: int) -> void:
 
 func _create_mirror(x: int, y: int) -> void:
 	_add_to_blueprint(_spr_Wall,
-			_new_MainGroupTag.BUILDING, _new_SubGroupTag.WALL,
-			x, y)
+			_new_MainGroupTag.BUILDING, _new_SubGroupTag.WALL, x, y)
 	_occupy_position(x, y)
 
 
@@ -170,7 +170,6 @@ func _create_phantom(x: int, y: int) -> void:
 			x, y, _new_MirrorData.PHANTOM_SIGHT, true)
 
 	_add_to_blueprint(_spr_Phantom,
-			_new_MainGroupTag.ACTOR, _new_SubGroupTag.PHANTOM,
-			x, y)
+			_new_MainGroupTag.ACTOR, _new_SubGroupTag.PHANTOM, x, y)
 	for i in neighbor:
 		_occupy_position(i[0], i[1])

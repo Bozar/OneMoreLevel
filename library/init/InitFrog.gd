@@ -17,10 +17,6 @@ func get_blueprint() -> Array:
 	return _blueprint
 
 
-func _init_floor() -> void:
-	pass
-
-
 func _init_swamp() -> void:
 	var counter: int = 0
 
@@ -31,12 +27,10 @@ func _init_swamp() -> void:
 		for j in range(_new_DungeonSize.MAX_Y):
 			if _is_occupied(i, j):
 				_add_to_blueprint(_spr_Wall,
-						_new_MainGroupTag.GROUND, _new_SubGroupTag.LAND,
-						i, j)
+						_new_MainGroupTag.GROUND, _new_SubGroupTag.LAND, i, j)
 			else:
 				_add_to_blueprint(_spr_Floor,
-						_new_MainGroupTag.GROUND, _new_SubGroupTag.SWAMP,
-						i, j)
+						_new_MainGroupTag.GROUND, _new_SubGroupTag.SWAMP, i, j)
 
 
 func _init_path() -> int:

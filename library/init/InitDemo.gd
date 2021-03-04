@@ -13,19 +13,11 @@ func _init(parent_node: Node2D).(parent_node) -> void:
 
 func get_blueprint() -> Array:
 	_init_wall()
+	_init_floor()
 	_init_pc()
 	_init_dwarf()
 
 	return _blueprint
-
-
-# {0: [false, ...], 1: [false, ...], ...}
-func _init_dungeon_board() -> void:
-	for i in range(_new_DungeonSize.MAX_X):
-		_dungeon[i] = []
-		_dungeon[i].resize(_new_DungeonSize.MAX_Y)
-		for j in range(_new_DungeonSize.MAX_Y):
-			_dungeon[i][j] = false
 
 
 func _init_wall() -> void:
@@ -37,16 +29,18 @@ func _init_wall() -> void:
 
 	for x in range(min_x, max_x):
 		for y in range(min_y, max_y):
-			_add_to_blueprint(_spr_Wall,
-					_new_MainGroupTag.BUILDING, _new_SubGroupTag.WALL,
-					x, y)
 			_occupy_position(x, y)
+			_add_to_blueprint(_spr_Wall,
+					_new_MainGroupTag.BUILDING, _new_SubGroupTag.WALL, x, y)
 
 
 func _init_pc() -> void:
+	var x: int = 0
+	var y: int = 0
+
+	_occupy_position(x, y)
 	_add_to_blueprint(_spr_PC,
-			_new_MainGroupTag.ACTOR, _new_SubGroupTag.PC,
-			0, 0)
+			_new_MainGroupTag.ACTOR, _new_SubGroupTag.PC, x, y)
 
 
 func _init_dwarf() -> void:
@@ -55,22 +49,12 @@ func _init_dwarf() -> void:
 	var y: int
 
 	while dwarf > 0:
-		x = _ref_RandomNumber.get_int(1, _new_DungeonSize.MAX_X - 1)
-		y = _ref_RandomNumber.get_int(1, _new_DungeonSize.MAX_Y - 1)
-
+		x = _ref_RandomNumber.get_int(0, _new_DungeonSize.MAX_X)
+		y = _ref_RandomNumber.get_int(0, _new_DungeonSize.MAX_Y)
 		if _is_occupied(x, y):
 			continue
-		_add_to_blueprint(_spr_Dwarf,
-				_new_MainGroupTag.ACTOR, _new_SubGroupTag.DWARF,
-				x, y)
+
 		_occupy_position(x, y)
-
+		_add_to_blueprint(_spr_Dwarf,
+				_new_MainGroupTag.ACTOR, _new_SubGroupTag.DWARF, x, y)
 		dwarf -= 1
-
-
-func _occupy_position(x: int, y: int) -> void:
-	_dungeon[x][y] = true
-
-
-func _is_occupied(x: int, y: int) -> bool:
-	return _dungeon[x][y]

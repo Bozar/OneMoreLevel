@@ -36,6 +36,7 @@ func get_blueprint() -> Array:
 	for _i in range(MAX_RETRY):
 		_init_wall()
 	_fill_hole()
+	_init_floor()
 
 	_init_actor(_spr_PC, _new_SubGroupTag.PC, MIN_PC_DISTANCE)
 	_init_actor(_spr_KnightCaptain, _new_SubGroupTag.KNIGHT_CAPTAIN,
@@ -144,8 +145,16 @@ func _fill_hole() -> void:
 			if fill_this:
 				_set_terrain_marker(x, y, WALL_MARKER)
 				_add_to_blueprint(_spr_Wall,
-						_new_MainGroupTag.BUILDING, _new_SubGroupTag.WALL,
-						x, y)
+						_new_MainGroupTag.BUILDING, _new_SubGroupTag.WALL, x, y)
+
+
+func _init_floor():
+	for x in range(_new_DungeonSize.MAX_X):
+		for y in range(_new_DungeonSize.MAX_Y):
+			if _get_terrain_marker(x, y) == WALL_MARKER:
+				continue
+			_add_to_blueprint(_spr_Floor,
+					_new_MainGroupTag.GROUND, _new_SubGroupTag.FLOOR, x, y)
 
 
 func _init_actor(scene: PackedScene, sub_tag: String, distance: int) -> void:

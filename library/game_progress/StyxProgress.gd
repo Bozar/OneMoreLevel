@@ -24,7 +24,7 @@ func _init(parent_node: Node2D).(parent_node) -> void:
 	}
 
 
-func renew_world(pc_x: int, pc_y: int) -> void:
+func renew_world(_pc_x: int, _pc_y: int) -> void:
 	var pc: Sprite = _ref_DungeonBoard.get_pc()
 	var renew: bool = true
 
@@ -37,14 +37,6 @@ func renew_world(pc_x: int, pc_y: int) -> void:
 
 	if renew:
 		_change_water_flow()
-	_cast_light(pc_x, pc_y)
-
-
-func game_is_over(_win: bool) -> void:
-	var pc: Sprite = _ref_DungeonBoard.get_pc()
-	var pos: Array = _new_ConvertCoord.vector_to_array(pc.position)
-
-	_cast_light(pos[0], pos[1])
 
 
 func _change_water_flow() -> void:
@@ -78,27 +70,6 @@ func _change_water_flow() -> void:
 				_rotate_sprite(flow, direction)
 			else:
 				break
-
-
-func _cast_light(pc_x: int, pc_y: int) -> void:
-	var ground: Array = _ref_DungeonBoard.get_sprites_by_tag(
-			_new_MainGroupTag.GROUND)
-	var pos: Array
-	var distance: int
-	var new_color: String
-
-	for i in ground:
-		pos = _new_ConvertCoord.vector_to_array(i.position)
-		distance = _new_CoordCalculator.get_range(
-			pos[0], pos[1], pc_x, pc_y)
-		if distance > _new_StyxData.PC_MAX_SIGHT:
-			new_color = _new_Palette.BACKGROUND
-		elif (distance > _new_StyxData.PC_SIGHT) or (distance == 0):
-			new_color = _new_Palette.get_default_color(
-					_new_MainGroupTag.GROUND)
-		else:
-			new_color = _new_Palette.SHADOW
-		i.modulate = new_color
 
 
 func _rotate_sprite(ground: Sprite, direction: String) -> void:

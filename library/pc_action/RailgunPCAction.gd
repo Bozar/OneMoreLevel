@@ -3,6 +3,8 @@ extends "res://library/pc_action/PCActionTemplate.gd"
 
 const HALF_SIGHT_WIDTH: int = 1
 const MEMORY_MARKER: int = 1
+const SHOW_FULL_MAP: bool = false
+# const SHOW_FULL_MAP: bool = true
 
 var _new_RailgunData := preload("res://library/npc_data/RailgunData.gd").new()
 var _new_LinearFOV := preload("res://library/LinearFOV.gd").new()
@@ -27,6 +29,9 @@ func render_fov() -> void:
 	_init_sprite()
 	_render_counter(_kill_count)
 
+	if SHOW_FULL_MAP:
+		return
+
 	_new_LinearFOV.set_rectangular_sight(
 			_source_position[0], _source_position[1],
 			_face_direction[0], _face_direction[1],
@@ -45,6 +50,17 @@ func _is_obstacle(x: int, y: int, _opt_arg: Array) -> bool:
 func _init_sprite() -> void:
 	var tmp_sprite: Array
 
+	if _counter_sprite.size() == 0:
+		for x in range(_new_DungeonSize.MAX_X - _new_RailgunData.COUNTER_WIDTH,
+				_new_DungeonSize.MAX_X):
+			_counter_sprite.push_back(_ref_DungeonBoard.get_sprite(
+					_new_MainGroupTag.BUILDING,
+					x, _new_DungeonSize.MAX_Y - 1))
+			_counter_sprite.back().modulate = _new_Palette.DARK
+
+	if SHOW_FULL_MAP:
+		return
+
 	if _floor_wall_sprite.size() == 0:
 		_floor_wall_sprite = _ref_DungeonBoard.get_sprites_by_tag(
 				_new_MainGroupTag.GROUND)
@@ -54,14 +70,6 @@ func _init_sprite() -> void:
 
 		for i in _floor_wall_sprite:
 			i.modulate = _new_Palette.BACKGROUND
-
-	if _counter_sprite.size() == 0:
-		for x in range(_new_DungeonSize.MAX_X - _new_RailgunData.COUNTER_WIDTH,
-				_new_DungeonSize.MAX_X):
-			_counter_sprite.push_back(_ref_DungeonBoard.get_sprite(
-					_new_MainGroupTag.BUILDING,
-					x, _new_DungeonSize.MAX_Y - 1))
-			_counter_sprite.back().modulate = _new_Palette.DARK
 
 
 func _set_color(set_this: Sprite, in_sight: String, out_of_sight: String,

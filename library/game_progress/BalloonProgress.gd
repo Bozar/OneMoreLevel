@@ -49,7 +49,10 @@ func renew_world(_pc_x: int, _pc_y: int) -> void:
 		_wind_duration -= 1
 
 
-func remove_trap(_trap: Sprite, _x: int, _y: int) -> void:
+func remove_trap(_trap: Sprite, x: int, y: int) -> void:
+	_ref_CreateObject.create(_spr_Floor,
+			_new_MainGroupTag.GROUND, _new_SubGroupTag.FLOOR, x, y)
+
 	_count_trap += 1
 	if _count_trap == _new_BalloonData.MAX_TRAP:
 		_ref_EndGame.player_win()

@@ -9,7 +9,6 @@ var _new_DesertData := preload("res://library/npc_data/DesertData.gd").new()
 var _remove_sprite: Array
 var _respawn_counter: Array = []
 var _spice_counter: Sprite
-var _hp_to_sprite: Dictionary
 
 
 func _init(parent_node: Node2D).(parent_node) -> void:
@@ -19,15 +18,6 @@ func _init(parent_node: Node2D).(parent_node) -> void:
 
 	for _i in range(_new_DesertData.MAX_WORM):
 		_respawn_counter.push_back(-1)
-
-	_hp_to_sprite = {
-		0: _new_SpriteTypeTag.DEFAULT,
-		1: _new_SpriteTypeTag.ONE,
-		2: _new_SpriteTypeTag.TWO,
-		3: _new_SpriteTypeTag.THREE,
-		4: _new_SpriteTypeTag.FOUR,
-		5: _new_SpriteTypeTag.FIVE,
-	}
 
 
 func renew_world(_pc_x: int, _pc_y: int) -> void:
@@ -97,9 +87,9 @@ func _try_add_new_counter() -> void:
 
 func _switch_spice_counter() -> void:
 	var pc: Sprite = _ref_DungeonBoard.get_pc()
-
-	_ref_SwitchSprite.switch_sprite(_spice_counter,
-			_hp_to_sprite[_ref_ObjectData.get_hit_point(pc)])
+	var type_tag: String = _new_SpriteTypeTag.convert_digit_to_tag(
+			_ref_ObjectData.get_hit_point(pc))
+	_ref_SwitchSprite.switch_sprite(_spice_counter, type_tag)
 
 
 func _create_worm_head(stop_loop: bool, avoid_building: int) -> void:

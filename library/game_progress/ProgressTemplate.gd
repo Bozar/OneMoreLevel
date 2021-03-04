@@ -11,6 +11,8 @@ var _ref_ObjectData: Game_ObjectData
 var _ref_DangerZone: Game_DangerZone
 var _ref_EndGame: Game_EndGame
 
+var _spr_Floor := preload("res://sprite/Floor.tscn")
+
 var _new_MainGroupTag := preload("res://library/MainGroupTag.gd").new()
 var _new_SubGroupTag := preload("res://library/SubGroupTag.gd").new()
 var _new_DungeonSize := preload("res://library/DungeonSize.gd").new()

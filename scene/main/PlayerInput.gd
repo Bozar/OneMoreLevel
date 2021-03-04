@@ -111,6 +111,7 @@ func _on_EndGame_game_is_over(win: bool) -> void:
 
 	if not win:
 		pc.modulate = _new_Palette.SHADOW
+	_pc_action.game_is_over(win)
 	_end_game = true
 	set_process_unhandled_input(true)
 

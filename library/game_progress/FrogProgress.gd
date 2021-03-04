@@ -3,7 +3,6 @@ extends "res://library/game_progress/ProgressTemplate.gd"
 
 var _spr_Frog := preload("res://sprite/Frog.tscn")
 var _spr_FrogPrincess := preload("res://sprite/FrogPrincess.tscn")
-var _spr_Floor := preload("res://sprite/Floor.tscn")
 var _spr_Counter := preload("res://sprite/Counter.tscn")
 
 var _new_FrogData := preload("res://library/npc_data/FrogData.gd").new()

@@ -162,6 +162,10 @@ func switch_sprite() -> void:
 		_ref_SwitchSprite.switch_sprite(pc, _new_SpriteTypeTag.DEFAULT)
 
 
+func game_is_over(_win: bool) -> void:
+	pass
+
+
 func _is_occupied(x: int, y: int) -> bool:
 	if not _new_CoordCalculator.is_inside_dungeon(x, y):
 		return true

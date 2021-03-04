@@ -20,14 +20,9 @@ func get_blueprint() -> Array:
 	return _blueprint
 
 
-func _init_floor() -> void:
-	pass
-
-
 func _init_pc() -> void:
 	var x: int = 1
 	var y: int = _new_DungeonSize.MAX_Y - 2
-
 	_add_to_blueprint(_spr_PC,
 			_new_MainGroupTag.ACTOR, _new_SubGroupTag.PC, x, y)
 

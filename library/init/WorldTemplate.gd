@@ -32,7 +32,6 @@ func _init(parent_node: Node2D) -> void:
 	_ref_DangerZone = parent_node._ref_DangerZone
 
 	_init_dungeon_board()
-	_init_floor()
 
 
 # Child scripts should implement _init() to pass arguments.
@@ -92,11 +91,12 @@ func _add_to_blueprint(scene: PackedScene,
 
 
 func _init_floor() -> void:
-	for i in range(_new_DungeonSize.MAX_X):
-		for j in range(_new_DungeonSize.MAX_Y):
+	for x in range(_new_DungeonSize.MAX_X):
+		for y in range(_new_DungeonSize.MAX_Y):
+			if _is_occupied(x, y):
+				continue
 			_add_to_blueprint(_spr_Floor,
-					_new_MainGroupTag.GROUND, _new_SubGroupTag.FLOOR,
-					i, j)
+					_new_MainGroupTag.GROUND, _new_SubGroupTag.FLOOR, x, y)
 
 
 func _init_pc() -> void:
@@ -108,15 +108,11 @@ func _init_pc() -> void:
 	while true:
 		x = _ref_RandomNumber.get_int(0, _new_DungeonSize.MAX_X)
 		y = _ref_RandomNumber.get_int(0, _new_DungeonSize.MAX_Y)
-
-		if _is_occupied(x, y):
-			continue
-		break
+		if not _is_occupied(x, y):
+			break
 
 	neighbor = _new_CoordCalculator.get_neighbor(x, y, min_range, true)
 	for i in neighbor:
 		_occupy_position(i[0], i[1])
-
 	_add_to_blueprint(_spr_PC,
-			_new_MainGroupTag.ACTOR, _new_SubGroupTag.PC,
-			x, y)
+			_new_MainGroupTag.ACTOR, _new_SubGroupTag.PC, x, y)

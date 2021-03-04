@@ -15,10 +15,11 @@ func _init(parent_node: Node2D).(parent_node) -> void:
 func get_blueprint() -> Array:
 	var valid_position: Array = _get_zone_coord()
 	var pc_index: int
+	var pc_x: int
+	var pc_y: int
 	var sprite_position: Array
 
-	_build_indicator()
-	_build_floor()
+	_init_indicator()
 
 	pc_index = _ref_RandomNumber.get_int(0, valid_position.size())
 	for i in range(0, valid_position.size()):
@@ -29,11 +30,14 @@ func get_blueprint() -> Array:
 			valid_position[i][3]
 		)
 		if i == pc_index:
-			_build_pc(sprite_position[0], sprite_position[1])
+			pc_x = sprite_position[0]
+			pc_y = sprite_position[1]
 		else:
-			_build_wall_beacon(sprite_position[0], sprite_position[1])
+			_init_wall_beacon(sprite_position[0], sprite_position[1])
 
-	_build_single_wall(0, 0)
+	_init_single_wall(0, 0)
+	_init_floor()
+	_create_pc(pc_x, pc_y)
 
 	return _blueprint
 
@@ -86,7 +90,7 @@ func _get_position(min_x: int, max_x: int, min_y: int, max_y: int) -> Array:
 	return [x, y]
 
 
-func _build_indicator() -> void:
+func _init_indicator() -> void:
 	for x in range(2):
 		_add_to_blueprint(_spr_Arrow,
 				_new_MainGroupTag.GROUND, _new_SubGroupTag.ARROW, x, 0)
@@ -97,27 +101,13 @@ func _build_indicator() -> void:
 		_occupy_position(0, y)
 
 
-func _init_floor() -> void:
-	pass
-
-
-func _build_floor() -> void:
-	for i in range(_new_DungeonSize.MAX_X):
-		for j in range(_new_DungeonSize.MAX_Y):
-			if _is_occupied(i, j):
-				continue
-			_add_to_blueprint(_spr_Floor,
-					_new_MainGroupTag.GROUND, _new_SubGroupTag.FLOOR,
-					i, j)
-
-
-func _build_pc(x: int, y: int) -> void:
+func _create_pc(x: int, y: int) -> void:
 	_add_to_blueprint(_spr_PCBalloon,
 			_new_MainGroupTag.ACTOR, _new_SubGroupTag.PC, x, y)
 	_occupy_position(x, y)
 
 
-func _build_wall_beacon(x: int, y: int) -> void:
+func _init_wall_beacon(x: int, y: int) -> void:
 	var wall: Array = [[x, y], [x + 2, y], [x + 2, y + 2], [x, y + 2]]
 	var beacon: Array = [x + 1, y + 1]
 
@@ -133,7 +123,7 @@ func _build_wall_beacon(x: int, y: int) -> void:
 	_occupy_position(beacon[0], beacon[1])
 
 
-func _build_single_wall(retry: int, count_wall: int) -> void:
+func _init_single_wall(retry: int, count_wall: int) -> void:
 	var max_retry: int = 500
 	var block_size: int = 3
 	var move_to_center: int = 1
@@ -160,4 +150,4 @@ func _build_single_wall(retry: int, count_wall: int) -> void:
 		count_wall += 1
 
 	retry += 1
-	_build_single_wall(retry, count_wall)
+	_init_single_wall(retry, count_wall)

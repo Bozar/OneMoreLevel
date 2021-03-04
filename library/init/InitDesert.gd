@@ -15,6 +15,7 @@ func _init(parent_node: Node2D).(parent_node) -> void:
 
 
 func get_blueprint() -> Array:
+	_init_floor()
 	_init_wall()
 	_init_worm()
 	_init_pc()
@@ -82,9 +83,7 @@ func _try_build_wall(x: int, y: int, is_treasure: bool) -> void:
 	_occupy_position(x, y)
 	if is_treasure:
 		_add_to_blueprint(_spr_Treasure,
-				_new_MainGroupTag.TRAP, _new_SubGroupTag.TREASURE,
-				x, y)
+				_new_MainGroupTag.TRAP, _new_SubGroupTag.TREASURE, x, y)
 	else:
 		_add_to_blueprint(_spr_Wall,
-				_new_MainGroupTag.BUILDING, _new_SubGroupTag.WALL,
-				x, y)
+				_new_MainGroupTag.BUILDING, _new_SubGroupTag.WALL, x, y)

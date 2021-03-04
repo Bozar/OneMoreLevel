@@ -2,6 +2,8 @@ extends "res://library/pc_action/PCActionTemplate.gd"
 
 
 const INVALID_DIRECTION: int = 0
+const SHOW_FULL_MAP: bool = false
+# const SHOW_FULL_MAP: bool = true
 
 var _new_StyxData := preload("res://library/npc_data/StyxData.gd").new()
 
@@ -9,6 +11,7 @@ var _state_to_int: Dictionary
 var _input_to_int: Dictionary
 var _state_to_coord: Dictionary
 var _extra_turn_counter: int = 0
+var _ground_sprite: Array
 
 
 func _init(parent_node: Node2D).(parent_node) -> void:
@@ -31,6 +34,42 @@ func _init(parent_node: Node2D).(parent_node) -> void:
 		_new_ObjectStateTag.LEFT: [-1, 0],
 		_new_ObjectStateTag.RIGHT: [1, 0],
 	}
+
+
+func render_fov() -> void:
+	var pos: Array
+	var distance: int
+	var new_color: String
+
+	if SHOW_FULL_MAP:
+		return
+	if _ground_sprite.size() == 0:
+		_ground_sprite = _ref_DungeonBoard.get_sprites_by_tag(
+				_new_MainGroupTag.GROUND)
+
+	for i in _ground_sprite:
+		pos = _new_ConvertCoord.vector_to_array(i.position)
+		distance = _new_CoordCalculator.get_range(
+			pos[0], pos[1], _source_position[0], _source_position[1])
+		if distance > _new_StyxData.PC_MAX_SIGHT:
+			new_color = _new_Palette.BACKGROUND
+		elif (distance > _new_StyxData.PC_SIGHT) or (distance == 0):
+			new_color = _new_Palette.get_default_color(
+					_new_MainGroupTag.GROUND)
+		else:
+			new_color = _new_Palette.SHADOW
+		i.modulate = new_color
+
+
+func game_is_over(win: bool) -> void:
+	var pc: Sprite
+	var pos: Array
+
+	if win:
+		pc = _ref_DungeonBoard.get_pc()
+		pos = _new_ConvertCoord.vector_to_array(pc.position)
+		_source_position = pos
+		render_fov()
 
 
 func wait() -> void:
