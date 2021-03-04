@@ -13,18 +13,11 @@ func _init(parent_node: Node2D).(parent_node) -> void:
 
 
 func get_blueprint() -> Array:
-	_init_pc()
+	_init_pc(0, 1, _new_DungeonSize.MAX_Y - 2)
 	_init_building()
 	_init_river()
 
 	return _blueprint
-
-
-func _init_pc() -> void:
-	var x: int = 1
-	var y: int = _new_DungeonSize.MAX_Y - 2
-	_add_to_blueprint(_spr_PC,
-			_new_MainGroupTag.ACTOR, _new_SubGroupTag.PC, x, y)
 
 
 func _init_building() -> void:

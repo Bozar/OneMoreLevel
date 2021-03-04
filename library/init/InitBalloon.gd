@@ -15,8 +15,8 @@ func _init(parent_node: Node2D).(parent_node) -> void:
 func get_blueprint() -> Array:
 	var valid_position: Array = _get_zone_coord()
 	var pc_index: int
-	var pc_x: int
-	var pc_y: int
+	var x: int
+	var y: int
 	var sprite_position: Array
 
 	_init_indicator()
@@ -29,15 +29,18 @@ func get_blueprint() -> Array:
 			valid_position[i][2],
 			valid_position[i][3]
 		)
+		x = sprite_position[0]
+		y = sprite_position[1]
+
 		if i == pc_index:
-			pc_x = sprite_position[0]
-			pc_y = sprite_position[1]
+			_init_pc(0, x, y, _spr_PCBalloon)
+			_add_to_blueprint(_spr_Floor,
+					_new_MainGroupTag.GROUND, _new_SubGroupTag.FLOOR, x, y)
 		else:
-			_init_wall_beacon(sprite_position[0], sprite_position[1])
+			_init_wall_beacon(x, y)
 
 	_init_single_wall(0, 0)
 	_init_floor()
-	_create_pc(pc_x, pc_y)
 
 	return _blueprint
 
@@ -99,12 +102,6 @@ func _init_indicator() -> void:
 		_add_to_blueprint(_spr_Arrow,
 				_new_MainGroupTag.GROUND, _new_SubGroupTag.ARROW, 0, y)
 		_occupy_position(0, y)
-
-
-func _create_pc(x: int, y: int) -> void:
-	_add_to_blueprint(_spr_PCBalloon,
-			_new_MainGroupTag.ACTOR, _new_SubGroupTag.PC, x, y)
-	_occupy_position(x, y)
 
 
 func _init_wall_beacon(x: int, y: int) -> void:

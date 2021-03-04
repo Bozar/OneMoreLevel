@@ -12,7 +12,7 @@ func _init(parent_node: Node2D).(parent_node) -> void:
 
 func get_blueprint() -> Array:
 	_init_swamp()
-	_init_pc()
+	_init_pc(0, -1, -1, _spr_PCFrog)
 
 	return _blueprint
 
@@ -66,11 +66,3 @@ func _init_path() -> int:
 		y = neighbor[counter][1]
 
 	return current_length
-
-
-func _init_pc() -> void:
-	var x: int = _ref_RandomNumber.get_int(0, _new_DungeonSize.MAX_X)
-	var y: int = _ref_RandomNumber.get_int(0, _new_DungeonSize.MAX_Y)
-
-	_add_to_blueprint(_spr_PCFrog,
-			_new_MainGroupTag.ACTOR, _new_SubGroupTag.PC, x, y)

@@ -15,7 +15,7 @@ func _init(parent_node: Node2D).(parent_node) -> void:
 func get_blueprint() -> Array:
 	_init_wall()
 	_init_floor()
-	_init_pc()
+	_init_pc(_new_RailgunData.MIN_DISTANCE)
 
 	return _blueprint
 
@@ -112,25 +112,3 @@ func _add_wall_blueprint() -> void:
 					new_sub_group = _new_SubGroupTag.WALL
 				_add_to_blueprint(new_sprite,
 						_new_MainGroupTag.BUILDING, new_sub_group, i, j)
-
-
-func _init_pc() -> void:
-	var x: int
-	var y: int
-	var neighbor: Array
-
-	while true:
-		x = _ref_RandomNumber.get_int(0, _new_DungeonSize.MAX_X)
-		y = _ref_RandomNumber.get_int(0, _new_DungeonSize.MAX_Y)
-
-		if not _is_occupied(x, y):
-			# TODO: Replace PC with another sprite.
-			_add_to_blueprint(_spr_PC,
-					_new_MainGroupTag.ACTOR, _new_SubGroupTag.PC,
-					x, y)
-
-			neighbor = _new_CoordCalculator.get_neighbor(x, y,
-					_new_RailgunData.MIN_DISTANCE, true)
-			for i in neighbor:
-				_occupy_position(i[0], i[1])
-			break

@@ -99,20 +99,19 @@ func _init_floor() -> void:
 					_new_MainGroupTag.GROUND, _new_SubGroupTag.FLOOR, x, y)
 
 
-func _init_pc() -> void:
-	var x: int
-	var y: int
+func _init_pc(min_distance: int = 0, x: int = -1, y: int = -1,
+		pc_scene: PackedScene = _spr_PC) -> void:
 	var neighbor: Array
-	var min_range: int = 5
 
 	while true:
+		if _new_CoordCalculator.is_inside_dungeon(x, y) \
+				and (not _is_occupied(x, y)):
+			break
 		x = _ref_RandomNumber.get_int(0, _new_DungeonSize.MAX_X)
 		y = _ref_RandomNumber.get_int(0, _new_DungeonSize.MAX_Y)
-		if not _is_occupied(x, y):
-			break
 
-	neighbor = _new_CoordCalculator.get_neighbor(x, y, min_range, true)
+	neighbor = _new_CoordCalculator.get_neighbor(x, y, min_distance, true)
 	for i in neighbor:
 		_occupy_position(i[0], i[1])
-	_add_to_blueprint(_spr_PC,
+	_add_to_blueprint(pc_scene,
 			_new_MainGroupTag.ACTOR, _new_SubGroupTag.PC, x, y)

@@ -34,15 +34,6 @@ func _init_wall() -> void:
 					_new_MainGroupTag.BUILDING, _new_SubGroupTag.WALL, x, y)
 
 
-func _init_pc() -> void:
-	var x: int = 0
-	var y: int = 0
-
-	_occupy_position(x, y)
-	_add_to_blueprint(_spr_PC,
-			_new_MainGroupTag.ACTOR, _new_SubGroupTag.PC, x, y)
-
-
 func _init_dwarf() -> void:
 	var dwarf: int = _ref_RandomNumber.get_int(3, 6)
 	var x: int

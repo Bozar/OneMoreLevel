@@ -17,7 +17,8 @@ func get_blueprint() -> Array:
 	_init_middle_border()
 	_init_wall()
 	_init_floor()
-	_init_pc()
+
+	_create_pc()
 	_init_crystal()
 	_init_phantom()
 
@@ -97,7 +98,7 @@ func _create_mirror(x: int, y: int) -> void:
 	_occupy_position(x, y)
 
 
-func _init_pc() -> void:
+func _create_pc() -> void:
 	var pc_x: int
 	var pc_y: int
 	var mirror: Array
