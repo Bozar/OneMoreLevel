@@ -12,6 +12,7 @@ var _new_LinearFOV := preload("res://library/LinearFOV.gd").new()
 var _floor_wall_sprite: Array
 var _counter_sprite: Array = []
 var _kill_count: int = _new_RailgunData.MAX_KILL_COUNT
+var _ammo: int = _new_RailgunData.MAX_AMMO
 var _face_direction: Array = [0, -1]
 
 
@@ -22,6 +23,10 @@ func _init(parent_node: Node2D).(parent_node) -> void:
 func set_target_position(direction: String) -> void:
 	_face_direction = _direction_to_coord[direction]
 	.set_target_position(direction)
+
+
+func switch_sprite() -> void:
+	_switch_mode(false)
 
 
 func render_fov() -> void:
@@ -40,6 +45,10 @@ func render_fov() -> void:
 
 	for i in _floor_wall_sprite:
 		_set_color(i, _new_Palette.SHADOW, _new_Palette.DARK, true)
+
+
+func wait() -> void:
+	_switch_mode(not _is_aim_mode())
 
 
 # is_npc(): Is in aim mode?
@@ -119,3 +128,22 @@ func _render_counter(kill: int) -> void:
 	for i in range(counter.size()):
 		sprite_type = _new_SpriteTypeTag.convert_digit_to_tag(counter[i])
 		_ref_SwitchSprite.switch_sprite(_counter_sprite[i], sprite_type)
+
+
+func _switch_mode(aim_mode: bool) -> void:
+	var new_state: String
+	var new_sprite: String
+
+	if aim_mode:
+		new_state = _new_ObjectStateTag.ACTIVE
+		new_sprite = _new_SpriteTypeTag.convert_digit_to_tag(_ammo)
+	else:
+		new_state = _new_ObjectStateTag.DEFAULT
+		new_sprite = _new_SpriteTypeTag.DEFAULT
+
+	_ref_ObjectData.set_state(_pc, new_state)
+	_ref_SwitchSprite.switch_sprite(_pc, new_sprite)
+
+
+func _is_aim_mode() -> bool:
+	return _ref_ObjectData.verify_state(_pc, _new_ObjectStateTag.ACTIVE)
