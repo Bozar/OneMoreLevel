@@ -4,6 +4,7 @@ extends "res://library/init/WorldTemplate.gd"
 const PATH_LENGTH: int = 16
 const MAX_FLOOR: int = 150
 
+var _spr_PCRailgun := preload("res://sprite/PCRailgun.tscn")
 var _spr_Counter := preload("res://sprite/Counter.tscn")
 var _new_RailgunData := preload("res://library/npc_data/RailgunData.gd").new()
 
@@ -15,7 +16,7 @@ func _init(parent_node: Node2D).(parent_node) -> void:
 func get_blueprint() -> Array:
 	_init_wall()
 	_init_floor()
-	_init_pc(_new_RailgunData.MIN_DISTANCE)
+	_init_pc(_new_RailgunData.MIN_DISTANCE, -1, -1, _spr_PCRailgun)
 
 	return _blueprint
 
