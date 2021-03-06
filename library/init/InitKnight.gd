@@ -33,11 +33,11 @@ func get_blueprint() -> Array:
 	_fill_hole()
 	_init_floor()
 
-	_init_actor(_spr_PC, _new_SubGroupTag.PC, MIN_PC_DISTANCE)
-	_init_actor(_spr_KnightCaptain, _new_SubGroupTag.KNIGHT_CAPTAIN,
+	_create_actor(_spr_PC, _new_SubGroupTag.PC, MIN_PC_DISTANCE)
+	_create_actor(_spr_KnightCaptain, _new_SubGroupTag.KNIGHT_CAPTAIN,
 			MIN_NPC_DISTANCE)
 	for _i in range(_new_KnightData.MAX_KNIGHT):
-		_init_actor(_spr_Knight, _new_SubGroupTag.KNIGHT, MIN_NPC_DISTANCE)
+		_create_actor(_spr_Knight, _new_SubGroupTag.KNIGHT, MIN_NPC_DISTANCE)
 
 	return _blueprint
 
@@ -152,7 +152,7 @@ func _init_floor():
 					_new_MainGroupTag.GROUND, _new_SubGroupTag.FLOOR, x, y)
 
 
-func _init_actor(scene: PackedScene, sub_tag: String, distance: int) -> void:
+func _create_actor(scene: PackedScene, sub_tag: String, distance: int) -> void:
 	var x: int
 	var y: int
 	var neighbor: Array

@@ -17,37 +17,12 @@ func _init(parent_node: Node2D).(parent_node) -> void:
 func get_blueprint() -> Array:
 	_init_floor()
 	_init_wall()
-	_init_worm()
+	_init_actor(_new_DesertData.WORM_DISTANCE, INVALID_COORD, INVALID_COORD,
+			_new_DesertData.MAX_WORM,
+			_spr_WormHead, _new_SubGroupTag.WORM_HEAD)
 	_init_pc()
 
 	return _blueprint
-
-
-func _init_worm(count: int = 0) -> void:
-	if count >= _new_DesertData.MAX_WORM:
-		return
-
-	var x: int
-	var y: int
-	var neighbor: Array
-
-	while true:
-		x = _ref_RandomNumber.get_int(0, _new_DungeonSize.MAX_X)
-		y = _ref_RandomNumber.get_int(0, _new_DungeonSize.MAX_Y)
-		if _is_occupied(x, y):
-			continue
-
-		_add_to_blueprint(_spr_WormHead,
-				_new_MainGroupTag.ACTOR, _new_SubGroupTag.WORM_HEAD,
-				x, y)
-
-		neighbor = _new_CoordCalculator.get_neighbor(x, y, 2, true)
-		for j in neighbor:
-			_occupy_position(j[0], j[1])
-		break
-
-	count += 1
-	_init_worm(count)
 
 
 func _init_wall(count: int = 0) -> void:

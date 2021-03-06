@@ -4,6 +4,7 @@ class_name Game_WorldTemplate
 # The child should also implement _init() to pass arguments.
 
 
+const INVALID_COORD: int = -1
 const DEFAULT_MARKER: int = 0
 const OCCUPIED_MARKER: int = 1
 const SPRITE_BLUEPRINT := preload("res://library/init/SpriteBlueprint.gd")
@@ -90,8 +91,12 @@ func _init_floor() -> void:
 					_new_MainGroupTag.GROUND, _new_SubGroupTag.FLOOR, x, y)
 
 
-func _init_pc(min_distance: int = 0, x: int = -1, y: int = -1,
-		pc_scene: PackedScene = _spr_PC) -> void:
+func _init_actor(min_distance: int, x: int, y: int, max_actor: int,
+		actor_scene: PackedScene, sub_tag: String) -> void:
+	if max_actor < 1:
+		return
+	max_actor -= 1
+
 	var neighbor: Array
 
 	while true:
@@ -104,5 +109,12 @@ func _init_pc(min_distance: int = 0, x: int = -1, y: int = -1,
 	neighbor = _new_CoordCalculator.get_neighbor(x, y, min_distance, true)
 	for i in neighbor:
 		_occupy_position(i[0], i[1])
-	_add_to_blueprint(pc_scene,
-			_new_MainGroupTag.ACTOR, _new_SubGroupTag.PC, x, y)
+	_add_to_blueprint(actor_scene, _new_MainGroupTag.ACTOR, sub_tag, x, y)
+
+	_init_actor(min_distance, x, y, max_actor, actor_scene, sub_tag)
+
+
+func _init_pc(min_distance: int = 0,
+		x: int = INVALID_COORD, y: int = INVALID_COORD,
+		pc_scene: PackedScene = _spr_PC) -> void:
+	_init_actor(min_distance, x, y, 1, pc_scene, _new_SubGroupTag.PC)
