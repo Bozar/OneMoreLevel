@@ -89,13 +89,13 @@ func attack() -> void:
 		_ref_CreateObject.create(_spr_Treasure,
 				_new_MainGroupTag.TRAP, _new_SubGroupTag.TREASURE, x, y)
 
-		_kill_count -= 1
+		_kill_count -= _new_RailgunData.ONE_KILL
 		if _ammo == 0:
-			_kill_count -= 1
+			_kill_count -= _new_RailgunData.ONE_KILL
 		if _new_CoordCalculator.is_inside_range(
 				_source_position[0], _source_position[1],
 				x, y, _new_RailgunData.CLOSE_RANGE):
-			_kill_count -= 1
+			_kill_count -= _new_RailgunData.ONE_KILL
 		_kill_count = max(_kill_count, 0) as int
 		break
 

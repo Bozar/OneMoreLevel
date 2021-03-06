@@ -11,6 +11,7 @@ const TRIGGER_RESPAWN: int = 2
 const MAX_RESPAWN: int = 4
 
 const MAX_KILL_COUNT: int = 18
+const ONE_KILL: int = 1
 const COUNTER_DIGIT: int = 6
 const COUNTER_WIDTH: int = 3
 
