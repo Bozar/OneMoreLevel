@@ -37,3 +37,5 @@ const FROG: String = "frog"
 const FROG_PRINCESS: String = "frog_princess"
 const LAND: String = "land"
 const SWAMP: String = "swamp"
+
+const DEMON: String = "demon"

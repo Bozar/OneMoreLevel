@@ -5,7 +5,9 @@ const PATH_LENGTH: int = 16
 const MAX_FLOOR: int = 150
 
 var _spr_PCRailgun := preload("res://sprite/PCRailgun.tscn")
+var _spr_Demon := preload("res://sprite/Demon.tscn")
 var _spr_Counter := preload("res://sprite/Counter.tscn")
+
 var _new_RailgunData := preload("res://library/npc_data/RailgunData.gd").new()
 
 
@@ -16,7 +18,11 @@ func _init(parent_node: Node2D).(parent_node) -> void:
 func get_blueprint() -> Array:
 	_init_wall()
 	_init_floor()
-	_init_pc(_new_RailgunData.MIN_DISTANCE, -1, -1, _spr_PCRailgun)
+	_init_pc(_new_RailgunData.PC_FRONT_SIGHT, INVALID_COORD, INVALID_COORD,
+			_spr_PCRailgun)
+	_init_actor(_new_RailgunData.NPC_GAP, INVALID_COORD, INVALID_COORD,
+			_new_RailgunData.MIN_NPC,
+			_spr_Demon, _new_SubGroupTag.DEMON)
 
 	return _blueprint
 
@@ -32,13 +38,19 @@ func _init_wall() -> void:
 
 
 func _set_start_point(end_point: Array) -> void:
-	var x: int = _ref_RandomNumber.get_int(1, _new_DungeonSize.MAX_X)
-	var y: int = _ref_RandomNumber.get_int(0, _new_DungeonSize.MAX_Y)
+	var x: int
+	var y: int
 
-	if _is_even(x):
-		x -= 1
-	if _is_odd(y):
-		y -= 1
+	while true:
+		x = _ref_RandomNumber.get_int(1, _new_DungeonSize.MAX_X)
+		y = _ref_RandomNumber.get_int(0, _new_DungeonSize.MAX_Y)
+		if _is_even(x):
+			x -= 1
+		if _is_odd(y):
+			y -= 1
+		if not _is_counter(x, y):
+			break
+
 	_occupy_position(x, y)
 	_update_end_point(x, y, end_point)
 

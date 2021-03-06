@@ -47,6 +47,9 @@ func render_fov() -> void:
 
 	for i in _floor_wall_sprite:
 		_set_color(i, _new_Palette.SHADOW, _new_Palette.DARK, true)
+	for i in _ref_DungeonBoard.get_sprites_by_tag(_new_SubGroupTag.DEMON):
+		_set_color(i, _new_Palette.get_default_color(_new_MainGroupTag.ACTOR),
+				"", false)
 
 
 func is_inside_dungeon() -> bool:
@@ -147,9 +150,6 @@ func _init_sprite() -> void:
 				_new_SubGroupTag.WALL)
 		_new_ArrayHelper.merge(_floor_wall_sprite, tmp_sprite)
 
-		for i in _floor_wall_sprite:
-			i.visible = false
-
 
 func _set_color(set_this: Sprite, in_sight: String, out_of_sight: String,
 		has_memory: bool) -> void:
@@ -165,6 +165,8 @@ func _set_color(set_this: Sprite, in_sight: String, out_of_sight: String,
 			== MEMORY_MARKER):
 		set_this.modulate = out_of_sight
 		set_this.visible = true
+	else:
+		set_this.visible = false
 
 
 func _render_counter(kill: int) -> void:
