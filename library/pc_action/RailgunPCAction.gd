@@ -43,7 +43,7 @@ func render_fov() -> void:
 			_face_direction[0], _face_direction[1],
 			_new_RailgunData.PC_FRONT_SIGHT, _new_RailgunData.PC_SIDE_SIGHT,
 			HALF_SIGHT_WIDTH,
-			self, "_is_obstacle", [])
+			self, "_block_ray", [])
 
 	for i in _floor_wall_sprite:
 		_set_color(i, _new_Palette.SHADOW, _new_Palette.DARK, true)
@@ -125,7 +125,24 @@ func interact_with_trap() -> void:
 	.move()
 
 
-func _is_obstacle(x: int, y: int, _opt_arg: Array) -> bool:
+func _is_checkmate() -> bool:
+	var neighbor: Array
+
+	if _ammo > 0:
+		return false
+
+	neighbor = _new_CoordCalculator.get_neighbor(
+			_source_position[0], _source_position[1], 1)
+	for i in neighbor:
+		if not (_ref_DungeonBoard.has_sprite(
+				_new_MainGroupTag.BUILDING, i[0], i[1]) \
+						or _ref_DungeonBoard.has_sprite(
+								_new_MainGroupTag.ACTOR, i[0], i[1])):
+			return false
+	return true
+
+
+func _block_ray(x: int, y: int, _opt_arg: Array) -> bool:
 	return _ref_DungeonBoard.has_sprite(_new_MainGroupTag.BUILDING, x, y)
 
 
