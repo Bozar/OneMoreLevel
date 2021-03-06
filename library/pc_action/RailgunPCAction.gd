@@ -6,6 +6,8 @@ const MEMORY_MARKER: int = 1
 const SHOW_FULL_MAP: bool = false
 # const SHOW_FULL_MAP: bool = true
 
+var _spr_Treasure := preload("res://sprite/Treasure.tscn")
+
 var _new_RailgunData := preload("res://library/npc_data/RailgunData.gd").new()
 var _new_LinearFOV := preload("res://library/LinearFOV.gd").new()
 
@@ -47,25 +49,77 @@ func render_fov() -> void:
 		_set_color(i, _new_Palette.SHADOW, _new_Palette.DARK, true)
 
 
+func is_inside_dungeon() -> bool:
+	return true
+
+
+func is_npc() -> bool:
+	return _is_aim_mode()
+
+
+func is_building() -> bool:
+	return (not .is_inside_dungeon()) or .is_building()
+
+
 func wait() -> void:
 	_switch_mode(not _is_aim_mode())
 
 
-# is_npc(): Is in aim mode?
-# attack():
-# 	Has enough ammo? Is valid direction? Ammo - 1
-# 	Update _target_position && attack && hit a target if possible
-# move():
-#	Is NOT occupied by NPC? Move.
+func attack() -> void:
+	var x: int = _target_position[0]
+	var y: int = _target_position[1]
+
+	if _ammo < 1:
+		return
+	_ammo -= 1
+	_ammo = max(_ammo, 0) as int
+
+	while _new_CoordCalculator.is_inside_dungeon(x, y) \
+			and (not _ref_DungeonBoard.has_sprite(_new_MainGroupTag.BUILDING,
+					x, y)):
+		if not _ref_DungeonBoard.has_sprite(_new_MainGroupTag.ACTOR, x, y):
+			x += _face_direction[0]
+			y += _face_direction[1]
+			continue
+
+		_ref_RemoveObject.remove(_new_MainGroupTag.ACTOR, x, y)
+		_ref_CreateObject.create(_spr_Treasure,
+				_new_MainGroupTag.TRAP, _new_SubGroupTag.TREASURE, x, y)
+
+		_kill_count -= 1
+		if _ammo == 0:
+			_kill_count -= 1
+		if _new_CoordCalculator.is_inside_range(
+				_source_position[0], _source_position[1],
+				x, y, _new_RailgunData.CLOSE_RANGE):
+			_kill_count -= 1
+		_kill_count = max(_kill_count, 0) as int
+		break
+
+	if _kill_count == 0:
+		render_fov()
+		_switch_mode(true)
+		_ref_EndGame.player_win()
+	else:
+		end_turn = true
+
+
+func move() -> void:
+	if _ref_DungeonBoard.has_sprite(_new_MainGroupTag.ACTOR,
+			_target_position[0], _target_position[1]):
+		return
+	.move()
+
+
 func interact_with_trap() -> void:
 	_ref_RemoveObject.remove(_new_MainGroupTag.TRAP,
 			_target_position[0], _target_position[1])
-	_ref_DungeonBoard.move_sprite(_new_MainGroupTag.ACTOR,
-			_source_position, _target_position)
 
 	_ref_CountDown.add_count(_new_RailgunData.RESTORE_TURN)
-	# TODO: Restore ammo.
-	end_turn = true
+	_ammo += _new_RailgunData.RESTORE_AMMO
+	_ammo = min(_ammo, _new_RailgunData.MAX_AMMO) as int
+
+	.move()
 
 
 func _is_obstacle(x: int, y: int, _opt_arg: Array) -> bool:
