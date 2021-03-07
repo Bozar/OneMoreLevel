@@ -27,8 +27,9 @@ func set_target_position(direction: String) -> void:
 	.set_target_position(direction)
 
 
+# Switch PC sprite when waiting, after shooting, or at the end of the game.
 func switch_sprite() -> void:
-	_switch_mode(false)
+	pass
 
 
 func game_is_over(_win: bool) -> void:
@@ -82,6 +83,7 @@ func attack() -> void:
 		return
 	_ammo -= 1
 	_ammo = max(_ammo, 0) as int
+	_switch_mode(false)
 
 	while _new_CoordCalculator.is_inside_dungeon(x, y) \
 			and (not _ref_DungeonBoard.has_sprite(_new_MainGroupTag.BUILDING,
