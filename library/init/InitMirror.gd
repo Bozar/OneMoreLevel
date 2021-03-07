@@ -133,8 +133,8 @@ func _init_crystal() -> void:
 	var y: int
 
 	while true:
-		x = _ref_RandomNumber.get_int(0, _new_DungeonSize.MAX_X)
-		y = _ref_RandomNumber.get_int(0, _new_DungeonSize.MAX_Y)
+		x = _ref_RandomNumber.get_x_coord()
+		y = _ref_RandomNumber.get_y_coord()
 		if _is_occupied(x, y):
 			continue
 		break

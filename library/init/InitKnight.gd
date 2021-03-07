@@ -158,8 +158,8 @@ func _create_actor(scene: PackedScene, sub_tag: String, distance: int) -> void:
 	var neighbor: Array
 
 	while true:
-		x = _ref_RandomNumber.get_int(0, _new_DungeonSize.MAX_X)
-		y = _ref_RandomNumber.get_int(0, _new_DungeonSize.MAX_Y)
+		x = _ref_RandomNumber.get_x_coord()
+		y = _ref_RandomNumber.get_y_coord()
 		if _get_terrain_marker(x, y) != WALL_MARKER:
 			break
 

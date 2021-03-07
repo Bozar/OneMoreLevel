@@ -101,8 +101,8 @@ func _create_worm_head(stop_loop: bool, avoid_building: int) -> void:
 	var neighbor: Array
 	var max_retry: int = 3
 
-	x = _ref_RandomNumber.get_int(0, _new_DungeonSize.MAX_X)
-	y = _ref_RandomNumber.get_int(0, _new_DungeonSize.MAX_Y)
+	x = _ref_RandomNumber.get_x_coord()
+	y = _ref_RandomNumber.get_y_coord()
 	neighbor = _new_CoordCalculator.get_neighbor(x, y,
 			_new_DesertData.WORM_DISTANCE, true)
 

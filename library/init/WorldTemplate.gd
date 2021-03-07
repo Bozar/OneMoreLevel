@@ -103,8 +103,8 @@ func _init_actor(min_distance: int, x: int, y: int, max_actor: int,
 		if _new_CoordCalculator.is_inside_dungeon(x, y) \
 				and (not _is_occupied(x, y)):
 			break
-		x = _ref_RandomNumber.get_int(0, _new_DungeonSize.MAX_X)
-		y = _ref_RandomNumber.get_int(0, _new_DungeonSize.MAX_Y)
+		x = _ref_RandomNumber.get_x_coord()
+		y = _ref_RandomNumber.get_y_coord()
 
 	neighbor = _new_CoordCalculator.get_neighbor(x, y, min_distance, true)
 	for i in neighbor:

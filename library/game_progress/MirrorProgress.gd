@@ -58,8 +58,8 @@ func _replenish_crystal() -> void:
 	while true:
 		# x = _ref_RandomNumber.get_int(
 		# 	_new_DungeonSize.CENTER_X, _new_DungeonSize.MAX_X)
-		x = _ref_RandomNumber.get_int(0, _new_DungeonSize.MAX_X)
-		y = _ref_RandomNumber.get_int(0, _new_DungeonSize.MAX_Y)
+		x = _ref_RandomNumber.get_x_coord()
+		y = _ref_RandomNumber.get_y_coord()
 
 		if _new_CoordCalculator.is_inside_range(
 				x, y, pc_pos[0], pc_pos[1], _new_MirrorData.CRYSTAL_DISTANCE):

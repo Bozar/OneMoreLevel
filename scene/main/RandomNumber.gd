@@ -6,8 +6,9 @@ var rng_seed: int setget set_rng_seed, get_rng_seed
 
 var _ref_GameSetting: Game_GameSetting
 
-var _init_seed: int
+var _new_DungeonSize := preload("res://library/DungeonSize.gd").new()
 
+var _init_seed: int
 var _rng := RandomNumberGenerator.new()
 
 
@@ -18,6 +19,14 @@ func get_int(min_int: int, max_int: int) -> int:
 
 func get_percent_chance(chance: int) -> bool:
 	return chance > get_int(0, 100)
+
+
+func get_x_coord() -> int:
+	return get_int(0, _new_DungeonSize.MAX_X)
+
+
+func get_y_coord() -> int:
+	return get_int(0, _new_DungeonSize.MAX_Y)
 
 
 func shuffle(repeat: int) -> void:

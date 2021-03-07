@@ -34,8 +34,8 @@ func _respawn_npc(pc_x: int, pc_y: int) -> void:
 	var y: int
 
 	while true:
-		x = _ref_RandomNumber.get_int(0, _new_DungeonSize.MAX_X)
-		y = _ref_RandomNumber.get_int(0, _new_DungeonSize.MAX_Y)
+		x = _ref_RandomNumber.get_x_coord()
+		y = _ref_RandomNumber.get_y_coord()
 
 		if _ref_DungeonBoard.has_sprite(_new_MainGroupTag.BUILDING, x, y) \
 				or _ref_DungeonBoard.has_sprite(_new_MainGroupTag.ACTOR, x, y):
