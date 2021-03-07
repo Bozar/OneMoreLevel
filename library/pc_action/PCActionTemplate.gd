@@ -4,6 +4,21 @@ class_name Game_PCActionTemplate
 # The child should also implement _init() to pass arguments.
 
 
+const INPUT_TAG := preload("res://library/InputTag.gd")
+const MAIN_GROUP_TAG := preload("res://library/MainGroupTag.gd")
+
+const DIRECTION_TO_COORD: Dictionary = {
+	INPUT_TAG.MOVE_UP: [0, -1],
+	INPUT_TAG.MOVE_DOWN: [0, 1],
+	INPUT_TAG.MOVE_LEFT: [-1, 0],
+	INPUT_TAG.MOVE_RIGHT: [1, 0],
+}
+const VALID_MAIN_GROUPS: Array = [
+	MAIN_GROUP_TAG.ACTOR,
+	MAIN_GROUP_TAG.BUILDING,
+	MAIN_GROUP_TAG.TRAP,
+]
+
 var message: String setget set_message, get_message
 var end_turn: bool setget set_end_turn, get_end_turn
 
@@ -32,19 +47,6 @@ var _pc: Sprite
 var _source_position: Array
 var _target_position: Array
 var _input_direction: String
-
-var _direction_to_coord: Dictionary = {
-	_new_InputTag.MOVE_UP: [0, -1],
-	_new_InputTag.MOVE_DOWN: [0, 1],
-	_new_InputTag.MOVE_LEFT: [-1, 0],
-	_new_InputTag.MOVE_RIGHT: [1, 0],
-}
-
-var _valid_main_groups: Array = [
-	_new_MainGroupTag.ACTOR,
-	_new_MainGroupTag.BUILDING,
-	_new_MainGroupTag.TRAP,
-]
 
 
 # Refer: PlayerInput.gd.
@@ -144,7 +146,7 @@ func set_source_position() -> void:
 
 
 func set_target_position(direction: String) -> void:
-	var shift: Array = _direction_to_coord[direction]
+	var shift: Array = DIRECTION_TO_COORD[direction]
 
 	_target_position = [
 		_source_position[0] + shift[0], _source_position[1] + shift[1]
@@ -171,7 +173,7 @@ func _is_occupied(x: int, y: int) -> bool:
 	if not _new_CoordCalculator.is_inside_dungeon(x, y):
 		return true
 
-	for i in _valid_main_groups:
+	for i in VALID_MAIN_GROUPS:
 		if _ref_DungeonBoard.has_sprite(i, x, y):
 			return true
 	return false

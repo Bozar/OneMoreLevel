@@ -30,11 +30,11 @@ const NINE: String = "nine"
 
 # Helper functions.
 
-var _ordered_sprite_type: Array = [
+const ORDERED_SPRITE_TYPE: Array = [
     ZERO, ONE, TWO, THREE, FOUR, FIVE, SIX, SEVEN, EIGHT, NINE,
 ]
 
 
 func convert_digit_to_tag(digit: int) -> String:
-    digit = digit if digit < _ordered_sprite_type.size() else 0
-    return _ordered_sprite_type[digit]
+    digit = digit if digit < ORDERED_SPRITE_TYPE.size() else 0
+    return ORDERED_SPRITE_TYPE[digit]

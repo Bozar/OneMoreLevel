@@ -9,7 +9,7 @@ const BALLOON: String = "balloon"
 const FROG: String = "frog"
 const RAILGUN: String = "railgun"
 
-var _tag_to_name: Dictionary = {
+const TAG_TO_NAME: Dictionary = {
 	DEMO: "Demo",
 	KNIGHT: "Knight",
 	DESERT: "Desert",
@@ -22,14 +22,14 @@ var _tag_to_name: Dictionary = {
 
 
 func get_world_name(world_tag: String) -> String:
-	if _tag_to_name.has(world_tag):
-		return _tag_to_name[world_tag]
+	if TAG_TO_NAME.has(world_tag):
+		return TAG_TO_NAME[world_tag]
 	return INVALID
 
 
 func get_full_world_tag() -> Array:
-	return _tag_to_name.keys()
+	return TAG_TO_NAME.keys()
 
 
 func is_valid_world_tag(world_tag: String) -> bool:
-	return world_tag in _tag_to_name.keys()
+	return TAG_TO_NAME.has(world_tag)

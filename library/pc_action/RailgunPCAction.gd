@@ -23,7 +23,7 @@ func _init(parent_node: Node2D).(parent_node) -> void:
 
 
 func set_target_position(direction: String) -> void:
-	_face_direction = _direction_to_coord[direction]
+	_face_direction = DIRECTION_TO_COORD[direction]
 	.set_target_position(direction)
 
 
