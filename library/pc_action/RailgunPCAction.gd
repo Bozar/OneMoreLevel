@@ -31,6 +31,12 @@ func switch_sprite() -> void:
 	_switch_mode(false)
 
 
+func game_is_over(_win: bool) -> void:
+	_source_position = _new_ConvertCoord.vector_to_array(_pc.position)
+	render_fov()
+	_switch_mode(true)
+
+
 func render_fov() -> void:
 	_init_sprite()
 	_render_counter(_kill_count)
@@ -100,8 +106,6 @@ func attack() -> void:
 		break
 
 	if _kill_count == 0:
-		render_fov()
-		_switch_mode(true)
 		_ref_EndGame.player_win()
 	else:
 		end_turn = true
