@@ -1,24 +1,38 @@
 var _new_CoordCalculator := preload("res://library/CoordCalculator.gd").new()
 var _new_PathFindingData := preload("res://library/PathFindingData.gd").new()
+var _new_ArrayHelper := preload("res://library/ArrayHelper.gd").new()
 
 
 # Find the next step.
-func get_path(dungeon: Dictionary, start_x: int, start_y: int) -> Array:
-	var next_step: Array = []
+# is_passable_func(source_array: Array, current_index: int,
+#> opt_arg: Array) -> bool
+func get_path(dungeon: Dictionary, start_x: int, start_y: int,
+		func_host: Object, is_passable_func: String, opt_arg: Array) -> Array:
 	var neighbor: Array = _new_CoordCalculator.get_neighbor(start_x, start_y, 1)
 	var min_distance: int = _new_PathFindingData.OBSTACLE
+	var x: int
+	var y: int
+	var current_index: int = 0
 
-	for n in neighbor:
-		if (dungeon[n[0]][n[1]] < min_distance) \
-				and (dungeon[n[0]][n[1]] > _new_PathFindingData.UNKNOWN):
-			min_distance = dungeon[n[0]][n[1]]
-	if min_distance == _new_PathFindingData.OBSTACLE:
-		return []
+	_new_ArrayHelper.filter_element(neighbor, func_host, is_passable_func,
+			opt_arg)
 
-	for n in neighbor:
-		if (dungeon[n[0]][n[1]] == min_distance):
-			next_step.push_back(n)
-	return next_step
+	for i in neighbor.size():
+		x = neighbor[i][0]
+		y = neighbor[i][1]
+
+		if (dungeon[x][y] > _new_PathFindingData.UNKNOWN) \
+				and (dungeon[x][y] < _new_PathFindingData.OBSTACLE):
+			if dungeon[x][y] < min_distance:
+				min_distance = dungeon[x][y]
+				_new_ArrayHelper.swap_element(neighbor, 0, i)
+				current_index = 1
+			elif dungeon[x][y] == min_distance:
+				_new_ArrayHelper.swap_element(neighbor, current_index, i)
+				current_index += 1
+
+	neighbor.resize(current_index)
+	return neighbor
 
 
 # Create a distance map.
@@ -29,23 +43,30 @@ func get_map(dungeon: Dictionary, end_point: Array) -> Dictionary:
 	var check: Array = end_point.pop_front()
 	var neighbor: Array = _new_CoordCalculator.get_neighbor(
 			check[0], check[1], 1)
+	var x: int
+	var y: int
 
-	for n in neighbor:
-		if dungeon[n[0]][n[1]] == _new_PathFindingData.UNKNOWN:
-			dungeon[n[0]][n[1]] = _get_distance(dungeon, n)
-			end_point.push_back(n)
-
+	for i in neighbor:
+		x = i[0]
+		y = i[1]
+		if dungeon[x][y] == _new_PathFindingData.UNKNOWN:
+			dungeon[x][y] = _get_distance(dungeon, x, y)
+			end_point.push_back(i)
 	return get_map(dungeon, end_point)
 
 
-func _get_distance(dungeon: Dictionary, center: Array) -> int:
+func _get_distance(dungeon: Dictionary, center_x: int, center_y: int) -> int:
 	var neighbor: Array = _new_CoordCalculator.get_neighbor(
-			center[0], center[1], 1)
+			center_x, center_y, 1)
 	var min_distance: int = _new_PathFindingData.OBSTACLE
+	var x: int
+	var y: int
 
-	for n in neighbor:
-		if (dungeon[n[0]][n[1]] < min_distance) \
-				and (dungeon[n[0]][n[1]] > _new_PathFindingData.UNKNOWN):
-			min_distance = dungeon[n[0]][n[1]]
-
-	return min_distance + 1
+	for i in neighbor:
+		x = i[0]
+		y = i[1]
+		if (dungeon[x][y] < min_distance) \
+				and (dungeon[x][y] > _new_PathFindingData.UNKNOWN):
+			min_distance = dungeon[x][y]
+	min_distance = min(min_distance + 1, _new_PathFindingData.OBSTACLE) as int
+	return min_distance
