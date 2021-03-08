@@ -29,6 +29,7 @@ var _new_ArrayHelper := preload("res://library/ArrayHelper.gd").new()
 var _self: Sprite
 var _pc_pos: Array
 var _self_pos: Array
+var _target_pos: Array
 var _dungeon: Dictionary
 
 
@@ -91,6 +92,7 @@ func _approach_pc() -> void:
 		_new_ArrayHelper.rand_picker(destination, 1, _ref_RandomNumber)
 		_ref_DungeonBoard.move_sprite(_new_MainGroupTag.ACTOR,
 				_self_pos, destination[0])
+		_target_pos = destination[0]
 
 
 func _init_dungeon() -> void:

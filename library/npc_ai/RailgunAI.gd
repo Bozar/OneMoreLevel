@@ -1,19 +1,11 @@
 extends "res://library/npc_ai/AITemplate.gd"
 
 
-const SPRITE_TYPE_TAG := preload("res://library/SpriteTypeTag.gd")
-
 const DIRECTION_TO_SHIFT: Dictionary = {
 	1: [1, 0],
 	2: [0, 1],
 	-1: [-1, 0],
 	-2: [0, -1],
-}
-const DISTANCE_TO_AIM_SPRITE: Dictionary = {
-	1: SPRITE_TYPE_TAG.ACTIVE_1,
-	2: SPRITE_TYPE_TAG.ACTIVE_2,
-	3: SPRITE_TYPE_TAG.ACTIVE_3,
-	4: SPRITE_TYPE_TAG.ACTIVE_4,
 }
 
 var _spr_Treasure := preload("res://sprite/Treasure.tscn")
@@ -34,24 +26,21 @@ func take_action() -> void:
 	elif _new_CoordCalculator.is_inside_range(
 			_self_pos[0], _self_pos[1], _pc_pos[0], _pc_pos[1],
 			_new_RailgunData.NPC_SIGHT):
-		_approach()
-		# Update _self_pos after moving.
+		_approach_pc()
+		_try_remove_trap()
 		_switch_mode(false)
 
 
 func _switch_mode(aim_mode: bool) -> void:
 	var new_state: String
 	var new_sprite: String
-	var distance: int = _new_CoordCalculator.get_range(
-			_self_pos[0], _self_pos[1],
-			_pc_pos[0], _pc_pos[1])
 
 	if aim_mode:
 		new_state = _new_ObjectStateTag.ACTIVE
-		new_sprite = DISTANCE_TO_AIM_SPRITE[distance]
+		new_sprite = _new_SpriteTypeTag.ACTIVE
 	else:
 		new_state = _new_ObjectStateTag.DEFAULT
-		new_sprite = _new_SpriteTypeTag.convert_digit_to_tag(distance)
+		new_sprite = _new_SpriteTypeTag.DEFAULT
 
 	_ref_ObjectData.set_state(_self, new_state)
 	_ref_SwitchSprite.switch_sprite(_self, new_sprite)
@@ -116,10 +105,6 @@ func _is_in_close_range() -> bool:
 	return false
 
 
-func _approach() -> void:
-	pass
-
-
 func _get_direction(source: int, target: int) -> int:
 	var delta: int = target - source
 	if delta > 0:
@@ -140,3 +125,10 @@ func _block_ray(x: int, y: int) -> bool:
 
 func _is_actor(x: int, y: int) -> bool:
 	return _ref_DungeonBoard.has_sprite(_new_MainGroupTag.ACTOR, x, y)
+
+
+func _try_remove_trap() -> void:
+	if _ref_DungeonBoard.has_sprite(_new_MainGroupTag.TRAP,
+			_target_pos[0], _target_pos[1]):
+		_ref_RemoveObject.remove(_new_MainGroupTag.TRAP,
+				_target_pos[0], _target_pos[1])

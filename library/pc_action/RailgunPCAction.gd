@@ -106,6 +106,7 @@ func attack() -> void:
 		break
 
 	if _kill_count == 0:
+		_switch_mode(true)
 		_ref_EndGame.player_win()
 	else:
 		_switch_mode(false)
