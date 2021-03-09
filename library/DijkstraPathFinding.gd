@@ -4,6 +4,7 @@ var _new_ArrayHelper := preload("res://library/ArrayHelper.gd").new()
 
 
 # Find the next step.
+# Call func_host.is_passable_func() to verify if a grid can be entered.
 # is_passable_func(source_array: Array, current_index: int,
 #> opt_arg: Array) -> bool
 func get_path(dungeon: Dictionary, start_x: int, start_y: int,
@@ -20,9 +21,7 @@ func get_path(dungeon: Dictionary, start_x: int, start_y: int,
 	for i in neighbor.size():
 		x = neighbor[i][0]
 		y = neighbor[i][1]
-
-		if (dungeon[x][y] > _new_PathFindingData.UNKNOWN) \
-				and (dungeon[x][y] < _new_PathFindingData.OBSTACLE):
+		if _is_valid_distance(dungeon, x, y, _new_PathFindingData.OBSTACLE):
 			if dungeon[x][y] < min_distance:
 				min_distance = dungeon[x][y]
 				_new_ArrayHelper.swap_element(neighbor, 0, i)
@@ -65,8 +64,13 @@ func _get_distance(dungeon: Dictionary, center_x: int, center_y: int) -> int:
 	for i in neighbor:
 		x = i[0]
 		y = i[1]
-		if (dungeon[x][y] < min_distance) \
-				and (dungeon[x][y] > _new_PathFindingData.UNKNOWN):
+		if _is_valid_distance(dungeon, x, y, min_distance):
 			min_distance = dungeon[x][y]
 	min_distance = min(min_distance + 1, _new_PathFindingData.OBSTACLE) as int
 	return min_distance
+
+
+func _is_valid_distance(dungeon: Dictionary, x: int, y: int,
+		max_distance: int) -> bool:
+	return (dungeon[x][y] < max_distance) \
+			and (dungeon[x][y] > _new_PathFindingData.UNKNOWN)

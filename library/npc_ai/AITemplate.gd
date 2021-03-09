@@ -46,10 +46,6 @@ func _init(parent_node: Node2D) -> void:
 	_ref_CreateObject = parent_node._ref_CreateObject
 	_ref_Schedule = parent_node._ref_Schedule
 
-	for x in range(_new_DungeonSize.MAX_X):
-		_dungeon[x] = []
-		_dungeon[x].resize(_new_DungeonSize.MAX_Y)
-
 
 # Override.
 func take_action() -> void:
@@ -96,6 +92,11 @@ func _approach_pc() -> void:
 
 
 func _init_dungeon() -> void:
+	if _dungeon.size() < 1:
+		for x in range(_new_DungeonSize.MAX_X):
+			_dungeon[x] = []
+			_dungeon[x].resize(_new_DungeonSize.MAX_Y)
+
 	for x in range(_new_DungeonSize.MAX_X):
 		for y in range(_new_DungeonSize.MAX_Y):
 			if _ref_DungeonBoard.has_sprite(_new_MainGroupTag.BUILDING, x, y):
