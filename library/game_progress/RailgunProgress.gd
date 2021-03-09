@@ -3,7 +3,7 @@ extends "res://library/game_progress/ProgressTemplate.gd"
 
 const MAX_RETRY: int = 99
 
-var _spr_Demon := preload("res://sprite/Demon.tscn")
+var _spr_Devil := preload("res://sprite/Devil.tscn")
 
 var _new_RailgunData := preload("res://library/npc_data/RailgunData.gd").new()
 
@@ -59,6 +59,6 @@ func _respawn_npc(pc_x: int, pc_y: int) -> void:
 	if is_valid_coord:
 		if _ref_DungeonBoard.has_sprite(_new_MainGroupTag.TRAP, x, y):
 			_ref_RemoveObject.remove(_new_MainGroupTag.TRAP, x, y)
-		_ref_CreateObject.create(_spr_Demon,
-				_new_MainGroupTag.ACTOR, _new_SubGroupTag.DEMON, x, y)
+		_ref_CreateObject.create(_spr_Devil,
+				_new_MainGroupTag.ACTOR, _new_SubGroupTag.DEVIL, x, y)
 		_alive_npc += 1

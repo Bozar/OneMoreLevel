@@ -17,7 +17,7 @@ flags = 4
 atlas = ExtResource( 1 )
 region = Rect2( 24, 144, 24, 36 )
 
-[node name="Demon" type="Sprite"]
+[node name="Devil" type="Sprite"]
 
 [node name="default" type="Sprite" parent="."]
 texture = SubResource( 1 )

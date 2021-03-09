@@ -53,7 +53,7 @@ func render_fov() -> void:
 
 	for i in _floor_wall_sprite:
 		_set_color(i, _new_Palette.SHADOW, _new_Palette.DARK, true)
-	for i in _ref_DungeonBoard.get_sprites_by_tag(_new_SubGroupTag.DEMON):
+	for i in _ref_DungeonBoard.get_sprites_by_tag(_new_SubGroupTag.DEVIL):
 		_set_color(i, _new_Palette.get_default_color(_new_MainGroupTag.ACTOR),
 				"", false)
 

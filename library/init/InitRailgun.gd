@@ -5,7 +5,7 @@ const PATH_LENGTH: int = 16
 const MAX_FLOOR: int = 150
 
 var _spr_PCRailgun := preload("res://sprite/PCRailgun.tscn")
-var _spr_Demon := preload("res://sprite/Demon.tscn")
+var _spr_Devil := preload("res://sprite/Devil.tscn")
 var _spr_Counter := preload("res://sprite/Counter.tscn")
 
 var _new_RailgunData := preload("res://library/npc_data/RailgunData.gd").new()
@@ -22,7 +22,7 @@ func get_blueprint() -> Array:
 			_spr_PCRailgun)
 	_init_actor(_new_RailgunData.NPC_GAP, INVALID_COORD, INVALID_COORD,
 			_new_RailgunData.MAX_NPC,
-			_spr_Demon, _new_SubGroupTag.DEMON)
+			_spr_Devil, _new_SubGroupTag.DEVIL)
 
 	return _blueprint
 
