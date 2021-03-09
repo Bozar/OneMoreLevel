@@ -42,7 +42,8 @@ func game_is_over(_win: bool) -> void:
 
 func render_fov() -> void:
 	_init_skull_pillar()
-	_init_sprite()
+	_init_counter()
+	_init_floor_wall()
 	_render_counter(_kill_count)
 
 	if SHOW_FULL_MAP:
@@ -192,9 +193,7 @@ func _init_skull_pillar() -> void:
 				return
 
 
-func _init_sprite() -> void:
-	var tmp_sprite: Array
-
+func _init_counter() -> void:
 	if _counter_sprite.size() == 0:
 		for x in range(_new_DungeonSize.MAX_X - _new_RailgunData.COUNTER_WIDTH,
 				_new_DungeonSize.MAX_X):
@@ -202,6 +201,10 @@ func _init_sprite() -> void:
 					_new_MainGroupTag.BUILDING,
 					x, _new_DungeonSize.MAX_Y - 1))
 			_counter_sprite.back().modulate = _new_Palette.DARK
+
+
+func _init_floor_wall() -> void:
+	var tmp_sprite: Array
 
 	if SHOW_FULL_MAP:
 		return
