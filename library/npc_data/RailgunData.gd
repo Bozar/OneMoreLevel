@@ -1,6 +1,7 @@
 const PC_FRONT_SIGHT: int = 6
 const PC_SIDE_SIGHT: int = 4
 const CLOSE_RANGE: int = 1
+const TOUCH_PILLAR: int = 1
 
 const NPC_SIGHT: int = 8
 const NPC_ATTACK: int = 4

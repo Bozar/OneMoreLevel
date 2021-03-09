@@ -16,6 +16,9 @@ var _counter_sprite: Array = []
 var _kill_count: int = _new_RailgunData.MAX_KILL_COUNT
 var _ammo: int = _new_RailgunData.MAX_AMMO
 var _face_direction: Array = [0, -1]
+var _pillar_sprite: Sprite
+var _has_found_pillar: bool = false
+var _plillar_position: Array
 
 
 func _init(parent_node: Node2D).(parent_node) -> void:
@@ -38,6 +41,7 @@ func game_is_over(_win: bool) -> void:
 
 
 func render_fov() -> void:
+	_init_skull_pillar()
 	_init_sprite()
 	_render_counter(_kill_count)
 
@@ -56,6 +60,9 @@ func render_fov() -> void:
 	for i in _ref_DungeonBoard.get_sprites_by_tag(_new_SubGroupTag.DEVIL):
 		_set_color(i, _new_Palette.get_default_color(_new_MainGroupTag.ACTOR),
 				"", false)
+	if _has_found_pillar:
+		_pillar_sprite.modulate = _new_Palette.get_default_color(
+				_new_MainGroupTag.BUILDING)
 
 
 func is_inside_dungeon() -> bool:
@@ -117,6 +124,11 @@ func move() -> void:
 	if _ref_DungeonBoard.has_sprite(_new_MainGroupTag.ACTOR,
 			_target_position[0], _target_position[1]):
 		return
+	if not _has_found_pillar:
+		_has_found_pillar = _new_CoordCalculator.is_inside_range(
+				_target_position[0], _target_position[1],
+				_plillar_position[0], _plillar_position[1],
+				_new_RailgunData.TOUCH_PILLAR)
 	.move()
 
 
@@ -150,6 +162,34 @@ func _is_checkmate() -> bool:
 
 func _block_ray(x: int, y: int, _opt_arg: Array) -> bool:
 	return _ref_DungeonBoard.has_sprite(_new_MainGroupTag.BUILDING, x, y)
+
+
+func _init_skull_pillar() -> void:
+	var building: Array
+	var pos: Array
+	var neighbor: Array
+
+	if _plillar_position.size() > 0:
+		return
+
+	building = _ref_DungeonBoard.get_sprites_by_tag(_new_SubGroupTag.WALL)
+	_new_ArrayHelper.rand_picker(building, building.size(), _ref_RandomNumber)
+
+	for i in building:
+		pos = _new_ConvertCoord.vector_to_array(i.position)
+		if _new_CoordCalculator.is_inside_range(pos[0], pos[1],
+				_source_position[0], _source_position[1],
+				_new_DungeonSize.MAX_Y):
+			continue
+
+		neighbor = _new_CoordCalculator.get_neighbor(pos[0], pos[1], 1, false)
+		for j in neighbor:
+			if _ref_DungeonBoard.has_sprite(_new_MainGroupTag.GROUND,
+					j[0], j[1]):
+				_ref_SwitchSprite.switch_sprite(i, _new_SpriteTypeTag.ACTIVE)
+				_pillar_sprite = i
+				_plillar_position = pos
+				return
 
 
 func _init_sprite() -> void:
