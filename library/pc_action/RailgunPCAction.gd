@@ -7,6 +7,7 @@ const SHOW_FULL_MAP: bool = false
 # const SHOW_FULL_MAP: bool = true
 
 var _spr_Treasure := preload("res://sprite/Treasure.tscn")
+var _spr_PillarOfSkulls := preload("res://sprite/PillarOfSkulls.tscn")
 
 var _new_RailgunData := preload("res://library/npc_data/RailgunData.gd").new()
 var _new_LinearFOV := preload("res://library/LinearFOV.gd").new()
@@ -41,9 +42,10 @@ func game_is_over(_win: bool) -> void:
 
 
 func render_fov() -> void:
+	# A wall sprite will be replaced by pillar sprite in _init_skull_pillar().
 	_init_skull_pillar()
-	_init_counter()
 	_init_floor_wall()
+	_init_counter()
 	_render_counter(_kill_count)
 
 	if SHOW_FULL_MAP:
@@ -125,11 +127,7 @@ func move() -> void:
 	if _ref_DungeonBoard.has_sprite(_new_MainGroupTag.ACTOR,
 			_target_position[0], _target_position[1]):
 		return
-	if not _has_found_pillar:
-		_has_found_pillar = _new_CoordCalculator.is_inside_range(
-				_target_position[0], _target_position[1],
-				_plillar_position[0], _plillar_position[1],
-				_new_RailgunData.TOUCH_PILLAR)
+	_try_find_pillar()
 	.move()
 
 
@@ -141,6 +139,7 @@ func interact_with_trap() -> void:
 	_ammo += _new_RailgunData.RESTORE_AMMO
 	_ammo = min(_ammo, _new_RailgunData.MAX_AMMO) as int
 
+	_try_find_pillar()
 	.move()
 
 
@@ -187,9 +186,14 @@ func _init_skull_pillar() -> void:
 		for j in neighbor:
 			if _ref_DungeonBoard.has_sprite(_new_MainGroupTag.GROUND,
 					j[0], j[1]):
-				_ref_SwitchSprite.switch_sprite(i, _new_SpriteTypeTag.ACTIVE)
-				_pillar_sprite = i
+				_ref_RemoveObject.remove(_new_MainGroupTag.BUILDING,
+						pos[0], pos[1])
+				_ref_CreateObject.create(_spr_PillarOfSkulls,
+						_new_MainGroupTag.BUILDING, _new_SubGroupTag.WALL,
+						pos[0], pos[1])
 				_plillar_position = pos
+				_pillar_sprite = _ref_DungeonBoard.get_sprite(
+						_new_MainGroupTag.BUILDING, pos[0], pos[1])
 				return
 
 
@@ -269,3 +273,15 @@ func _switch_mode(aim_mode: bool) -> void:
 
 func _is_aim_mode() -> bool:
 	return _ref_ObjectData.verify_state(_pc, _new_ObjectStateTag.ACTIVE)
+
+
+func _try_find_pillar() -> void:
+	if _has_found_pillar:
+		return
+	_has_found_pillar = _new_CoordCalculator.is_inside_range(
+			_target_position[0], _target_position[1],
+			_plillar_position[0], _plillar_position[1],
+			_new_RailgunData.TOUCH_PILLAR)
+	if _has_found_pillar:
+		_ref_SwitchSprite.switch_sprite(_pillar_sprite,
+				_new_SpriteTypeTag.ACTIVE)
