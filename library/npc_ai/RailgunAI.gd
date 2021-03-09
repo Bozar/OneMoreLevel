@@ -63,6 +63,8 @@ func _attack() -> void:
 		elif _is_actor(self_x, self_y):
 			if (self_x == pc_x) and (self_y == pc_y):
 				_ref_EndGame.player_lose()
+				_ref_SwitchSprite.switch_sprite(_self,
+						_new_SpriteTypeTag.ACTIVE_1)
 				_self.visible = true
 			else:
 				_ref_RemoveObject.remove(_new_MainGroupTag.ACTOR,
