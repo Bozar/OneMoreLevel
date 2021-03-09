@@ -180,7 +180,7 @@ func _init_skull_pillar() -> void:
 		pos = _new_ConvertCoord.vector_to_array(i.position)
 		if _new_CoordCalculator.is_inside_range(pos[0], pos[1],
 				_source_position[0], _source_position[1],
-				_new_DungeonSize.MAX_Y):
+				_new_DungeonSize.CENTER_X):
 			continue
 
 		neighbor = _new_CoordCalculator.get_neighbor(pos[0], pos[1], 1, false)
