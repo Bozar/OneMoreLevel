@@ -102,32 +102,34 @@ func get_sprites_by_tag(group_tag: String) -> Array:
 	# return get_tree().get_nodes_in_group(group_tag)
 
 
-func move_sprite(main_group: String, source: Array, target: Array) -> void:
-	var sprite: Sprite = get_sprite(main_group, source[0], source[1])
+func move_sprite(main_group: String, source_x: int, source_y: int,
+		target_x: int, target_y: int) -> void:
+	var sprite: Sprite = get_sprite(main_group, source_x, source_y)
 	if sprite == null:
 		return
 
-	_sprite_dict[main_group][source[0]][source[1]] = null
-	_sprite_dict[main_group][target[0]][target[1]] = sprite
-	sprite.position = _new_ConvertCoord.index_to_vector(target[0], target[1])
+	_sprite_dict[main_group][source_x][source_y] = null
+	_sprite_dict[main_group][target_x][target_y] = sprite
+	sprite.position = _new_ConvertCoord.index_to_vector(target_x, target_y)
 
 	_try_move_arrow(sprite)
 
 
-func swap_sprite(main_group: String, source: Array, target: Array) -> void:
-	var source_sprite: Sprite = get_sprite(main_group, source[0], source[1])
-	var target_sprite: Sprite = get_sprite(main_group, target[0], target[1])
+func swap_sprite(main_group: String, source_x: int, source_y: int,
+		target_x: int, target_y: int) -> void:
+	var source_sprite: Sprite = get_sprite(main_group, source_x, source_y)
+	var target_sprite: Sprite = get_sprite(main_group, target_x, target_y)
 
 	if (source_sprite == null) or (target_sprite == null):
 		return
 
-	_sprite_dict[main_group][source[0]][source[1]] = target_sprite
-	_sprite_dict[main_group][target[0]][target[1]] = source_sprite
+	_sprite_dict[main_group][source_x][source_y] = target_sprite
+	_sprite_dict[main_group][target_x][target_y] = source_sprite
 
 	source_sprite.position = _new_ConvertCoord.index_to_vector(
-			target[0], target[1])
+			target_x, target_y)
 	target_sprite.position = _new_ConvertCoord.index_to_vector(
-			source[0], source[1])
+			source_x, source_y)
 
 	_try_move_arrow(source_sprite)
 	_try_move_arrow(target_sprite)

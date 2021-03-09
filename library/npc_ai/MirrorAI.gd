@@ -67,7 +67,9 @@ func _switch_pc_and_image() -> void:
 		_ref_SwitchSprite.switch_sprite(pc, _new_SpriteTypeTag.DEFAULT)
 		_trap_pos = _pc_pos
 
-	_ref_DungeonBoard.swap_sprite(_new_MainGroupTag.ACTOR, _pc_pos, mirror)
+	_ref_DungeonBoard.swap_sprite(_new_MainGroupTag.ACTOR,
+			_pc_pos[0], _pc_pos[1],
+			mirror[0], mirror[1])
 
 
 func _set_npc_state() -> void:

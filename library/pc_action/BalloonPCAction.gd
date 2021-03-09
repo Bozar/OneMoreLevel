@@ -49,7 +49,8 @@ func interact_with_building() -> void:
 
 func interact_with_trap() -> void:
 	_ref_DungeonBoard.move_sprite(_new_MainGroupTag.ACTOR,
-			_source_position, _target_position)
+			_source_position[0], _source_position[1],
+			_target_position[0], _target_position[1])
 	_reach_destination(_target_position[0], _target_position[1])
 
 	end_turn = true
@@ -77,7 +78,8 @@ func _wind_blow() -> void:
 				new_position[0], new_position[1])
 	else:
 		_ref_DungeonBoard.move_sprite(_new_MainGroupTag.ACTOR,
-				_source_position, new_position)
+				_source_position[0], _source_position[1],
+				new_position[0], new_position[1])
 	_source_position = _new_ConvertCoord.vector_to_array(pc.position)
 
 
@@ -114,4 +116,5 @@ func _bounce_off(pc_x: int, pc_y: int, wall_x: int, wall_y: int) -> void:
 			new_position[0], new_position[1]):
 		return
 	_ref_DungeonBoard.move_sprite(_new_MainGroupTag.ACTOR,
-			[pc_x, pc_y], new_position)
+			pc_x, pc_y,
+			new_position[0], new_position[1])

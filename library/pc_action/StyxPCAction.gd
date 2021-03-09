@@ -105,7 +105,7 @@ func move() -> void:
 			y -= _state_to_coord[i][1]
 			break
 	_ref_DungeonBoard.move_sprite(_new_MainGroupTag.ACTOR,
-			_source_position, [x, y])
+			_source_position[0], _source_position[1], x, y)
 
 	if _pc_is_near_harbor(x, y):
 		_ref_EndGame.player_win()

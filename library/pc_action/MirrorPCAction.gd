@@ -29,9 +29,11 @@ func move() -> void:
 			_new_MainGroupTag.TRAP, _source_position[0], _source_position[1])
 
 	_ref_DungeonBoard.move_sprite(_new_MainGroupTag.ACTOR,
-			_source_position, _target_position)
+			_source_position[0], _source_position[1],
+			_target_position[0], _target_position[1])
 	_ref_DungeonBoard.move_sprite(_new_MainGroupTag.ACTOR,
-			source_mirror, target_mirror)
+			source_mirror[0], source_mirror[1],
+			target_mirror[0], target_mirror[1])
 
 	if crystal != null:
 		crystal.visible = true
@@ -109,7 +111,8 @@ func _create_image_on_the_other_side(x: int, y: int) -> void:
 		_ref_RemoveObject.remove(_new_MainGroupTag.ACTOR, mirror[0], mirror[1])
 
 	# Move the phantom to the other side. State: passive. Color: grey.
-	_ref_DungeonBoard.move_sprite(_new_MainGroupTag.ACTOR, [x, y], mirror)
+	_ref_DungeonBoard.move_sprite(_new_MainGroupTag.ACTOR,
+			x, y, mirror[0], mirror[1])
 	_ref_ObjectData.set_state(actor, _new_ObjectStateTag.PASSIVE)
 	actor.modulate = _new_Palette.SHADOW
 

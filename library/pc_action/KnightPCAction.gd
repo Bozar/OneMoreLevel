@@ -92,7 +92,8 @@ func _hit_boss(boss: Sprite) -> void:
 					_new_KnightData.ELITE_SIGHT)
 
 		_ref_DungeonBoard.move_sprite(_new_MainGroupTag.ACTOR,
-				_target_position, teleport)
+				_target_position[0], _target_position[1],
+				 teleport[0], teleport[1])
 	else:
 		_hit_knight()
 		_ref_EndGame.player_win()
@@ -114,7 +115,8 @@ func _roll() -> bool:
 		return false
 
 	_ref_DungeonBoard.move_sprite(_new_MainGroupTag.ACTOR,
-			_source_position, roll_over)
+			_source_position[0], _source_position[1],
+			roll_over[0], roll_over[1])
 	return true
 
 

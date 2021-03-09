@@ -113,7 +113,8 @@ func is_trap() -> bool:
 
 func move() -> void:
 	_ref_DungeonBoard.move_sprite(_new_MainGroupTag.ACTOR,
-			_source_position, _target_position)
+			_source_position[0], _source_position[1],
+			_target_position[0], _target_position[1])
 	end_turn = true
 
 
