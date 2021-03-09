@@ -28,7 +28,6 @@ func take_action() -> void:
 			_new_RailgunData.NPC_SIGHT):
 		_approach_pc()
 		_try_remove_trap()
-		_switch_mode(false)
 
 
 func _switch_mode(aim_mode: bool) -> void:

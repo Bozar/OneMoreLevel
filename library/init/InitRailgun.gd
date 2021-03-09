@@ -21,7 +21,7 @@ func get_blueprint() -> Array:
 	_init_pc(_new_RailgunData.PC_FRONT_SIGHT, INVALID_COORD, INVALID_COORD,
 			_spr_PCRailgun)
 	_init_actor(_new_RailgunData.NPC_GAP, INVALID_COORD, INVALID_COORD,
-			_new_RailgunData.MIN_NPC,
+			_new_RailgunData.MAX_NPC,
 			_spr_Demon, _new_SubGroupTag.DEMON)
 
 	return _blueprint

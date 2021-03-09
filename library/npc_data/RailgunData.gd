@@ -4,11 +4,9 @@ const CLOSE_RANGE: int = 1
 
 const NPC_SIGHT: int = 8
 const NPC_ATTACK: int = 4
-const NPC_GAP: int = 2
-const MIN_NPC: int = 6
+const NPC_GAP: int = 3
 const MAX_NPC: int = 6
 const TRIGGER_RESPAWN: int = 2
-const RESPAWN: int = 2
 
 const MAX_KILL_COUNT: int = 18
 const ONE_KILL: int = 1
