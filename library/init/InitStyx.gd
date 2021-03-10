@@ -1,6 +1,10 @@
 extends "res://library/init/WorldTemplate.gd"
 
 
+const DUNGEON_SIZE := preload("res://library/DungeonSize.gd")
+const PC_X: int = 1
+const PC_Y: int = DUNGEON_SIZE.MAX_Y - 2
+
 var _spr_Lighthouse := preload("res://sprite/Lighthouse.tscn")
 var _spr_Harbor := preload("res://sprite/Harbor.tscn")
 var _spr_Arrow := preload("res://sprite/Arrow.tscn")
@@ -13,7 +17,7 @@ func _init(parent_node: Node2D).(parent_node) -> void:
 
 
 func get_blueprint() -> Array:
-	_init_pc(0, 1, _new_DungeonSize.MAX_Y - 2)
+	_init_pc(0, PC_X, PC_Y)
 	_init_building()
 	_init_river()
 
@@ -57,3 +61,5 @@ func _init_river() -> void:
 			_add_to_blueprint(_spr_Arrow,
 					_new_MainGroupTag.GROUND, _new_SubGroupTag.ARROW,
 					i, j)
+	_add_to_blueprint(_spr_Arrow,
+			_new_MainGroupTag.GROUND, _new_SubGroupTag.ARROW, PC_X, PC_Y)
