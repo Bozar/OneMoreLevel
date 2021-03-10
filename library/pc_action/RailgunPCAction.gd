@@ -7,7 +7,7 @@ const SHOW_FULL_MAP: bool = false
 # const SHOW_FULL_MAP: bool = true
 
 var _spr_Treasure := preload("res://sprite/Treasure.tscn")
-var _spr_PillarOfSkulls := preload("res://sprite/PillarOfSkulls.tscn")
+var _spr_Portal := preload("res://sprite/Portal.tscn")
 
 var _new_RailgunData := preload("res://library/npc_data/RailgunData.gd").new()
 var _new_LinearFOV := preload("res://library/LinearFOV.gd").new()
@@ -188,7 +188,7 @@ func _init_skull_pillar() -> void:
 					j[0], j[1]):
 				_ref_RemoveObject.remove(_new_MainGroupTag.BUILDING,
 						pos[0], pos[1])
-				_ref_CreateObject.create(_spr_PillarOfSkulls,
+				_ref_CreateObject.create(_spr_Portal,
 						_new_MainGroupTag.BUILDING, _new_SubGroupTag.WALL,
 						pos[0], pos[1])
 				_plillar_position = pos
