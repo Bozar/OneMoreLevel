@@ -107,12 +107,8 @@ func _on_Schedule_turn_started(current_sprite: Sprite) -> void:
 		set_process_unhandled_input(true)
 
 
-func _on_EndGame_game_is_over(win: bool) -> void:
-	var pc: Sprite = _ref_DungeonBoard.get_pc()
-
-	if not win:
-		pc.modulate = _new_Palette.SHADOW
-	_pc_action.game_is_over(win)
+func _on_EndGame_game_over(win: bool) -> void:
+	_pc_action.game_over(win)
 	_end_game = true
 	set_process_unhandled_input(true)
 

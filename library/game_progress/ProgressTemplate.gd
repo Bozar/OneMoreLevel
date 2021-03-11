@@ -70,5 +70,5 @@ func create_trap(_trap: Sprite, _sub_group: String, _x: int, _y: int) -> void:
 	pass
 
 
-func game_is_over(_win: bool) -> void:
+func game_over(_win: bool) -> void:
 	pass

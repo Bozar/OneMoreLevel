@@ -53,7 +53,7 @@ func _on_Schedule_turn_started(current_sprite: Sprite) -> void:
 	get_node(MESSAGE).text = _get_warning()
 
 
-func _on_EndGame_game_is_over(win: bool) -> void:
+func _on_EndGame_game_over(win: bool) -> void:
 	if win:
 		get_node(MESSAGE).text = _new_SidebarText.WIN
 	else:

@@ -49,7 +49,7 @@ const SIGNAL_BIND: Array = [
 		DUNGEON, SCHEDULE, OBJECT_DATA, ENEMY_AI, GAME_PROGRESS,
 	],
 	[
-		"game_is_over", "_on_EndGame_game_is_over",
+		"game_over", "_on_EndGame_game_over",
 		END_GAME,
 		SCHEDULE, PLAYER_INPUT, SIDEBAR_GUI, GAME_PROGRESS,
 	],

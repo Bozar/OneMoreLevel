@@ -61,21 +61,8 @@ func render_fov() -> void:
 			i.modulate = _new_Palette.SHADOW
 
 
-func game_is_over(win: bool) -> void:
-	var pc: Sprite
-	var pos: Array
-
-	if win:
-		pc = _ref_DungeonBoard.get_pc()
-		pos = _new_ConvertCoord.vector_to_array(pc.position)
-		_source_position = pos
-		render_fov()
-
-
 func wait() -> void:
-	var pc: Sprite = _ref_DungeonBoard.get_pc()
-
-	_ref_ObjectData.set_state(pc, _new_ObjectStateTag.ACTIVE)
+	_ref_ObjectData.set_state(_pc, _new_ObjectStateTag.ACTIVE)
 	_extra_turn_counter = 0
 	_switch_lighthouse_color()
 

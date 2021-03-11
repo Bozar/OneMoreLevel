@@ -36,11 +36,6 @@ func switch_sprite() -> void:
 	pass
 
 
-func game_is_over(_win: bool) -> void:
-	_source_position = _new_ConvertCoord.vector_to_array(_pc.position)
-	render_fov()
-
-
 func render_fov() -> void:
 	# A wall sprite will be replaced by pillar sprite in _init_skull_pillar().
 	_init_skull_pillar()

@@ -166,8 +166,11 @@ func switch_sprite() -> void:
 		_ref_SwitchSprite.switch_sprite(_pc, _new_SpriteTypeTag.DEFAULT)
 
 
-func game_is_over(_win: bool) -> void:
-	pass
+func game_over(win: bool) -> void:
+	_source_position = _new_ConvertCoord.vector_to_array(_pc.position)
+	render_fov()
+	if not win:
+		_pc.modulate = _new_Palette.SHADOW
 
 
 func _is_occupied(x: int, y: int) -> bool:

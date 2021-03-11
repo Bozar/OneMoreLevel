@@ -60,5 +60,5 @@ func _on_RemoveObject_sprite_removed(remove_sprite: Sprite,
 		_progress.remove_trap(remove_sprite, x, y)
 
 
-func _on_EndGame_game_is_over(win: bool) -> void:
-	_progress.game_is_over(win)
+func _on_EndGame_game_over(win: bool) -> void:
+	_progress.game_over(win)

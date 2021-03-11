@@ -41,9 +41,10 @@ func remove_trap(trap: Sprite, _x: int, _y: int) -> void:
 		_spice_counter = null
 
 
-func game_is_over(_win: bool) -> void:
+func game_over(_win: bool) -> void:
 	if _spice_counter != null:
 		_switch_spice_counter()
+	.game_over(_win)
 
 
 func _try_add_new_worm() -> void:

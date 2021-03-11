@@ -77,7 +77,7 @@ func _on_RemoveObject_sprite_removed(remove_sprite: Sprite,
 	_pointer = _actors.find(current_sprite)
 
 
-func _on_EndGame_game_is_over(_win: bool) -> void:
+func _on_EndGame_game_over(_win: bool) -> void:
 	_end_game = true
 
 
