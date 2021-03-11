@@ -62,7 +62,9 @@ func render_fov() -> void:
 
 
 func wait() -> void:
-	_ref_ObjectData.set_state(_pc, _new_ObjectStateTag.ACTIVE)
+	var pc: Sprite = _ref_DungeonBoard.get_pc()
+
+	_ref_ObjectData.set_state(pc, _new_ObjectStateTag.ACTIVE)
 	_extra_turn_counter = 0
 	_switch_lighthouse_color()
 

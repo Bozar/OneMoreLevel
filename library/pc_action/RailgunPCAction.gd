@@ -68,7 +68,8 @@ func is_inside_dungeon() -> bool:
 
 
 func is_npc() -> bool:
-	return _is_aim_mode()
+	var pc: Sprite = _ref_DungeonBoard.get_pc()
+	return _is_aim_mode(pc)
 
 
 func is_building() -> bool:
@@ -76,10 +77,12 @@ func is_building() -> bool:
 
 
 func wait() -> void:
-	_switch_mode(not _is_aim_mode())
+	var pc: Sprite = _ref_DungeonBoard.get_pc()
+	_switch_mode(not _is_aim_mode(pc), pc)
 
 
 func attack() -> void:
+	var pc: Sprite = _ref_DungeonBoard.get_pc()
 	var x: int = _target_position[0]
 	var y: int = _target_position[1]
 
@@ -87,7 +90,7 @@ func attack() -> void:
 		return
 	_ammo -= 1
 	_ammo = max(_ammo, 0) as int
-	_ref_ObjectData.add_hit_point(_pc, _new_RailgunData.GUN_SHOT_HP)
+	_ref_ObjectData.add_hit_point(pc, _new_RailgunData.GUN_SHOT_HP)
 
 	while _new_CoordCalculator.is_inside_dungeon(x, y) \
 			and (not _ref_DungeonBoard.has_sprite(_new_MainGroupTag.BUILDING,
@@ -112,10 +115,10 @@ func attack() -> void:
 		break
 
 	if _kill_count == 0:
-		_switch_mode(true)
+		_switch_mode(true, pc)
 		_ref_EndGame.player_win()
 	else:
-		_switch_mode(false)
+		_switch_mode(false, pc)
 		end_turn = true
 
 
@@ -257,7 +260,7 @@ func _render_counter(kill: int) -> void:
 		_ref_SwitchSprite.switch_sprite(_counter_sprite[i], sprite_type)
 
 
-func _switch_mode(aim_mode: bool) -> void:
+func _switch_mode(aim_mode: bool, pc: Sprite) -> void:
 	var new_state: String
 	var new_sprite: String
 
@@ -268,12 +271,12 @@ func _switch_mode(aim_mode: bool) -> void:
 		new_state = _new_ObjectStateTag.DEFAULT
 		new_sprite = _new_SpriteTypeTag.DEFAULT
 
-	_ref_ObjectData.set_state(_pc, new_state)
-	_ref_SwitchSprite.switch_sprite(_pc, new_sprite)
+	_ref_ObjectData.set_state(pc, new_state)
+	_ref_SwitchSprite.switch_sprite(pc, new_sprite)
 
 
-func _is_aim_mode() -> bool:
-	return _ref_ObjectData.verify_state(_pc, _new_ObjectStateTag.ACTIVE)
+func _is_aim_mode(pc: Sprite) -> bool:
+	return _ref_ObjectData.verify_state(pc, _new_ObjectStateTag.ACTIVE)
 
 
 func _try_find_pillar() -> void:
@@ -289,5 +292,7 @@ func _try_find_pillar() -> void:
 
 
 func _set_move_hit_point() -> void:
-	if _ref_ObjectData.get_hit_point(_pc) > 0:
-		_ref_ObjectData.set_hit_point(_pc, 0)
+	var pc: Sprite = _ref_DungeonBoard.get_pc()
+
+	if _ref_ObjectData.get_hit_point(pc) > 0:
+		_ref_ObjectData.set_hit_point(pc, 0)
