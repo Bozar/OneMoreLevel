@@ -92,6 +92,7 @@ func attack() -> void:
 		return
 	_ammo -= 1
 	_ammo = max(_ammo, 0) as int
+	_ref_ObjectData.add_hit_point(_pc, _new_RailgunData.GUN_SHOT_HP)
 
 	while _new_CoordCalculator.is_inside_dungeon(x, y) \
 			and (not _ref_DungeonBoard.has_sprite(_new_MainGroupTag.BUILDING,
@@ -127,20 +128,26 @@ func move() -> void:
 	if _ref_DungeonBoard.has_sprite(_new_MainGroupTag.ACTOR,
 			_target_position[0], _target_position[1]):
 		return
-	_try_find_pillar()
-	.move()
+	_pc_move()
 
 
 func interact_with_trap() -> void:
 	_ref_RemoveObject.remove(_new_MainGroupTag.TRAP,
 			_target_position[0], _target_position[1])
+	_pc_restore()
+	_pc_move()
 
+
+func _pc_move() -> void:
+	_set_move_hit_point()
+	_try_find_pillar()
+	.move()
+
+
+func _pc_restore() -> void:
 	_ref_CountDown.add_count(_new_RailgunData.RESTORE_TURN)
 	_ammo += _new_RailgunData.RESTORE_AMMO
 	_ammo = min(_ammo, _new_RailgunData.MAX_AMMO) as int
-
-	_try_find_pillar()
-	.move()
 
 
 func _is_checkmate() -> bool:
@@ -285,3 +292,8 @@ func _try_find_pillar() -> void:
 	if _has_found_pillar:
 		_ref_SwitchSprite.switch_sprite(_pillar_sprite,
 				_new_SpriteTypeTag.ACTIVE)
+
+
+func _set_move_hit_point() -> void:
+	if _ref_ObjectData.get_hit_point(_pc) > 0:
+		_ref_ObjectData.set_hit_point(_pc, 0)

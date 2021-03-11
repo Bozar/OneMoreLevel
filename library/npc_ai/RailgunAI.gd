@@ -23,9 +23,11 @@ func take_action() -> void:
 		_attack()
 	elif _is_in_close_range():
 		_switch_mode(true)
-	elif _new_CoordCalculator.is_inside_range(
-			_self_pos[0], _self_pos[1], _pc_pos[0], _pc_pos[1],
-			_new_RailgunData.NPC_SIGHT):
+	elif _detect_pc():
+		# if _new_CoordCalculator.get_range(_self_pos[0], _self_pos[1],
+		# 		_pc_pos[0], _pc_pos[1]) > _new_RailgunData.NPC_SIGHT:
+		# 	_self.modulate = _new_Palette.DEBUG
+		# 	print("gunshot")
 		_approach_pc()
 		_try_remove_trap()
 
@@ -133,3 +135,15 @@ func _try_remove_trap() -> void:
 			_target_pos[0], _target_pos[1]):
 		_ref_RemoveObject.remove(_new_MainGroupTag.TRAP,
 				_target_pos[0], _target_pos[1])
+
+
+func _detect_pc() -> bool:
+	var detect_distance: int
+	var pc: Sprite = _ref_DungeonBoard.get_pc()
+
+	if _ref_ObjectData.get_hit_point(pc) > _new_RailgunData.GUN_SHOT_HP:
+		detect_distance = _new_RailgunData.NPC_EAR_SHOT
+	else:
+		detect_distance = _new_RailgunData.NPC_SIGHT
+	return _new_CoordCalculator.is_inside_range(_self_pos[0], _self_pos[1],
+			_pc_pos[0], _pc_pos[1], detect_distance)
