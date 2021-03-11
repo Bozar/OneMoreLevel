@@ -2,7 +2,7 @@ extends ScrollContainer
 class_name Game_HelpVScroll
 
 
-const SCROLL_LINE: int = 60
+const SCROLL_LINE: int = 20
 const SCROLL_PAGE: int = 300
 const DUNGEON: String = "HelpHBox/Dungeon"
 
