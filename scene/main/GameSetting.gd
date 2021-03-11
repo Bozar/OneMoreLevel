@@ -109,11 +109,13 @@ func _set_rng_seed(setting) -> int:
 
 
 func _set_world_tag(setting) -> String:
-	if not setting.has(WORLD_TAG):
-		return ""
-	if not _new_WorldTag.is_valid_world_tag(setting[WORLD_TAG]):
-		return ""
-	return setting[WORLD_TAG] as String
+	var new_world: String = ""
+
+	if setting.has(WORLD_TAG):
+		new_world = setting[WORLD_TAG].to_lower()
+		if not _new_WorldTag.is_valid_world_tag(new_world):
+			new_world = ""
+	return new_world
 
 
 func _set_exclude_world(setting) -> Array:
