@@ -71,6 +71,20 @@ func interact_with_trap() -> void:
 	move()
 
 
+func _is_checkmate() -> bool:
+	var npc: Array = _ref_DungeonBoard.get_sprites_by_tag(
+			_new_SubGroupTag.PHANTOM)
+	var trap: Sprite = _ref_DungeonBoard.get_sprites_by_tag(
+			_new_SubGroupTag.CRYSTAL)[0]
+	var trap_x: int = _new_ConvertCoord.vector_to_array(trap.position)[0]
+
+	for i in npc:
+		if _ref_ObjectData.verify_state(i, _new_ObjectStateTag.DEFAULT):
+			return false
+	return (_source_position[0] - _new_DungeonSize.CENTER_X) \
+			* (trap_x - _new_DungeonSize.CENTER_X) > 0
+
+
 func _get_mirror(x: int, y: int) -> Array:
 	return _new_CoordCalculator.get_mirror_image(
 			x, y, _new_DungeonSize.CENTER_X, y)

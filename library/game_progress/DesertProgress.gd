@@ -21,8 +21,12 @@ func _init(parent_node: Node2D).(parent_node) -> void:
 
 
 func renew_world(_pc_x: int, _pc_y: int) -> void:
-	_try_add_new_worm()
+	# A counter is always grey whether in or out of PC's sight.
 	_try_add_new_counter()
+
+
+func end_world(_pc_x: int, _pc_y: int) -> void:
+	_try_add_new_worm()
 
 
 func remove_actor(actor: Sprite, _x: int, _y: int) -> void:
@@ -42,8 +46,7 @@ func remove_trap(trap: Sprite, _x: int, _y: int) -> void:
 
 
 func game_over(_win: bool) -> void:
-	if _spice_counter != null:
-		_switch_spice_counter()
+	_try_add_new_counter()
 	.game_over(_win)
 
 

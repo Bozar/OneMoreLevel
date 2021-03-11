@@ -22,7 +22,7 @@ func _init(parent_node: Node2D).(parent_node) -> void:
 	]
 
 
-func renew_world(pc_x: int, pc_y: int) -> void:
+func end_world(pc_x: int, pc_y: int) -> void:
 	var spawn: int
 	var encirclement: Array
 	var spawn_nearby: Array

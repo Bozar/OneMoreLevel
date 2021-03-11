@@ -1,37 +1,36 @@
 extends "res://library/game_progress/ProgressTemplate.gd"
 
 
+const OBJECT_STATE_TAG := preload("res://library/ObjectStateTag.gd")
+const SPRITE_TYPE_TAG := preload("res://library/SpriteTypeTag.gd")
+
+const STATE_TO_SPRITE: Dictionary = {
+	OBJECT_STATE_TAG.UP: SPRITE_TYPE_TAG.UP,
+	OBJECT_STATE_TAG.DOWN: SPRITE_TYPE_TAG.DOWN,
+	OBJECT_STATE_TAG.LEFT: SPRITE_TYPE_TAG.LEFT,
+	OBJECT_STATE_TAG.RIGHT: SPRITE_TYPE_TAG.RIGHT,
+}
+const VALID_DIRECTION: Array = [
+	OBJECT_STATE_TAG.UP,
+	OBJECT_STATE_TAG.DOWN,
+	OBJECT_STATE_TAG.LEFT,
+	OBJECT_STATE_TAG.RIGHT,
+]
+const OPPOSITE_DIRECTION: Dictionary = {
+	OBJECT_STATE_TAG.UP: OBJECT_STATE_TAG.DOWN,
+	OBJECT_STATE_TAG.DOWN: OBJECT_STATE_TAG.UP,
+	OBJECT_STATE_TAG.LEFT: OBJECT_STATE_TAG.RIGHT,
+	OBJECT_STATE_TAG.RIGHT: OBJECT_STATE_TAG.LEFT,
+}
+
 var _new_BalloonData := preload("res://library/npc_data/BalloonData.gd").new()
 
 var _wind_duration: int = 0
 var _count_trap: int = 0
-var _valid_direction: Array
-var _int_to_state: Dictionary = {}
-var _state_to_int: Dictionary = {}
-var _state_to_sprite: Dictionary = {}
 var _wind_forecast: Array = []
 
 
 func _init(parent_node: Node2D).(parent_node) -> void:
-	_int_to_state = {
-		+2: _new_ObjectStateTag.UP,
-		-2: _new_ObjectStateTag.DOWN,
-		+1: _new_ObjectStateTag.LEFT,
-		-1: _new_ObjectStateTag.RIGHT,
-		0: _new_ObjectStateTag.DEFAULT,
-	}
-	_state_to_sprite = {
-		_new_ObjectStateTag.UP: _new_SpriteTypeTag.UP,
-		_new_ObjectStateTag.DOWN: _new_SpriteTypeTag.DOWN,
-		_new_ObjectStateTag.LEFT: _new_SpriteTypeTag.LEFT,
-		_new_ObjectStateTag.RIGHT: _new_SpriteTypeTag.RIGHT,
-	}
-	_new_ArrayHelper.reverse_key_value_in_dict(_int_to_state, _state_to_int)
-
-	_valid_direction = _state_to_sprite.keys()
-	_new_ArrayHelper.filter_element(_valid_direction, self, "_filter_direction",
-			[])
-
 	_wind_forecast.resize(2)
 
 
@@ -64,13 +63,13 @@ func _set_wind_direction() -> void:
 	var ground: Sprite
 
 	if _wind_forecast[0] == null:
-		index = _ref_RandomNumber.get_int(0, _valid_direction.size())
-		_wind_forecast[0] = _valid_direction[index]
+		index = _ref_RandomNumber.get_int(0, VALID_DIRECTION.size())
+		_wind_forecast[0] = VALID_DIRECTION[index]
 	else:
 		_wind_forecast[0] = _wind_forecast[1]
 
-	for i in _valid_direction:
-		if i != _int_to_state[0 - _state_to_int[_wind_forecast[0]]]:
+	for i in VALID_DIRECTION:
+		if i != OPPOSITE_DIRECTION[_wind_forecast[0]]:
 			candidate.push_back(i)
 	_new_ArrayHelper.duplicate_element(candidate, self, "_dup_set_wind",
 			[_wind_forecast[0]])
@@ -78,7 +77,7 @@ func _set_wind_direction() -> void:
 	_wind_forecast[1] = candidate[0]
 
 	_ref_ObjectData.set_state(pc, _wind_forecast[0])
-	_ref_SwitchSprite.switch_sprite(pc, _state_to_sprite[_wind_forecast[0]])
+	_ref_SwitchSprite.switch_sprite(pc, STATE_TO_SPRITE[_wind_forecast[0]])
 
 	for x in range(0, 2):
 		ground = _ref_DungeonBoard.get_sprite(_new_MainGroupTag.GROUND, x, 0)
@@ -86,10 +85,6 @@ func _set_wind_direction() -> void:
 	for y in range(1, 3):
 		ground = _ref_DungeonBoard.get_sprite(_new_MainGroupTag.GROUND, 0, y)
 		_ref_SwitchSprite.switch_sprite(ground, _wind_forecast[0])
-
-
-func _filter_direction(source: Array, index: int, _opt_arg: Array) -> bool:
-	return source[index] != _new_ObjectStateTag.DEFAULT
 
 
 func _dup_set_wind(source: Array, index: int, opt_arg: Array) -> int:
