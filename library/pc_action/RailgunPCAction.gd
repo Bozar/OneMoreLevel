@@ -195,12 +195,11 @@ func _init_skull_pillar() -> void:
 					j[0], j[1]):
 				_ref_RemoveObject.remove(_new_MainGroupTag.BUILDING,
 						pos[0], pos[1])
-				_ref_CreateObject.create(_spr_Portal,
+				_pillar_sprite = _ref_CreateObject.create_and_fetch(
+						_spr_Portal,
 						_new_MainGroupTag.BUILDING, _new_SubGroupTag.WALL,
 						pos[0], pos[1])
 				_plillar_position = pos
-				_pillar_sprite = _ref_DungeonBoard.get_sprite(
-						_new_MainGroupTag.BUILDING, pos[0], pos[1])
 				return
 
 

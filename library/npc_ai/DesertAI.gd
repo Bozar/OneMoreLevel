@@ -64,8 +64,7 @@ func _create_body(id: int, index: int, x: int, y: int) -> void:
 	if index == worm_length - 1:
 		_ref_CreateObject.create(
 				_spr_WormTail,
-				_new_MainGroupTag.ACTOR, _new_SubGroupTag.WORM_BODY,
-				x, y)
+				_new_MainGroupTag.ACTOR, _new_SubGroupTag.WORM_BODY, x, y)
 	# Create spice.
 	elif (index >= _new_DesertData.SPICE_START) \
 			and (index < _new_DesertData.SPICE_END):
@@ -74,14 +73,12 @@ func _create_body(id: int, index: int, x: int, y: int) -> void:
 						_new_DesertData.CREATE_ACTIVE_SPICE)
 		_ref_CreateObject.create(
 				_spr_WormSpice,
-				_new_MainGroupTag.ACTOR, _new_SubGroupTag.WORM_SPICE,
-				x, y)
+				_new_MainGroupTag.ACTOR, _new_SubGroupTag.WORM_SPICE, x, y)
 	# Create body.
 	else:
 		_ref_CreateObject.create(
 				_spr_WormBody,
-				_new_MainGroupTag.ACTOR, _new_SubGroupTag.WORM_BODY,
-				x, y)
+				_new_MainGroupTag.ACTOR, _new_SubGroupTag.WORM_BODY, x, y)
 
 	worm_body = _ref_DungeonBoard.get_sprite(_new_MainGroupTag.ACTOR, x, y)
 	_id_to_worm[id][index] = worm_body
