@@ -46,5 +46,9 @@ func add_hit_point(sprite: Sprite, hit_point: int) -> void:
 	get_node(HIT_POINT).add_hit_point(_get_id(sprite), hit_point)
 
 
+func subtract_hit_point(sprite: Sprite, hit_point: int) -> void:
+	get_node(HIT_POINT).subtract_hit_point(_get_id(sprite), hit_point)
+
+
 func _get_id(sprite: Sprite) -> int:
 	return sprite.get_instance_id()

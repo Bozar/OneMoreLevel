@@ -22,5 +22,9 @@ func add_hit_point(id: int, hit_point: int) -> void:
 		_id_to_hit_point[id] = hit_point
 
 
+func subtract_hit_point(id: int, hit_point: int) -> void:
+	add_hit_point(id, -hit_point)
+
+
 func remove_data(id: int) -> void:
 	var __ = _id_to_hit_point.erase(id)
