@@ -57,8 +57,7 @@ func render_fov() -> void:
 		_set_color(i, _new_Palette.get_default_color(_new_MainGroupTag.ACTOR),
 				"", false)
 	if _has_found_pillar:
-		_pillar_sprite.modulate = _new_Palette.get_default_color(
-				_new_MainGroupTag.BUILDING)
+		_new_Palette.reset_color(_pillar_sprite, _new_MainGroupTag.BUILDING)
 
 
 func is_inside_dungeon() -> bool:
@@ -227,16 +226,15 @@ func _set_color(set_this: Sprite, in_sight: String, out_of_sight: String,
 		has_memory: bool) -> void:
 	var pos: Array = _new_ConvertCoord.vector_to_array(set_this.position)
 
+	set_this.visible = true
 	if _new_LinearFOV.is_in_sight(pos[0], pos[1]):
 		set_this.modulate = in_sight
-		set_this.visible = true
 		if has_memory and (_ref_ObjectData.get_hit_point(set_this) \
 				< MEMORY_MARKER):
 			_ref_ObjectData.set_hit_point(set_this, MEMORY_MARKER)
 	elif has_memory and (_ref_ObjectData.get_hit_point(set_this) \
 			== MEMORY_MARKER):
 		set_this.modulate = out_of_sight
-		set_this.visible = true
 	else:
 		set_this.visible = false
 

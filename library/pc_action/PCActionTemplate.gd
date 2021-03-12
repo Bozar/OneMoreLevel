@@ -5,7 +5,9 @@ class_name Game_PCActionTemplate
 
 
 const INPUT_TAG := preload("res://library/InputTag.gd")
+const OBJECT_STATE_TAG := preload("res://library/ObjectStateTag.gd")
 const MAIN_GROUP_TAG := preload("res://library/MainGroupTag.gd")
+const DUNGEON_SIZE := preload("res://library/DungeonSize.gd")
 
 const SHOW_FULL_MAP: bool = false
 # const SHOW_FULL_MAP: bool = true

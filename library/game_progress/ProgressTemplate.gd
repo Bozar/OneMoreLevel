@@ -1,6 +1,16 @@
 class_name Game_ProgressTemplate
 
 
+const OBJECT_STATE_TAG := preload("res://library/ObjectStateTag.gd")
+const SPRITE_TYPE_TAG := preload("res://library/SpriteTypeTag.gd")
+
+const STATE_TO_SPRITE: Dictionary = {
+	OBJECT_STATE_TAG.UP: SPRITE_TYPE_TAG.UP,
+	OBJECT_STATE_TAG.DOWN: SPRITE_TYPE_TAG.DOWN,
+	OBJECT_STATE_TAG.LEFT: SPRITE_TYPE_TAG.LEFT,
+	OBJECT_STATE_TAG.RIGHT: SPRITE_TYPE_TAG.RIGHT,
+}
+
 var _ref_RandomNumber: Game_RandomNumber
 var _ref_Schedule: Game_Schedule
 var _ref_CreateObject : Game_CreateObject

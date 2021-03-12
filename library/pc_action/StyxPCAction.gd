@@ -3,35 +3,28 @@ extends "res://library/pc_action/PCActionTemplate.gd"
 
 const INVALID_DIRECTION: int = 0
 
+const STATE_TO_INT: Dictionary = {
+	OBJECT_STATE_TAG.UP: 1,
+	OBJECT_STATE_TAG.DOWN: -1,
+	OBJECT_STATE_TAG.LEFT: 2,
+	OBJECT_STATE_TAG.RIGHT: -2,
+	OBJECT_STATE_TAG.DEFAULT: INVALID_DIRECTION,
+}
+const INPUT_TO_INT: Dictionary = {
+	INPUT_TAG.MOVE_UP: 1,
+	INPUT_TAG.MOVE_DOWN: -1,
+	INPUT_TAG.MOVE_LEFT: 2,
+	INPUT_TAG.MOVE_RIGHT: -2,
+}
+
 var _new_StyxData := preload("res://library/npc_data/StyxData.gd").new()
 
-var _state_to_int: Dictionary
-var _input_to_int: Dictionary
-var _state_to_coord: Dictionary
 var _extra_turn_counter: int = 0
 var _ground_sprite: Array
 
 
 func _init(parent_node: Node2D).(parent_node) -> void:
-	_state_to_int = {
-		_new_ObjectStateTag.UP: 1,
-		_new_ObjectStateTag.DOWN: -1,
-		_new_ObjectStateTag.LEFT: 2,
-		_new_ObjectStateTag.RIGHT: -2,
-		_new_ObjectStateTag.DEFAULT: INVALID_DIRECTION,
-	}
-	_input_to_int = {
-		_new_InputTag.MOVE_UP: 1,
-		_new_InputTag.MOVE_DOWN: -1,
-		_new_InputTag.MOVE_LEFT: 2,
-		_new_InputTag.MOVE_RIGHT: -2,
-	}
-	_state_to_coord = {
-		_new_ObjectStateTag.UP: [0, -1],
-		_new_ObjectStateTag.DOWN: [0, 1],
-		_new_ObjectStateTag.LEFT: [-1, 0],
-		_new_ObjectStateTag.RIGHT: [1, 0],
-	}
+	pass
 
 
 func render_fov() -> void:
@@ -71,7 +64,7 @@ func wait() -> void:
 func move() -> void:
 	var x: int
 	var y: int
-	var source_direction: int = _input_to_int[_input_direction]
+	var source_direction: int = INPUT_TO_INT[_input_direction]
 	var target_direction: int = _get_ground_direction(
 			_target_position[0], _target_position[1])
 
@@ -79,16 +72,16 @@ func move() -> void:
 		end_turn = false
 		return
 
-	for i in _state_to_coord.keys():
+	for i in _new_ObjectStateTag.DIRECTION_TO_COORD.keys():
 		x = _target_position[0]
 		y = _target_position[1]
 		while _new_CoordCalculator.is_inside_dungeon(x, y) \
-				and (_get_ground_direction(x, y) == _state_to_int[i]):
-			x += _state_to_coord[i][0]
-			y += _state_to_coord[i][1]
+				and (_get_ground_direction(x, y) == STATE_TO_INT[i]):
+			x += _new_ObjectStateTag.DIRECTION_TO_COORD[i][0]
+			y += _new_ObjectStateTag.DIRECTION_TO_COORD[i][1]
 		if (x != _target_position[0]) or (y != _target_position[1]):
-			x -= _state_to_coord[i][0]
-			y -= _state_to_coord[i][1]
+			x -= _new_ObjectStateTag.DIRECTION_TO_COORD[i][0]
+			y -= _new_ObjectStateTag.DIRECTION_TO_COORD[i][1]
 			break
 	_ref_DungeonBoard.move_sprite(_new_MainGroupTag.ACTOR,
 			_source_position[0], _source_position[1], x, y)
@@ -114,7 +107,7 @@ func _get_ground_direction(x: int, y: int) -> int:
 
 	if ground == null:
 		return INVALID_DIRECTION
-	return _state_to_int[_ref_ObjectData.get_state(ground)]
+	return STATE_TO_INT[_ref_ObjectData.get_state(ground)]
 
 
 func _try_reduce_extra_turn() -> void:
