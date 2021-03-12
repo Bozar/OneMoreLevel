@@ -122,8 +122,7 @@ func _set_danger_zone(x: int, y: int, danger: bool) -> void:
 		ground.modulate = _new_Palette.SHADOW
 	else:
 		_ref_SwitchSprite.switch_sprite(ground, _new_SpriteTypeTag.DEFAULT)
-		ground.modulate = _new_Palette.get_default_color(
-				_new_MainGroupTag.GROUND)
+		_new_Palette.reset_color(ground, _new_MainGroupTag.GROUND)
 
 
 func _path_is_clear() -> bool:

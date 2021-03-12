@@ -31,3 +31,9 @@ func get_default_color(main_tag: String, sub_tag: String = "") -> String:
 		return TAG_TO_COLOR[main_tag]
 	else:
 		return DEBUG
+
+
+func reset_color(set_sprite: Sprite, main_tag: String,
+		sub_tag: String = "") -> void:
+	var new_color: String = get_default_color(main_tag, sub_tag)
+	set_sprite.modulate = new_color
