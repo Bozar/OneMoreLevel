@@ -192,3 +192,13 @@ func _is_occupied(x: int, y: int) -> bool:
 
 func _is_checkmate() -> bool:
 	return false
+
+
+# When game ends, if PC sprite is a grey number, it doesn't look clearly against
+# ground sprite, which is usually a grey dash. In a child script, the function
+# below could be called after .game_over().
+func _hide_ground_under_pc() -> void:
+	var ground: Sprite = _ref_DungeonBoard.get_sprite(_new_MainGroupTag.GROUND,
+			_source_position[0], _source_position[1])
+	if ground != null:
+		ground.visible = false

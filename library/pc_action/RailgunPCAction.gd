@@ -36,13 +36,10 @@ func switch_sprite() -> void:
 
 func game_over(_win) -> void:
 	var pc: Sprite = _ref_DungeonBoard.get_pc()
-	var ground: Sprite
 
 	.game_over(_win)
+	_hide_ground_under_pc()
 	_switch_mode(true, pc)
-	ground = _ref_DungeonBoard.get_sprite(_new_MainGroupTag.GROUND,
-			_source_position[0], _source_position[1])
-	ground.visible = false
 
 
 func render_fov() -> void:
