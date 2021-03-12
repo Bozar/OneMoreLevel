@@ -34,9 +34,7 @@ The dungeon holds at most 6 devils. When 2 or more of them dies, new ones respaw
 
 ## Calculate Kill Counts
 
-Achieving 18 kills is different from killing 18 devils. A victim of your railgun counts as one kill. Besides, you receive one more kill if the target is adjacent to you. Another one is granted if you have no ammo left after killing. Therefore you are rewarded with 3 kills by shooting a devil one step away from you with your last charge of ammo.
-
-This is a win-win situation. Doomguy gains kills more quickly and devils suffer fewer casualties. Making such a tacit agreement is commonly described as D4C (Do a Decent Deal with a Devil Constantinely).
+Achieving 18 kills is different from killing 18 devils. A victim of your railgun counts as one kill. Besides, you receive one more kill if the target is adjacent to you. Another one is granted if you have no ammo left after killing. Therefore you are rewarded with 3 kills by shooting a devil one step away from you with your last charge of ammo. This is a win-win situation. Doomguy gains kills more quickly and devils suffer fewer casualties. Making such a tacit agreement is commonly described as D4C (Do a Decent Deal with a Devil Constantinely).
 
 ## Side Quest: Curious Symbols
 

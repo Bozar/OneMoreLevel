@@ -2,8 +2,6 @@ extends "res://library/pc_action/PCActionTemplate.gd"
 
 
 const INVALID_DIRECTION: int = 0
-const SHOW_FULL_MAP: bool = false
-# const SHOW_FULL_MAP: bool = true
 
 var _new_StyxData := preload("res://library/npc_data/StyxData.gd").new()
 

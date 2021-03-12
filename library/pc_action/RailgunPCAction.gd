@@ -3,8 +3,6 @@ extends "res://library/pc_action/PCActionTemplate.gd"
 
 const HALF_SIGHT_WIDTH: int = 1
 const MEMORY_MARKER: int = 1
-const SHOW_FULL_MAP: bool = false
-# const SHOW_FULL_MAP: bool = true
 
 var _spr_Treasure := preload("res://sprite/Treasure.tscn")
 var _spr_Portal := preload("res://sprite/Portal.tscn")

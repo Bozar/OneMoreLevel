@@ -7,6 +7,9 @@ class_name Game_PCActionTemplate
 const INPUT_TAG := preload("res://library/InputTag.gd")
 const MAIN_GROUP_TAG := preload("res://library/MainGroupTag.gd")
 
+const SHOW_FULL_MAP: bool = false
+# const SHOW_FULL_MAP: bool = true
+
 const DIRECTION_TO_COORD: Dictionary = {
 	INPUT_TAG.MOVE_UP: [0, -1],
 	INPUT_TAG.MOVE_DOWN: [0, 1],
