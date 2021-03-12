@@ -1,6 +1,7 @@
 extends "res://library/init/WorldTemplate.gd"
 
 
+var _spr_PCDesert := preload("res://sprite/PCDesert.tscn")
 var _spr_Treasure := preload("res://sprite/Treasure.tscn")
 var _spr_WormHead := preload("res://sprite/WormHead.tscn")
 var _spr_WormBody := preload("res://sprite/WormBody.tscn")
@@ -20,7 +21,7 @@ func get_blueprint() -> Array:
 	_init_actor(_new_DesertData.WORM_DISTANCE, INVALID_COORD, INVALID_COORD,
 			_new_DesertData.MAX_WORM,
 			_spr_WormHead, _new_SubGroupTag.WORM_HEAD)
-	_init_pc()
+	_init_pc(0, INVALID_COORD, INVALID_COORD, _spr_PCDesert)
 
 	return _blueprint
 

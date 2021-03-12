@@ -3,6 +3,8 @@ extends "res://library/pc_action/PCActionTemplate.gd"
 
 var _new_DesertData := preload("res://library/npc_data/DesertData.gd").new()
 
+var _pc_is_number: bool = false
+
 
 func _init(parent_node: Node2D).(parent_node) -> void:
 	pass
@@ -18,7 +20,24 @@ func render_fov() -> void:
 			floor_sprite.visible = not _is_building_or_trap(x, y)
 
 
+func switch_sprite() -> void:
+	_pc_is_number = false
+	_switch_to_number(_pc_is_number)
+	.switch_sprite()
+
+
+func game_over(win: bool) -> void:
+	.game_over(win)
+	if win:
+		_switch_to_number(false)
+	else:
+		_switch_to_number(true)
+		_hide_ground_under_pc()
+
+
 func wait() -> void:
+	_pc_is_number = not _pc_is_number
+	_switch_to_number(_pc_is_number)
 	end_turn = false
 
 
@@ -103,3 +122,17 @@ func _is_checkmate() -> bool:
 func _is_building_or_trap(x: int, y: int) -> bool:
 	return _ref_DungeonBoard.has_sprite(_new_MainGroupTag.BUILDING, x, y) \
 			or _ref_DungeonBoard.has_sprite(_new_MainGroupTag.TRAP, x, y)
+
+
+func _switch_to_number(is_number: bool) -> void:
+	var pc: Sprite = _ref_DungeonBoard.get_pc()
+	var type_tag: String
+
+	if is_number:
+		type_tag = _new_SpriteTypeTag.convert_digit_to_tag(
+				_ref_ObjectData.get_hit_point(pc))
+	elif _ref_DangerZone.is_in_danger(_source_position[0], _source_position[1]):
+		type_tag = _new_SpriteTypeTag.ACTIVE
+	else:
+		type_tag = _new_SpriteTypeTag.DEFAULT
+	_ref_SwitchSprite.switch_sprite(pc, type_tag)

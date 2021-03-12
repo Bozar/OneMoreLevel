@@ -1,6 +1,7 @@
 class_name Game_ProgressTemplate
 
 
+const MAIN_GROUP_TAG := preload("res://library/MainGroupTag.gd")
 const OBJECT_STATE_TAG := preload("res://library/ObjectStateTag.gd")
 const SPRITE_TYPE_TAG := preload("res://library/SpriteTypeTag.gd")
 
