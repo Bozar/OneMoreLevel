@@ -30,20 +30,20 @@ func remove_actor(actor: Sprite, _x: int, _y: int) -> void:
 
 
 func remove_building(_building: Sprite, x: int, y: int) -> void:
-	_add_or_remove_floor(true, x, y)
+	_add_or_remove_ground(true, x, y)
 
 
 func remove_trap(_trap: Sprite, x: int, y: int) -> void:
-	_add_or_remove_floor(true, x, y)
+	_add_or_remove_ground(true, x, y)
 
 
 func create_building(_building: Sprite, _sub_group: String,
 		x: int, y: int) -> void:
-	_add_or_remove_floor(false, x, y)
+	_add_or_remove_ground(false, x, y)
 
 
 func create_trap(_trap: Sprite, _sub_group: String, x: int, y: int) -> void:
-	_add_or_remove_floor(false, x, y)
+	_add_or_remove_ground(false, x, y)
 
 
 func _try_add_new_worm() -> void:
@@ -85,11 +85,3 @@ func _create_worm_head(stop_loop: bool, avoid_building: int) -> void:
 	_ref_CreateObject.create(_spr_WormHead,
 			_new_MainGroupTag.ACTOR, _new_SubGroupTag.WORM_HEAD, x, y)
 	_create_worm_head(true, avoid_building)
-
-
-func _add_or_remove_floor(add_floor: bool, x: int, y: int) -> void:
-	if add_floor:
-		_ref_CreateObject.create(_spr_Floor, _new_MainGroupTag.GROUND,
-				_new_SubGroupTag.FLOOR, x, y)
-	else:
-		_ref_RemoveObject.remove(_new_MainGroupTag.GROUND, x, y)

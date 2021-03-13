@@ -105,9 +105,8 @@ func _submerge_land(submerge: int) -> void:
 		land_pos = _new_ConvertCoord.vector_to_array(i.position)
 		x = land_pos[0]
 		y = land_pos[1]
-		_ref_RemoveObject.remove(_new_MainGroupTag.GROUND, x, y)
-		_ref_CreateObject.create(_spr_Floor,
-				_new_MainGroupTag.GROUND, _new_SubGroupTag.SWAMP, x, y)
+		_add_or_remove_ground(false, x, y)
+		_add_or_remove_ground(true, x, y, _spr_Floor, _new_SubGroupTag.SWAMP)
 
 
 func _remove_frog() -> void:
