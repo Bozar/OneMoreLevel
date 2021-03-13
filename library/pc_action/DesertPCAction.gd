@@ -13,6 +13,9 @@ func _init(parent_node: Node2D).(parent_node) -> void:
 func render_fov() -> void:
 	var tmp_sprite: Sprite
 
+	if SHOW_FULL_MAP:
+		return
+
 	for x in range(_new_DungeonSize.MAX_X):
 		for y in range(_new_DungeonSize.MAX_Y):
 			if (x == _source_position[0]) and (y == _source_position[1]):

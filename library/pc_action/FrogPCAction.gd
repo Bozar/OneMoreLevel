@@ -3,6 +3,7 @@ extends "res://library/pc_action/PCActionTemplate.gd"
 
 var _new_FrogData := preload("res://library/npc_data/FrogData.gd").new()
 
+var _frog_sprite: Array
 var _pass_next_turn: bool
 var _step_counter: int = 0
 
@@ -22,6 +23,28 @@ func allow_input() -> bool:
 		_set_pc_state(_new_ObjectStateTag.ACTIVE)
 		return false
 	return true
+
+
+func render_fov() -> void:
+	var pos: Array
+
+	if SHOW_FULL_MAP:
+		return
+
+	if _frog_sprite.size() == 0:
+		_frog_sprite = _ref_DungeonBoard.get_sprites_by_tag(
+				_new_MainGroupTag.ACTOR)
+
+	for i in _frog_sprite:
+		pos = _new_ConvertCoord.vector_to_array(i.position)
+		if (pos[0] == _source_position[0]) and (pos[1] == _source_position[1]):
+			continue
+		elif _new_CoordCalculator.is_inside_range(pos[0], pos[1],
+				_source_position[0], _source_position[1],
+				_new_FrogData.RENDER_RANGE):
+			_new_Palette.reset_color(i, _new_MainGroupTag.ACTOR)
+		else:
+			i.modulate = _new_Palette.SHADOW
 
 
 func is_npc() -> bool:
@@ -76,6 +99,8 @@ func move() -> void:
 func attack() -> void:
 	_step_counter = 0
 	_ref_CountDown.add_count(_new_FrogData.RESTORE_TURN)
+	if not SHOW_FULL_MAP:
+		_frog_sprite.resize(0)
 	.attack()
 
 
