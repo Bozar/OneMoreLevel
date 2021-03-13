@@ -35,26 +35,6 @@ func init_schedule() -> void:
 		_start_first_turn = false
 
 
-func count_npc() -> int:
-	var count: int = 0
-
-	for i in _actors:
-		if i.is_in_group(_new_SubGroupTag.PC):
-			continue
-		count += 1
-	return count
-
-
-func get_npc() -> Array:
-	var npc: Array = []
-
-	for i in _actors:
-		if i.is_in_group(_new_SubGroupTag.PC):
-			continue
-		npc.push_back(i)
-	return npc
-
-
 func _on_CreateObject_sprite_created(new_sprite: Sprite,
 		main_group: String, sub_group: String, _x: int, _y: int) -> void:
 	if main_group == _new_MainGroupTag.ACTOR:

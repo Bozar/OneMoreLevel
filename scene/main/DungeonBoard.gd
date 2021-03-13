@@ -7,6 +7,7 @@ var _new_MainGroupTag := preload("res://library/MainGroupTag.gd").new()
 var _new_SubGroupTag := preload("res://library/SubGroupTag.gd").new()
 var _new_ConvertCoord := preload("res://library/ConvertCoord.gd").new()
 var _new_CoordCalculator := preload("res://library/CoordCalculator.gd").new()
+var _new_ArrayHelper := preload("res://library/ArrayHelper.gd").new()
 
 # <main_group: String, <column: int, [sprite]>>
 var _sprite_dict: Dictionary
@@ -60,6 +61,16 @@ func get_pc() -> Sprite:
 	return _pc
 
 
+func get_npc() -> Array:
+	var npc: Array = get_sprites_by_tag(_new_MainGroupTag.ACTOR)
+	_new_ArrayHelper.filter_element(npc, self, "_filter_get_npc", [])
+	return npc
+
+
+func count_npc() -> int:
+	return get_npc().size()
+
+
 # When we call `foobar.queue_free()`, the node foobar will be deleted at the end
 # of the current frame if there are no references to it.
 #
@@ -76,21 +87,21 @@ func get_pc() -> Sprite:
 #
 # https://youtu.be/agqdag6GqpU
 func get_sprites_by_tag(group_tag: String) -> Array:
-	var sprites: Array = []
-	var verify: Sprite
-	var counter: int = 0
+	var sprites: Array = get_tree().get_nodes_in_group(group_tag)
+	# var verify: Sprite
+	# var counter: int = 0
 
-	sprites = get_tree().get_nodes_in_group(group_tag)
 	# Filter elements in a more efficent way based on `u/kleonc`'s suggestion.
 	# https://www.reddit.com/r/godot/comments/kq4c91/beware_that_foobarqueue_free_removes_foobar_at/gi3femf
-	for i in range(sprites.size()):
-		verify = sprites[i]
-		if verify.is_queued_for_deletion():
-			continue
-		sprites[counter] = verify
-		counter += 1
-	sprites.resize(counter)
-
+	# for i in range(sprites.size()):
+	# 	verify = sprites[i]
+	# 	if verify.is_queued_for_deletion():
+	# 		continue
+	# 	sprites[counter] = verify
+	# 	counter += 1
+	# sprites.resize(counter)
+	_new_ArrayHelper.filter_element(sprites, self, "_filter_get_sprites_by_tag",
+			[])
 	return sprites
 	# return get_tree().get_nodes_in_group(group_tag)
 
@@ -171,3 +182,13 @@ func _try_move_arrow(sprite: Sprite) -> void:
 			.position.x = sprite.position.x
 	_sub_group_to_sprite[_new_SubGroupTag.ARROW_UP] \
 			.position.x = sprite.position.x
+
+
+func _filter_get_sprites_by_tag(source: Array, index: int,
+		_opt_arg: Array) -> bool:
+	return not source[index].is_queued_for_deletion()
+
+
+func _filter_get_npc(source: Array, index: int, _opt_arg: Array) -> bool:
+	return not (source[index].is_queued_for_deletion() \
+			or source[index].is_in_group(_new_SubGroupTag.PC))

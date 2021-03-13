@@ -73,7 +73,7 @@ func _switch_pc_and_image() -> void:
 
 
 func _set_npc_state() -> void:
-	var npc: Array = _ref_Schedule.get_npc()
+	var npc: Array = _ref_DungeonBoard.get_npc()
 	var npc_pos: Array
 
 	for i in npc:

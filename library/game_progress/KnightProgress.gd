@@ -37,7 +37,7 @@ func end_world(pc_x: int, pc_y: int) -> void:
 		_spawn_npc(_spr_KnightBoss, _new_SubGroupTag.KNIGHT_BOSS)
 		_spawn_boss = false
 
-	if _ref_Schedule.count_npc() > _new_KnightData.START_RESPAWN:
+	if _ref_DungeonBoard.count_npc() > _new_KnightData.START_RESPAWN:
 		return
 	spawn = _ref_RandomNumber.get_int(1, _new_KnightData.MAX_RESPAWN)
 
