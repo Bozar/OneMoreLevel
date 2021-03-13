@@ -32,14 +32,10 @@ func render_fov() -> void:
 		return
 
 	if _frog_sprite.size() == 0:
-		_frog_sprite = _ref_DungeonBoard.get_sprites_by_tag(
-				_new_MainGroupTag.ACTOR)
-
+		_frog_sprite = _ref_DungeonBoard.get_npc()
 	for i in _frog_sprite:
 		pos = _new_ConvertCoord.vector_to_array(i.position)
-		if (pos[0] == _source_position[0]) and (pos[1] == _source_position[1]):
-			continue
-		elif _new_CoordCalculator.is_inside_range(pos[0], pos[1],
+		if _new_CoordCalculator.is_inside_range(pos[0], pos[1],
 				_source_position[0], _source_position[1],
 				_new_FrogData.RENDER_RANGE):
 			_new_Palette.reset_color(i, _new_MainGroupTag.ACTOR)
