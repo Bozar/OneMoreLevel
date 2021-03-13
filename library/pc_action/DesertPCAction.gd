@@ -11,13 +11,7 @@ func _init(parent_node: Node2D).(parent_node) -> void:
 
 
 func render_fov() -> void:
-	var floor_sprite: Sprite
-
-	for x in range(0, _new_DungeonSize.MAX_X):
-		for y in range(0, _new_DungeonSize.MAX_Y):
-			floor_sprite = _ref_DungeonBoard.get_sprite(
-					_new_MainGroupTag.GROUND, x, y)
-			floor_sprite.visible = not _is_building_or_trap(x, y)
+	pass
 
 
 func switch_sprite() -> void:

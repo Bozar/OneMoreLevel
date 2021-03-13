@@ -1,6 +1,5 @@
 const MAX_LENGTH: int = 20
 const MIN_LENGTH: int = 10
-
 const SPICE_START: int = 2
 const SPICE_END: int = 5
 
@@ -19,3 +18,4 @@ const MAX_COOLDOWN: int = 3
 const WORM_DISTANCE: int = 5
 
 const RESTORE_TURN: int = 5
+const RENDER_RANGE: int = 5

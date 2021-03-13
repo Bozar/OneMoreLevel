@@ -16,8 +16,8 @@ func _init(parent_node: Node2D).(parent_node) -> void:
 
 
 func get_blueprint() -> Array:
-	_init_floor()
 	_init_wall()
+	_init_floor()
 	_init_actor(_new_DesertData.WORM_DISTANCE, INVALID_COORD, INVALID_COORD,
 			_new_DesertData.MAX_WORM,
 			_spr_WormHead, _new_SubGroupTag.WORM_HEAD)

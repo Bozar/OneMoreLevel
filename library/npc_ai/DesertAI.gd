@@ -98,9 +98,6 @@ func _try_random_walk(id: int) -> bool:
 	var mirror: Array
 	var move_to: Array
 	var pc: Sprite = _ref_DungeonBoard.get_pc()
-	var remove_sprite: Array = [
-		_new_MainGroupTag.BUILDING, _new_MainGroupTag.TRAP
-	]
 
 	if _id_to_worm[id][1] != null:
 		neck = _new_ConvertCoord.vector_to_array(_id_to_worm[id][1].position)
@@ -124,9 +121,8 @@ func _try_random_walk(id: int) -> bool:
 		_ref_EndGame.player_lose()
 		return false
 
-	for i in remove_sprite:
-		if _ref_DungeonBoard.has_sprite(i, move_to[0], move_to[1]):
-			_ref_RemoveObject.remove(i, move_to[0], move_to[1])
+	_ref_RemoveObject.remove(_new_MainGroupTag.BUILDING, move_to[0], move_to[1])
+	_ref_RemoveObject.remove(_new_MainGroupTag.TRAP, move_to[0], move_to[1])
 
 	_set_danger_zone(_self, false)
 	_ref_DungeonBoard.move_sprite(_new_MainGroupTag.ACTOR,

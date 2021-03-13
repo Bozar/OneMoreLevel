@@ -1,8 +1,6 @@
 extends "res://library/game_progress/ProgressTemplate.gd"
 
 
-const REMOVE_SPRITE: Array = [MAIN_GROUP_TAG.BUILDING, MAIN_GROUP_TAG.TRAP]
-
 var _spr_WormHead := preload("res://sprite/WormHead.tscn")
 var _spr_Counter := preload("res://sprite/Counter.tscn")
 
@@ -29,6 +27,23 @@ func remove_actor(actor: Sprite, _x: int, _y: int) -> void:
 			_respawn_counter[i] = _ref_RandomNumber.get_int(
 					0, _new_DesertData.MAX_COOLDOWN)
 			break
+
+
+func remove_building(_building: Sprite, x: int, y: int) -> void:
+	_add_or_remove_floor(true, x, y)
+
+
+func remove_trap(_trap: Sprite, x: int, y: int) -> void:
+	_add_or_remove_floor(true, x, y)
+
+
+func create_building(_building: Sprite, _sub_group: String,
+		x: int, y: int) -> void:
+	_add_or_remove_floor(false, x, y)
+
+
+func create_trap(_trap: Sprite, _sub_group: String, x: int, y: int) -> void:
+	_add_or_remove_floor(false, x, y)
 
 
 func _try_add_new_worm() -> void:
@@ -65,9 +80,16 @@ func _create_worm_head(stop_loop: bool, avoid_building: int) -> void:
 		_create_worm_head(false, avoid_building + 1)
 		return
 
-	for j in REMOVE_SPRITE:
-		if _ref_DungeonBoard.has_sprite(j, x, y):
-			_ref_RemoveObject.remove(j, x, y)
+	_ref_RemoveObject.remove(_new_MainGroupTag.BUILDING, x, y)
+	_ref_RemoveObject.remove(_new_MainGroupTag.TRAP, x, y)
 	_ref_CreateObject.create(_spr_WormHead,
 			_new_MainGroupTag.ACTOR, _new_SubGroupTag.WORM_HEAD, x, y)
 	_create_worm_head(true, avoid_building)
+
+
+func _add_or_remove_floor(add_floor: bool, x: int, y: int) -> void:
+	if add_floor:
+		_ref_CreateObject.create(_spr_Floor, _new_MainGroupTag.GROUND,
+				_new_SubGroupTag.FLOOR, x, y)
+	else:
+		_ref_RemoveObject.remove(_new_MainGroupTag.GROUND, x, y)
