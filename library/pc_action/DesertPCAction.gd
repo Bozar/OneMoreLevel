@@ -11,7 +11,28 @@ func _init(parent_node: Node2D).(parent_node) -> void:
 
 
 func render_fov() -> void:
-	pass
+	var tmp_sprite: Sprite
+
+	for x in range(_new_DungeonSize.MAX_X):
+		for y in range(_new_DungeonSize.MAX_Y):
+			if (x == _source_position[0]) and (y == _source_position[1]):
+				continue
+			elif _new_CoordCalculator.is_inside_range(x, y,
+					_source_position[0], _source_position[1],
+					_new_DesertData.RENDER_RANGE):
+				for i in VALID_MAIN_GROUPS:
+					tmp_sprite = _ref_DungeonBoard.get_sprite(i, x, y)
+					if tmp_sprite != null:
+						_new_Palette.reset_color(tmp_sprite, i)
+			else:
+				for i in VALID_MAIN_GROUPS:
+					tmp_sprite = _ref_DungeonBoard.get_sprite(i, x, y)
+					if tmp_sprite == null:
+						continue
+					if i == _new_MainGroupTag.ACTOR:
+						tmp_sprite.modulate = _new_Palette.SHADOW
+					else:
+						tmp_sprite.modulate = _new_Palette.DARK
 
 
 func switch_sprite() -> void:
