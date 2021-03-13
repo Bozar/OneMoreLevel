@@ -12,13 +12,6 @@ var _new_CoordCalculator := preload("res://library/CoordCalculator.gd").new()
 var _sprite_dict: Dictionary
 var _pc: Sprite
 
-var _valid_main_groups: Array = [
-	_new_MainGroupTag.GROUND,
-	_new_MainGroupTag.ACTOR,
-	_new_MainGroupTag.BUILDING,
-	_new_MainGroupTag.TRAP,
-]
-
 var _sub_group_to_sprite: Dictionary = {
 	_new_SubGroupTag.ARROW_RIGHT: null,
 	_new_SubGroupTag.ARROW_DOWN: null,
@@ -147,7 +140,7 @@ func _on_CreateObject_sprite_created(new_sprite: Sprite,
 		return
 
 	# Save references to dungeon sprites.
-	for i in _valid_main_groups:
+	for i in _new_MainGroupTag.DUNGEON_OBJECT:
 		if i == main_group:
 			pos = _new_ConvertCoord.vector_to_array(new_sprite.position)
 			_sprite_dict[i][pos[0]][pos[1]] = new_sprite
@@ -160,7 +153,7 @@ func _on_RemoveObject_sprite_removed(_sprite: Sprite, main_group: String,
 
 
 func _init_dict() -> void:
-	for i in _valid_main_groups:
+	for i in _new_MainGroupTag.DUNGEON_OBJECT:
 		_sprite_dict[i] = {}
 		for x in range(_new_DungeonSize.MAX_X):
 			_sprite_dict[i][x] = []

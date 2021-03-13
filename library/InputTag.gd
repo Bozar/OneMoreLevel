@@ -21,3 +21,10 @@ const SCROLL_TO_TOP: String = "scroll_to_top"
 const SCROLL_TO_BOTTOM: String = "scroll_to_bottom"
 const NEXT_HELP: String = "next_help"
 const PREVIOUS_HELP: String = "previous_help"
+
+const DIRECTION_TO_COORD: Dictionary = {
+	MOVE_UP: [0, -1],
+	MOVE_DOWN: [0, 1],
+	MOVE_LEFT: [-1, 0],
+	MOVE_RIGHT: [1, 0],
+}

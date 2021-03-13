@@ -23,12 +23,12 @@ func render_fov() -> void:
 			elif _new_CoordCalculator.is_inside_range(x, y,
 					_source_position[0], _source_position[1],
 					_new_DesertData.RENDER_RANGE):
-				for i in VALID_MAIN_GROUPS:
+				for i in _new_MainGroupTag.ABOVE_GROUND_OBJECT:
 					tmp_sprite = _ref_DungeonBoard.get_sprite(i, x, y)
 					if tmp_sprite != null:
 						_new_Palette.reset_color(tmp_sprite, i)
 			else:
-				for i in VALID_MAIN_GROUPS:
+				for i in _new_MainGroupTag.ABOVE_GROUND_OBJECT:
 					tmp_sprite = _ref_DungeonBoard.get_sprite(i, x, y)
 					if tmp_sprite == null:
 						continue

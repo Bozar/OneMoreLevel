@@ -6,23 +6,10 @@ class_name Game_PCActionTemplate
 
 const INPUT_TAG := preload("res://library/InputTag.gd")
 const OBJECT_STATE_TAG := preload("res://library/ObjectStateTag.gd")
-const MAIN_GROUP_TAG := preload("res://library/MainGroupTag.gd")
 const DUNGEON_SIZE := preload("res://library/DungeonSize.gd")
 
 const SHOW_FULL_MAP: bool = false
 # const SHOW_FULL_MAP: bool = true
-
-const DIRECTION_TO_COORD: Dictionary = {
-	INPUT_TAG.MOVE_UP: [0, -1],
-	INPUT_TAG.MOVE_DOWN: [0, 1],
-	INPUT_TAG.MOVE_LEFT: [-1, 0],
-	INPUT_TAG.MOVE_RIGHT: [1, 0],
-}
-const VALID_MAIN_GROUPS: Array = [
-	MAIN_GROUP_TAG.ACTOR,
-	MAIN_GROUP_TAG.BUILDING,
-	MAIN_GROUP_TAG.TRAP,
-]
 
 var message: String setget set_message, get_message
 var end_turn: bool setget set_end_turn, get_end_turn
@@ -150,7 +137,7 @@ func set_source_position() -> void:
 
 
 func set_target_position(direction: String) -> void:
-	var shift: Array = DIRECTION_TO_COORD[direction]
+	var shift: Array = _new_InputTag.DIRECTION_TO_COORD[direction]
 
 	_target_position = [
 		_source_position[0] + shift[0], _source_position[1] + shift[1]
@@ -183,8 +170,7 @@ func game_over(win: bool) -> void:
 func _is_occupied(x: int, y: int) -> bool:
 	if not _new_CoordCalculator.is_inside_dungeon(x, y):
 		return true
-
-	for i in VALID_MAIN_GROUPS:
+	for i in _new_MainGroupTag.ABOVE_GROUND_OBJECT:
 		if _ref_DungeonBoard.has_sprite(i, x, y):
 			return true
 	return false
