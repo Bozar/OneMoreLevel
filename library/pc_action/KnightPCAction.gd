@@ -3,9 +3,34 @@ extends "res://library/pc_action/PCActionTemplate.gd"
 
 var _new_KnightData := preload("res://library/npc_data/KnightData.gd").new()
 
+var _wall_sprite: Array
+var _knight_sprite: Array
+
 
 func _init(parent_node: Node2D).(parent_node) -> void:
 	pass
+
+
+func render_fov() -> void:
+	if SHOW_FULL_MAP:
+		return
+
+	var pc: Sprite = _ref_DungeonBoard.get_pc()
+
+	if _wall_sprite.size() == 0:
+		_wall_sprite = _ref_DungeonBoard.get_sprites_by_tag(
+				_new_MainGroupTag.BUILDING)
+	# A knight is killed by friendly fire. Refer: KnightAI.
+	if _ref_ObjectData.get_hit_point(pc) > 0:
+		_ref_ObjectData.set_hit_point(pc, 0)
+		_knight_sprite.resize(0)
+	if _knight_sprite.size() == 0:
+		_knight_sprite = _ref_DungeonBoard.get_npc()
+
+	for i in _wall_sprite:
+		_set_color(i, _new_MainGroupTag.BUILDING, _new_Palette.DARK)
+	for i in _knight_sprite:
+		_set_color(i, _new_MainGroupTag.ACTOR, _new_Palette.SHADOW)
 
 
 func attack() -> void:
@@ -25,6 +50,7 @@ func attack() -> void:
 			_hit_boss(npc)
 		else:
 			_hit_knight()
+		_knight_sprite.resize(0)
 		_ref_CountDown.add_count(_new_KnightData.RESTORE_TURN)
 		end_turn = true
 	else:
@@ -125,3 +151,14 @@ func _get_new_position() -> Array:
 		_ref_RandomNumber.get_int(0, _new_DungeonSize.MAX_X),
 		_ref_RandomNumber.get_int(0, _new_DungeonSize.MAX_Y)
 	]
+
+
+func _set_color(set_this: Sprite, main_tag: String, new_color: String) -> void:
+	var pos: Array = _new_ConvertCoord.vector_to_array(set_this.position)
+
+	if _new_CoordCalculator.is_inside_range(pos[0], pos[1],
+			_source_position[0], _source_position[1],
+			_new_KnightData.RENDER_RANGE):
+		_new_Palette.reset_color(set_this, main_tag)
+	else:
+		set_this.modulate = new_color

@@ -15,3 +15,4 @@ const MIN_NEIGHBOR: int = 3
 const ENCIRCLEMENT: int = 9
 
 const RESTORE_TURN: int = 5
+const RENDER_RANGE: int = 3

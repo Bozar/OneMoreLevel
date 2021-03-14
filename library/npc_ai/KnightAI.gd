@@ -178,22 +178,24 @@ func _set_danger_zone(danger_zone: Array, is_dangerous: bool) -> void:
 
 func _try_hit_pc(danger_zone: Array) -> void:
 	var victim: Sprite
+	var pc: Sprite
 
 	for i in danger_zone:
-		victim = _ref_DungeonBoard.get_sprite(
-				_new_MainGroupTag.ACTOR, i[0], i[1])
+		victim = _ref_DungeonBoard.get_sprite(_new_MainGroupTag.ACTOR,
+				i[0], i[1])
 		if victim == null:
 			continue
-
 		if victim.is_in_group(_new_SubGroupTag.PC):
 			_ref_EndGame.player_lose()
 			# print("pc dead")
 		elif victim.is_in_group(_new_SubGroupTag.KNIGHT) \
-				and _ref_ObjectData.verify_state(
-						victim, _new_ObjectStateTag.PASSIVE):
-			_ref_RemoveObject.remove(
-					_new_MainGroupTag.ACTOR, i[0], i[1])
+				and _ref_ObjectData.verify_state(victim,
+						_new_ObjectStateTag.PASSIVE):
+			_ref_RemoveObject.remove(_new_MainGroupTag.ACTOR, i[0], i[1])
 			_ref_CountDown.add_count(_new_KnightData.RESTORE_TURN)
+			# Remind KnightPCAction that an NPC is removed.
+			pc = _ref_DungeonBoard.get_pc()
+			_ref_ObjectData.set_hit_point(pc, 1)
 
 
 func _is_ready_to_move() -> bool:
