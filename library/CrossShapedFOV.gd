@@ -14,9 +14,10 @@
 #
 # Step 1: Call set_rectangular_sight() to set local data.
 #
-# Beware that [center_x, center_y] and [face_x, face_y] should be on a straight
-# line. The function requires four ranges in clock wise direction, starting from
-# front_range.
+# Beware that face_x and face_y could only be 0, 1 and -1. The coord
+# [face_x, face_y] points to a cardinal direction relative to
+# [center_x, center_y]. The function set_rectangular_sight() requires four
+# ranges in clock wise direction, starting from front_range.
 #
 # Optionally, call set_t_shaped_sight() or set_symmetric_sight(). They wrap
 # around set_rectangular_sight() and accept fewer arguments to create a more

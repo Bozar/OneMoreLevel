@@ -1,7 +1,12 @@
 extends "res://library/pc_action/PCActionTemplate.gd"
 
 
+const FACE_X: int = 0
+const FACE_Y: int = 1
+const HALF_WIDTH: int = 1
+
 var _new_KnightData := preload("res://library/npc_data/KnightData.gd").new()
+var _new_CrossShapedFOV := preload("res://library/CrossShapedFOV.gd").new()
 
 var _wall_sprite: Array
 var _knight_sprite: Array
@@ -26,6 +31,11 @@ func render_fov() -> void:
 		_knight_sprite.resize(0)
 	if _knight_sprite.size() == 0:
 		_knight_sprite = _ref_DungeonBoard.get_npc()
+
+	_new_CrossShapedFOV.set_symmetric_sight(
+			_source_position[0], _source_position[1], FACE_X, FACE_Y,
+			HALF_WIDTH, _new_KnightData.RENDER_RANGE,
+			self, "_block_ray", [])
 
 	for i in _wall_sprite:
 		_set_color(i, _new_MainGroupTag.BUILDING, _new_Palette.DARK)
@@ -156,9 +166,11 @@ func _get_new_position() -> Array:
 func _set_color(set_this: Sprite, main_tag: String, new_color: String) -> void:
 	var pos: Array = _new_ConvertCoord.vector_to_array(set_this.position)
 
-	if _new_CoordCalculator.is_inside_range(pos[0], pos[1],
-			_source_position[0], _source_position[1],
-			_new_KnightData.RENDER_RANGE):
+	if _new_CrossShapedFOV.is_in_sight(pos[0], pos[1]):
 		_new_Palette.reset_color(set_this, main_tag)
 	else:
 		set_this.modulate = new_color
+
+
+func _block_ray(x: int, y: int, _opt_arg: Array) -> bool:
+	return _ref_DungeonBoard.has_sprite(_new_MainGroupTag.BUILDING, x, y)
