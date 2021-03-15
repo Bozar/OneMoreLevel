@@ -8,7 +8,7 @@ var _spr_Treasure := preload("res://sprite/Treasure.tscn")
 var _spr_Portal := preload("res://sprite/Portal.tscn")
 
 var _new_RailgunData := preload("res://library/npc_data/RailgunData.gd").new()
-var _new_LinearFOV := preload("res://library/LinearFOV.gd").new()
+var _new_CrossShapedFOV := preload("res://library/CrossShapedFOV.gd").new()
 
 var _floor_wall_sprite: Array
 var _counter_sprite: Array = []
@@ -52,11 +52,11 @@ func render_fov() -> void:
 	if SHOW_FULL_MAP:
 		return
 
-	_new_LinearFOV.set_rectangular_sight(
+	_new_CrossShapedFOV.set_t_shaped_sight(
 			_source_position[0], _source_position[1],
 			_face_direction[0], _face_direction[1],
-			_new_RailgunData.PC_FRONT_SIGHT, _new_RailgunData.PC_SIDE_SIGHT,
 			HALF_SIGHT_WIDTH,
+			_new_RailgunData.PC_FRONT_SIGHT, _new_RailgunData.PC_SIDE_SIGHT,
 			self, "_block_ray", [])
 
 	for i in _floor_wall_sprite:
@@ -234,7 +234,7 @@ func _set_color(set_this: Sprite, in_sight: String, out_of_sight: String,
 	var pos: Array = _new_ConvertCoord.vector_to_array(set_this.position)
 
 	set_this.visible = true
-	if _new_LinearFOV.is_in_sight(pos[0], pos[1]):
+	if _new_CrossShapedFOV.is_in_sight(pos[0], pos[1]):
 		set_this.modulate = in_sight
 		if has_memory and (_ref_ObjectData.get_hit_point(set_this) \
 				< MEMORY_MARKER):
