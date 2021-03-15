@@ -2,6 +2,7 @@ extends "res://library/pc_action/PCActionTemplate.gd"
 
 
 var _new_DesertData := preload("res://library/npc_data/DesertData.gd").new()
+var _new_ShadowCastFOV := preload("res://library/ShadowCastFOV.gd").new()
 
 var _pc_is_number: bool = false
 
@@ -16,13 +17,16 @@ func render_fov() -> void:
 	if SHOW_FULL_MAP:
 		return
 
+	_new_ShadowCastFOV.set_field_of_view(
+			_source_position[0], _source_position[1],
+			_new_DesertData.RENDER_RANGE,
+			self, "_block_ray", [])
+
 	for x in range(_new_DungeonSize.MAX_X):
 		for y in range(_new_DungeonSize.MAX_Y):
 			if (x == _source_position[0]) and (y == _source_position[1]):
 				continue
-			elif _new_CoordCalculator.is_inside_range(x, y,
-					_source_position[0], _source_position[1],
-					_new_DesertData.RENDER_RANGE):
+			elif _new_ShadowCastFOV.is_in_sight(x, y):
 				for i in _new_MainGroupTag.ABOVE_GROUND_OBJECT:
 					tmp_sprite = _ref_DungeonBoard.get_sprite(i, x, y)
 					if tmp_sprite != null:
@@ -154,3 +158,10 @@ func _switch_to_number(is_number: bool) -> void:
 	else:
 		type_tag = _new_SpriteTypeTag.DEFAULT
 	_ref_SwitchSprite.switch_sprite(pc, type_tag)
+
+
+func _block_ray(x: int, y: int, _opt_arg: Array) -> bool:
+	for i in _new_MainGroupTag.ABOVE_GROUND_OBJECT:
+		if _ref_DungeonBoard.has_sprite(i, x, y):
+			return true
+	return false
