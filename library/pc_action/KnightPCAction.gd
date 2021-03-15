@@ -1,8 +1,6 @@
 extends "res://library/pc_action/PCActionTemplate.gd"
 
 
-const FACE_X: int = 0
-const FACE_Y: int = 1
 const HALF_WIDTH: int = 1
 
 var _new_KnightData := preload("res://library/npc_data/KnightData.gd").new()
@@ -33,8 +31,8 @@ func render_fov() -> void:
 		_knight_sprite = _ref_DungeonBoard.get_npc()
 
 	_new_CrossShapedFOV.set_symmetric_sight(
-			_source_position[0], _source_position[1], FACE_X, FACE_Y,
-			HALF_WIDTH, _new_KnightData.RENDER_RANGE,
+			_source_position[0], _source_position[1], HALF_WIDTH,
+			_new_KnightData.RENDER_RANGE,
 			self, "_block_ray", [])
 
 	for i in _wall_sprite:

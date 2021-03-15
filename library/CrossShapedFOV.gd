@@ -14,10 +14,10 @@
 #
 # Step 1: Call set_rectangular_sight() to set local data.
 #
-# Beware that face_x and face_y could only be 0, 1 and -1. The coord
-# [face_x, face_y] points to a cardinal direction relative to
-# [center_x, center_y]. The function set_rectangular_sight() requires four
-# ranges in clock wise direction, starting from front_range.
+# Beware that [face_x, face_y] could only be [x, 0] or [0, y]. The coord points
+# to a cardinal direction relative to [center_x, center_y]. The function
+# set_rectangular_sight() requires four ranges in clock wise direction, starting
+# from front_range.
 #
 # Optionally, call set_t_shaped_sight() or set_symmetric_sight(). They wrap
 # around set_rectangular_sight() and accept fewer arguments to create a more
@@ -26,6 +26,10 @@
 # Step 2: Call is_in_sight() to check whether a given position is in sight.
 #
 
+const COORD_WARNING: String = "Neither face_x nor face_y is zero."
+const T_SHAPED_BACK: int = 1
+const SYMMETRIC_X: int = 0
+const SYMMETRIC_Y: int = 1
 
 var _new_CoordCalculator := preload("res://library/CoordCalculator.gd").new()
 
@@ -60,6 +64,8 @@ func set_rectangular_sight(center_x: int, center_y: int,
 
 	face_x = _normalize_coord(face_x)
 	face_y = _normalize_coord(face_y)
+	if (face_x != 0) and (face_y != 0):
+		push_warning(COORD_WARNING)
 
 	if face_x == 0:
 		cast_ray_arg = [
@@ -87,16 +93,16 @@ func set_t_shaped_sight(center_x: int, center_y: int,
 		face_x: int, face_y: int, half_width: int,
 		front_range: int, side_range: int,
 		func_host: Object, is_obstacle_func: String, opt_arg: Array) -> void:
-	set_rectangular_sight(center_x, center_y, face_x, face_y, half_width,
-			front_range, side_range, 1, side_range,
+	set_rectangular_sight(center_x, center_y, face_x, face_y,
+			half_width, front_range, side_range, T_SHAPED_BACK, side_range,
 			func_host, is_obstacle_func, opt_arg)
 
 
 func set_symmetric_sight(center_x: int, center_y: int,
-		face_x: int, face_y: int, half_width: int, max_range: int,
+		half_width: int, max_range: int,
 		func_host: Object, is_obstacle_func: String, opt_arg: Array) -> void:
-	set_rectangular_sight(center_x, center_y, face_x, face_y, half_width,
-			max_range, max_range, max_range, max_range,
+	set_rectangular_sight(center_x, center_y, SYMMETRIC_X, SYMMETRIC_Y,
+			half_width, max_range, max_range, max_range, max_range,
 			func_host, is_obstacle_func, opt_arg)
 
 
