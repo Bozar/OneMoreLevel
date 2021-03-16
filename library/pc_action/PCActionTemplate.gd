@@ -101,7 +101,13 @@ func is_trap() -> bool:
 	return _ref_DungeonBoard.has_sprite(_new_MainGroupTag.TRAP,
 			_target_position[0], _target_position[1])
 
-
+# 1. An action, (move or attack, for example) might call
+# EndGame.player_[win|lose]() implicitly. Therefore we need to decide whether
+# a thing happens before or after end game.
+# 2. It is recommended to call CountDown.add_count() after EndGame.player_X.
+# Therefore the counter in the sidebar panel does not update once game ends.
+# This leads to a potential and satisfying situation in which players find that
+# they beat the game in the last turn.
 func move() -> void:
 	_ref_DungeonBoard.move_sprite(_new_MainGroupTag.ACTOR,
 			_source_position[0], _source_position[1],
