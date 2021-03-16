@@ -114,7 +114,7 @@ func _try_reduce_extra_turn() -> void:
 	if _extra_turn_counter < _new_StyxData.EXTRA_TURN_COUNTER:
 		_extra_turn_counter += 1
 	else:
-		_ref_CountDown.add_count(_new_StyxData.EXTRA_TURN)
+		_ref_CountDown.subtract_count(_new_StyxData.EXTRA_TURN)
 		_extra_turn_counter = 0
 
 

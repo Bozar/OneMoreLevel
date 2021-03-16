@@ -78,7 +78,6 @@ func attack() -> void:
 
 	_ref_ObjectData.set_state(worm, _new_ObjectStateTag.PASSIVE)
 	_ref_SwitchSprite.switch_sprite(worm, _new_SpriteTypeTag.PASSIVE)
-	_ref_CountDown.add_count(_new_DesertData.RESTORE_TURN)
 
 	if is_active_spice:
 		_ref_ObjectData.add_hit_point(pc, 1)
@@ -87,6 +86,7 @@ func attack() -> void:
 	else:
 		_ref_EndGame.player_win()
 		end_turn = false
+	_ref_CountDown.add_count(_new_DesertData.RESTORE_TURN)
 
 
 func interact_with_trap() -> void:

@@ -5,4 +5,4 @@ const HARBOR: int = 1
 
 const FLOW_LENGTH: int = 2
 const EXTRA_TURN_COUNTER: int = 1
-const EXTRA_TURN: int = -1
+const EXTRA_TURN: int = 1

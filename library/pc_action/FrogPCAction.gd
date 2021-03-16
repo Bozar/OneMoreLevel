@@ -94,10 +94,10 @@ func move() -> void:
 
 func attack() -> void:
 	_step_counter = 0
+	.attack()
 	_ref_CountDown.add_count(_new_FrogData.RESTORE_TURN)
 	if not SHOW_FULL_MAP:
 		_frog_sprite.resize(0)
-	.attack()
 
 
 func wait() -> void:
