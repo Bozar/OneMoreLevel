@@ -77,7 +77,7 @@ func set_rectangular_sight(center_x: int, center_y: int,
 	else:
 		cast_ray_arg = [
 			[face_x, face_y, front_range],
-			[face_x, -face_y, back_range],
+			[-face_x, face_y, back_range],
 			[face_y, -face_x, right_range],
 			[face_y, face_x, left_range],
 		]
