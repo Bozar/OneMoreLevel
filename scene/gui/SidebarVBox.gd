@@ -48,12 +48,12 @@ func _on_InitWorld_world_selected(new_world: String) -> void:
 func _on_Schedule_turn_started(current_sprite: Sprite) -> void:
 	if not current_sprite.is_in_group(_new_SubGroupTag.PC):
 		return
-
 	get_node(TURN).text = _get_turn()
 	get_node(MESSAGE).text = _get_warning()
 
 
 func _on_EndGame_game_over(win: bool) -> void:
+	get_node(TURN).text = _get_turn()
 	if win:
 		get_node(MESSAGE).text = _new_SidebarText.WIN
 	else:
