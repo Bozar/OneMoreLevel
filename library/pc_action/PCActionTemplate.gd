@@ -159,12 +159,8 @@ func switch_sprite() -> void:
 
 
 func game_over(win: bool) -> void:
-	var pc: Sprite = _ref_DungeonBoard.get_pc()
-
-	_source_position = _new_ConvertCoord.vector_to_array(pc.position)
-	render_fov()
-	if not win:
-		pc.modulate = _new_Palette.SHADOW
+	_render_end_game(win)
+	switch_sprite()
 
 
 func _is_occupied(x: int, y: int) -> bool:
@@ -188,3 +184,12 @@ func _hide_ground_under_pc() -> void:
 			_source_position[0], _source_position[1])
 	if ground != null:
 		ground.visible = false
+
+
+func _render_end_game(win: bool) -> void:
+	var pc: Sprite = _ref_DungeonBoard.get_pc()
+
+	_source_position = _new_ConvertCoord.vector_to_array(pc.position)
+	render_fov()
+	if not win:
+		pc.modulate = _new_Palette.SHADOW

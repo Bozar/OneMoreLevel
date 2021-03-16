@@ -49,7 +49,7 @@ func switch_sprite() -> void:
 
 
 func game_over(win: bool) -> void:
-	.game_over(win)
+	_render_end_game(win)
 	if win:
 		_switch_to_number(false)
 	else:

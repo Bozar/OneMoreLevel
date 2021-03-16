@@ -34,10 +34,10 @@ func switch_sprite() -> void:
 	pass
 
 
-func game_over(_win) -> void:
+func game_over(win) -> void:
 	var pc: Sprite = _ref_DungeonBoard.get_pc()
 
-	.game_over(_win)
+	_render_end_game(win)
 	_hide_ground_under_pc()
 	_switch_mode(true, pc)
 
