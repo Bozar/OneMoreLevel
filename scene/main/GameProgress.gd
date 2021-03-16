@@ -18,6 +18,7 @@ var _new_SubGroupTag := preload("res://library/SubGroupTag.gd").new()
 var _new_ConvertCoord := preload("res://library/ConvertCoord.gd").new()
 
 var _progress: Game_ProgressTemplate
+var _game_over: bool = false
 
 
 func _on_InitWorld_world_selected(new_world: String) -> void:
@@ -45,6 +46,9 @@ func _on_Schedule_turn_started(current_sprite: Sprite) -> void:
 func _on_Schedule_turn_ended(current_sprite: Sprite) -> void:
 	var _pc_pos: Array
 
+	# Do not change world (like adding new NPCs) when the game is over.
+	if _game_over:
+		return
 	if current_sprite.is_in_group(_new_SubGroupTag.PC):
 		_pc_pos = _new_ConvertCoord.vector_to_array(current_sprite.position)
 		_progress.end_world(_pc_pos[0], _pc_pos[1])
@@ -61,4 +65,5 @@ func _on_RemoveObject_sprite_removed(remove_sprite: Sprite,
 
 
 func _on_EndGame_game_over(win: bool) -> void:
+	_game_over = true
 	_progress.game_over(win)
