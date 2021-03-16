@@ -16,9 +16,17 @@ var _start_first_turn: bool = true
 
 
 func end_turn() -> void:
+	# The boolean variable _end_game could be set during an actor's turn, or
+	# when a turn ends.
 	if _end_game:
 		return
 
+	# Suppose NPC X is the currently active actor, and Y is the next one in row.
+	# 1. EnemyAI calls remove(X).
+	# 2. In Schedule, _goto_next() is called and _end_current_turn is set to
+	# false.
+	# 3. EnemyAI calls X.end_turn().
+	# 4. In Schedule, we should start Y's turn, rather than ends it.
 	if _end_current_turn:
 		# print("{0}: End turn.".format([_get_current().name]))
 		emit_signal("turn_ended", _get_current())
@@ -26,6 +34,8 @@ func end_turn() -> void:
 	else:
 		_end_current_turn = true
 
+	if _end_game:
+		return
 	emit_signal("turn_started", _get_current())
 
 
