@@ -27,12 +27,14 @@ func render_fov() -> void:
 			if (x == _source_position[0]) and (y == _source_position[1]):
 				continue
 			elif _new_ShadowCastFOV.is_in_sight(x, y):
-				for i in _new_MainGroupTag.ABOVE_GROUND_OBJECT:
+				# for i in _new_MainGroupTag.ABOVE_GROUND_OBJECT:
+				for i in _new_MainGroupTag.DUNGEON_OBJECT:
 					tmp_sprite = _ref_DungeonBoard.get_sprite(i, x, y)
 					if tmp_sprite != null:
 						_new_Palette.reset_color(tmp_sprite, i)
 			else:
-				for i in _new_MainGroupTag.ABOVE_GROUND_OBJECT:
+				# for i in _new_MainGroupTag.ABOVE_GROUND_OBJECT:
+				for i in _new_MainGroupTag.DUNGEON_OBJECT:
 					tmp_sprite = _ref_DungeonBoard.get_sprite(i, x, y)
 					if tmp_sprite == null:
 						continue
