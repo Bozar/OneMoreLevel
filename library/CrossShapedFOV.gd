@@ -1,37 +1,50 @@
+# How to use it?
+#
+# 1. Set DUNGEON_WIDTH and DUNGEON_HEIGHT.
+# 2: Call set_rectangular_sight() to set local data. [*]
+# 3: Call is_in_sight() to check whether a given position is in sight.
+#
+# [*]
+#
+# 2.1 Beware that [face_x, face_y] could only be [x, 0] or [0, y]. The coord
+# points to a cardinal direction relative to [center_x, center_y].
+# 2.2 The function requires four ranges in clock wise direction, starting from
+# front_range.
+# 2.3 It also requires a function reference to decide whether a grid is
+# occupied. Refer to FuncRef in Godot manual.
+# 2.4 Optionally, call set_t_shaped_sight() or set_symmetric_sight(). They wrap
+# around set_rectangular_sight() and accept fewer arguments to create a more
+# symmetric field of view.
+#
+# How does it work internally?
+#
 # PC's field of view is consisted of four rays. The width of each ray is:
 # 1 + half_width * 2.
 #
-#          	$
+#          	^
 #          	| left
 #          	|
 # <- back - @ - front ->
 #          	|
 #          	| right
-#          	$
+#          	v
 #
-# Call two functions in the given order. Make sure that PC does not move between
-# these two calls.
+# In set_rectangular_sight(), cast four rays from PC's position until they hit
+# obstacles. Record the farthest position a ray can reach. Four rays result in
+# four positions. We can draw a rectangle based on them which limits PC's
+# field of view.
 #
-# Step 1: Call set_rectangular_sight() to set local data.
+# In is_in_sight(), first we check whether a given grid [x, y] is inside the
+# rectangle. Then we verify if it is close enough to an axis.
 #
-# Beware that [face_x, face_y] could only be [x, 0] or [0, y]. The coord points
-# to a cardinal direction relative to [center_x, center_y]. The function
-# set_rectangular_sight() requires four ranges in clock wise direction, starting
-# from front_range.
-#
-# Optionally, call set_t_shaped_sight() or set_symmetric_sight(). They wrap
-# around set_rectangular_sight() and accept fewer arguments to create a more
-# symmetric field of view.
-#
-# Step 2: Call is_in_sight() to check whether a given position is in sight.
-#
+
+const DUNGEON_WIDTH: int = 21
+const DUNGEON_HEIGHT: int = 15
 
 const COORD_WARNING: String = "Neither face_x nor face_y is zero."
 const T_SHAPED_BACK: int = 1
 const SYMMETRIC_X: int = 0
 const SYMMETRIC_Y: int = 1
-
-var _new_CoordCalculator := preload("res://library/CoordCalculator.gd").new()
 
 var _max_x: int
 var _max_y: int
@@ -43,6 +56,7 @@ var _half_width: int
 
 
 # is_obstacle_func(x: int, y: int, opt_arg: Array) -> bool
+# Return true if a grid [x, y] is blocked.
 func set_rectangular_sight(center_x: int, center_y: int,
 		face_x: int, face_y: int, half_width: int,
 		front_range: int, right_range: int, back_range: int, left_range: int,
@@ -82,7 +96,7 @@ func set_rectangular_sight(center_x: int, center_y: int,
 			[face_y, face_x, left_range],
 		]
 
-	# Update four rectangular end points.
+	# Update four end points.
 	for i in cast_ray_arg:
 		end_point = _cast_ray(center_x, center_y, i[0], i[1], i[2],
 				is_obstacle, opt_arg)
@@ -123,7 +137,7 @@ func _cast_ray(start_x: int, start_y: int, shift_x: int, shift_y: int,
 	for _i in range(max_range):
 		x += shift_x
 		y += shift_y
-		if not _new_CoordCalculator.is_inside_dungeon(x, y):
+		if not _is_inside_dungeon(x, y):
 			x -= shift_x
 			y -= shift_y
 			break
@@ -148,3 +162,8 @@ func _normalize_coord(coord: int) -> int:
 	if (coord > 1) or (coord < -1):
 		coord = floor(coord / abs(coord)) as int
 	return coord
+
+
+func _is_inside_dungeon(x: int, y: int) -> bool:
+	return (x > -1) and (x < DUNGEON_WIDTH) \
+			and (y > -1) and (y < DUNGEON_HEIGHT)
