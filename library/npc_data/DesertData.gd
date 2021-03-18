@@ -18,5 +18,5 @@ const MAX_COOLDOWN: int = 3
 const WORM_DISTANCE: int = 5
 
 const RESTORE_TURN: int = 5
-# const RENDER_RANGE: int = 5
-const RENDER_RANGE: int = 20
+const RENDER_RANGE: int = 5
+# const RENDER_RANGE: int = 20
