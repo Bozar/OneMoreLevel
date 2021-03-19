@@ -134,7 +134,7 @@ func _set_color(set_sprite: Sprite, main_tag: String) -> void:
 	if _new_CoordCalculator.is_inside_range(pos[0], pos[1],
 			_source_position[0], _source_position[1],
 			_new_BalloonData.RENDER_RANGE):
-		_new_Palette.reset_color(set_sprite, main_tag)
+		_new_Palette.set_default_color(set_sprite, main_tag)
 	else:
 		set_sprite.modulate = _new_Palette.DARK
 

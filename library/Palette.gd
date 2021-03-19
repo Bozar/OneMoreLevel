@@ -10,7 +10,7 @@ const STANDARD: String = "adb5bd"
 const DEBUG: String = "fe4a49"
 
 const TAG_TO_COLOR: Dictionary = {
-	MAIN_GROUP_TAG.GROUND: DARK,
+	MAIN_GROUP_TAG.GROUND: SHADOW,
 	# MAIN_GROUP_TAG.GROUND: DEBUG,
 	MAIN_GROUP_TAG.TRAP: SHADOW,
 	MAIN_GROUP_TAG.BUILDING: SHADOW,
@@ -19,6 +19,13 @@ const TAG_TO_COLOR: Dictionary = {
 
 	SUB_GROUP_TAG.CRYSTAL: STANDARD,
 	SUB_GROUP_TAG.PC_MIRROR_IMAGE: SHADOW,
+}
+
+const TAG_TO_DARK_COLOR: Dictionary = {
+	MAIN_GROUP_TAG.GROUND: DARK,
+	MAIN_GROUP_TAG.TRAP: DARK,
+	MAIN_GROUP_TAG.BUILDING: DARK,
+	MAIN_GROUP_TAG.ACTOR: SHADOW,
 }
 
 
@@ -31,7 +38,21 @@ func get_default_color(main_tag: String, sub_tag: String = "") -> String:
 		return DEBUG
 
 
-func reset_color(set_sprite: Sprite, main_tag: String,
+func get_dark_color(main_tag: String, sub_tag: String = "") -> String:
+	if TAG_TO_DARK_COLOR.has(sub_tag):
+		return TAG_TO_DARK_COLOR[sub_tag]
+	elif TAG_TO_DARK_COLOR.has(main_tag):
+		return TAG_TO_DARK_COLOR[main_tag]
+	return get_default_color(main_tag, sub_tag)
+
+
+func set_default_color(set_sprite: Sprite, main_tag: String,
 		sub_tag: String = "") -> void:
 	var new_color: String = get_default_color(main_tag, sub_tag)
+	set_sprite.modulate = new_color
+
+
+func set_dark_color(set_sprite: Sprite, main_tag: String,
+		sub_tag: String = "") -> void:
+	var new_color: String = get_dark_color(main_tag, sub_tag)
 	set_sprite.modulate = new_color

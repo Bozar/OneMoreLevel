@@ -65,7 +65,8 @@ func render_fov() -> void:
 		_set_color(i, _new_Palette.get_default_color(_new_MainGroupTag.ACTOR),
 				"", false)
 	if _has_found_pillar:
-		_new_Palette.reset_color(_pillar_sprite, _new_MainGroupTag.BUILDING)
+		_new_Palette.set_default_color(_pillar_sprite,
+				_new_MainGroupTag.BUILDING)
 
 
 func is_inside_dungeon() -> bool:

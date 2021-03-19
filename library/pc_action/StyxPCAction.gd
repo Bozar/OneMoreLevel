@@ -46,7 +46,7 @@ func render_fov() -> void:
 		if distance > _new_StyxData.PC_MAX_SIGHT:
 			i.visible = false
 		elif (distance > _new_StyxData.PC_SIGHT) or (distance == 0):
-			_new_Palette.reset_color(i, _new_MainGroupTag.GROUND)
+			_new_Palette.set_default_color(i, _new_MainGroupTag.GROUND)
 		else:
 			i.modulate = _new_Palette.SHADOW
 
@@ -126,7 +126,7 @@ func _switch_lighthouse_color() -> void:
 	if _extra_turn_counter == _new_StyxData.EXTRA_TURN_COUNTER:
 		lighthouse.modulate = _new_Palette.DARK
 	else:
-		_new_Palette.reset_color(lighthouse, _new_MainGroupTag.BUILDING)
+		_new_Palette.set_default_color(lighthouse, _new_MainGroupTag.BUILDING)
 
 
 func _pc_is_near_harbor(x: int, y: int) -> bool:

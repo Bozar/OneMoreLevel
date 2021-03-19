@@ -199,3 +199,23 @@ func _render_end_game(win: bool) -> void:
 	render_fov()
 	if not win:
 		pc.modulate = _new_Palette.SHADOW
+
+
+# is_in_sight_func(x: int, y: int) -> bool
+func _set_sprite_color(x: int, y: int, main_tag: String, sub_tag: String,
+		func_host: Object, is_in_sight_func: String) -> void:
+	var set_this: Sprite = _ref_DungeonBoard.get_sprite(main_tag, x, y)
+	var is_in_sight := funcref(func_host, is_in_sight_func)
+
+	if set_this == null:
+		return
+	if main_tag == _new_MainGroupTag.GROUND:
+		set_this.visible = true
+		for i in _new_MainGroupTag.ABOVE_GROUND_OBJECT:
+			if _ref_DungeonBoard.has_sprite(i, x, y):
+				set_this.visible = false
+				return
+	if is_in_sight.call_func(x, y):
+		_new_Palette.set_default_color(set_this, main_tag, sub_tag)
+	else:
+		_new_Palette.set_dark_color(set_this, main_tag, sub_tag)

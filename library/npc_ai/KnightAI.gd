@@ -89,22 +89,15 @@ func _alert() -> void:
 func _switch_ground(danger_zone: Array) -> void:
 	var ground_sprite: Sprite
 	var sprite_type: String
-	var sprite_color: String
 
 	for i in danger_zone:
-		ground_sprite= _ref_DungeonBoard.get_sprite(
-				_new_MainGroupTag.GROUND, i[0], i[1])
-
+		ground_sprite= _ref_DungeonBoard.get_sprite(_new_MainGroupTag.GROUND,
+				i[0], i[1])
 		if _ref_DangerZone.is_in_danger(i[0], i[1]):
 			sprite_type = _new_SpriteTypeTag.ACTIVE
-			sprite_color = _new_Palette.SHADOW
 		else:
 			sprite_type = _new_SpriteTypeTag.DEFAULT
-			sprite_color = _new_Palette.get_default_color(
-					_new_MainGroupTag.GROUND)
-
 		_ref_SwitchSprite.switch_sprite(ground_sprite, sprite_type)
-		ground_sprite.modulate = sprite_color
 
 
 func _get_danger_zone() -> Array:
@@ -178,7 +171,6 @@ func _set_danger_zone(danger_zone: Array, is_dangerous: bool) -> void:
 
 func _try_hit_pc(danger_zone: Array) -> void:
 	var victim: Sprite
-	var pc: Sprite
 
 	for i in danger_zone:
 		victim = _ref_DungeonBoard.get_sprite(_new_MainGroupTag.ACTOR,
@@ -193,9 +185,6 @@ func _try_hit_pc(danger_zone: Array) -> void:
 						_new_ObjectStateTag.PASSIVE):
 			_ref_RemoveObject.remove(_new_MainGroupTag.ACTOR, i[0], i[1])
 			_ref_CountDown.add_count(_new_KnightData.RESTORE_TURN)
-			# Remind KnightPCAction that an NPC is removed.
-			pc = _ref_DungeonBoard.get_pc()
-			_ref_ObjectData.set_hit_point(pc, 1)
 
 
 func _is_ready_to_move() -> bool:

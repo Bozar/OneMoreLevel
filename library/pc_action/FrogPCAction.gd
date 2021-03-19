@@ -38,7 +38,7 @@ func render_fov() -> void:
 		if _new_CoordCalculator.is_inside_range(pos[0], pos[1],
 				_source_position[0], _source_position[1],
 				_new_FrogData.RENDER_RANGE):
-			_new_Palette.reset_color(i, _new_MainGroupTag.ACTOR)
+			_new_Palette.set_default_color(i, _new_MainGroupTag.ACTOR)
 		else:
 			i.modulate = _new_Palette.SHADOW
 

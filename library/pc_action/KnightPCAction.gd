@@ -6,9 +6,6 @@ const HALF_WIDTH: int = 1
 var _new_KnightData := preload("res://library/npc_data/KnightData.gd").new()
 var _new_CrossShapedFOV := preload("res://library/CrossShapedFOV.gd").new()
 
-var _wall_sprite: Array
-var _knight_sprite: Array
-
 
 func _init(parent_node: Node2D).(parent_node) -> void:
 	pass
@@ -18,27 +15,16 @@ func render_fov() -> void:
 	if SHOW_FULL_MAP:
 		return
 
-	var pc: Sprite = _ref_DungeonBoard.get_pc()
-
-	if _wall_sprite.size() == 0:
-		_wall_sprite = _ref_DungeonBoard.get_sprites_by_tag(
-				_new_MainGroupTag.BUILDING)
-	# A knight is killed by friendly fire. Refer: KnightAI.
-	if _ref_ObjectData.get_hit_point(pc) > 0:
-		_ref_ObjectData.set_hit_point(pc, 0)
-		_knight_sprite.resize(0)
-	if _knight_sprite.size() == 0:
-		_knight_sprite = _ref_DungeonBoard.get_npc()
-
 	_new_CrossShapedFOV.set_symmetric_sight(
 			_source_position[0], _source_position[1], HALF_WIDTH,
 			_new_KnightData.RENDER_RANGE,
 			self, "_block_ray", [])
 
-	for i in _wall_sprite:
-		_set_color(i, _new_MainGroupTag.BUILDING, _new_Palette.DARK)
-	for i in _knight_sprite:
-		_set_color(i, _new_MainGroupTag.ACTOR, _new_Palette.SHADOW)
+	for x in range(_new_DungeonSize.MAX_X):
+		for y in range(_new_DungeonSize.MAX_Y):
+			for i in _new_MainGroupTag.DUNGEON_OBJECT:
+				_set_sprite_color(x, y, i, "",
+						_new_CrossShapedFOV, "is_in_sight")
 
 
 func attack() -> void:
@@ -58,7 +44,6 @@ func attack() -> void:
 			_hit_boss(npc)
 		else:
 			_hit_knight()
-		_knight_sprite.resize(0)
 		_ref_CountDown.add_count(_new_KnightData.RESTORE_TURN)
 		end_turn = true
 	else:
@@ -159,15 +144,6 @@ func _get_new_position() -> Array:
 		_ref_RandomNumber.get_int(0, _new_DungeonSize.MAX_X),
 		_ref_RandomNumber.get_int(0, _new_DungeonSize.MAX_Y)
 	]
-
-
-func _set_color(set_this: Sprite, main_tag: String, new_color: String) -> void:
-	var pos: Array = _new_ConvertCoord.vector_to_array(set_this.position)
-
-	if _new_CrossShapedFOV.is_in_sight(pos[0], pos[1]):
-		_new_Palette.reset_color(set_this, main_tag)
-	else:
-		set_this.modulate = new_color
 
 
 func _block_ray(x: int, y: int, _opt_arg: Array) -> bool:

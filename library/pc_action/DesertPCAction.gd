@@ -29,7 +29,7 @@ func render_fov() -> void:
 				# for i in _new_MainGroupTag.DUNGEON_OBJECT:
 					tmp_sprite = _ref_DungeonBoard.get_sprite(i, x, y)
 					if tmp_sprite != null:
-						_new_Palette.reset_color(tmp_sprite, i)
+						_new_Palette.set_default_color(tmp_sprite, i)
 			else:
 				for i in _new_MainGroupTag.ABOVE_GROUND_OBJECT:
 				# for i in _new_MainGroupTag.DUNGEON_OBJECT:
