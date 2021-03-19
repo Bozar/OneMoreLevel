@@ -92,12 +92,10 @@ func _set_octant(which_octant: int, source_x: int, source_y: int, max_x: int,
 	var sub_y: int
 
 	for x in range(source_x + 1, max_x, 1):
-		max_y = ceil(right_slope * (x - source_x) + source_y) as int
-		min_y = floor(left_slope * (x - source_x) + source_y) as int
-		# Include half of an axis (x or y) only if octant number is even. This
-		# guarantees that both axes are calculated once and only once.
-		if which_octant % 2 == 0:
-			min_y -= 1
+		max_y = floor(right_slope * (x - source_x) + source_y) as int
+		min_y = ceil(left_slope * (x - source_x) + source_y) as int
+		# Include half of an axis (x or y). Both axes are calculated twice.
+		min_y -= 1
 		is_blocked = false
 		# Scan just one column by default.
 		end_loop = true
