@@ -7,38 +7,7 @@ var _pc_is_number: bool = false
 
 
 func _init(parent_node: Node2D).(parent_node) -> void:
-	pass
-
-
-func render_fov() -> void:
-	var tmp_sprite: Sprite
-
-	if SHOW_FULL_MAP:
-		return
-
-	_new_ShadowCastFOV.set_field_of_view(
-			_source_position[0], _source_position[1],
-			_new_DesertData.RENDER_RANGE,
-			self, "_block_ray", [])
-
-	for x in range(_new_DungeonSize.MAX_X):
-		for y in range(_new_DungeonSize.MAX_Y):
-			if _new_ShadowCastFOV.is_in_sight(x, y):
-				for i in _new_MainGroupTag.ABOVE_GROUND_OBJECT:
-				# for i in _new_MainGroupTag.DUNGEON_OBJECT:
-					tmp_sprite = _ref_DungeonBoard.get_sprite(i, x, y)
-					if tmp_sprite != null:
-						_new_Palette.set_default_color(tmp_sprite, i)
-			else:
-				for i in _new_MainGroupTag.ABOVE_GROUND_OBJECT:
-				# for i in _new_MainGroupTag.DUNGEON_OBJECT:
-					tmp_sprite = _ref_DungeonBoard.get_sprite(i, x, y)
-					if tmp_sprite == null:
-						continue
-					if i == _new_MainGroupTag.ACTOR:
-						tmp_sprite.modulate = _new_Palette.SHADOW
-					else:
-						tmp_sprite.modulate = _new_Palette.DARK
+	_fov_render_range = _new_DesertData.RENDER_RANGE
 
 
 func switch_sprite() -> void:
@@ -49,11 +18,7 @@ func switch_sprite() -> void:
 
 func game_over(win: bool) -> void:
 	_render_end_game(win)
-	if win:
-		_switch_to_number(false)
-	else:
-		_switch_to_number(true)
-		_hide_ground_under_pc()
+	_switch_to_number(not win)
 
 
 func wait() -> void:
@@ -159,7 +124,7 @@ func _switch_to_number(is_number: bool) -> void:
 	_ref_SwitchSprite.switch_sprite(pc, type_tag)
 
 
-func _block_ray(x: int, y: int, _opt_arg: Array) -> bool:
+func _block_line_of_sight(x: int, y: int, _opt_arg: Array) -> bool:
 	for i in _new_MainGroupTag.ABOVE_GROUND_OBJECT:
 		if _ref_DungeonBoard.has_sprite(i, x, y):
 			return true
