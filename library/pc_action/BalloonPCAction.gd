@@ -12,33 +12,13 @@ const TELEPORT_Y: Dictionary = {
 
 var _new_BalloonData := preload("res://library/npc_data/BalloonData.gd").new()
 
-var _wall_sprite: Array
-var _beacon_sprite: Array
-
 
 func _init(parent_node: Node2D).(parent_node) -> void:
-	pass
+	_fov_render_range = _new_BalloonData.RENDER_RANGE
 
 
 func switch_sprite() -> void:
 	pass
-
-
-func render_fov() -> void:
-	if SHOW_FULL_MAP:
-		return
-
-	if _wall_sprite.size() == 0:
-		_wall_sprite = _ref_DungeonBoard.get_sprites_by_tag(
-				_new_MainGroupTag.BUILDING)
-	if _beacon_sprite.size() == 0:
-		_beacon_sprite = _ref_DungeonBoard.get_sprites_by_tag(
-			_new_MainGroupTag.TRAP)
-
-	for i in _wall_sprite:
-		_set_color(i, _new_MainGroupTag.BUILDING)
-	for i in _beacon_sprite:
-		_set_color(i, _new_MainGroupTag.TRAP)
 
 
 func wait() -> void:
@@ -103,8 +83,6 @@ func _try_move_over_border(position: Array) -> Array:
 
 
 func _reach_destination(x: int, y: int) -> void:
-	_new_ArrayHelper.filter_element(_beacon_sprite, self, "_beacon_not_lighted",
-			[x, y])
 	_ref_RemoveObject.remove(_new_MainGroupTag.TRAP, x, y)
 	_ref_CountDown.add_count(_new_BalloonData.RESTORE_TURN)
 
@@ -126,22 +104,3 @@ func _bounce_off(pc_x: int, pc_y: int, wall_x: int, wall_y: int) -> void:
 		return
 	_ref_DungeonBoard.move_sprite(_new_MainGroupTag.ACTOR, pc_x, pc_y,
 			new_position[0], new_position[1])
-
-
-func _set_color(set_sprite: Sprite, main_tag: String) -> void:
-	var pos: Array = _new_ConvertCoord.vector_to_array(set_sprite.position)
-
-	if _new_CoordCalculator.is_inside_range(pos[0], pos[1],
-			_source_position[0], _source_position[1],
-			_new_BalloonData.RENDER_RANGE):
-		_new_Palette.set_default_color(set_sprite, main_tag)
-	else:
-		set_sprite.modulate = _new_Palette.DARK
-
-
-func _beacon_not_lighted(source: Array, index: int, opt_arg: Array) -> bool:
-	var x: int = opt_arg[0]
-	var y: int = opt_arg[1]
-	var pos: Array = _new_ConvertCoord.vector_to_array(source[index].position)
-
-	return (pos[0] != x) or (pos[1] != y)
