@@ -34,10 +34,13 @@ var _new_DungeonSize := preload("res://library/DungeonSize.gd").new()
 var _new_SpriteTypeTag := preload("res://library/SpriteTypeTag.gd").new()
 var _new_Palette := preload("res://library/Palette.gd").new()
 var _new_ArrayHelper := preload("res://library/ArrayHelper.gd").new()
+var _new_ShadowCastFOV := preload("res://library/ShadowCastFOV.gd").new()
+var _new_CrossShapedFOV := preload("res://library/CrossShapedFOV.gd").new()
 
 var _source_position: Array
 var _target_position: Array
 var _input_direction: String
+var _fov_render_range: int = 5
 
 
 # Refer: PlayerInput.gd.
@@ -152,7 +155,18 @@ func set_target_position(direction: String) -> void:
 
 
 func render_fov() -> void:
-	pass
+	if SHOW_FULL_MAP:
+		return
+
+	_new_ShadowCastFOV.set_field_of_view(
+			_source_position[0], _source_position[1], _fov_render_range,
+			self, "_block_line_of_sight", [])
+
+	for x in range(_new_DungeonSize.MAX_X):
+		for y in range(_new_DungeonSize.MAX_Y):
+			for i in _new_MainGroupTag.DUNGEON_OBJECT:
+				_set_sprite_color(x, y, i, "",
+				_new_ShadowCastFOV, "is_in_sight")
 
 
 func switch_sprite() -> void:
@@ -219,3 +233,7 @@ func _set_sprite_color(x: int, y: int, main_tag: String, sub_tag: String,
 		_new_Palette.set_default_color(set_this, main_tag, sub_tag)
 	else:
 		_new_Palette.set_dark_color(set_this, main_tag, sub_tag)
+
+
+func _block_line_of_sight(x: int, y: int, _opt_arg: Array) -> bool:
+	return _ref_DungeonBoard.has_sprite(_new_MainGroupTag.BUILDING, x, y)

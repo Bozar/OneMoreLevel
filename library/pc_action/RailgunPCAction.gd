@@ -8,7 +8,6 @@ var _spr_Treasure := preload("res://sprite/Treasure.tscn")
 var _spr_Portal := preload("res://sprite/Portal.tscn")
 
 var _new_RailgunData := preload("res://library/npc_data/RailgunData.gd").new()
-var _new_CrossShapedFOV := preload("res://library/CrossShapedFOV.gd").new()
 
 var _floor_wall_sprite: Array
 var _counter_sprite: Array = []

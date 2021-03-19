@@ -4,27 +4,10 @@ extends "res://library/pc_action/PCActionTemplate.gd"
 const HALF_WIDTH: int = 1
 
 var _new_KnightData := preload("res://library/npc_data/KnightData.gd").new()
-var _new_ShadowCastFOV := preload("res://library/ShadowCastFOV.gd").new()
 
 
 func _init(parent_node: Node2D).(parent_node) -> void:
-	pass
-
-
-func render_fov() -> void:
-	if SHOW_FULL_MAP:
-		return
-
-	_new_ShadowCastFOV.set_field_of_view(
-			_source_position[0], _source_position[1],
-			_new_KnightData.RENDER_RANGE,
-			self, "_block_ray", [])
-
-	for x in range(_new_DungeonSize.MAX_X):
-		for y in range(_new_DungeonSize.MAX_Y):
-			for i in _new_MainGroupTag.DUNGEON_OBJECT:
-				_set_sprite_color(x, y, i, "",
-				_new_ShadowCastFOV, "is_in_sight")
+	_fov_render_range = _new_KnightData.RENDER_RANGE
 
 
 func attack() -> void:
@@ -95,24 +78,26 @@ func _hit_knight() -> void:
 
 
 func _hit_boss(boss: Sprite) -> void:
-	var teleport: Array = [-1, -1]
 	var is_occupied: bool = true
 	var is_too_close: bool = true
+	var teleport_x: int
+	var teleport_y: int
 
 	if _ref_ObjectData.get_hit_point(boss) < _new_KnightData.MAX_BOSS_HP:
 		_ref_ObjectData.add_hit_point(boss, 1)
 
 		while is_occupied or is_too_close:
-			teleport = _get_new_position()
-			is_occupied = _is_occupied(teleport[0], teleport[1])
+			teleport_x = _ref_RandomNumber.get_x_coord()
+			teleport_y = _ref_RandomNumber.get_y_coord()
+			is_occupied = _is_occupied(teleport_x, teleport_y)
 			is_too_close = _new_CoordCalculator.is_inside_range(
-					teleport[0], teleport[1],
+					teleport_x, teleport_y,
 					_source_position[0], _source_position[1],
 					_new_KnightData.ELITE_SIGHT)
 
 		_ref_DungeonBoard.move_sprite(_new_MainGroupTag.ACTOR,
 				_target_position[0], _target_position[1],
-				 teleport[0], teleport[1])
+				teleport_x, teleport_y)
 	else:
 		_hit_knight()
 		_ref_EndGame.player_win()
@@ -137,14 +122,3 @@ func _roll() -> bool:
 			_source_position[0], _source_position[1],
 			roll_over[0], roll_over[1])
 	return true
-
-
-func _get_new_position() -> Array:
-	return [
-		_ref_RandomNumber.get_int(0, _new_DungeonSize.MAX_X),
-		_ref_RandomNumber.get_int(0, _new_DungeonSize.MAX_Y)
-	]
-
-
-func _block_ray(x: int, y: int, _opt_arg: Array) -> bool:
-	return _ref_DungeonBoard.has_sprite(_new_MainGroupTag.BUILDING, x, y)

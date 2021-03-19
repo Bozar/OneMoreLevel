@@ -2,7 +2,6 @@ extends "res://library/pc_action/PCActionTemplate.gd"
 
 
 var _new_DesertData := preload("res://library/npc_data/DesertData.gd").new()
-var _new_ShadowCastFOV := preload("res://library/ShadowCastFOV.gd").new()
 
 var _pc_is_number: bool = false
 
