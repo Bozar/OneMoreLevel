@@ -4,7 +4,7 @@ extends "res://library/pc_action/PCActionTemplate.gd"
 const HALF_WIDTH: int = 1
 
 var _new_KnightData := preload("res://library/npc_data/KnightData.gd").new()
-var _new_CrossShapedFOV := preload("res://library/CrossShapedFOV.gd").new()
+var _new_ShadowCastFOV := preload("res://library/ShadowCastFOV.gd").new()
 
 
 func _init(parent_node: Node2D).(parent_node) -> void:
@@ -15,8 +15,8 @@ func render_fov() -> void:
 	if SHOW_FULL_MAP:
 		return
 
-	_new_CrossShapedFOV.set_symmetric_sight(
-			_source_position[0], _source_position[1], HALF_WIDTH,
+	_new_ShadowCastFOV.set_field_of_view(
+			_source_position[0], _source_position[1],
 			_new_KnightData.RENDER_RANGE,
 			self, "_block_ray", [])
 
@@ -24,7 +24,7 @@ func render_fov() -> void:
 		for y in range(_new_DungeonSize.MAX_Y):
 			for i in _new_MainGroupTag.DUNGEON_OBJECT:
 				_set_sprite_color(x, y, i, "",
-						_new_CrossShapedFOV, "is_in_sight")
+				_new_ShadowCastFOV, "is_in_sight")
 
 
 func attack() -> void:
