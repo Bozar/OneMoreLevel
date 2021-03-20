@@ -228,7 +228,7 @@ func _set_sprite_color(x: int, y: int, main_tag: String, sub_tag: String,
 		for i in _new_MainGroupTag.ABOVE_GROUND_OBJECT:
 			if _ref_DungeonBoard.has_sprite(i, x, y):
 				set_this.visible = false
-				return
+				break
 	if is_in_sight.call_func(x, y):
 		_new_Palette.set_default_color(set_this, main_tag, sub_tag)
 	else:

@@ -3,13 +3,12 @@ extends "res://library/pc_action/PCActionTemplate.gd"
 
 var _new_FrogData := preload("res://library/npc_data/FrogData.gd").new()
 
-var _frog_sprite: Array
 var _pass_next_turn: bool
 var _step_counter: int = 0
 
 
 func _init(parent_node: Node2D).(parent_node) -> void:
-	pass
+	_fov_render_range = _new_FrogData.RENDER_RANGE
 
 
 func allow_input() -> bool:
@@ -25,22 +24,18 @@ func allow_input() -> bool:
 	return true
 
 
-func render_fov() -> void:
-	var pos: Array
+func game_over(win: bool) -> void:
+	var ground: Sprite
 
-	if SHOW_FULL_MAP:
-		return
-
-	if _frog_sprite.size() == 0:
-		_frog_sprite = _ref_DungeonBoard.get_npc()
-	for i in _frog_sprite:
-		pos = _new_ConvertCoord.vector_to_array(i.position)
-		if _new_CoordCalculator.is_inside_range(pos[0], pos[1],
-				_source_position[0], _source_position[1],
-				_new_FrogData.RENDER_RANGE):
-			_new_Palette.set_default_color(i, _new_MainGroupTag.ACTOR)
-		else:
-			i.modulate = _new_Palette.SHADOW
+	.game_over(win)
+	# The ground sprite under frog princess is not visible when game ends.
+	# Because in FrogProgress, EndGame.player_win() is called when a frog is
+	# removed, rather than when a turn ends. If we call player_win() at the end
+	# of a turn, the counter will be refreshed.
+	if win:
+		ground = _ref_DungeonBoard.get_sprite(_new_MainGroupTag.GROUND,
+				_target_position[0], _target_position[1])
+		ground.visible = true
 
 
 func is_npc() -> bool:
@@ -96,8 +91,6 @@ func attack() -> void:
 	_step_counter = 0
 	.attack()
 	_ref_CountDown.add_count(_new_FrogData.RESTORE_TURN)
-	if not SHOW_FULL_MAP:
-		_frog_sprite.resize(0)
 
 
 func wait() -> void:
@@ -151,3 +144,7 @@ func _is_checkmate() -> bool:
 				return false
 		return true
 	return false
+
+
+func _block_line_of_sight(x: int, y: int, _opt_arg: Array) -> bool:
+	return _ref_DungeonBoard.has_sprite(_new_MainGroupTag.ACTOR, x, y)
