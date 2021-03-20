@@ -24,20 +24,6 @@ func allow_input() -> bool:
 	return true
 
 
-func game_over(win: bool) -> void:
-	var ground: Sprite
-
-	.game_over(win)
-	# The ground sprite under frog princess is not visible when game ends.
-	# Because in FrogProgress, EndGame.player_win() is called when a frog is
-	# removed, rather than when a turn ends. If we call player_win() at the end
-	# of a turn, the counter will be refreshed.
-	if win:
-		ground = _ref_DungeonBoard.get_sprite(_new_MainGroupTag.GROUND,
-				_target_position[0], _target_position[1])
-		ground.visible = true
-
-
 func is_npc() -> bool:
 	var reach_x: int = (_target_position[0] - _source_position[0]) * 2 \
 			+ _source_position[0]
@@ -88,8 +74,14 @@ func move() -> void:
 
 
 func attack() -> void:
+	var pc: Sprite = _ref_DungeonBoard.get_pc()
+
 	_step_counter = 0
 	.attack()
+	# PC's hit point is set in FrogProgress. End game after frog princess is
+	# removed.
+	if _ref_ObjectData.get_hit_point(pc) > 0:
+		_ref_EndGame.player_win()
 	_ref_CountDown.add_count(_new_FrogData.RESTORE_TURN)
 
 

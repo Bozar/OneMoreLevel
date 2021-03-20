@@ -44,6 +44,8 @@ func end_world(pc_x: int, pc_y: int) -> void:
 
 
 func remove_actor(actor: Sprite, _x: int, _y: int) -> void:
+	var pc: Sprite
+
 	if actor.is_in_group(_new_SubGroupTag.FROG):
 		_kill_counter += 1
 		if _kill_counter == _new_FrogData.HALF_FROG:
@@ -60,7 +62,12 @@ func remove_actor(actor: Sprite, _x: int, _y: int) -> void:
 			_wave_counter = -3
 			_start_next_wave = true
 		elif _wave_counter == 4:
-			_ref_EndGame.player_win()
+			# Let FrogPCAction end game. Frog princess is not removed from
+			# DungeonBoard at this moment. If we end game now, the ground under
+			# princess is invisible.
+			pc = _ref_DungeonBoard.get_pc()
+			_ref_ObjectData.set_hit_point(pc, 1)
+			# _ref_EndGame.player_win()
 
 
 func _create_frog(pc_x: int, pc_y: int) -> void:
