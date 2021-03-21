@@ -20,7 +20,7 @@ const INPUT_TO_INT: Dictionary = {
 var _new_StyxData := preload("res://library/npc_data/StyxData.gd").new()
 
 var _extra_turn_counter: int = 0
-var _ground_sprite: Array
+# var _ground_sprite: Array
 
 
 func _init(parent_node: Node2D).(parent_node) -> void:
@@ -28,27 +28,29 @@ func _init(parent_node: Node2D).(parent_node) -> void:
 
 
 func render_fov() -> void:
-	var pos: Array
+	var ground: Sprite
 	var distance: int
 
 	if SHOW_FULL_MAP:
 		return
-	if _ground_sprite.size() == 0:
-		_ground_sprite = _ref_DungeonBoard.get_sprites_by_tag(
-				_new_MainGroupTag.GROUND)
 
-	for i in _ground_sprite:
-		pos = _new_ConvertCoord.vector_to_array(i.position)
-		distance = _new_CoordCalculator.get_range(
-			pos[0], pos[1], _source_position[0], _source_position[1])
-		i.visible = true
-
-		if distance > _new_StyxData.PC_MAX_SIGHT:
-			i.visible = false
-		elif (distance > _new_StyxData.PC_SIGHT) or (distance == 0):
-			_new_Palette.set_default_color(i, _new_MainGroupTag.GROUND)
-		else:
-			i.modulate = _new_Palette.SHADOW
+	for x in range(_new_DungeonSize.MAX_X):
+		for y in range(_new_DungeonSize.MAX_Y):
+			ground = _ref_DungeonBoard.get_sprite(_new_MainGroupTag.GROUND,
+					x, y)
+			if ground == null:
+				continue
+			ground.visible = true
+			distance = _new_CoordCalculator.get_range(x, y,
+					_source_position[0], _source_position[1])
+			if distance > _new_StyxData.PC_MAX_SIGHT:
+				ground.visible = false
+			elif distance > _new_StyxData.PC_SIGHT:
+				_new_Palette.set_dark_color(ground, _new_MainGroupTag.GROUND)
+			elif distance > 0:
+				_new_Palette.set_default_color(ground, _new_MainGroupTag.GROUND)
+			else:
+				ground.visible = false
 
 
 func wait() -> void:
