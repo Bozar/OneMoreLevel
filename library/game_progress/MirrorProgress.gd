@@ -31,9 +31,7 @@ func remove_trap(_trap: Sprite, x: int, y: int) -> void:
 	_ref_ObjectData.add_hit_point(pc, 1)
 	_ref_DangerZone.set_danger_zone(x, y, false)
 
-	if _ref_ObjectData.get_hit_point(pc) == _new_MirrorData.MAX_CRYSTAL:
-		_ref_EndGame.player_win()
-	else:
+	if _ref_ObjectData.get_hit_point(pc) < _new_MirrorData.MAX_CRYSTAL:
 		_replenish_crystal()
 
 
@@ -70,6 +68,6 @@ func _replenish_crystal() -> void:
 		else:
 			break
 
-	_ref_CreateObject.create(_spr_Crystal,
-			_new_MainGroupTag.TRAP, _new_SubGroupTag.CRYSTAL, x, y)
+	_ref_CreateObject.create(_spr_Crystal, _new_MainGroupTag.TRAP,
+			_new_SubGroupTag.CRYSTAL, x, y)
 	_ref_DangerZone.set_danger_zone(x, y, true)

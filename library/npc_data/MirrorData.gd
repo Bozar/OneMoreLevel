@@ -12,3 +12,4 @@ const CRYSTAL_DISTANCE: int = 5
 const PHANTOM_SIGHT: int = 5
 const ATTACK_RANGE: int = 1
 const RESTORE_TURN: int = 6
+const RENDER_RANGE: int = 4

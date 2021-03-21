@@ -166,7 +166,7 @@ func render_fov() -> void:
 		for y in range(_new_DungeonSize.MAX_Y):
 			for i in _new_MainGroupTag.DUNGEON_OBJECT:
 				_set_sprite_color(x, y, i, "",
-				_new_ShadowCastFOV, "is_in_sight")
+						_new_ShadowCastFOV, "is_in_sight")
 
 
 func switch_sprite() -> void:

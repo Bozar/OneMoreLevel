@@ -9,7 +9,23 @@ var _pc_hit_target: bool
 
 
 func _init(parent_node: Node2D).(parent_node) -> void:
-	pass
+	_fov_render_range = _new_MirrorData.RENDER_RANGE
+
+
+func render_fov() -> void:
+	if SHOW_FULL_MAP:
+		return
+
+	_new_ShadowCastFOV.set_field_of_view(
+			_source_position[0], _source_position[1], _fov_render_range,
+			self, "_block_line_of_sight", [])
+
+	for x in range(_new_DungeonSize.MAX_X):
+		for y in range(_new_DungeonSize.MAX_Y):
+			for i in _new_MainGroupTag.DUNGEON_OBJECT:
+				_set_sprite_color(x, y, i, "",
+						_new_ShadowCastFOV, "is_in_sight")
+				_reset_sprite_color(x, y)
 
 
 func is_npc() -> bool:
@@ -21,35 +37,22 @@ func is_trap() -> bool:
 
 
 func move() -> void:
-	var source_mirror: Array = _get_mirror(
-			_source_position[0], _source_position[1])
-	var target_mirror: Array = _get_mirror(
-			_target_position[0], _target_position[1])
-	var crystal: Sprite = _ref_DungeonBoard.get_sprite(
-			_new_MainGroupTag.TRAP, _source_position[0], _source_position[1])
-
-	_ref_DungeonBoard.move_sprite(_new_MainGroupTag.ACTOR,
-			_source_position[0], _source_position[1],
-			_target_position[0], _target_position[1])
-	_ref_DungeonBoard.move_sprite(_new_MainGroupTag.ACTOR,
-			source_mirror[0], source_mirror[1],
-			target_mirror[0], target_mirror[1])
-
-	if crystal != null:
-		crystal.visible = true
-
+	_move_pc_and_image()
 	end_turn = true
 
 
 func attack() -> void:
 	var mirror: Array
+	var pc: Sprite = _ref_DungeonBoard.get_pc()
 
 	if _pc_hit_target:
-		_ref_CountDown.add_count(_new_MirrorData.RESTORE_TURN)
 		_create_image_on_the_other_side(
 				_target_position[0], _target_position[1])
 		_create_image_on_the_same_side(
 				_target_position[0], _target_position[1])
+		if _ref_ObjectData.get_hit_point(pc) == _new_MirrorData.MAX_CRYSTAL:
+			_ref_EndGame.player_win()
+		_ref_CountDown.add_count(_new_MirrorData.RESTORE_TURN)
 	else:
 		mirror = _get_mirror(_target_position[0], _target_position[1])
 		_ref_RemoveObject.remove(_new_MainGroupTag.ACTOR, mirror[0], mirror[1])
@@ -57,18 +60,17 @@ func attack() -> void:
 
 
 func interact_with_trap() -> void:
-	var crystal: Sprite
 	var mirror: Array
+	var pc: Sprite = _ref_DungeonBoard.get_pc()
 
-	if _pc_hit_target:
-		crystal = _ref_DungeonBoard.get_sprite(
-				_new_MainGroupTag.TRAP,
-				_target_position[0], _target_position[1])
-		crystal.visible = false
-	else:
+	if not _pc_hit_target:
 		mirror = _get_mirror(_target_position[0], _target_position[1])
 		_ref_RemoveObject.remove(_new_MainGroupTag.TRAP, mirror[0], mirror[1])
-	move()
+
+	_move_pc_and_image()
+	if _ref_ObjectData.get_hit_point(pc) == _new_MirrorData.MAX_CRYSTAL:
+		_ref_EndGame.player_win()
+	end_turn = true
 
 
 func _is_checkmate() -> bool:
@@ -86,8 +88,8 @@ func _is_checkmate() -> bool:
 
 
 func _get_mirror(x: int, y: int) -> Array:
-	return _new_CoordCalculator.get_mirror_image(
-			x, y, _new_DungeonSize.CENTER_X, y)
+	return _new_CoordCalculator.get_mirror_image(x, y,
+			_new_DungeonSize.CENTER_X, y)
 
 
 func _target_is_occupied(main_group_tag: String) -> bool:
@@ -105,18 +107,15 @@ func _target_is_occupied(main_group_tag: String) -> bool:
 
 
 func _create_image_on_the_other_side(x: int, y: int) -> void:
-	var actor: Sprite = _ref_DungeonBoard.get_sprite(
-			_new_MainGroupTag.ACTOR, x, y)
-	var trap: Sprite = _ref_DungeonBoard.get_sprite(
-			_new_MainGroupTag.TRAP, x, y)
+	var actor: Sprite = _ref_DungeonBoard.get_sprite(_new_MainGroupTag.ACTOR,
+			x, y)
 	var mirror: Array = _get_mirror(x, y)
 	var images: Array
 	var remove: int
 	var position: Array
 
-	# On this side: Make trap visible. Switch phantom's sprite into default.
-	if trap != null:
-		trap.visible = true
+	# On this side: Switch phantom's sprite into default.
+	if _ref_DungeonBoard.has_sprite(_new_MainGroupTag.TRAP, x, y):
 		_ref_SwitchSprite.switch_sprite(actor, _new_SpriteTypeTag.DEFAULT)
 
 	# On the other side: Remove an existing phantom.
@@ -128,11 +127,10 @@ func _create_image_on_the_other_side(x: int, y: int) -> void:
 	_ref_DungeonBoard.move_sprite(_new_MainGroupTag.ACTOR,
 			x, y, mirror[0], mirror[1])
 	_ref_ObjectData.set_state(actor, _new_ObjectStateTag.PASSIVE)
-	actor.modulate = _new_Palette.SHADOW
 
 	# On the other side: Remove a trap.
-	if _ref_DungeonBoard.has_sprite(
-			_new_MainGroupTag.TRAP, mirror[0], mirror[1]):
+	if _ref_DungeonBoard.has_sprite(_new_MainGroupTag.TRAP,
+			mirror[0], mirror[1]):
 		_ref_RemoveObject.remove(_new_MainGroupTag.TRAP, mirror[0], mirror[1])
 
 	# There can be at most 5 phantom images.
@@ -152,7 +150,6 @@ func _create_image_on_the_same_side(x: int, y: int) -> void:
 	var wall: Array = []
 	var mirror: Array
 	var actor: Sprite
-	var crystal: Sprite
 
 	# Cast a ray to the top.
 	wall += _get_mirror_position(x, y, 0, -1, 0)
@@ -188,15 +185,12 @@ func _create_image_on_the_same_side(x: int, y: int) -> void:
 				_new_MainGroupTag.ACTOR, _new_SubGroupTag.PHANTOM,
 				mirror[0], mirror[1])
 
-		# Hide the trap and switch the actor's sprite to active.
+		# Switch the actor's sprite to active.
 		if _ref_DungeonBoard.has_sprite(
 				_new_MainGroupTag.TRAP, mirror[0], mirror[1]):
 			actor = _ref_DungeonBoard.get_sprite(
 					_new_MainGroupTag.ACTOR, mirror[0], mirror[1])
-			crystal = _ref_DungeonBoard.get_sprite(
-					_new_MainGroupTag.TRAP, mirror[0], mirror[1])
 			_ref_SwitchSprite.switch_sprite(actor, _new_SpriteTypeTag.ACTIVE)
-			crystal.visible = false
 
 
 func _get_mirror_position(x: int, y: int, x_shift: int, y_shift: int,
@@ -248,3 +242,37 @@ func _filter_create_image(source: Array, index: int, opt_arg: Array) -> bool:
 	return (source[index] != actor) \
 			and _ref_ObjectData.verify_state(source[index],
 					_new_ObjectStateTag.PASSIVE)
+
+
+func _block_line_of_sight(x: int, y: int, _opt_arg: Array) -> bool:
+	return _ref_DungeonBoard.has_sprite(_new_MainGroupTag.BUILDING, x, y) \
+			or _ref_DungeonBoard.has_sprite(_new_MainGroupTag.ACTOR, x, y)
+
+
+func _reset_sprite_color(x: int, y: int) -> void:
+	var set_this: Sprite
+
+	if x == _new_DungeonSize.CENTER_X:
+		set_this = _ref_DungeonBoard.get_sprite(_new_MainGroupTag.BUILDING,
+				x, y)
+		_new_Palette.set_default_color(set_this, _new_MainGroupTag.BUILDING)
+	elif _ref_DungeonBoard.has_sprite(_new_MainGroupTag.TRAP, x, y):
+		set_this = _ref_DungeonBoard.get_sprite(_new_MainGroupTag.TRAP, x, y)
+		set_this.visible = not _ref_DungeonBoard.has_sprite(
+				_new_MainGroupTag.ACTOR, x, y)
+		_new_Palette.set_default_color(set_this, _new_MainGroupTag.TRAP,
+				_new_SubGroupTag.CRYSTAL)
+
+
+func _move_pc_and_image() -> void:
+	var source_mirror: Array = _get_mirror(
+			_source_position[0], _source_position[1])
+	var target_mirror: Array = _get_mirror(
+			_target_position[0], _target_position[1])
+
+	_ref_DungeonBoard.move_sprite(_new_MainGroupTag.ACTOR,
+			_source_position[0], _source_position[1],
+			_target_position[0], _target_position[1])
+	_ref_DungeonBoard.move_sprite(_new_MainGroupTag.ACTOR,
+			source_mirror[0], source_mirror[1],
+			target_mirror[0], target_mirror[1])

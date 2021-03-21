@@ -11,15 +11,17 @@ func _init(parent_node: Node2D).(parent_node) -> void:
 
 
 func take_action() -> void:
+	var pc: Sprite = _ref_DungeonBoard.get_pc()
+	var distance: int
+
 	if _ref_ObjectData.verify_state(_self, _new_ObjectStateTag.PASSIVE):
 		return
-	if _self.is_in_group(_new_SubGroupTag.PC_MIRROR_IMAGE):
+	elif _self.is_in_group(_new_SubGroupTag.PC_MIRROR_IMAGE):
 		return
 
 	_trap_pos = []
-
-	var distance: int = _new_CoordCalculator.get_range(
-			_self_pos[0], _self_pos[1],
+	pc = _ref_DungeonBoard.get_pc()
+	distance = _new_CoordCalculator.get_range(_self_pos[0], _self_pos[1],
 			_pc_pos[0], _pc_pos[1])
 
 	if distance > _new_MirrorData.PHANTOM_SIGHT:
@@ -30,6 +32,8 @@ func take_action() -> void:
 		_move()
 
 	_try_remove_trap()
+	if _ref_ObjectData.get_hit_point(pc) == _new_MirrorData.MAX_CRYSTAL:
+		_ref_EndGame.player_win()
 
 
 func _attack() -> void:
@@ -39,22 +43,17 @@ func _attack() -> void:
 
 func _move() -> void:
 	var new_position: Array
-	var trap: Sprite
 
-	trap = _ref_DungeonBoard.get_sprite(
-			_new_MainGroupTag.TRAP, _self_pos[0], _self_pos[1])
-	if trap != null:
+	if _ref_DungeonBoard.has_sprite(_new_MainGroupTag.TRAP,
+			_self_pos[0], _self_pos[1]):
 		_ref_SwitchSprite.switch_sprite(_self, _new_SpriteTypeTag.DEFAULT)
-		trap.visible = true
 
 	_approach_pc()
 
 	new_position = _new_ConvertCoord.vector_to_array(_self.position)
-	trap = _ref_DungeonBoard.get_sprite(
-			_new_MainGroupTag.TRAP, new_position[0], new_position[1])
-	if trap != null:
+	if _ref_DungeonBoard.has_sprite(_new_MainGroupTag.TRAP,
+			new_position[0], new_position[1]):
 		_ref_SwitchSprite.switch_sprite(_self, _new_SpriteTypeTag.ACTIVE)
-		trap.visible = false
 
 
 func _switch_pc_and_image() -> void:
@@ -62,8 +61,8 @@ func _switch_pc_and_image() -> void:
 			_pc_pos[0], _pc_pos[1], _new_DungeonSize.CENTER_X, _pc_pos[1])
 	var pc: Sprite = _ref_DungeonBoard.get_pc()
 
-	if _ref_DungeonBoard.has_sprite(
-			_new_MainGroupTag.TRAP, _pc_pos[0], _pc_pos[1]):
+	if _ref_DungeonBoard.has_sprite(_new_MainGroupTag.TRAP,
+			_pc_pos[0], _pc_pos[1]):
 		_ref_SwitchSprite.switch_sprite(pc, _new_SpriteTypeTag.DEFAULT)
 		_trap_pos = _pc_pos
 
@@ -79,22 +78,18 @@ func _set_npc_state() -> void:
 	for i in npc:
 		if i.is_in_group(_new_SubGroupTag.PC_MIRROR_IMAGE):
 			continue
-
-		if _ref_ObjectData.verify_state(i, _new_ObjectStateTag.DEFAULT):
+		elif _ref_ObjectData.verify_state(i, _new_ObjectStateTag.DEFAULT):
 			_ref_ObjectData.set_state(i, _new_ObjectStateTag.PASSIVE)
-			i.modulate = _new_Palette.SHADOW
-
 			npc_pos = _new_ConvertCoord.vector_to_array(i.position)
-			if _ref_DungeonBoard.has_sprite(
-					_new_MainGroupTag.TRAP, npc_pos[0], npc_pos[1]):
+			if _ref_DungeonBoard.has_sprite(_new_MainGroupTag.TRAP,
+					npc_pos[0], npc_pos[1]):
 				_ref_SwitchSprite.switch_sprite(i, _new_SpriteTypeTag.DEFAULT)
 				_trap_pos = npc_pos
 		else:
 			_ref_ObjectData.set_state(i, _new_ObjectStateTag.DEFAULT)
-			i.modulate = _new_Palette.STANDARD
 
 
 func _try_remove_trap() -> void:
 	if _trap_pos.size() == 2:
-		_ref_RemoveObject.remove(
-				_new_MainGroupTag.TRAP, _trap_pos[0], _trap_pos[1])
+		_ref_RemoveObject.remove(_new_MainGroupTag.TRAP,
+				_trap_pos[0], _trap_pos[1])
