@@ -21,6 +21,7 @@ const PHANTOM: String = "phantom"
 
 const FLOOR: String = "floor"
 const WALL: String = "wall"
+const PILLAR: String = "pillar"
 
 const TREASURE: String = "treasure"
 

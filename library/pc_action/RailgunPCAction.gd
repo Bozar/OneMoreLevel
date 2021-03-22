@@ -9,12 +9,10 @@ var _spr_Portal := preload("res://sprite/Portal.tscn")
 
 var _new_RailgunData := preload("res://library/npc_data/RailgunData.gd").new()
 
-var _floor_wall_sprite: Array
 var _counter_sprite: Array = []
 var _kill_count: int = _new_RailgunData.MAX_KILL_COUNT
 var _ammo: int = _new_RailgunData.MAX_AMMO
 var _face_direction: Array = [0, -1]
-var _pillar_sprite: Sprite
 var _has_found_pillar: bool = false
 var _plillar_position: Array
 
@@ -35,16 +33,13 @@ func switch_sprite() -> void:
 
 func game_over(win) -> void:
 	var pc: Sprite = _ref_DungeonBoard.get_pc()
-
 	_render_end_game(win)
-	_hide_ground_under_pc()
 	_switch_mode(true, pc)
 
 
 func render_fov() -> void:
 	# A wall sprite will be replaced by pillar sprite in _init_skull_pillar().
 	_init_skull_pillar()
-	_init_floor_wall()
 	_init_counter()
 	_render_counter(_kill_count)
 
@@ -56,16 +51,23 @@ func render_fov() -> void:
 			_face_direction[0], _face_direction[1],
 			HALF_SIGHT_WIDTH,
 			_new_RailgunData.PC_FRONT_SIGHT, _new_RailgunData.PC_SIDE_SIGHT,
-			self, "_block_ray", [])
+			self, "_block_line_of_sight", [])
 
-	for i in _floor_wall_sprite:
-		_set_color(i, _new_Palette.SHADOW, _new_Palette.DARK, true)
-	for i in _ref_DungeonBoard.get_sprites_by_tag(_new_SubGroupTag.DEVIL):
-		_set_color(i, _new_Palette.get_default_color(_new_MainGroupTag.ACTOR),
-				"", false)
-	if _has_found_pillar:
-		_new_Palette.set_default_color(_pillar_sprite,
-				_new_MainGroupTag.BUILDING)
+	for x in range(_new_DungeonSize.MAX_X):
+		for y in range(_new_DungeonSize.MAX_Y):
+			for i in _new_MainGroupTag.DUNGEON_OBJECT:
+				match i:
+					_new_MainGroupTag.ACTOR:
+						_set_sprite_color_with_memory(x, y, i, "", false,
+								_new_CrossShapedFOV, "is_in_sight")
+					_new_MainGroupTag.TRAP:
+						pass
+					_:
+						if _do_not_render_building(x, y):
+							pass
+						else:
+							_set_sprite_color_with_memory(x, y, i, "", true,
+									_new_CrossShapedFOV, "is_in_sight")
 
 
 func is_inside_dungeon() -> bool:
@@ -197,9 +199,8 @@ func _init_skull_pillar() -> void:
 					j[0], j[1]):
 				_ref_RemoveObject.remove(_new_MainGroupTag.BUILDING,
 						pos[0], pos[1])
-				_pillar_sprite = _ref_CreateObject.create_and_fetch(
-						_spr_Portal,
-						_new_MainGroupTag.BUILDING, _new_SubGroupTag.WALL,
+				_ref_CreateObject.create(_spr_Portal,
+						_new_MainGroupTag.BUILDING, _new_SubGroupTag.PILLAR,
 						pos[0], pos[1])
 				_plillar_position = pos
 				return
@@ -213,37 +214,6 @@ func _init_counter() -> void:
 					_new_MainGroupTag.BUILDING,
 					x, _new_DungeonSize.MAX_Y - 1))
 			_counter_sprite.back().modulate = _new_Palette.DARK
-
-
-func _init_floor_wall() -> void:
-	var tmp_sprite: Array
-
-	if SHOW_FULL_MAP:
-		return
-
-	if _floor_wall_sprite.size() == 0:
-		_floor_wall_sprite = _ref_DungeonBoard.get_sprites_by_tag(
-				_new_MainGroupTag.GROUND)
-		tmp_sprite = _ref_DungeonBoard.get_sprites_by_tag(
-				_new_SubGroupTag.WALL)
-		_new_ArrayHelper.merge(_floor_wall_sprite, tmp_sprite)
-
-
-func _set_color(set_this: Sprite, in_sight: String, out_of_sight: String,
-		has_memory: bool) -> void:
-	var pos: Array = _new_ConvertCoord.vector_to_array(set_this.position)
-
-	set_this.visible = true
-	if _new_CrossShapedFOV.is_in_sight(pos[0], pos[1]):
-		set_this.modulate = in_sight
-		if has_memory and (_ref_ObjectData.get_hit_point(set_this) \
-				< MEMORY_MARKER):
-			_ref_ObjectData.set_hit_point(set_this, MEMORY_MARKER)
-	elif has_memory and (_ref_ObjectData.get_hit_point(set_this) \
-			== MEMORY_MARKER):
-		set_this.modulate = out_of_sight
-	else:
-		set_this.visible = false
 
 
 func _render_counter(kill: int) -> void:
@@ -283,6 +253,8 @@ func _is_aim_mode(pc: Sprite) -> bool:
 
 
 func _try_find_pillar() -> void:
+	var pillar: Sprite
+
 	if _has_found_pillar:
 		return
 	_has_found_pillar = _new_CoordCalculator.is_inside_range(
@@ -290,8 +262,9 @@ func _try_find_pillar() -> void:
 			_plillar_position[0], _plillar_position[1],
 			_new_RailgunData.TOUCH_PILLAR)
 	if _has_found_pillar:
-		_ref_SwitchSprite.switch_sprite(_pillar_sprite,
-				_new_SpriteTypeTag.ACTIVE)
+		pillar = _ref_DungeonBoard.get_sprite(_new_MainGroupTag.BUILDING,
+				_plillar_position[0], _plillar_position[1])
+		_ref_SwitchSprite.switch_sprite(pillar, _new_SpriteTypeTag.ACTIVE)
 
 
 func _set_move_hit_point() -> void:
@@ -299,3 +272,28 @@ func _set_move_hit_point() -> void:
 
 	if _ref_ObjectData.get_hit_point(pc) > 0:
 		_ref_ObjectData.set_hit_point(pc, 0)
+
+
+func _get_sprite_memory(x: int, y: int, main_tag: String, _sub_tag: String) \
+		-> bool:
+	var this_sprite: Sprite = _ref_DungeonBoard.get_sprite(main_tag, x, y)
+	return _ref_ObjectData.get_hit_point(this_sprite) == MEMORY_MARKER
+
+
+func _set_sprite_memory(x: int, y: int, main_tag: String, _sub_tag: String) \
+		-> void:
+	var this_sprite: Sprite = _ref_DungeonBoard.get_sprite(main_tag, x, y)
+	_ref_ObjectData.set_hit_point(this_sprite, MEMORY_MARKER)
+
+
+func _do_not_render_building(x: int, y: int) -> bool:
+	var building: Sprite = _ref_DungeonBoard.get_sprite(
+			_new_MainGroupTag.BUILDING, x, y)
+
+	if building == null:
+		return false
+	if building.is_in_group(_new_SubGroupTag.PILLAR):
+		return _has_found_pillar
+	elif building.is_in_group(_new_SubGroupTag.COUNTER):
+		return true
+	return false

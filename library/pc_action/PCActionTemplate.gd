@@ -196,16 +196,6 @@ func _is_checkmate() -> bool:
 	return false
 
 
-# When game ends, if PC sprite is a grey number, it doesn't look clearly against
-# ground sprite, which is usually a grey dash. In a child script, the function
-# below could be called after .game_over().
-func _hide_ground_under_pc() -> void:
-	var ground: Sprite = _ref_DungeonBoard.get_sprite(_new_MainGroupTag.GROUND,
-			_source_position[0], _source_position[1])
-	if ground != null:
-		ground.visible = false
-
-
 func _render_end_game(win: bool) -> void:
 	var pc: Sprite = _ref_DungeonBoard.get_pc()
 
@@ -224,16 +214,52 @@ func _set_sprite_color(x: int, y: int, main_tag: String, sub_tag: String,
 	if set_this == null:
 		return
 	if main_tag == _new_MainGroupTag.GROUND:
-		set_this.visible = true
-		for i in _new_MainGroupTag.ABOVE_GROUND_OBJECT:
-			if _ref_DungeonBoard.has_sprite(i, x, y):
-				set_this.visible = false
-				break
+		set_this.visible = _ground_is_visible(x, y)
 	if is_in_sight.call_func(x, y):
 		_new_Palette.set_default_color(set_this, main_tag, sub_tag)
 	else:
 		_new_Palette.set_dark_color(set_this, main_tag, sub_tag)
 
 
+# is_in_sight_func(x: int, y: int) -> bool
+func _set_sprite_color_with_memory(x: int, y: int, main_tag: String,
+		sub_tag: String, remember_sprite: bool,
+		func_host: Object, is_in_sight_func: String) -> void:
+	var set_this: Sprite = _ref_DungeonBoard.get_sprite(main_tag, x, y)
+	var is_in_sight := funcref(func_host, is_in_sight_func)
+
+	if set_this == null:
+		return
+	set_this.visible = true
+	if is_in_sight.call_func(x, y):
+		if main_tag == _new_MainGroupTag.GROUND:
+			set_this.visible = _ground_is_visible(x, y)
+		if remember_sprite:
+			_set_sprite_memory(x, y, main_tag, sub_tag)
+		_new_Palette.set_default_color(set_this, main_tag, sub_tag)
+	else:
+		if remember_sprite and _get_sprite_memory(x, y, main_tag, sub_tag):
+			_new_Palette.set_dark_color(set_this, main_tag, sub_tag)
+		else:
+			set_this.visible = false
+
+
+func _ground_is_visible(x: int, y: int) -> bool:
+	for i in _new_MainGroupTag.ABOVE_GROUND_OBJECT:
+		if _ref_DungeonBoard.has_sprite(i, x, y):
+			return false
+	return true
+
+
 func _block_line_of_sight(x: int, y: int, _opt_arg: Array) -> bool:
 	return _ref_DungeonBoard.has_sprite(_new_MainGroupTag.BUILDING, x, y)
+
+
+func _get_sprite_memory(_x: int, _y: int, _main_tag: String, _sub_tag: String) \
+		-> bool:
+	return false
+
+
+func _set_sprite_memory(_x: int, _y: int, _main_tag: String, _sub_tag: String) \
+		-> void:
+	pass
