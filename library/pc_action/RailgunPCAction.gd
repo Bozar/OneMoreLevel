@@ -44,6 +44,7 @@ func render_fov() -> void:
 	_render_counter(_kill_count)
 
 	if SHOW_FULL_MAP:
+		_render_without_fog_of_war()
 		return
 
 	_new_CrossShapedFOV.set_t_shaped_sight(

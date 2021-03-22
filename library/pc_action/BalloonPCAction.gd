@@ -23,6 +23,7 @@ func switch_sprite() -> void:
 
 func render_fov() -> void:
 	if SHOW_FULL_MAP:
+		_render_without_fog_of_war()
 		return
 
 	_new_ShadowCastFOV.set_field_of_view(

@@ -32,6 +32,7 @@ func render_fov() -> void:
 	var distance: int
 
 	if SHOW_FULL_MAP:
+		_render_without_fog_of_war()
 		return
 
 	for x in range(_new_DungeonSize.MAX_X):

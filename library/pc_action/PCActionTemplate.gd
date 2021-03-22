@@ -156,6 +156,7 @@ func set_target_position(direction: String) -> void:
 
 func render_fov() -> void:
 	if SHOW_FULL_MAP:
+		_render_without_fog_of_war()
 		return
 
 	_new_ShadowCastFOV.set_field_of_view(
@@ -203,6 +204,19 @@ func _render_end_game(win: bool) -> void:
 	render_fov()
 	if not win:
 		pc.modulate = _new_Palette.SHADOW
+
+
+func _render_without_fog_of_war() -> void:
+	var ground: Sprite
+
+	for x in range(_new_DungeonSize.MAX_X):
+		for y in range(_new_DungeonSize.MAX_Y):
+			ground = _ref_DungeonBoard.get_sprite(_new_MainGroupTag.GROUND,
+					x, y)
+			if ground == null:
+				continue
+			ground.visible = _ground_is_visible(x, y)
+			_new_Palette.set_dark_color(ground, _new_MainGroupTag.GROUND)
 
 
 # is_in_sight_func(x: int, y: int) -> bool
