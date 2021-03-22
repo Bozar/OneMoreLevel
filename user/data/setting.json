@@ -2,6 +2,7 @@
     "wizard_mode": false,
     "rng_seed": 0,
     "world_tag": "",
+    "show_full_map": false,
     "exclude_world": [
         "demo"
     ]

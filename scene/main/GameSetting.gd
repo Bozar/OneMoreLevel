@@ -9,6 +9,7 @@ const WIZARD: String = "wizard_mode"
 const SEED: String = "rng_seed"
 const WORLD_TAG: String = "world_tag"
 const EXCLUDE_WORLD: String = "exclude_world"
+const SHOW_FULL_MAP: String = "show_full_map"
 
 const EXE_PATH: String = "data/setting.json"
 const RES_PATH: String = "res://bin/setting.json"
@@ -22,6 +23,7 @@ var _wizard_mode: bool
 var _rng_seed: int
 var _world_tag: String
 var _exclude_world: Array
+var _show_full_map: bool
 var _json_parse_error: bool
 
 
@@ -54,6 +56,7 @@ func load_setting() -> void:
 	_rng_seed = _set_rng_seed(setting_data)
 	_world_tag = _set_world_tag(setting_data)
 	_exclude_world = _set_exclude_world(setting_data)
+	_show_full_map = _set_show_full_map(setting_data)
 
 	if get_tree().root.has_node(TRANSFER_NODE):
 		transfer = get_tree().root.get_node(TRANSFER_NODE)
@@ -87,6 +90,10 @@ func get_world_tag() -> String:
 
 func get_exclude_world() -> Array:
 	return _exclude_world
+
+
+func get_show_full_map() -> bool:
+	return _show_full_map
 
 
 func get_json_parse_error() -> bool:
@@ -128,3 +135,9 @@ func _set_exclude_world(setting) -> Array:
 	for i in range(exclude.size()):
 		exclude[i] = exclude[i] as String
 	return exclude
+
+
+func _set_show_full_map(setting) -> bool:
+	if not setting.has(SHOW_FULL_MAP):
+		return false
+	return setting[SHOW_FULL_MAP] as bool

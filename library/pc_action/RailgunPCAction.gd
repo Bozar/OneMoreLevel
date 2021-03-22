@@ -43,7 +43,7 @@ func render_fov() -> void:
 	_init_counter()
 	_render_counter(_kill_count)
 
-	if SHOW_FULL_MAP:
+	if _ref_GameSetting.get_show_full_map():
 		_render_without_fog_of_war()
 		return
 

@@ -21,4 +21,5 @@ Edit `data/setting.json` for play testing.
 * Set `wizard_mode` to `true` to enable wizard keys. When in wizard mode, there is a plus sign (+) on the left side of version number. If you see a question mark (?) instead, it means your `setting.json` is broken.
 * `rng_seed` accepts a positive integer as random number generator seed.
 * Feed `world_tag` with a string in `data/world_list.md` to specify the dungeon type.
+* Set `show_full_map` to `true` to disable fog of war.
 * Add world names from `data/world_list.md` to `exclude_world` to filter out these worlds from rotation.

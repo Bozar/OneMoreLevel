@@ -13,7 +13,7 @@ func _init(parent_node: Node2D).(parent_node) -> void:
 
 
 func render_fov() -> void:
-	if SHOW_FULL_MAP:
+	if _ref_GameSetting.get_show_full_map():
 		_render_without_fog_of_war()
 		return
 

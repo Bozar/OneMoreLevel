@@ -31,7 +31,7 @@ func render_fov() -> void:
 	var ground: Sprite
 	var distance: int
 
-	if SHOW_FULL_MAP:
+	if _ref_GameSetting.get_show_full_map():
 		_render_without_fog_of_war()
 		return
 

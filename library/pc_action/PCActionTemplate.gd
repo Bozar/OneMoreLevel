@@ -8,9 +8,6 @@ const INPUT_TAG := preload("res://library/InputTag.gd")
 const OBJECT_STATE_TAG := preload("res://library/ObjectStateTag.gd")
 const DUNGEON_SIZE := preload("res://library/DungeonSize.gd")
 
-const SHOW_FULL_MAP: bool = false
-# const SHOW_FULL_MAP: bool = true
-
 var message: String setget set_message, get_message
 var end_turn: bool setget set_end_turn, get_end_turn
 
@@ -23,6 +20,7 @@ var _ref_CountDown: Game_CountDown
 var _ref_SwitchSprite: Game_SwitchSprite
 var _ref_CreateObject : Game_CreateObject
 var _ref_DangerZone: Game_DangerZone
+var _ref_GameSetting: Game_GameSetting
 
 var _new_InputTag := preload("res://library/InputTag.gd").new()
 var _new_MainGroupTag := preload("res://library/MainGroupTag.gd").new()
@@ -54,6 +52,7 @@ func _init(parent_node: Node2D) -> void:
 	_ref_SwitchSprite = parent_node._ref_SwitchSprite
 	_ref_CreateObject = parent_node._ref_CreateObject
 	_ref_DangerZone = parent_node._ref_DangerZone
+	_ref_GameSetting = parent_node._ref_GameSetting
 
 
 func get_message() -> String:
@@ -155,7 +154,7 @@ func set_target_position(direction: String) -> void:
 
 
 func render_fov() -> void:
-	if SHOW_FULL_MAP:
+	if _ref_GameSetting.get_show_full_map():
 		_render_without_fog_of_war()
 		return
 
