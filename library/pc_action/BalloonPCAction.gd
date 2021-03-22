@@ -21,6 +21,22 @@ func switch_sprite() -> void:
 	pass
 
 
+func render_fov() -> void:
+	if SHOW_FULL_MAP:
+		return
+
+	_new_ShadowCastFOV.set_field_of_view(
+			_source_position[0], _source_position[1], _fov_render_range,
+			self, "_block_line_of_sight", [])
+
+	for x in range(_new_DungeonSize.MAX_X):
+		for y in range(_new_DungeonSize.MAX_Y):
+			for i in _new_MainGroupTag.DUNGEON_OBJECT:
+				if i != _new_MainGroupTag.TRAP:
+					_set_sprite_color(x, y, i, "",
+							_new_ShadowCastFOV, "is_in_sight")
+
+
 func wait() -> void:
 	_wind_blow()
 	if _ref_DungeonBoard.has_sprite(_new_MainGroupTag.TRAP,
