@@ -92,8 +92,12 @@ func _set_octant(which_octant: int, source_x: int, source_y: int, max_x: int,
 	var sub_y: int
 
 	for x in range(source_x + 1, max_x, 1):
-		max_y = floor(right_slope * (x - source_x) + source_y) as int
-		min_y = ceil(left_slope * (x - source_x) + source_y) as int
+		# If a ray passes through a grid, the grid is visible. Therefore in
+		# octant 0, the right slope should be slightly lower to include the
+		# maximum integer y, and the left slope should be slightly higher to
+		# include the minimum integer y.
+		max_y = ceil(right_slope * (x - source_x) + source_y) as int
+		min_y = floor(left_slope * (x - source_x) + source_y) as int
 		# Include half of an axis (x or y). Both axes are calculated twice.
 		min_y -= 1
 		is_blocked = false
