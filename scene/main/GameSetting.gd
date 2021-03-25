@@ -133,7 +133,7 @@ func _set_exclude_world(setting) -> Array:
 
 	exclude = setting[EXCLUDE_WORLD] as Array
 	for i in range(exclude.size()):
-		exclude[i] = exclude[i] as String
+		exclude[i] = (exclude[i] as String).to_lower()
 	return exclude
 
 
