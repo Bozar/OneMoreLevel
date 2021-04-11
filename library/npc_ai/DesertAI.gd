@@ -13,6 +13,7 @@ var _new_DesertData := preload("res://library/npc_data/DesertData.gd").new()
 var _id_to_worm: Dictionary = {}
 # int: bool
 var _id_to_has_active_spice: Dictionary = {}
+var _quality_spice_chance: int = 0
 
 
 func _init(parent_node: Node2D).(parent_node) -> void:
@@ -69,15 +70,12 @@ func _create_body(id: int, index: int, x: int, y: int) -> void:
 	elif (index >= _new_DesertData.SPICE_START) \
 			and (index < _new_DesertData.SPICE_END):
 		is_active = (not _id_to_has_active_spice[id]) \
-				and _ref_RandomNumber.get_percent_chance(
-						_new_DesertData.CREATE_ACTIVE_SPICE)
-		_ref_CreateObject.create(
-				_spr_WormSpice,
+				and _ref_RandomNumber.get_percent_chance(_quality_spice_chance)
+		_ref_CreateObject.create(_spr_WormSpice,
 				_new_MainGroupTag.ACTOR, _new_SubGroupTag.WORM_SPICE, x, y)
 	# Create body.
 	else:
-		_ref_CreateObject.create(
-				_spr_WormBody,
+		_ref_CreateObject.create(_spr_WormBody,
 				_new_MainGroupTag.ACTOR, _new_SubGroupTag.WORM_BODY, x, y)
 
 	worm_body = _ref_DungeonBoard.get_sprite(_new_MainGroupTag.ACTOR, x, y)
@@ -87,6 +85,7 @@ func _create_body(id: int, index: int, x: int, y: int) -> void:
 		_ref_ObjectData.set_state(worm_body, _new_ObjectStateTag.ACTIVE)
 		_ref_SwitchSprite.switch_sprite(worm_body, _new_SpriteTypeTag.ACTIVE)
 		_id_to_has_active_spice[id] = true
+		_quality_spice_chance = 0
 
 
 func _try_random_walk(id: int) -> bool:
@@ -166,23 +165,20 @@ func _bury_worm(id: int) -> void:
 
 	for i in worm:
 		if i == null:
-			return
-
+			break
 		pos = _new_ConvertCoord.vector_to_array(i.position)
 		_ref_RemoveObject.remove(_new_MainGroupTag.ACTOR, pos[0], pos[1])
-
 		if _ref_RandomNumber.get_percent_chance(create_spice):
-			_ref_CreateObject.create(
-					_spr_Treasure,
+			_ref_CreateObject.create(_spr_Treasure,
 					_new_MainGroupTag.TRAP, _new_SubGroupTag.TREASURE,
 					pos[0], pos[1])
 		else:
-			_ref_CreateObject.create(
-					_spr_Wall,
+			_ref_CreateObject.create(_spr_Wall,
 					_new_MainGroupTag.BUILDING, _new_SubGroupTag.WALL,
 					pos[0], pos[1])
 
 	_clear_worm_data(id)
+	_quality_spice_chance += _new_DesertData.CREATE_QUALITY_SPICE
 
 
 func _can_bury_worm(id: int) -> bool:
