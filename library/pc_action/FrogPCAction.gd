@@ -12,16 +12,11 @@ func _init(parent_node: Node2D).(parent_node) -> void:
 
 
 func allow_input() -> bool:
-	if _is_checkmate():
-		_ref_EndGame.player_lose()
-		return false
-	if _pass_next_turn:
-		_pass_next_turn = false
-		# A frog does not attack when PC is ACTIVE. The state is reset to
-		# DEFAULT when PC's turn starts normally.
-		_set_pc_state(_new_ObjectStateTag.ACTIVE)
-		return false
-	return true
+	return not _pass_next_turn
+
+
+func pass_turn() -> void:
+	_pass_next_turn = false
 
 
 func is_npc() -> bool:
@@ -30,9 +25,7 @@ func is_npc() -> bool:
 	var reach_y: int = (_target_position[1] - _source_position[1]) * 2 \
 			+ _source_position[1]
 
-	if _ref_DangerZone.is_in_danger(_source_position[0], _source_position[1]):
-		return false
-	elif _ref_DungeonBoard.has_sprite(_new_MainGroupTag.ACTOR,
+	if _ref_DungeonBoard.has_sprite(_new_MainGroupTag.ACTOR,
 			_target_position[0], _target_position[1]):
 		return true
 	elif _ref_DungeonBoard.has_sprite(_new_MainGroupTag.ACTOR,
@@ -52,20 +45,7 @@ func is_trap() -> bool:
 
 
 func move() -> void:
-	var sor_x: int = _source_position[0]
-	var sor_y: int = _source_position[1]
-	var tar_x: int = _target_position[0]
-	var tar_y: int = _target_position[1]
-
-	# If PC is in danger zone, `is_npc()` does not check whether target position
-	# is occupied by an NPC or is dangerous.
-	if _ref_DungeonBoard.has_sprite(_new_MainGroupTag.ACTOR, tar_x, tar_y) \
-			or _ref_DangerZone.is_in_danger(tar_x, tar_y):
-		return
-
-	if _ref_DangerZone.is_in_danger(sor_x, sor_y):
-		_pass_next_turn = true
-	elif _is_in_swamp(sor_x, sor_y):
+	if _is_in_swamp(_source_position[0], _source_position[1]):
 		_step_counter += 1
 		if _step_counter >= _new_FrogData.SINK_IN_MUD:
 			_pass_next_turn = true
@@ -86,8 +66,6 @@ func attack() -> void:
 
 
 func wait() -> void:
-	if _ref_DangerZone.is_in_danger(_source_position[0], _source_position[1]):
-		return
 	_set_pc_state(_new_ObjectStateTag.PASSIVE)
 	.wait()
 
@@ -102,9 +80,7 @@ func switch_sprite() -> void:
 	var x: int = _source_position[0]
 	var y: int = _source_position[1]
 
-	if _ref_DangerZone.is_in_danger(x, y):
-		_ref_SwitchSprite.switch_sprite(pc, _new_SpriteTypeTag.ACTIVE)
-	elif _is_in_swamp(x, y):
+	if _is_in_swamp(x, y):
 		if _step_counter == _new_FrogData.SINK_IN_MUD - 1:
 			_ref_SwitchSprite.switch_sprite(pc, _new_SpriteTypeTag.PASSIVE_1)
 		else:
@@ -121,21 +97,6 @@ func _is_in_swamp(x: int, y: int) -> bool:
 func _set_pc_state(state_tag: String) -> void:
 	var pc: Sprite = _ref_DungeonBoard.get_pc()
 	_ref_ObjectData.set_state(pc, state_tag)
-
-
-func _is_checkmate() -> bool:
-	var x: int = _source_position[0]
-	var y: int = _source_position[1]
-	var neighbor: Array = _new_CoordCalculator.get_neighbor(x, y, 1)
-
-	if _ref_DangerZone.is_in_danger(x, y):
-		for i in neighbor:
-			if not (_ref_DangerZone.is_in_danger(i[0], i[1]) \
-					or _ref_DungeonBoard.has_sprite(
-							_new_MainGroupTag.ACTOR, i[0], i[1])):
-				return false
-		return true
-	return false
 
 
 func _block_line_of_sight(x: int, y: int, _opt_arg: Array) -> bool:

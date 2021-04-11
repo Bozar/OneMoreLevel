@@ -1,9 +1,10 @@
 extends "res://library/npc_ai/AITemplate.gd"
 
 
-var _new_FrogData := preload("res://library/npc_data/FrogData.gd").new()
+const WAIT_HIT_POINT: int = 1
+const CAST_RAY: Array = [[0, 1], [0, -1], [1, 0], [-1, 0]]
 
-var _id_to_danger_zone: Dictionary = {}
+var _new_FrogData := preload("res://library/npc_data/FrogData.gd").new()
 
 
 func _init(parent_node: Node2D).(parent_node) -> void:
@@ -11,50 +12,14 @@ func _init(parent_node: Node2D).(parent_node) -> void:
 
 
 func take_action() -> void:
-	var id: int = _self.get_instance_id()
-	var pc: Sprite = _ref_DungeonBoard.get_pc()
-
-	if _id_to_danger_zone.has(id):
-		_try_attack(id, pc)
-	elif _ref_ObjectData.get_hit_point(_self) > 0:
-		_ref_ObjectData.add_hit_point(_self, -1)
+	if _ref_ObjectData.get_hit_point(_self) > 0:
+		_ref_ObjectData.subtract_hit_point(_self, WAIT_HIT_POINT)
 	else:
 		_reset_hit_point()
-		if _can_grapple(pc):
-			_grapple(id)
+		if _can_grapple():
+			_grapple()
 		else:
 			_random_walk()
-
-
-func remove_data(actor: Sprite) -> void:
-	var id: int = actor.get_instance_id()
-	var __
-
-	if not _id_to_danger_zone.has(id):
-		return
-
-	for i in _id_to_danger_zone[id]:
-		_set_danger_zone(i[0], i[1], false)
-	__ = _id_to_danger_zone.erase(id)
-
-
-func _try_attack(id: int, pc: Sprite) -> void:
-	var lose: bool = false
-	var __
-
-	if _ref_ObjectData.verify_state(pc, _new_ObjectStateTag.ACTIVE):
-		return
-
-	for i in _id_to_danger_zone[id]:
-		_set_danger_zone(i[0], i[1], false)
-		if _ref_DungeonBoard.has_sprite_with_sub_tag(
-				_new_MainGroupTag.ACTOR, _new_SubGroupTag.PC, i[0], i[1]):
-			lose = true
-	_ref_SwitchSprite.switch_sprite(_self, _new_SpriteTypeTag.DEFAULT)
-	__ = _id_to_danger_zone.erase(id)
-
-	if lose:
-		_ref_EndGame.player_lose()
 
 
 func _reset_hit_point() -> void:
@@ -63,33 +28,33 @@ func _reset_hit_point() -> void:
 	_ref_ObjectData.set_hit_point(_self, hp)
 
 
-func _can_grapple(pc: Sprite) -> bool:
+func _can_grapple() -> bool:
 	var self_x: int = _self_pos[0]
 	var self_y: int = _self_pos[1]
 	var pc_x: int = _pc_pos[0]
 	var pc_y: int = _pc_pos[1]
+	var pc: Sprite = _ref_DungeonBoard.get_pc()
 
 	if _ref_ObjectData.verify_state(pc, _new_ObjectStateTag.PASSIVE):
 		return false
-	if _new_CoordCalculator.is_inside_range(self_x, self_y, pc_x, pc_y,
+	elif _new_CoordCalculator.is_inside_range(self_x, self_y, pc_x, pc_y,
 			_new_FrogData.ATTACK_RANGE):
 		return _path_is_clear()
 	return false
 
 
-func _grapple(id: int) -> void:
+func _grapple() -> void:
 	var neighbor: Array = _new_CoordCalculator.get_neighbor(
 			_self_pos[0], _self_pos[1], _new_FrogData.ATTACK_RANGE)
 	var pc_move: Array = _new_CoordCalculator.get_neighbor(
 			_pc_pos[0], _pc_pos[1], 1, true)
 
-	_id_to_danger_zone[id] = []
 	_new_ArrayHelper.filter_element(neighbor, self, "_filter_grapple",
 			[pc_move])
-	for i in neighbor:
-		_id_to_danger_zone[id].push_back(i)
-		_set_danger_zone(i[0], i[1], true)
 	_ref_SwitchSprite.switch_sprite(_self, _new_SpriteTypeTag.ACTIVE)
+	for i in neighbor:
+		_set_danger_zone(i[0], i[1], true)
+	_ref_EndGame.player_lose()
 
 
 func _random_walk() -> void:
@@ -127,9 +92,8 @@ func _path_is_clear() -> bool:
 	var x: int
 	var y: int
 	var counter: int
-	var cast_ray: Array = [[0, 1], [0, -1], [1, 0], [-1, 0]]
 
-	for i in cast_ray:
+	for i in CAST_RAY:
 		x = _self_pos[0]
 		y = _self_pos[1]
 		counter = 0

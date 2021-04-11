@@ -8,16 +8,15 @@ Frog princess and frog knights come in waves. Hit them with the spear to remove 
 
 ## Move in Swamp
 
-Strips of land (#, grey hashtag) are surrounded by swamp (-, grey dash). PC has four symbols to show his current state.
+Strips of land (#, grey hashtag) are surrounded by swamp (-, grey dash). PC has three symbols to show his current state.
 
 * @: You stand on land.
 * Three horizonal lines: You stand in swamp.
 * Porous rectangular: You stand in swamp. Your next movement out of the swamp costs 2 turns.
-* Solid rectangular: You are grappled. You will be swallowed the next turn.
 
-Press arrow keys to move one step if there are no frogs nearby. Moving out of land costs 1 turn. Leaving swamp costs 1 or 2 turns based on an internal counter. The counter starts from zero and adds by one every time before you leave a swamp grid. When it reaches three, moving costs 2 turns and the counter resets to zero. Otherwise it costs 1 turn to move. Hitting a frog also resets the counter to zero. (Please beware that the counter is only affected by moving away from swamp and hitting a frog. It has nothing to do with grapple, wait or any other factors.)
+Press arrow keys to move one step if there are no frogs nearby. Moving out of land costs 1 turn. Leaving swamp costs 1 or 2 turns based on an internal counter. The counter starts from 0 and adds by 1 every time before you leave a swamp grid. When it reaches 3, moving costs 2 turns and the counter resets to 0. Otherwise it costs 1 turn to move. Hitting a frog also resets the counter to 0. Please beware that the counter is only affected by moving away from swamp and hitting a frog. It has nothing to do with waiting or any other factors.
 
-Press Space to wait 1 turn. You cannot wait when grappled. You automatically lose the game if you can take no actions.
+Press Space to wait 1 turn.
 
 ## Hit a Frog
 
@@ -35,21 +34,17 @@ Hitting a frog costs 1 turn and restores 8 turns. You have at most 24 turns. Act
 A frog has three sets of actions.
 
 * Wait 1 to 3 turns. After waiting, take an action below if possible. Then wait again.
-* Grapple PC. Swallow PC in the next turn.
+* Grapple and swallow PC.
 * Move to a diagonal grid that is 2 steps away.
 
-A frog grapples PC if he is within 2 steps and he does not wait last turn. If the frog and PC are on a straight line, it also requires that there are no other frogs between them. In the digraph below, frog A, B, C and D can grapple PC, but not E, as it is blocked by D.
+A frog grapples and swallows PC if: (1) He does not wait last turn by pressing Space. (2) He is within 2 steps. (3) If the frog and PC are on a straight line, it also requires that there are no other frogs between them. In the digraph below, frog A, B, C and D can grapple PC, but not E, as it is blocked by D.
 
     . A . .
     B . . .
     C @ D E
     . . . .
 
-When grappled, PC's symbol is a solid rectangular. You can press Space to wait. If so, you will be swallowed and lose the game the next turn. You can also press arrow keys to break free. More specifically, you can only move 1 step into a grid that is neither occupied by another frog, nor marked by double exclamation marks, as it is within 2 steps from the frog that grapples you. You cannot hit a frog under this circumstance. Breaking free costs 2 turns.
-
-A frog usually swallows its target (no matter whether it is still there or not) the next turn after grappling. However, a frog does not swallow PC if he is forced to pass 1 turn due to moving out of swamp. It swallows PC 2 turns after grappling instead.
-
-If a frog cannot grapple or swallow PC, it moves diagonally to a grid exactly 2 steps away. If it is far away from PC, it tends to move closer. Otherwise it moves randomly. A frog prefers moving into a swamp grid rather than land.
+If a frog cannot grapple PC, it moves diagonally to a grid exactly 2 steps away. If it is far away from PC, it tends to move closer. Otherwise it moves randomly. A frog prefers moving into a swamp grid rather than land.
 
 ## Five Waves of Frogs
 
