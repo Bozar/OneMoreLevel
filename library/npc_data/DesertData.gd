@@ -5,7 +5,7 @@ const SPICE_END: int = 5
 
 const CREATE_SPICE: int = 15
 const BONUS_CREATE_SPICE: int = 10
-const CREATE_QUALITY_SPICE: int = 10
+const CREATE_QUALITY_SPICE: int = 20
 
 const HP_TURN: int = 1
 const HP_WAIT: int = 5
