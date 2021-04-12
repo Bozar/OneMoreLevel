@@ -1,7 +1,7 @@
 extends "res://library/init/WorldTemplate.gd"
 
 
-const PATH_LENGTH: int = 16
+const PATH_LENGTH: int = 10
 const MAX_FLOOR: int = 150
 
 var _spr_PCRailgun := preload("res://sprite/PCRailgun.tscn")
@@ -75,18 +75,17 @@ func _create_path(end_point: Array) -> int:
 	step = _ref_RandomNumber.get_int(0, 2)
 	step = 1 if step > 0 else -1
 
-	for _i in range(PATH_LENGTH):
-		x += multi_x * step
-		y += multi_y * step
-
-		if (not _new_CoordCalculator.is_inside_dungeon(x, y)) \
-				or _is_occupied(x, y) or (_is_counter(x, y)):
-			break
-		else:
-			counter += 1
-			_occupy_position(x, y)
-			_update_end_point(x, y, end_point)
-
+	if _get_current_length(x, y, multi_x, multi_y, step) < PATH_LENGTH:
+		for _i in range(PATH_LENGTH):
+			x += multi_x * step
+			y += multi_y * step
+			if (not _new_CoordCalculator.is_inside_dungeon(x, y)) \
+					or _is_occupied(x, y) or (_is_counter(x, y)):
+				break
+			else:
+				counter += 1
+				_occupy_position(x, y)
+				_update_end_point(x, y, end_point)
 	return counter
 
 
@@ -125,3 +124,26 @@ func _add_wall_blueprint() -> void:
 					new_sub_group = _new_SubGroupTag.WALL
 				_add_to_blueprint(new_sprite,
 						_new_MainGroupTag.BUILDING, new_sub_group, i, j)
+
+
+func _get_current_length(start_x: int, start_y: int, multi_x: int, multi_y: int,
+		step: int) -> int:
+	var counter: int = 0
+	var x: int = start_x
+	var y: int = start_y
+
+	while _new_CoordCalculator.is_inside_dungeon(x, y) and _is_occupied(x, y):
+		counter += 1
+		x += multi_x * step
+		y += multi_y * step
+
+	x = start_x
+	y = start_y
+	while _new_CoordCalculator.is_inside_dungeon(x, y) and _is_occupied(x, y):
+		counter += 1
+		x -= multi_x * step
+		y -= multi_y * step
+
+	# The grid [start_x, start_y] is calculated twice.
+	counter -= 1
+	return counter
