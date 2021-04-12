@@ -1,16 +1,19 @@
-const RAND_WARNING: String = "Rand is not of type Game_RandomNumber."
+const RAND_WARNING: String = "rand_picker(): Rand is not of type Game_RandomNumber."
+const ELEMENT_WARNING: String = "rand_picker(): Pick too many elements."
 
 
 func rand_picker(source_array: Array, num_of_element: int, rand) -> void:
 	var counter: int
 
-	if rand is Game_RandomNumber:
+	if num_of_element > source_array.size():
+		push_warning(ELEMENT_WARNING)
+	elif not (rand is Game_RandomNumber):
+		push_warning(RAND_WARNING)
+	else:
 		for i in range(num_of_element):
 			counter = rand.get_int(i, source_array.size())
 			swap_element(source_array, i, counter)
-	else:
-		push_warning(RAND_WARNING)
-	source_array.resize(num_of_element)
+		source_array.resize(num_of_element)
 
 
 # filter_in_func(source_array: Array, current_index: int,
