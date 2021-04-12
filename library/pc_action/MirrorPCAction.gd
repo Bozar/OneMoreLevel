@@ -110,6 +110,7 @@ func _target_is_occupied(main_group_tag: String) -> bool:
 func _create_image_on_the_other_side(x: int, y: int) -> void:
 	var actor: Sprite = _ref_DungeonBoard.get_sprite(_new_MainGroupTag.ACTOR,
 			x, y)
+	var pc: Sprite = _ref_DungeonBoard.get_pc()
 	var mirror: Array = _get_mirror(x, y)
 	var images: Array
 	var remove: int
@@ -134,11 +135,12 @@ func _create_image_on_the_other_side(x: int, y: int) -> void:
 			mirror[0], mirror[1]):
 		_ref_RemoveObject.remove(_new_MainGroupTag.TRAP, mirror[0], mirror[1])
 
-	# There can be at most 5 phantom images.
+	# There can be at most (5 - crystal) phantom images.
 	images = _ref_DungeonBoard.get_sprites_by_tag(_new_SubGroupTag.PHANTOM)
 	_new_ArrayHelper.filter_element(images, self, "_filter_create_image",
 			[actor])
-	remove = images.size() + 1 - _new_MirrorData.MAX_PHANTOM
+	remove = images.size() + 1 - (_new_MirrorData.MAX_PHANTOM \
+			- _ref_ObjectData.get_hit_point(pc))
 	if remove > 0:
 		_new_ArrayHelper.rand_picker(images, remove, _ref_RandomNumber)
 		for i in images:
