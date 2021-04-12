@@ -189,7 +189,7 @@ func _can_bury_worm(id: int) -> bool:
 		if i == null:
 			break
 		if _has_spice(i) and _is_passive_spice(i):
-			hit_point += _new_DesertData.HP_SPICE
+			hit_point -= _new_DesertData.HP_SPICE
 	return hit_point > _new_DesertData.HP_BURY
 
 

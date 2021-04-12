@@ -6,7 +6,7 @@ You need to bump and collect 3 quality spices (*) from a living sandworm. Press 
 
 A sandworm has a head (diamond), a tail (-) and body segments (+). The third, fourth and fifth segment contains spice (?) or quality spice (*). Every sandworm has at most one quality spice. You can only interact with segments that have spices. Other sandworm parts (head, body and tail) act like indestructible walls.
 
-Every turn a sandworm moves one grid in a random direction. Eventually it will tunnel into ground and leave a wall of dunes behind. An immobilized sandworm or one with fewer than three spices are more eager to go underground. The more spices a living sandworm has, the more likely are the dunes to contain spices.
+Every turn a sandworm moves one grid in a random direction. Eventually it will tunnel into ground and leave a wall of dunes behind. A sandworm spends fewer time on the surface if: (1) It is immobilized. (2) Or it has spices, the more the better. The more spices a living sandworm has, the more likely are the dunes to contain spices.
 
 A wall of dunes is composed of sand walls (#) and spices (?). You can bump and destroy a wall block or collect a spice just as from a sandworm. You do not move when bumping. It can be used as poor man's waiting key.
 
