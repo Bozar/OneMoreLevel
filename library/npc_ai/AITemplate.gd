@@ -13,6 +13,7 @@ var _ref_RemoveObject : Game_RemoveObject
 var _ref_CountDown : Game_CountDown
 var _ref_CreateObject : Game_CreateObject
 var _ref_Schedule: Game_Schedule
+var _ref_Palette: Game_Palette
 
 var _new_ConvertCoord := preload("res://library/ConvertCoord.gd").new()
 var _new_CoordCalculator := preload("res://library/CoordCalculator.gd").new()
@@ -20,7 +21,6 @@ var _new_ObjectStateTag := preload("res://library/ObjectStateTag.gd").new()
 var _new_SpriteTypeTag := preload("res://library/SpriteTypeTag.gd").new()
 var _new_MainGroupTag := preload("res://library/MainGroupTag.gd").new()
 var _new_SubGroupTag := preload("res://library/SubGroupTag.gd").new()
-var _new_Palette := preload("res://library/Palette.gd").new()
 var _new_DungeonSize := preload("res://library/DungeonSize.gd").new()
 var _new_PathFindingData := preload("res://library/PathFindingData.gd").new()
 var _new_DijkstraPathFinding := preload("res://library/DijkstraPathFinding.gd").new()
@@ -45,6 +45,7 @@ func _init(parent_node: Node2D) -> void:
 	_ref_CountDown = parent_node._ref_CountDown
 	_ref_CreateObject = parent_node._ref_CreateObject
 	_ref_Schedule = parent_node._ref_Schedule
+	_ref_Palette = parent_node._ref_Palette
 
 
 # Override.

@@ -21,6 +21,7 @@ var _ref_SwitchSprite: Game_SwitchSprite
 var _ref_ObjectData: Game_ObjectData
 var _ref_DangerZone: Game_DangerZone
 var _ref_EndGame: Game_EndGame
+var _ref_Palette: Game_Palette
 
 var _spr_Floor := preload("res://sprite/Floor.tscn")
 
@@ -29,7 +30,6 @@ var _new_SubGroupTag := preload("res://library/SubGroupTag.gd").new()
 var _new_DungeonSize := preload("res://library/DungeonSize.gd").new()
 var _new_ConvertCoord := preload("res://library/ConvertCoord.gd").new()
 var _new_CoordCalculator := preload("res://library/CoordCalculator.gd").new()
-var _new_Palette := preload("res://library/Palette.gd").new()
 var _new_SpriteTypeTag := preload("res://library/SpriteTypeTag.gd").new()
 var _new_ObjectStateTag := preload("res://library/ObjectStateTag.gd").new()
 var _new_ArrayHelper := preload("res://library/ArrayHelper.gd").new()
@@ -46,6 +46,7 @@ func _init(parent_node: Node2D) -> void:
 	_ref_ObjectData = parent_node._ref_ObjectData
 	_ref_DangerZone = parent_node._ref_DangerZone
 	_ref_EndGame = parent_node._ref_EndGame
+	_ref_Palette = parent_node._ref_Palette
 
 
 # PC's FOV is rendered when his turn starts. Be careful of adding new sprites.

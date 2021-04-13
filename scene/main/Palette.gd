@@ -1,3 +1,6 @@
+extends Node2D
+class_name Game_Palette
+
 const MAIN_GROUP_TAG := preload("res://library/MainGroupTag.gd")
 const SUB_GROUP_TAG := preload("res://library/SubGroupTag.gd")
 

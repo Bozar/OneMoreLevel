@@ -258,12 +258,12 @@ func _reset_sprite_color(x: int, y: int) -> void:
 	if x == _new_DungeonSize.CENTER_X:
 		set_this = _ref_DungeonBoard.get_sprite(_new_MainGroupTag.BUILDING,
 				x, y)
-		_new_Palette.set_default_color(set_this, _new_MainGroupTag.BUILDING)
+		_ref_Palette.set_default_color(set_this, _new_MainGroupTag.BUILDING)
 	elif _ref_DungeonBoard.has_sprite(_new_MainGroupTag.TRAP, x, y):
 		set_this = _ref_DungeonBoard.get_sprite(_new_MainGroupTag.TRAP, x, y)
 		set_this.visible = not _ref_DungeonBoard.has_sprite(
 				_new_MainGroupTag.ACTOR, x, y)
-		_new_Palette.set_default_color(set_this, _new_MainGroupTag.TRAP,
+		_ref_Palette.set_default_color(set_this, _new_MainGroupTag.TRAP,
 				_new_SubGroupTag.CRYSTAL)
 
 

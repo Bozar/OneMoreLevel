@@ -4,7 +4,8 @@ class_name Game_CreateObject
 
 signal sprite_created(new_sprite, main_group, sub_group, x, y)
 
-var _new_Palette := preload("res://library/Palette.gd").new()
+var _ref_Palette: Game_Palette
+
 var _new_ZIndex := preload("res://library/ZIndex.gd").new()
 var _new_ConvertCoord := preload("res://library/ConvertCoord.gd").new()
 var _new_ScreenTag := preload("res://library/ScreenTag.gd").new()
@@ -14,7 +15,7 @@ func create_and_fetch(prefab: PackedScene,
 		main_group: String, sub_group: String, x: int, y: int,
 		x_offset: int = 0, y_offset: int = 0) -> Sprite:
 	var new_sprite: Sprite = prefab.instance() as Sprite
-	var sprite_color: String = _new_Palette.get_default_color(
+	var sprite_color: String = _ref_Palette.get_default_color(
 			main_group, sub_group)
 	var z_index: int = _new_ZIndex.get_z_index(main_group)
 

@@ -26,7 +26,7 @@ func take_action() -> void:
 	elif _detect_pc():
 		# if _new_CoordCalculator.get_range(_self_pos[0], _self_pos[1],
 		# 		_pc_pos[0], _pc_pos[1]) > _new_RailgunData.NPC_SIGHT:
-		# 	_self.modulate = _new_Palette.DEBUG
+		# 	_self.modulate = _ref_Palette.DEBUG
 		# 	print("gunshot")
 		_approach_pc()
 		_try_remove_trap()

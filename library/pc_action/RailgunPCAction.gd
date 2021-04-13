@@ -214,7 +214,7 @@ func _init_counter() -> void:
 			_counter_sprite.push_back(_ref_DungeonBoard.get_sprite(
 					_new_MainGroupTag.BUILDING,
 					x, _new_DungeonSize.MAX_Y - 1))
-			_counter_sprite.back().modulate = _new_Palette.DARK
+			_counter_sprite.back().modulate = _ref_Palette.DARK
 
 
 func _render_counter(kill: int) -> void:

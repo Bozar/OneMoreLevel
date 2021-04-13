@@ -6,7 +6,8 @@ const SCROLL_LINE: int = 20
 const SCROLL_PAGE: int = 300
 const DUNGEON: String = "HelpHBox/Dungeon"
 
-var _new_Palette := preload("res://library/Palette.gd").new()
+var _ref_Palette: Game_Palette
+
 var _new_ScreenTag: = preload("res://library/ScreenTag.gd").new()
 var _new_InitWorldData := preload("res://library/InitWorldData.gd").new()
 
@@ -61,7 +62,7 @@ func _on_InitWorld_world_selected(new_world: String) -> void:
 	_help_text = _new_InitWorldData.get_help(new_world)
 	_reset_index()
 
-	get_node(DUNGEON).modulate = _new_Palette.STANDARD
+	get_node(DUNGEON).modulate = _ref_Palette.STANDARD
 	get_node(DUNGEON).text = _help_text[_help_index]
 
 

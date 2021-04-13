@@ -143,10 +143,10 @@ func _set_beacon_state(beacon: Sprite, state: String) -> void:
 	match state:
 		_new_ObjectStateTag.ACTIVE:
 			_ref_ObjectData.set_state(beacon, state)
-			_new_Palette.set_default_color(beacon, _new_MainGroupTag.TRAP)
+			_ref_Palette.set_default_color(beacon, _new_MainGroupTag.TRAP)
 		_new_ObjectStateTag.PASSIVE:
 			_ref_ObjectData.set_state(beacon, state)
-			_new_Palette.set_dark_color(beacon, _new_MainGroupTag.TRAP)
+			_ref_Palette.set_dark_color(beacon, _new_MainGroupTag.TRAP)
 
 
 func _end_turn_or_game() -> void:

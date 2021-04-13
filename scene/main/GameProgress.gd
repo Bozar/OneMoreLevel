@@ -11,6 +11,7 @@ var _ref_SwitchSprite: Game_SwitchSprite
 var _ref_ObjectData: Game_ObjectData
 var _ref_DangerZone: Game_DangerZone
 var _ref_EndGame: Game_EndGame
+var _ref_Palette: Game_Palette
 
 var _new_InitWorldData := preload("res://library/InitWorldData.gd").new()
 var _new_MainGroupTag := preload("res://library/MainGroupTag.gd").new()

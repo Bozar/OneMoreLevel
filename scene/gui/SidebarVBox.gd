@@ -9,16 +9,12 @@ const HELP: String = "Lower/Help"
 const VERSION: String = "Lower/Version"
 const SEED: String = "Lower/Seed"
 
-const PALETTE := preload("res://library/Palette.gd")
-
-const NODE_TO_COLOR: Dictionary = {
-	TURN: PALETTE.STANDARD,
-	MESSAGE: PALETTE.STANDARD,
-	WORLD: PALETTE.SHADOW,
-	HELP: PALETTE.SHADOW,
-	VERSION: PALETTE.SHADOW,
-	SEED: PALETTE.SHADOW,
-}
+var _ref_RandomNumber: Game_RandomNumber
+var _ref_DangerZone: Game_DangerZone
+var _ref_CountDown: Game_CountDown
+var _ref_DungeonBoard: Game_DungeonBoard
+var _ref_GameSetting: Game_GameSetting
+var _ref_Palette: Game_Palette
 
 var _new_SubGroupTag := preload("res://library/SubGroupTag.gd").new()
 var _new_WorldTag := preload("res://library/WorldTag.gd").new()
@@ -26,14 +22,18 @@ var _new_ConvertCoord := preload("res://library/ConvertCoord.gd").new()
 var _new_SidebarText := preload("res://library/SidebarText.gd").new()
 var _new_ScreenTag := preload("res://library/ScreenTag.gd").new()
 
-var _ref_RandomNumber: Game_RandomNumber
-var _ref_DangerZone: Game_DangerZone
-var _ref_CountDown: Game_CountDown
-var _ref_DungeonBoard: Game_DungeonBoard
-var _ref_GameSetting: Game_GameSetting
+var _node_to_color: Dictionary
 
 
 func _on_InitWorld_world_selected(new_world: String) -> void:
+	_node_to_color = {
+		TURN: _ref_Palette.STANDARD,
+		MESSAGE: _ref_Palette.STANDARD,
+		WORLD: _ref_Palette.SHADOW,
+		HELP: _ref_Palette.SHADOW,
+		VERSION: _ref_Palette.SHADOW,
+		SEED: _ref_Palette.SHADOW,
+	}
 	_set_color()
 
 	get_node(TURN).text = _get_turn()
@@ -65,8 +65,8 @@ func _on_SwitchScreen_screen_switched(screen_tag: String) -> void:
 
 
 func _set_color() -> void:
-	for i in NODE_TO_COLOR.keys():
-		get_node(i).modulate = NODE_TO_COLOR[i]
+	for i in _node_to_color.keys():
+		get_node(i).modulate = _node_to_color[i]
 
 
 func _get_turn() -> String:

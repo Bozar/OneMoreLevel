@@ -18,6 +18,7 @@ const END_GAME: String = "EndGame"
 const COUNT_DOWN: String = "CountDown"
 const GAME_PROGRESS: String = "GameProgress"
 const GAME_SETTING: String = "GameSetting"
+const PALETTE: String = "Palette"
 const SIDEBAR_GUI: String = "MainGUI/SidebarVBox"
 const HELP_GUI: String = "HelpGUI/HelpVScroll"
 
@@ -140,6 +141,12 @@ const NODE_REF: Array = [
 		"_ref_HelpVScroll",
 		HELP_GUI,
 		HELP_INPUT,
+	],
+	[
+		"_ref_Palette",
+		PALETTE,
+		PLAYER_INPUT, SIDEBAR_GUI, CREATE_OBJECT, HELP_GUI, ENEMY_AI,
+		GAME_PROGRESS,
 	],
 ]
 

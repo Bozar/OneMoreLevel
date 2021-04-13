@@ -1,4 +1,4 @@
-[gd_scene load_steps=26 format=2]
+[gd_scene load_steps=27 format=2]
 
 [ext_resource path="res://scene/main/InitWorld.gd" type="Script" id=1]
 [ext_resource path="res://scene/gui/MainGUI.tscn" type="PackedScene" id=2]
@@ -25,6 +25,7 @@
 [ext_resource path="res://scene/main/SwitchScreen.gd" type="Script" id=23]
 [ext_resource path="res://scene/main/HelpInput.gd" type="Script" id=24]
 [ext_resource path="res://scene/gui/HelpGUI.tscn" type="PackedScene" id=25]
+[ext_resource path="res://scene/main/Palette.gd" type="Script" id=26]
 
 [node name="MainScene" type="Node2D"]
 script = ExtResource( 4 )
@@ -91,6 +92,9 @@ script = ExtResource( 3 )
 
 [node name="DangerZone" type="Node2D" parent="."]
 script = ExtResource( 16 )
+
+[node name="Palette" type="Node2D" parent="."]
+script = ExtResource( 26 )
 
 [node name="EndGame" type="Node2D" parent="."]
 script = ExtResource( 17 )

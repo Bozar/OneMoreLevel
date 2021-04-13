@@ -21,6 +21,7 @@ var _ref_SwitchSprite: Game_SwitchSprite
 var _ref_CreateObject : Game_CreateObject
 var _ref_DangerZone: Game_DangerZone
 var _ref_GameSetting: Game_GameSetting
+var _ref_Palette: Game_Palette
 
 var _new_InputTag := preload("res://library/InputTag.gd").new()
 var _new_MainGroupTag := preload("res://library/MainGroupTag.gd").new()
@@ -30,7 +31,6 @@ var _new_ConvertCoord := preload("res://library/ConvertCoord.gd").new()
 var _new_ObjectStateTag := preload("res://library/ObjectStateTag.gd").new()
 var _new_DungeonSize := preload("res://library/DungeonSize.gd").new()
 var _new_SpriteTypeTag := preload("res://library/SpriteTypeTag.gd").new()
-var _new_Palette := preload("res://library/Palette.gd").new()
 var _new_ArrayHelper := preload("res://library/ArrayHelper.gd").new()
 var _new_ShadowCastFOV := preload("res://library/ShadowCastFOV.gd").new()
 var _new_CrossShapedFOV := preload("res://library/CrossShapedFOV.gd").new()
@@ -53,6 +53,7 @@ func _init(parent_node: Node2D) -> void:
 	_ref_CreateObject = parent_node._ref_CreateObject
 	_ref_DangerZone = parent_node._ref_DangerZone
 	_ref_GameSetting = parent_node._ref_GameSetting
+	_ref_Palette = parent_node._ref_Palette
 
 
 func get_message() -> String:
@@ -202,7 +203,7 @@ func _render_end_game(win: bool) -> void:
 	_source_position = _new_ConvertCoord.vector_to_array(pc.position)
 	render_fov()
 	if not win:
-		pc.modulate = _new_Palette.SHADOW
+		pc.modulate = _ref_Palette.SHADOW
 
 
 func _render_without_fog_of_war() -> void:
@@ -215,7 +216,7 @@ func _render_without_fog_of_war() -> void:
 			if ground == null:
 				continue
 			ground.visible = _ground_is_visible(x, y)
-			_new_Palette.set_dark_color(ground, _new_MainGroupTag.GROUND)
+			_ref_Palette.set_dark_color(ground, _new_MainGroupTag.GROUND)
 
 
 # is_in_sight_func(x: int, y: int) -> bool
@@ -229,9 +230,9 @@ func _set_sprite_color(x: int, y: int, main_tag: String, sub_tag: String,
 	if main_tag == _new_MainGroupTag.GROUND:
 		set_this.visible = _ground_is_visible(x, y)
 	if is_in_sight.call_func(x, y):
-		_new_Palette.set_default_color(set_this, main_tag, sub_tag)
+		_ref_Palette.set_default_color(set_this, main_tag, sub_tag)
 	else:
-		_new_Palette.set_dark_color(set_this, main_tag, sub_tag)
+		_ref_Palette.set_dark_color(set_this, main_tag, sub_tag)
 
 
 # is_in_sight_func(x: int, y: int) -> bool
@@ -249,10 +250,10 @@ func _set_sprite_color_with_memory(x: int, y: int, main_tag: String,
 			set_this.visible = _ground_is_visible(x, y)
 		if remember_sprite:
 			_set_sprite_memory(x, y, main_tag, sub_tag)
-		_new_Palette.set_default_color(set_this, main_tag, sub_tag)
+		_ref_Palette.set_default_color(set_this, main_tag, sub_tag)
 	else:
 		if remember_sprite and _get_sprite_memory(x, y, main_tag, sub_tag):
-			_new_Palette.set_dark_color(set_this, main_tag, sub_tag)
+			_ref_Palette.set_dark_color(set_this, main_tag, sub_tag)
 		else:
 			set_this.visible = false
 

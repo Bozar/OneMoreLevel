@@ -16,13 +16,13 @@ var _ref_CountDown: Game_CountDown
 var _ref_SwitchScreen: Game_SwitchScreen
 var _ref_CreateObject: Game_CreateObject
 var _ref_GameSetting: Game_GameSetting
+var _ref_Palette: Game_Palette
 
 var _new_ConvertCoord := preload("res://library/ConvertCoord.gd").new()
 var _new_WorldTag := preload("res://library/WorldTag.gd").new()
 var _new_InputTag := preload("res://library/InputTag.gd").new()
 var _new_SubGroupTag := preload("res://library/SubGroupTag.gd").new()
 var _new_SpriteTypeTag := preload("res://library/SpriteTypeTag.gd").new()
-var _new_Palette := preload("res://library/Palette.gd").new()
 var _new_InitWorldData := preload("res://library/InitWorldData.gd").new()
 var _new_ScreenTag: = preload("res://library/ScreenTag.gd").new()
 

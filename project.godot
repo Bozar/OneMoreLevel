@@ -95,6 +95,11 @@ _global_script_classes=[ {
 "path": "res://library/pc_action/PCActionTemplate.gd"
 }, {
 "base": "Node2D",
+"class": "Game_Palette",
+"language": "GDScript",
+"path": "res://scene/main/Palette.gd"
+}, {
+"base": "Node2D",
 "class": "Game_PlayerInput",
 "language": "GDScript",
 "path": "res://scene/main/PlayerInput.gd"
@@ -172,6 +177,7 @@ _global_script_class_icons={
 "Game_ObjectData": "",
 "Game_ObjectState": "",
 "Game_PCActionTemplate": "",
+"Game_Palette": "",
 "Game_PlayerInput": "",
 "Game_ProgressTemplate": "",
 "Game_RandomNumber": "",
