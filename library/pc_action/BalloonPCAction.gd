@@ -12,6 +12,8 @@ const TELEPORT_Y: Dictionary = {
 
 var _new_BalloonData := preload("res://library/npc_data/BalloonData.gd").new()
 
+var _count_beacon: int = _new_BalloonData.MAX_TRAP
+
 
 func _init(parent_node: Node2D).(parent_node) -> void:
 	_fov_render_range = _new_BalloonData.RENDER_RANGE
@@ -43,13 +45,13 @@ func wait() -> void:
 	if _ref_DungeonBoard.has_sprite(_new_MainGroupTag.TRAP,
 			_source_position[0], _source_position[1]):
 		_reach_destination(_source_position[0], _source_position[1])
-	end_turn = true
+	_end_turn_or_game()
 
 
 func interact_with_building() -> void:
 	_bounce_off(_source_position[0], _source_position[1],
 			_target_position[0], _target_position[1])
-	end_turn = true
+	_end_turn_or_game()
 
 
 func interact_with_trap() -> void:
@@ -57,7 +59,14 @@ func interact_with_trap() -> void:
 			_source_position[0], _source_position[1],
 			_target_position[0], _target_position[1])
 	_reach_destination(_target_position[0], _target_position[1])
-	end_turn = true
+	_end_turn_or_game()
+
+
+func move() -> void:
+	_ref_DungeonBoard.move_sprite(_new_MainGroupTag.ACTOR,
+			_source_position[0], _source_position[1],
+			_target_position[0], _target_position[1])
+	_end_turn_or_game()
 
 
 func set_target_position(direction: String) -> void:
@@ -100,24 +109,51 @@ func _try_move_over_border(position: Array) -> Array:
 
 
 func _reach_destination(x: int, y: int) -> void:
-	_ref_RemoveObject.remove(_new_MainGroupTag.TRAP, x, y)
-	_ref_CountDown.add_count(_new_BalloonData.RESTORE_TURN)
+	var beacon: Sprite = _ref_DungeonBoard.get_sprite(_new_MainGroupTag.TRAP,
+			x, y)
+
+	if _ref_ObjectData.verify_state(beacon, _new_ObjectStateTag.DEFAULT):
+		_count_beacon -= 1
+		_ref_SwitchSprite.switch_sprite(beacon, _new_SpriteTypeTag.PASSIVE)
+
+	if not _ref_ObjectData.verify_state(beacon, _new_ObjectStateTag.PASSIVE):
+		_ref_CountDown.add_count(_new_BalloonData.RESTORE_TURN)
+		_reactive_beacon()
+		_set_beacon_state(beacon, _new_ObjectStateTag.PASSIVE)
 
 
 func _bounce_off(pc_x: int, pc_y: int, wall_x: int, wall_y: int) -> void:
-	var wall: Sprite = _ref_DungeonBoard.get_sprite(_new_MainGroupTag.BUILDING,
-			wall_x, wall_y)
 	var new_position: Array = _new_CoordCalculator.get_mirror_image(
 			wall_x, wall_y, pc_x, pc_y, true)
 	new_position = _try_move_over_border(new_position)
 
-	if _ref_ObjectData.verify_state(wall, _new_ObjectStateTag.DEFAULT):
-		_ref_ObjectData.set_state(wall, _new_ObjectStateTag.ACTIVE)
-		_ref_SwitchSprite.switch_sprite(wall, _new_SpriteTypeTag.ACTIVE)
-		_ref_CountDown.add_count(_new_BalloonData.MINOR_RESTORE_TURN)
-
-	if _ref_DungeonBoard.has_sprite(_new_MainGroupTag.BUILDING,
+	if not _ref_DungeonBoard.has_sprite(_new_MainGroupTag.BUILDING,
 			new_position[0], new_position[1]):
-		return
-	_ref_DungeonBoard.move_sprite(_new_MainGroupTag.ACTOR, pc_x, pc_y,
-			new_position[0], new_position[1])
+		_ref_DungeonBoard.move_sprite(_new_MainGroupTag.ACTOR, pc_x, pc_y,
+				new_position[0], new_position[1])
+
+
+func _reactive_beacon() -> void:
+	for i in _ref_DungeonBoard.get_sprites_by_tag(_new_SubGroupTag.TREASURE):
+		if _ref_ObjectData.verify_state(i, _new_ObjectStateTag.PASSIVE):
+			_set_beacon_state(i, _new_ObjectStateTag.ACTIVE)
+
+
+func _set_beacon_state(beacon: Sprite, state: String) -> void:
+	match state:
+		_new_ObjectStateTag.ACTIVE:
+			_ref_ObjectData.set_state(beacon, state)
+			_new_Palette.set_default_color(beacon, _new_MainGroupTag.TRAP)
+		_new_ObjectStateTag.PASSIVE:
+			_ref_ObjectData.set_state(beacon, state)
+			_new_Palette.set_dark_color(beacon, _new_MainGroupTag.TRAP)
+
+
+func _end_turn_or_game() -> void:
+	if _count_beacon == 0:
+		_ref_EndGame.player_win()
+	elif (_ref_CountDown.get_count(true) == 1) \
+			and (_count_beacon < _new_BalloonData.MAX_REMAINING_TRAP):
+		_ref_EndGame.player_win()
+	else:
+		end_turn = true

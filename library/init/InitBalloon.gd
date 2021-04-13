@@ -2,7 +2,7 @@ extends "res://library/init/WorldTemplate.gd"
 
 
 var _spr_PCBalloon := preload("res://sprite/PCBalloon.tscn")
-var _spr_Treasure := preload("res://sprite/Treasure.tscn")
+var _spr_WormSpice := preload("res://sprite/WormSpice.tscn")
 var _spr_Arrow := preload("res://sprite/Arrow.tscn")
 
 var _new_BalloonData := preload("res://library/npc_data/BalloonData.gd")
@@ -114,7 +114,7 @@ func _init_wall_beacon(x: int, y: int) -> void:
 				i[0], i[1])
 		_occupy_position(i[0], i[1])
 
-	_add_to_blueprint(_spr_Treasure,
+	_add_to_blueprint(_spr_WormSpice,
 			_new_MainGroupTag.TRAP, _new_SubGroupTag.TREASURE,
 			beacon[0], beacon[1])
 	_occupy_position(beacon[0], beacon[1])
