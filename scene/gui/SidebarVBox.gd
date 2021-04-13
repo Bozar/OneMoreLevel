@@ -27,12 +27,12 @@ var _node_to_color: Dictionary
 
 func _on_InitWorld_world_selected(new_world: String) -> void:
 	_node_to_color = {
-		TURN: _ref_Palette.STANDARD,
-		MESSAGE: _ref_Palette.STANDARD,
-		WORLD: _ref_Palette.SHADOW,
-		HELP: _ref_Palette.SHADOW,
-		VERSION: _ref_Palette.SHADOW,
-		SEED: _ref_Palette.SHADOW,
+		TURN: _ref_Palette.get_text_color(true),
+		MESSAGE: _ref_Palette.get_text_color(true),
+		WORLD: _ref_Palette.get_text_color(false),
+		HELP: _ref_Palette.get_text_color(false),
+		VERSION: _ref_Palette.get_text_color(false),
+		SEED: _ref_Palette.get_text_color(false),
 	}
 	_set_color()
 

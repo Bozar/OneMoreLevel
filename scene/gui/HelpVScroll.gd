@@ -62,7 +62,7 @@ func _on_InitWorld_world_selected(new_world: String) -> void:
 	_help_text = _new_InitWorldData.get_help(new_world)
 	_reset_index()
 
-	get_node(DUNGEON).modulate = _ref_Palette.STANDARD
+	get_node(DUNGEON).modulate = _ref_Palette.get_text_color(true)
 	get_node(DUNGEON).text = _help_text[_help_index]
 
 

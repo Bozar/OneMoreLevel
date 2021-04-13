@@ -203,7 +203,7 @@ func _render_end_game(win: bool) -> void:
 	_source_position = _new_ConvertCoord.vector_to_array(pc.position)
 	render_fov()
 	if not win:
-		pc.modulate = _ref_Palette.SHADOW
+		_ref_Palette.set_dark_color(pc, _new_MainGroupTag.ACTOR)
 
 
 func _render_without_fog_of_war() -> void:

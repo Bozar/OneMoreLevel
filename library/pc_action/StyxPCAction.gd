@@ -127,7 +127,7 @@ func _switch_lighthouse_color() -> void:
 			_new_DungeonSize.CENTER_X, _new_DungeonSize.CENTER_Y)
 
 	if _extra_turn_counter == _new_StyxData.EXTRA_TURN_COUNTER:
-		lighthouse.modulate = _ref_Palette.DARK
+		_ref_Palette.set_dark_color(lighthouse, _new_MainGroupTag.BUILDING)
 	else:
 		_ref_Palette.set_default_color(lighthouse, _new_MainGroupTag.BUILDING)
 
