@@ -1,0 +1,24 @@
+{
+    "background": "black",
+    "indicator": "grey",
+    "ground": "grey",
+    "trap": "orange",
+    "building": "grey",
+    "actor": "green",
+    "gui_text": "white",
+    "dark_ground": "dark_grey",
+    "dark_trap": "dark_orange",
+    "dark_building": "dark_grey",
+    "dark_actor": "dark_green",
+    "dark_gui_text": "grey",
+    "color_value": {
+        "black": "#212529",
+        "grey": "#6C757D",
+        "dark_grey": "#343A40",
+        "white": "#ADB5BD",
+        "green": "#52B788",
+        "dark_green": "#2D6A4F",
+        "orange": "#F8B945",
+        "dark_orange": "#854E19"
+    }
+}
