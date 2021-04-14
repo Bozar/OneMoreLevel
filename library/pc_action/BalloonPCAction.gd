@@ -41,11 +41,16 @@ func render_fov() -> void:
 
 
 func wait() -> void:
+	var add_count: bool = false
+
 	_wind_blow()
 	if _ref_DungeonBoard.has_sprite(_new_MainGroupTag.TRAP,
 			_source_position[0], _source_position[1]):
-		_reach_destination(_source_position[0], _source_position[1])
+		add_count = _reach_destination(_source_position[0], _source_position[1])
+
 	_end_turn_or_game()
+	if add_count:
+		_ref_CountDown.add_count(_new_BalloonData.RESTORE_TURN)
 
 
 func interact_with_building() -> void:
@@ -55,11 +60,16 @@ func interact_with_building() -> void:
 
 
 func interact_with_trap() -> void:
+	var add_count: bool
+
 	_ref_DungeonBoard.move_sprite(_new_MainGroupTag.ACTOR,
 			_source_position[0], _source_position[1],
 			_target_position[0], _target_position[1])
-	_reach_destination(_target_position[0], _target_position[1])
+	add_count = _reach_destination(_target_position[0], _target_position[1])
+
 	_end_turn_or_game()
+	if add_count:
+		_ref_CountDown.add_count(_new_BalloonData.RESTORE_TURN)
 
 
 func move() -> void:
@@ -108,18 +118,20 @@ func _try_move_over_border(position: Array) -> Array:
 	return [x, y]
 
 
-func _reach_destination(x: int, y: int) -> void:
+func _reach_destination(x: int, y: int) -> bool:
 	var beacon: Sprite = _ref_DungeonBoard.get_sprite(_new_MainGroupTag.TRAP,
 			x, y)
+	var add_count: bool = false
 
 	if _ref_ObjectData.verify_state(beacon, _new_ObjectStateTag.DEFAULT):
 		_count_beacon -= 1
 		_ref_SwitchSprite.switch_sprite(beacon, _new_SpriteTypeTag.PASSIVE)
 
 	if not _ref_ObjectData.verify_state(beacon, _new_ObjectStateTag.PASSIVE):
-		_ref_CountDown.add_count(_new_BalloonData.RESTORE_TURN)
+		add_count = true
 		_reactive_beacon()
 		_set_beacon_state(beacon, _new_ObjectStateTag.PASSIVE)
+	return add_count
 
 
 func _bounce_off(pc_x: int, pc_y: int, wall_x: int, wall_y: int) -> void:
