@@ -8,6 +8,7 @@ const MIRROR: String = "mirror"
 const BALLOON: String = "balloon"
 const FROG: String = "frog"
 const RAILGUN: String = "railgun"
+const HOUND: String = "hound"
 
 const TAG_TO_NAME: Dictionary = {
 	DEMO: "Demo",
@@ -18,6 +19,7 @@ const TAG_TO_NAME: Dictionary = {
 	BALLOON: "Balloon",
 	FROG: "Frog",
 	RAILGUN: "Railgun",
+	HOUND: "Hound",
 }
 
 

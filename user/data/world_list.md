@@ -4,6 +4,7 @@
 * demo
 * desert
 * frog
+* hound
 * knight
 * mirror
 * railgun
