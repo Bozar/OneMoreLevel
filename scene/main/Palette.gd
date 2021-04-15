@@ -68,7 +68,6 @@ const TAG_TO_COLOR: Dictionary = {
 }
 
 const SUB_TAG_TO_COLOR: Dictionary = {
-	SUB_GROUP_TAG.CRYSTAL: TRAP,
 	SUB_GROUP_TAG.PC_MIRROR_IMAGE: DARK_ACTOR,
 }
 

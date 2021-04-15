@@ -26,7 +26,7 @@ func render_fov() -> void:
 			for i in _new_MainGroupTag.DUNGEON_OBJECT:
 				_set_sprite_color(x, y, i, "",
 						_new_ShadowCastFOV, "is_in_sight")
-				_reset_sprite_color(x, y)
+	_reset_sprite_color()
 
 
 func is_npc() -> bool:
@@ -252,19 +252,20 @@ func _block_line_of_sight(x: int, y: int, _opt_arg: Array) -> bool:
 			or _ref_DungeonBoard.has_sprite(_new_MainGroupTag.ACTOR, x, y)
 
 
-func _reset_sprite_color(x: int, y: int) -> void:
+func _reset_sprite_color() -> void:
 	var set_this: Sprite
+	var pos: Array
 
-	if x == _new_DungeonSize.CENTER_X:
+	for y in range(0, _new_DungeonSize.MAX_Y):
 		set_this = _ref_DungeonBoard.get_sprite(_new_MainGroupTag.BUILDING,
-				x, y)
+				_new_DungeonSize.CENTER_X, y)
 		_ref_Palette.set_default_color(set_this, _new_MainGroupTag.BUILDING)
-	elif _ref_DungeonBoard.has_sprite(_new_MainGroupTag.TRAP, x, y):
-		set_this = _ref_DungeonBoard.get_sprite(_new_MainGroupTag.TRAP, x, y)
-		set_this.visible = not _ref_DungeonBoard.has_sprite(
-				_new_MainGroupTag.ACTOR, x, y)
-		_ref_Palette.set_default_color(set_this, _new_MainGroupTag.TRAP,
-				_new_SubGroupTag.CRYSTAL)
+
+	for i in _ref_DungeonBoard.get_sprites_by_tag(_new_MainGroupTag.TRAP):
+		pos = _new_ConvertCoord.vector_to_array(i.position)
+		i.visible = not _ref_DungeonBoard.has_sprite(_new_MainGroupTag.ACTOR,
+				pos[0], pos[1])
+		_ref_Palette.set_default_color(i, _new_MainGroupTag.TRAP)
 
 
 func _move_pc_and_image() -> void:
