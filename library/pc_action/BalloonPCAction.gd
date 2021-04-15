@@ -47,16 +47,13 @@ func wait() -> void:
 	if _ref_DungeonBoard.has_sprite(_new_MainGroupTag.TRAP,
 			_source_position[0], _source_position[1]):
 		add_count = _reach_destination(_source_position[0], _source_position[1])
-
-	_end_turn_or_game()
-	if add_count:
-		_ref_CountDown.add_count(_new_BalloonData.RESTORE_TURN)
+	_end_turn_or_game(add_count)
 
 
 func interact_with_building() -> void:
 	_bounce_off(_source_position[0], _source_position[1],
 			_target_position[0], _target_position[1])
-	_end_turn_or_game()
+	_end_turn_or_game(false)
 
 
 func interact_with_trap() -> void:
@@ -66,17 +63,14 @@ func interact_with_trap() -> void:
 			_source_position[0], _source_position[1],
 			_target_position[0], _target_position[1])
 	add_count = _reach_destination(_target_position[0], _target_position[1])
-
-	_end_turn_or_game()
-	if add_count:
-		_ref_CountDown.add_count(_new_BalloonData.RESTORE_TURN)
+	_end_turn_or_game(add_count)
 
 
 func move() -> void:
 	_ref_DungeonBoard.move_sprite(_new_MainGroupTag.ACTOR,
 			_source_position[0], _source_position[1],
 			_target_position[0], _target_position[1])
-	_end_turn_or_game()
+	_end_turn_or_game(false)
 
 
 func set_target_position(direction: String) -> void:
@@ -161,11 +155,22 @@ func _set_beacon_state(beacon: Sprite, state: String) -> void:
 			_ref_Palette.set_dark_color(beacon, _new_MainGroupTag.TRAP)
 
 
-func _end_turn_or_game() -> void:
+func _end_turn_or_game(add_count: bool) -> void:
+	var player_win: bool
+
 	if _count_beacon == 0:
-		_ref_EndGame.player_win()
-	elif (_ref_CountDown.get_count(true) == 1) \
-			and (_count_beacon < _new_BalloonData.MAX_REMAINING_TRAP):
+		player_win = true
+	elif _ref_CountDown.get_count(true) == 1:
+		if add_count:
+			player_win = false
+		else:
+			player_win = _count_beacon < _new_BalloonData.MAX_REMAINING_TRAP
+	else:
+		player_win = false
+
+	if player_win:
 		_ref_EndGame.player_win()
 	else:
+		if add_count:
+			_ref_CountDown.add_count(_new_BalloonData.RESTORE_TURN)
 		end_turn = true
