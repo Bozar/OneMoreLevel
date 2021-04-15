@@ -62,7 +62,8 @@ func render_fov() -> void:
 						_set_sprite_color_with_memory(x, y, i, "", false,
 								_new_CrossShapedFOV, "is_in_sight")
 					_new_MainGroupTag.TRAP:
-						pass
+						_set_sprite_color(x, y, i, "",
+								_new_CrossShapedFOV, "is_in_sight")
 					_:
 						if _do_not_render_building(x, y):
 							pass
