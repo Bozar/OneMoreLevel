@@ -13,19 +13,7 @@ func _init(parent_node: Node2D).(parent_node) -> void:
 
 
 func render_fov() -> void:
-	if _ref_GameSetting.get_show_full_map():
-		_render_without_fog_of_war()
-		return
-
-	_new_ShadowCastFOV.set_field_of_view(
-			_source_position[0], _source_position[1], _fov_render_range,
-			self, "_block_line_of_sight", [])
-
-	for x in range(_new_DungeonSize.MAX_X):
-		for y in range(_new_DungeonSize.MAX_Y):
-			for i in _new_MainGroupTag.DUNGEON_OBJECT:
-				_set_sprite_color(x, y, i, "",
-						_new_ShadowCastFOV, "is_in_sight")
+	.render_fov()
 	_reset_sprite_color()
 
 
