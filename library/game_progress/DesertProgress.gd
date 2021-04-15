@@ -1,6 +1,9 @@
 extends "res://library/game_progress/ProgressTemplate.gd"
 
 
+const MAX_RETRY: int = 10
+const RESET_COUNTER: int = -1
+
 var _spr_WormHead := preload("res://sprite/WormHead.tscn")
 var _spr_Counter := preload("res://sprite/Counter.tscn")
 
@@ -23,9 +26,9 @@ func remove_actor(actor: Sprite, _x: int, _y: int) -> void:
 		return
 
 	for i in range(_respawn_counter.size()):
-		if _respawn_counter[i] == -1:
+		if _respawn_counter[i] == RESET_COUNTER:
 			_respawn_counter[i] = _ref_RandomNumber.get_int(
-					0, _new_DesertData.MAX_COOLDOWN)
+					_new_DesertData.MIN_COOLDOWN, _new_DesertData.MAX_COOLDOWN)
 			break
 
 
@@ -48,22 +51,17 @@ func create_trap(_trap: Sprite, _sub_group: String, x: int, y: int) -> void:
 
 func _try_add_new_worm() -> void:
 	for i in range(_respawn_counter.size()):
-		if _respawn_counter[i] == -1:
+		if _respawn_counter[i] == RESET_COUNTER:
 			continue
-
-		if _respawn_counter[i] == 0:
-			_create_worm_head(false, 0)
+		if _respawn_counter[i] == _new_DesertData.MIN_COOLDOWN:
+			_create_worm_head(0)
 		_respawn_counter[i] -= 1
 
 
-func _create_worm_head(stop_loop: bool, avoid_building: int) -> void:
-	if stop_loop:
-		return
-
+func _create_worm_head(retry: int) -> void:
 	var x: int
 	var y: int
 	var neighbor: Array
-	var max_retry: int = 3
 
 	x = _ref_RandomNumber.get_x_coord()
 	y = _ref_RandomNumber.get_y_coord()
@@ -72,16 +70,19 @@ func _create_worm_head(stop_loop: bool, avoid_building: int) -> void:
 
 	for i in neighbor:
 		if _ref_DungeonBoard.has_sprite(_new_MainGroupTag.ACTOR, i[0], i[1]):
-			_create_worm_head(false, avoid_building)
+			_create_worm_head(retry)
 			return
 
-	if _ref_DungeonBoard.has_sprite(_new_MainGroupTag.BUILDING, x, y) \
-			and (avoid_building < max_retry):
-		_create_worm_head(false, avoid_building + 1)
+	if _has_building_or_trap(x, y) and (retry < MAX_RETRY):
+		_create_worm_head(retry + 1)
 		return
 
 	_ref_RemoveObject.remove(_new_MainGroupTag.BUILDING, x, y)
 	_ref_RemoveObject.remove(_new_MainGroupTag.TRAP, x, y)
 	_ref_CreateObject.create(_spr_WormHead,
 			_new_MainGroupTag.ACTOR, _new_SubGroupTag.WORM_HEAD, x, y)
-	_create_worm_head(true, avoid_building)
+
+
+func _has_building_or_trap(x: int, y: int) -> bool:
+	return _ref_DungeonBoard.has_sprite(_new_MainGroupTag.BUILDING, x, y) \
+			or _ref_DungeonBoard.has_sprite(_new_MainGroupTag.TRAP, x, y)

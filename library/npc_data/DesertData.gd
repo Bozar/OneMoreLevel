@@ -15,6 +15,7 @@ const HP_BURY: int = 35
 const MAX_SPICE: int = 3
 const MAX_WORM: int = 2
 const MAX_COOLDOWN: int = 3
+const MIN_COOLDOWN: int = 0
 const WORM_DISTANCE: int = 5
 
 const RESTORE_TURN: int = 6
