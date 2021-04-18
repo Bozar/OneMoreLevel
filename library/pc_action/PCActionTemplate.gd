@@ -6,7 +6,15 @@ class_name Game_PCActionTemplate
 
 const INPUT_TAG := preload("res://library/InputTag.gd")
 const OBJECT_STATE_TAG := preload("res://library/ObjectStateTag.gd")
+const SPRITE_TYPE_TAG := preload("res://library/SpriteTypeTag.gd")
 const DUNGEON_SIZE := preload("res://library/DungeonSize.gd")
+
+const INPUT_TO_SPRITE: Dictionary = {
+	INPUT_TAG.MOVE_UP: SPRITE_TYPE_TAG.UP,
+	INPUT_TAG.MOVE_DOWN: SPRITE_TYPE_TAG.DOWN,
+	INPUT_TAG.MOVE_LEFT: SPRITE_TYPE_TAG.LEFT,
+	INPUT_TAG.MOVE_RIGHT: SPRITE_TYPE_TAG.RIGHT,
+}
 
 var message: String setget set_message, get_message
 var end_turn: bool setget set_end_turn, get_end_turn
