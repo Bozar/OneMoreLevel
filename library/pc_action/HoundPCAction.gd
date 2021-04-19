@@ -98,6 +98,9 @@ func interact_with_building() -> void:
 func move() -> void:
 	var ground: Sprite = _ref_DungeonBoard.get_sprite(_new_MainGroupTag.GROUND,
 			_target_position[0], _target_position[1])
+	var hit_position: Array
+	# var actor: Sprite
+	# var hit_point: int = 0
 
 	if _move_diagonally:
 		if _count_input == INPUT_TWICE:
@@ -112,7 +115,18 @@ func move() -> void:
 	else:
 		if _ref_ObjectData.verify_state(ground, _new_ObjectStateTag.DEFAULT):
 			.move()
-			# Try hit NPC.
+			hit_position = _get_hit_position(false)
+			if _can_hit_target(hit_position, false):
+				# actor = _ref_DungeonBoard.get_sprite(_new_MainGroupTag.ACTOR,
+				# 		hit_position[0], hit_position[1])
+				# if actor.is_in_group(_new_SubGroupTag.HOUND_BOSS):
+				# 	_ref_ObjectData.add_hit_point(actor, 1)
+				# 	hit_point = _ref_ObjectData.get_hit_point(actor)
+				_ref_RemoveObject.remove(_new_MainGroupTag.ACTOR,
+						hit_position[0], hit_position[1])
+				# if hit_point == _new_HoundData.BOSS_HIT_POINT:
+				# 	_ref_EndGame.player_win()
+				_ref_CountDown.add_count(_new_HoundData.RESTORE_TURN)
 
 
 func wait() -> void:
@@ -173,3 +187,37 @@ func _switch_pc_sprite(is_active: bool) -> void:
 		_ref_SwitchSprite.switch_sprite(pc, _new_SpriteTypeTag.ACTIVE)
 	else:
 		_ref_SwitchSprite.switch_sprite(pc, _new_SpriteTypeTag.DEFAULT)
+
+
+func _get_hit_position(hit_diagonally: bool) -> Array:
+	var shift_x: int
+	var shift_y: int
+
+	if hit_diagonally:
+		return []
+	else:
+		shift_x = _target_position[0] - _source_position[0]
+		shift_y = _target_position[1] - _source_position[1]
+		if shift_y != 0:
+			shift_y = -shift_y
+		return [shift_y + _target_position[0], shift_x + _target_position[1]]
+
+
+func _can_hit_target(hit_position: Array, hit_diagonally: bool) -> bool:
+	var x: int = hit_position[0]
+	var y: int = hit_position[1]
+	var ground: Sprite
+	var actor: Sprite
+
+	if not (_new_CoordCalculator.is_inside_dungeon(x, y) \
+			and _ref_DungeonBoard.has_sprite(_new_MainGroupTag.ACTOR, x, y)):
+		return false
+
+	ground = _ref_DungeonBoard.get_sprite(_new_MainGroupTag.GROUND, x, y)
+	if _ref_ObjectData.verify_state(ground, _new_ObjectStateTag.ACTIVE) \
+			== hit_diagonally:
+		actor = _ref_DungeonBoard.get_sprite(_new_MainGroupTag.ACTOR, x, y)
+		if actor.is_in_group(_new_SubGroupTag.HOUND_BOSS):
+			return hit_diagonally
+		return true
+	return false
