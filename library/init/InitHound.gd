@@ -4,13 +4,15 @@ extends "res://library/init/WorldTemplate.gd"
 const ROOM_SIZE: int = 4
 const CORRIDOR_WIDTH: int = 1
 const PICK_ROOM: int = 11
+const MAX_WALL: int = 44
 const MIN_X: int = 1
 const MIN_Y: int = 0
-const MIN_SHIFT: = 1
-const MAX_SHIFT: = 3
+const MIN_SHIFT: int = 1
+const MAX_SHIFT: int = 3
 
 var _spr_FloorHound := preload("res://sprite/FloorHound.tscn")
 var _spr_PCHound := preload("res://sprite/PCHound.tscn")
+var _spr_Counter := preload("res://sprite/Counter.tscn")
 
 var _new_HoundData := preload("res://library/npc_data/HoundData.gd").new()
 
@@ -28,6 +30,7 @@ func get_blueprint() -> Array:
 
 
 func _init_wall() -> void:
+	var counter_index: int = _ref_RandomNumber.get_int(0, MAX_WALL)
 	var start_point: Array = _get_top_left_position()
 	var x: int
 	var y: int
@@ -40,9 +43,15 @@ func _init_wall() -> void:
 		neighbor = _new_CoordCalculator.get_neighbor(x, y, 1)
 		for j in neighbor:
 			_occupy_position(j[0], j[1])
-			_add_to_blueprint(_spr_Wall,
-					_new_MainGroupTag.BUILDING, _new_SubGroupTag.WALL,
-					j[0], j[1])
+			if counter_index == 0:
+				_add_to_blueprint(_spr_Counter,
+						_new_MainGroupTag.BUILDING, _new_SubGroupTag.COUNTER,
+						j[0], j[1])
+			else:
+				_add_to_blueprint(_spr_Wall,
+						_new_MainGroupTag.BUILDING, _new_SubGroupTag.WALL,
+						j[0], j[1])
+			counter_index -= 1
 
 
 func _get_top_left_position() -> Array:
@@ -69,5 +78,5 @@ func _create_pc() -> void:
 		neighbor = _new_CoordCalculator.get_neighbor(x, y, 1)
 		for i in neighbor:
 			if not _is_occupied(i[0], i[1]):
-				_init_pc(_new_HoundData.PC_SIGHT, i[0], i[1], _spr_PCHound)
+				_init_pc(_new_HoundData.PC_SIGHT, x, y, _spr_PCHound)
 				return
