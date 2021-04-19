@@ -8,7 +8,7 @@ var _all_grounds: Array = []
 
 
 func _init(parent_node: Node2D).(parent_node) -> void:
-	# _fog_source = [[3, 3, 1]]
+	# _fog_source = [[3, 3, 0]]
 	pass
 
 
