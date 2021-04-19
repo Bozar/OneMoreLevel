@@ -78,6 +78,8 @@ func _create_pc() -> void:
 	while true:
 		x = _ref_RandomNumber.get_x_coord()
 		y = _ref_RandomNumber.get_y_coord()
+		if _is_occupied(x, y):
+			continue
 		neighbor = _new_CoordCalculator.get_neighbor(x, y, 1)
 		for i in neighbor:
 			if not _is_occupied(i[0], i[1]):

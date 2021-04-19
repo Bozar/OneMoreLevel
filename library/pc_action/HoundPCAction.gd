@@ -98,9 +98,6 @@ func interact_with_building() -> void:
 func move() -> void:
 	var ground: Sprite = _ref_DungeonBoard.get_sprite(_new_MainGroupTag.GROUND,
 			_target_position[0], _target_position[1])
-	var hit_position: Array
-	# var actor: Sprite
-	# var hit_point: int = 0
 
 	if _move_diagonally:
 		if _count_input == INPUT_TWICE:
@@ -109,24 +106,13 @@ func move() -> void:
 					and _ref_ObjectData.verify_state(ground,
 							_new_ObjectStateTag.ACTIVE):
 				.move()
-				# Try hit NPC.
+				_attack(_move_diagonally)
 			_count_input = NO_INPUT
 			_switch_pc_sprite(true)
 	else:
 		if _ref_ObjectData.verify_state(ground, _new_ObjectStateTag.DEFAULT):
 			.move()
-			hit_position = _get_hit_position(false)
-			if _can_hit_target(hit_position, false):
-				# actor = _ref_DungeonBoard.get_sprite(_new_MainGroupTag.ACTOR,
-				# 		hit_position[0], hit_position[1])
-				# if actor.is_in_group(_new_SubGroupTag.HOUND_BOSS):
-				# 	_ref_ObjectData.add_hit_point(actor, 1)
-				# 	hit_point = _ref_ObjectData.get_hit_point(actor)
-				_ref_RemoveObject.remove(_new_MainGroupTag.ACTOR,
-						hit_position[0], hit_position[1])
-				# if hit_point == _new_HoundData.BOSS_HIT_POINT:
-				# 	_ref_EndGame.player_win()
-				_ref_CountDown.add_count(_new_HoundData.RESTORE_TURN)
+			_attack(_move_diagonally)
 
 
 func wait() -> void:
@@ -190,22 +176,25 @@ func _switch_pc_sprite(is_active: bool) -> void:
 
 
 func _get_hit_position(hit_diagonally: bool) -> Array:
-	var shift_x: int
-	var shift_y: int
+	var shift_x: int = _target_position[0] - _source_position[0]
+	var shift_y: int = _target_position[1] - _source_position[1]
 
 	if hit_diagonally:
-		return []
+		if shift_x * shift_y > 0:
+			return _new_CoordCalculator.get_mirror_image(
+					_source_position[0], _source_position[1],
+					_source_position[0], _target_position[1], true)
+		else:
+			return _new_CoordCalculator.get_mirror_image(
+					_source_position[0], _source_position[1],
+					_target_position[0], _source_position[1], true)
 	else:
-		shift_x = _target_position[0] - _source_position[0]
-		shift_y = _target_position[1] - _source_position[1]
 		if shift_y != 0:
 			shift_y = -shift_y
 		return [shift_y + _target_position[0], shift_x + _target_position[1]]
 
 
-func _can_hit_target(hit_position: Array, hit_diagonally: bool) -> bool:
-	var x: int = hit_position[0]
-	var y: int = hit_position[1]
+func _can_hit_target(x: int, y: int, hit_diagonally: bool) -> bool:
 	var ground: Sprite
 	var actor: Sprite
 
@@ -221,3 +210,27 @@ func _can_hit_target(hit_position: Array, hit_diagonally: bool) -> bool:
 			return hit_diagonally
 		return true
 	return false
+
+
+func _try_set_and_get_boss_hit_point(x: int, y: int) -> int:
+	var actor: Sprite
+
+	actor = _ref_DungeonBoard.get_sprite(_new_MainGroupTag.ACTOR, x, y)
+	if actor.is_in_group(_new_SubGroupTag.HOUND_BOSS):
+		_ref_ObjectData.add_hit_point(actor, 1)
+		return _ref_ObjectData.get_hit_point(actor)
+	return 0
+
+
+func _attack(attack_diagonally: bool) -> void:
+	var hit_pos: Array
+
+	hit_pos = _get_hit_position(attack_diagonally)
+	if _can_hit_target(hit_pos[0], hit_pos[1], attack_diagonally):
+		if attack_diagonally:
+			if _try_set_and_get_boss_hit_point(hit_pos[0], hit_pos[1]) \
+					== _new_HoundData.MAX_BOSS_HIT_POINT:
+				_ref_EndGame.player_win()
+		_ref_RemoveObject.remove(_new_MainGroupTag.ACTOR,
+				hit_pos[0], hit_pos[1])
+		_ref_CountDown.add_count(_new_HoundData.RESTORE_TURN)
