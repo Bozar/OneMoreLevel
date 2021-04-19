@@ -1,0 +1,41 @@
+[gd_scene load_steps=6 format=2]
+
+[ext_resource path="res://resource/curses_vector_24x36.png" type="Texture" id=1]
+
+[sub_resource type="AtlasTexture" id=4]
+flags = 4
+atlas = ExtResource( 1 )
+region = Rect2( 192, 144, 24, 36 )
+
+[sub_resource type="AtlasTexture" id=1]
+flags = 4
+atlas = ExtResource( 1 )
+region = Rect2( 72, 180, 24, 36 )
+
+[sub_resource type="AtlasTexture" id=2]
+flags = 4
+atlas = ExtResource( 1 )
+region = Rect2( 0, 180, 24, 36 )
+
+[sub_resource type="AtlasTexture" id=3]
+flags = 4
+atlas = ExtResource( 1 )
+region = Rect2( 96, 144, 24, 36 )
+
+[node name="HoundBoss" type="Sprite"]
+
+[node name="default" type="Sprite" parent="."]
+texture = SubResource( 4 )
+region_rect = Rect2( 96, 144, 24, 36 )
+
+[node name="active_1" type="Sprite" parent="."]
+visible = false
+texture = SubResource( 1 )
+
+[node name="active_2" type="Sprite" parent="."]
+visible = false
+texture = SubResource( 2 )
+
+[node name="active_3" type="Sprite" parent="."]
+visible = false
+texture = SubResource( 3 )

@@ -13,6 +13,7 @@ const MAX_SHIFT: int = 3
 var _spr_FloorHound := preload("res://sprite/FloorHound.tscn")
 var _spr_PCHound := preload("res://sprite/PCHound.tscn")
 var _spr_Counter := preload("res://sprite/Counter.tscn")
+var _spr_Hound := preload("res://sprite/Hound.tscn")
 
 var _new_HoundData := preload("res://library/npc_data/HoundData.gd").new()
 
@@ -25,6 +26,8 @@ func get_blueprint() -> Array:
 	_init_wall()
 	_init_floor(_spr_FloorHound)
 	_create_pc()
+	_init_actor(_new_HoundData.MIN_HOUND_GAP, INVALID_COORD, INVALID_COORD,
+			_new_HoundData.MAX_HOUND, _spr_Hound, _new_SubGroupTag.HOUND)
 
 	return _blueprint
 
