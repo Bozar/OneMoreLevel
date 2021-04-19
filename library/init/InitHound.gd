@@ -9,6 +9,7 @@ const MIN_Y: int = 0
 const MIN_SHIFT: = 1
 const MAX_SHIFT: = 3
 
+var _spr_FloorHound := preload("res://sprite/FloorHound.tscn")
 var _spr_PCHound := preload("res://sprite/PCHound.tscn")
 
 var _new_HoundData := preload("res://library/npc_data/HoundData.gd").new()
@@ -20,7 +21,7 @@ func _init(parent_node: Node2D).(parent_node) -> void:
 
 func get_blueprint() -> Array:
 	_init_wall()
-	_init_floor()
+	_init_floor(_spr_FloorHound)
 	_create_pc()
 
 	return _blueprint

@@ -31,7 +31,7 @@ func get_blueprint() -> Array:
 	for _i in range(MAX_RETRY):
 		_init_wall()
 	_fill_hole()
-	_init_floor()
+	_create_floor()
 
 	_create_actor(_spr_PC, _new_SubGroupTag.PC, MIN_PC_DISTANCE)
 	_create_actor(_spr_KnightCaptain, _new_SubGroupTag.KNIGHT_CAPTAIN,
@@ -143,7 +143,7 @@ func _fill_hole() -> void:
 						_new_MainGroupTag.BUILDING, _new_SubGroupTag.WALL, x, y)
 
 
-func _init_floor():
+func _create_floor():
 	for x in range(_new_DungeonSize.MAX_X):
 		for y in range(_new_DungeonSize.MAX_Y):
 			if _get_terrain_marker(x, y) == WALL_MARKER:

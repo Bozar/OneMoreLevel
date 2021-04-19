@@ -82,12 +82,12 @@ func _add_to_blueprint(scene: PackedScene,
 			scene, main_group, sub_group, x, y))
 
 
-func _init_floor() -> void:
+func _init_floor(floor_sprite: PackedScene = _spr_Floor) -> void:
 	for x in range(_new_DungeonSize.MAX_X):
 		for y in range(_new_DungeonSize.MAX_Y):
 			if _is_occupied(x, y):
 				continue
-			_add_to_blueprint(_spr_Floor,
+			_add_to_blueprint(floor_sprite,
 					_new_MainGroupTag.GROUND, _new_SubGroupTag.FLOOR, x, y)
 
 

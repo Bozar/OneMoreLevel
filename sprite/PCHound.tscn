@@ -7,27 +7,27 @@ flags = 4
 atlas = ExtResource( 1 )
 region = Rect2( 0, 144, 24, 36 )
 
-[sub_resource type="AtlasTexture" id=6]
+[sub_resource type="AtlasTexture" id=2]
 flags = 4
 atlas = ExtResource( 1 )
 region = Rect2( 0, 396, 24, 36 )
 
-[sub_resource type="AtlasTexture" id=2]
+[sub_resource type="AtlasTexture" id=3]
 flags = 4
 atlas = ExtResource( 1 )
 region = Rect2( 192, 36, 24, 36 )
 
-[sub_resource type="AtlasTexture" id=3]
+[sub_resource type="AtlasTexture" id=4]
 flags = 4
 atlas = ExtResource( 1 )
 region = Rect2( 216, 36, 24, 36 )
 
-[sub_resource type="AtlasTexture" id=4]
+[sub_resource type="AtlasTexture" id=5]
 flags = 4
 atlas = ExtResource( 1 )
 region = Rect2( 264, 36, 24, 36 )
 
-[sub_resource type="AtlasTexture" id=5]
+[sub_resource type="AtlasTexture" id=6]
 flags = 4
 atlas = ExtResource( 1 )
 region = Rect2( 240, 36, 24, 36 )
@@ -39,20 +39,20 @@ texture = SubResource( 1 )
 
 [node name="active" type="Sprite" parent="."]
 visible = false
-texture = SubResource( 6 )
+texture = SubResource( 2 )
 
 [node name="up" type="Sprite" parent="."]
 visible = false
-texture = SubResource( 2 )
+texture = SubResource( 3 )
 
 [node name="down" type="Sprite" parent="."]
 visible = false
-texture = SubResource( 3 )
+texture = SubResource( 4 )
 
 [node name="left" type="Sprite" parent="."]
 visible = false
-texture = SubResource( 4 )
+texture = SubResource( 5 )
 
 [node name="right" type="Sprite" parent="."]
 visible = false
-texture = SubResource( 5 )
+texture = SubResource( 6 )

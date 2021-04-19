@@ -40,3 +40,6 @@ const LAND: String = "land"
 const SWAMP: String = "swamp"
 
 const DEVIL: String = "devil"
+
+const HOUND: String = "hound"
+const HOUND_BOSS: String = "hound_boss"
