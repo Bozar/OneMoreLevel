@@ -36,5 +36,6 @@ const ORDERED_SPRITE_TYPE: Array = [
 
 
 func convert_digit_to_tag(digit: int) -> String:
-    digit = digit if digit < ORDERED_SPRITE_TYPE.size() else 0
-    return ORDERED_SPRITE_TYPE[digit]
+    if (digit > -1) and (digit < ORDERED_SPRITE_TYPE.size()):
+        return ORDERED_SPRITE_TYPE[digit]
+    return ZERO
