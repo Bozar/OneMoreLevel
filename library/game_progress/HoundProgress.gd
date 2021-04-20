@@ -9,8 +9,8 @@ var _new_HoundData := preload("res://library/npc_data/HoundData.gd").new()
 var _fog_source: Array = []
 var _all_grounds: Array = []
 var _current_hound: int = _new_HoundData.MAX_HOUND
-var _respawn_counter: int = 0
-var _respawn_trigger: bool = true
+var _minion_trigger: bool = false
+var _boss_trigger: bool = true
 
 
 func _init(parent_node: Node2D).(parent_node) -> void:
@@ -26,13 +26,12 @@ func end_world(pc_x: int, pc_y: int) -> void:
 
 func remove_actor(actor: Sprite, x: int, y: int) -> void:
 	if actor.is_in_group(_new_SubGroupTag.HOUND):
+		_fog_source.push_back([x, y, _new_HoundData.MIN_FOG_SIZE])
 		_current_hound -= 1
 		if _current_hound <= _new_HoundData.START_RESPAWN:
-			_respawn_counter = _new_HoundData.MAX_HOUND \
-					- _new_HoundData.START_RESPAWN
-		_fog_source.push_back([x, y, _new_HoundData.MIN_FOG_SIZE])
+			_minion_trigger = true
 	elif actor.is_in_group(_new_SubGroupTag.HOUND_BOSS):
-		_respawn_trigger = true
+		_boss_trigger = true
 
 
 func _add_or_remove_fog() -> void:
@@ -83,11 +82,12 @@ func _set_ground_state(ground: Sprite, is_active: bool) -> void:
 
 
 func _respawn_minion(pc_x: int, pc_y: int) -> void:
-	if _respawn_counter == 0:
+	if not _minion_trigger:
 		return
-	_respawn_counter -= 1
-	_current_hound += 1
 
+	_current_hound += 1
+	if _current_hound == _new_HoundData.MAX_HOUND:
+		_minion_trigger = false
 	_respawn_actor(pc_x, pc_y,
 			_new_HoundData.MIN_MINION_DISTANCE,
 			_new_HoundData.MAX_MINION_DISTANCE,
@@ -95,9 +95,10 @@ func _respawn_minion(pc_x: int, pc_y: int) -> void:
 
 
 func _respawn_boss(pc_x: int, pc_y: int) -> void:
-	if (not _respawn_trigger) or (_current_hound < _new_HoundData.MAX_HOUND):
+	if (not _boss_trigger) or (_current_hound < _new_HoundData.MAX_HOUND):
 		return
-	_respawn_trigger = false
+
+	_boss_trigger = false
 	_respawn_actor(pc_x, pc_y,
 			_new_HoundData.MIN_BOSS_DISTANCE,
 			_new_HoundData.MAX_BOSS_DISTANCE,
@@ -108,20 +109,31 @@ func _respawn_actor(pc_x: int, pc_y: int, min_distance: int, max_distance: int,
 		new_sprite: PackedScene, sub_tag: String) -> void:
 	var x: int
 	var y: int
+	var neighbor: Array
+	var next_loop: bool
 
 	while true:
 		x = _ref_RandomNumber.get_x_coord()
 		y = _ref_RandomNumber.get_y_coord()
+		next_loop = false
 		if _ref_DungeonBoard.has_sprite(_new_MainGroupTag.BUILDING, x, y):
-			continue
+			next_loop = true
 		elif _ref_DungeonBoard.has_sprite(_new_MainGroupTag.ACTOR, x, y):
-			continue
+			next_loop = true
 		elif _new_CoordCalculator.is_inside_range(x, y, pc_x, pc_y,
 				min_distance):
-			continue
+			next_loop = true
 		elif not _new_CoordCalculator.is_inside_range(x, y, pc_x, pc_y,
 				max_distance):
-			continue
+			next_loop = true
 		else:
+			neighbor = _new_CoordCalculator.get_neighbor(x, y,
+					_new_HoundData.MIN_HOUND_GAP)
+			for i in neighbor:
+				if _ref_DungeonBoard.has_sprite(_new_MainGroupTag.ACTOR,
+						i[0], i[1]):
+					next_loop = true
+					break
+		if not next_loop:
 			break
 	_ref_CreateObject.create(new_sprite, _new_MainGroupTag.ACTOR, sub_tag, x, y)
