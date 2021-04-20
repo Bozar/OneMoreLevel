@@ -8,13 +8,12 @@ const MIN_X: int = 1
 const MIN_Y: int = 0
 const MIN_SHIFT: int = 1
 const MAX_SHIFT: int = 3
-const HOUND_BOSS: int = 1
 
 var _spr_FloorHound := preload("res://sprite/FloorHound.tscn")
 var _spr_PCHound := preload("res://sprite/PCHound.tscn")
 var _spr_WallHound := preload("res://sprite/WallHound.tscn")
 var _spr_Hound := preload("res://sprite/Hound.tscn")
-var _spr_HoundBoss := preload("res://sprite/HoundBoss.tscn")
+# var _spr_HoundBoss := preload("res://sprite/HoundBoss.tscn")
 
 var _new_HoundData := preload("res://library/npc_data/HoundData.gd").new()
 
@@ -29,8 +28,8 @@ func get_blueprint() -> Array:
 	_create_pc()
 	_init_actor(_new_HoundData.MIN_HOUND_GAP, INVALID_COORD, INVALID_COORD,
 			_new_HoundData.MAX_HOUND, _spr_Hound, _new_SubGroupTag.HOUND)
-	_init_actor(HOUND_BOSS, INVALID_COORD, INVALID_COORD,
-			HOUND_BOSS, _spr_HoundBoss, _new_SubGroupTag.HOUND_BOSS)
+	# _init_actor(1, INVALID_COORD, INVALID_COORD,
+	# 		1, _spr_HoundBoss, _new_SubGroupTag.HOUND_BOSS)
 
 	return _blueprint
 

@@ -50,8 +50,7 @@ func is_inside_dungeon() -> bool:
 			if .is_inside_dungeon():
 				return true
 			else:
-				_count_input = NO_INPUT
-				_switch_pc_sprite(true)
+				_reset_input_state()
 				return false
 		else:
 			return false
@@ -85,14 +84,12 @@ func is_trap() -> bool:
 
 func attack() -> void:
 	if _move_diagonally:
-		_count_input = NO_INPUT
-		_switch_pc_sprite(true)
+		_reset_input_state()
 
 
 func interact_with_building() -> void:
 	if _move_diagonally:
-		_count_input = NO_INPUT
-		_switch_pc_sprite(true)
+		_reset_input_state()
 
 
 func move() -> void:
@@ -106,20 +103,18 @@ func move() -> void:
 					and _ref_ObjectData.verify_state(ground,
 							_new_ObjectStateTag.ACTIVE):
 				.move()
-				_attack(_move_diagonally)
-			_count_input = NO_INPUT
-			_switch_pc_sprite(true)
+				_try_attack(_move_diagonally)
+			_reset_input_state()
 	else:
 		if _ref_ObjectData.verify_state(ground, _new_ObjectStateTag.DEFAULT):
 			.move()
-			_attack(_move_diagonally)
+			_try_attack(_move_diagonally)
 
 
 func wait() -> void:
 	if _move_diagonally:
 		if _count_input > NO_INPUT:
-			_count_input = NO_INPUT
-			_switch_pc_sprite(true)
+			_reset_input_state()
 		else:
 			.wait()
 	else:
@@ -142,12 +137,11 @@ func _is_checkmate() -> bool:
 
 
 func _set_diagonal_position(direction: String) -> void:
-	var save_source_position: Array
+	var save_source: Array = _source_position
 
-	save_source_position = _source_position
 	_source_position = _target_position
 	.set_target_position(direction)
-	_source_position = save_source_position
+	_source_position = save_source
 
 
 func _block_line_of_sight(x: int, y: int, _opt_arg: Array) -> bool:
@@ -213,24 +207,30 @@ func _can_hit_target(x: int, y: int, hit_diagonally: bool) -> bool:
 
 
 func _try_set_and_get_boss_hit_point(x: int, y: int) -> int:
-	var actor: Sprite
+	var actor: Sprite = _ref_DungeonBoard.get_sprite(_new_MainGroupTag.ACTOR,
+			x, y)
 
-	actor = _ref_DungeonBoard.get_sprite(_new_MainGroupTag.ACTOR, x, y)
 	if actor.is_in_group(_new_SubGroupTag.HOUND_BOSS):
 		_ref_ObjectData.add_hit_point(actor, 1)
 		return _ref_ObjectData.get_hit_point(actor)
 	return 0
 
 
-func _attack(attack_diagonally: bool) -> void:
+func _try_attack(attack_diagonally: bool) -> void:
 	var hit_pos: Array
+	var hit_point: int
 
 	hit_pos = _get_hit_position(attack_diagonally)
-	if _can_hit_target(hit_pos[0], hit_pos[1], attack_diagonally):
-		if attack_diagonally:
-			if _try_set_and_get_boss_hit_point(hit_pos[0], hit_pos[1]) \
-					== _new_HoundData.MAX_BOSS_HIT_POINT:
-				_ref_EndGame.player_win()
-		_ref_RemoveObject.remove(_new_MainGroupTag.ACTOR,
-				hit_pos[0], hit_pos[1])
-		_ref_CountDown.add_count(_new_HoundData.RESTORE_TURN)
+	if not _can_hit_target(hit_pos[0], hit_pos[1], attack_diagonally):
+		return
+
+	hit_point = _try_set_and_get_boss_hit_point(hit_pos[0], hit_pos[1])
+	_ref_RemoveObject.remove(_new_MainGroupTag.ACTOR, hit_pos[0], hit_pos[1])
+	if hit_point == _new_HoundData.MAX_BOSS_HIT_POINT:
+		_ref_EndGame.player_win()
+	_ref_CountDown.add_count(_new_HoundData.RESTORE_TURN)
+
+
+func _reset_input_state() -> void:
+	_count_input = NO_INPUT
+	_switch_pc_sprite(true)
