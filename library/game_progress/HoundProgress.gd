@@ -1,10 +1,16 @@
 extends "res://library/game_progress/ProgressTemplate.gd"
 
 
+var _spr_Hound := preload("res://sprite/Hound.tscn")
+var _spr_HoundBoss := preload("res://sprite/HoundBoss.tscn")
+
 var _new_HoundData := preload("res://library/npc_data/HoundData.gd").new()
 
 var _fog_source: Array = []
 var _all_grounds: Array = []
+var _current_hound: int = _new_HoundData.MAX_HOUND
+var _respawn_counter: int = 0
+var _respawn_trigger: bool = true
 
 
 func _init(parent_node: Node2D).(parent_node) -> void:
@@ -12,13 +18,21 @@ func _init(parent_node: Node2D).(parent_node) -> void:
 	pass
 
 
-func end_world(_pc_x: int, _pc_y: int) -> void:
+func end_world(pc_x: int, pc_y: int) -> void:
+	_respawn_boss(pc_x, pc_y)
+	_respawn_minion(pc_x, pc_y)
 	_add_or_remove_fog()
 
 
 func remove_actor(actor: Sprite, x: int, y: int) -> void:
 	if actor.is_in_group(_new_SubGroupTag.HOUND):
+		_current_hound -= 1
+		if _current_hound <= _new_HoundData.START_RESPAWN:
+			_respawn_counter = _new_HoundData.MAX_HOUND \
+					- _new_HoundData.START_RESPAWN
 		_fog_source.push_back([x, y, _new_HoundData.MIN_FOG_SIZE])
+	elif actor.is_in_group(_new_SubGroupTag.HOUND_BOSS):
+		_respawn_trigger = true
 
 
 func _add_or_remove_fog() -> void:
@@ -66,3 +80,48 @@ func _set_ground_state(ground: Sprite, is_active: bool) -> void:
 	else:
 		_ref_ObjectData.set_state(ground, _new_ObjectStateTag.DEFAULT)
 		_ref_SwitchSprite.switch_sprite(ground, _new_SpriteTypeTag.DEFAULT)
+
+
+func _respawn_minion(pc_x: int, pc_y: int) -> void:
+	if _respawn_counter == 0:
+		return
+	_respawn_counter -= 1
+	_current_hound += 1
+
+	_respawn_actor(pc_x, pc_y,
+			_new_HoundData.MIN_MINION_DISTANCE,
+			_new_HoundData.MAX_MINION_DISTANCE,
+			_spr_Hound, _new_SubGroupTag.HOUND)
+
+
+func _respawn_boss(pc_x: int, pc_y: int) -> void:
+	if (not _respawn_trigger) or (_current_hound < _new_HoundData.MAX_HOUND):
+		return
+	_respawn_trigger = false
+	_respawn_actor(pc_x, pc_y,
+			_new_HoundData.MIN_BOSS_DISTANCE,
+			_new_HoundData.MAX_BOSS_DISTANCE,
+			_spr_HoundBoss, _new_SubGroupTag.HOUND_BOSS)
+
+
+func _respawn_actor(pc_x: int, pc_y: int, min_distance: int, max_distance: int,
+		new_sprite: PackedScene, sub_tag: String) -> void:
+	var x: int
+	var y: int
+
+	while true:
+		x = _ref_RandomNumber.get_x_coord()
+		y = _ref_RandomNumber.get_y_coord()
+		if _ref_DungeonBoard.has_sprite(_new_MainGroupTag.BUILDING, x, y):
+			continue
+		elif _ref_DungeonBoard.has_sprite(_new_MainGroupTag.ACTOR, x, y):
+			continue
+		elif _new_CoordCalculator.is_inside_range(x, y, pc_x, pc_y,
+				min_distance):
+			continue
+		elif not _new_CoordCalculator.is_inside_range(x, y, pc_x, pc_y,
+				max_distance):
+			continue
+		else:
+			break
+	_ref_CreateObject.create(new_sprite, _new_MainGroupTag.ACTOR, sub_tag, x, y)
