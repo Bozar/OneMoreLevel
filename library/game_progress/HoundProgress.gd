@@ -11,6 +11,9 @@ var _all_grounds: Array = []
 var _current_hound: int = _new_HoundData.MAX_HOUND
 var _minion_trigger: bool = false
 var _boss_trigger: bool = true
+var _boss_hit_point: int = 0
+var _all_counters: Array = []
+var _counter_index: int = -1
 
 
 func _init(parent_node: Node2D).(parent_node) -> void:
@@ -24,6 +27,22 @@ func end_world(pc_x: int, pc_y: int) -> void:
 	_add_or_remove_fog()
 
 
+func create_actor(actor: Sprite, sub_group: String, _x: int, _y: int) -> void:
+	if sub_group != _new_SubGroupTag.HOUND_BOSS:
+		return
+
+	_ref_ObjectData.set_hit_point(actor, _boss_hit_point)
+
+	_counter_index += 1
+	if _all_counters.size() == 0:
+		_all_counters = _ref_DungeonBoard.get_sprites_by_tag(
+				_new_SubGroupTag.COUNTER)
+		_new_ArrayHelper.rand_picker(_all_counters, _all_counters.size(),
+				_ref_RandomNumber)
+	_ref_SwitchSprite.switch_sprite(_all_counters[_counter_index],
+			_new_SpriteTypeTag.PASSIVE)
+
+
 func remove_actor(actor: Sprite, x: int, y: int) -> void:
 	if actor.is_in_group(_new_SubGroupTag.HOUND):
 		_fog_source.push_back([x, y, _new_HoundData.MIN_FOG_SIZE])
@@ -32,6 +51,10 @@ func remove_actor(actor: Sprite, x: int, y: int) -> void:
 			_minion_trigger = true
 	elif actor.is_in_group(_new_SubGroupTag.HOUND_BOSS):
 		_boss_trigger = true
+		if _ref_ObjectData.get_hit_point(actor) > _boss_hit_point:
+			_boss_hit_point = _ref_ObjectData.get_hit_point(actor)
+			_ref_SwitchSprite.switch_sprite(_all_counters[_counter_index],
+					_new_SpriteTypeTag.ACTIVE)
 
 
 func _add_or_remove_fog() -> void:
