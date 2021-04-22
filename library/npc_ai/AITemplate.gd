@@ -1,6 +1,8 @@
 class_name Game_AITemplate
 
 
+const INVALID_START_POINT: String = "Unreachable start point."
+
 var print_text: String setget set_print_text, get_print_text
 
 var _ref_ObjectData: Game_ObjectData
@@ -74,16 +76,24 @@ func set_local_var(actor: Sprite) -> void:
 	_pc_pos = _new_ConvertCoord.vector_to_array(pc.position)
 
 
-func _approach_pc() -> void:
+func _approach_pc(opt_passable_arg: Array = [],
+		start_point: Array = [_pc_pos], one_step: int = 1) -> void:
 	var destination: Array
+	var start_here: Array
 
 	_init_dungeon()
-	_dungeon[_pc_pos[0]][ _pc_pos[1]] = _new_PathFindingData.DESTINATION
-	_dungeon = _new_DijkstraPathFinding.get_map(_dungeon, [_pc_pos])
+	for i in start_point:
+		if _dungeon[i[0]][i[1]] == _new_PathFindingData.UNKNOWN:
+			_dungeon[i[0]][i[1]] = _new_PathFindingData.DESTINATION
+			start_here = i
+		else:
+			push_warning(INVALID_START_POINT)
+			return
+	_dungeon = _new_DijkstraPathFinding.get_map(_dungeon, [start_here])
 
 	destination = _new_DijkstraPathFinding.get_path(_dungeon,
-			_self_pos[0], _self_pos[1],
-			self, "_is_passable_func", [])
+			_self_pos[0], _self_pos[1], one_step,
+			self, "_is_passable_func", opt_passable_arg)
 
 	if destination.size() > 0:
 		_new_ArrayHelper.rand_picker(destination, 1, _ref_RandomNumber)

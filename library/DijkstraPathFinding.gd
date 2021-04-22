@@ -7,9 +7,10 @@ var _new_ArrayHelper := preload("res://library/ArrayHelper.gd").new()
 # Call func_host.is_passable_func() to verify if a grid can be entered.
 # is_passable_func(source_array: Array, current_index: int,
 #> opt_arg: Array) -> bool
-func get_path(dungeon: Dictionary, start_x: int, start_y: int,
+func get_path(dungeon: Dictionary, start_x: int, start_y: int, one_step: int,
 		func_host: Object, is_passable_func: String, opt_arg: Array) -> Array:
-	var neighbor: Array = _new_CoordCalculator.get_neighbor(start_x, start_y, 1)
+	var neighbor: Array = _new_CoordCalculator.get_neighbor(start_x, start_y,
+			one_step)
 	var min_distance: int = _new_PathFindingData.OBSTACLE
 	var x: int
 	var y: int
