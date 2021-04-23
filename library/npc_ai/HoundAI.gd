@@ -205,6 +205,7 @@ func _set_pc_hit_point(add_hit_point: int) -> void:
 				break
 		phantom = _ref_CreateObject.create_and_fetch(_spr_Counter,
 				_new_MainGroupTag.ACTOR, _new_SubGroupTag.PHANTOM, x, y)
+		add_hit_point = 0
 	else:
 		phantom = find_phantom[0]
 
