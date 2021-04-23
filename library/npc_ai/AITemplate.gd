@@ -76,20 +76,18 @@ func set_local_var(actor: Sprite) -> void:
 	_pc_pos = _new_ConvertCoord.vector_to_array(pc.position)
 
 
-func _approach_pc(opt_passable_arg: Array = [],
-		start_point: Array = [_pc_pos], one_step: int = 1) -> void:
+func _approach_pc(start_point: Array = [_pc_pos], one_step: int = 1,
+		opt_passable_arg: Array = []) -> void:
 	var destination: Array
-	var start_here: Array
 
 	_init_dungeon()
 	for i in start_point:
 		if _dungeon[i[0]][i[1]] == _new_PathFindingData.UNKNOWN:
 			_dungeon[i[0]][i[1]] = _new_PathFindingData.DESTINATION
-			start_here = i
 		else:
 			push_warning(INVALID_START_POINT)
 			return
-	_dungeon = _new_DijkstraPathFinding.get_map(_dungeon, [start_here])
+	_dungeon = _new_DijkstraPathFinding.get_map(_dungeon, start_point)
 
 	destination = _new_DijkstraPathFinding.get_path(_dungeon,
 			_self_pos[0], _self_pos[1], one_step,
