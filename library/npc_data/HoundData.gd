@@ -10,7 +10,7 @@ const ADD_PC_HIT_POINT_IN_FOG: int = 2
 const MIN_FOG_SIZE: int = 0
 const MAX_FOG_SIZE: int = 5
 const FOG_DURATION: int = 3
-const ABSORB_DURATION: int = 4
+const ABSORB_DURATION: int = 6
 
 const HOUND_SIGHT: int = 6
 const MIN_HOUND_GAP: int = 3

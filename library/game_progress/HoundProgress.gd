@@ -127,12 +127,18 @@ func _add_or_remove_fog() -> void:
 
 
 func _set_ground_state(ground: Sprite, is_active: bool) -> void:
+	var new_sprite_type: String
+
 	if is_active:
 		_ref_ObjectData.set_state(ground, _new_ObjectStateTag.ACTIVE)
-		_ref_SwitchSprite.switch_sprite(ground, _new_SpriteTypeTag.ACTIVE)
+		if _ref_ObjectData.get_hit_point(ground) == 0:
+			new_sprite_type = _new_SpriteTypeTag.ACTIVE_1
+		else:
+			new_sprite_type = _new_SpriteTypeTag.ACTIVE
 	else:
 		_ref_ObjectData.set_state(ground, _new_ObjectStateTag.DEFAULT)
-		_ref_SwitchSprite.switch_sprite(ground, _new_SpriteTypeTag.DEFAULT)
+		new_sprite_type = _new_SpriteTypeTag.DEFAULT
+	_ref_SwitchSprite.switch_sprite(ground, new_sprite_type)
 
 
 func _respawn_minion(pc_x: int, pc_y: int) -> void:
