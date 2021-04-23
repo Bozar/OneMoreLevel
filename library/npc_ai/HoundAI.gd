@@ -197,6 +197,9 @@ func _set_pc_hit_point(add_hit_point: int) -> void:
 			elif _new_CoordCalculator.is_inside_range(x, y,
 					_pc_pos[0], _pc_pos[1], _new_HoundData.MIN_BOSS_DISTANCE):
 				continue
+			elif not _new_CoordCalculator.is_inside_range(x, y,
+					_pc_pos[0], _pc_pos[1], _new_HoundData.MAX_BOSS_DISTANCE):
+				continue
 			else:
 				break
 		phantom = _ref_CreateObject.create_and_fetch(_spr_Counter,

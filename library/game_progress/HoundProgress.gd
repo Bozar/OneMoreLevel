@@ -83,7 +83,8 @@ func _boss_absorb_fog() -> void:
 				i[0], i[1])
 		if ground == null:
 			continue
-		_ref_ObjectData.subtract_hit_point(ground, _new_HoundData.FOG_DURATION)
+		_ref_ObjectData.subtract_hit_point(ground,
+				_new_HoundData.ABSORB_DURATION)
 
 
 func _add_or_remove_fog() -> void:

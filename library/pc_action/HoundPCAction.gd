@@ -16,7 +16,15 @@ func _init(parent_node: Node2D).(parent_node) -> void:
 
 
 func switch_sprite() -> void:
-	_switch_pc_sprite(_move_diagonally)
+	var pc: Sprite = _ref_DungeonBoard.get_pc()
+	var pc_pos: Array = _new_ConvertCoord.vector_to_array(pc.position)
+	var ground: Sprite = _ref_DungeonBoard.get_sprite(_new_MainGroupTag.GROUND,
+			pc_pos[0], pc_pos[1])
+
+	if _ref_ObjectData.verify_state(ground, _new_ObjectStateTag.ACTIVE):
+		_ref_SwitchSprite.switch_sprite(pc, _new_SpriteTypeTag.ACTIVE)
+	else:
+		_ref_SwitchSprite.switch_sprite(pc, _new_SpriteTypeTag.DEFAULT)
 
 
 func set_source_position() -> void:
@@ -164,15 +172,6 @@ func _block_line_of_sight(x: int, y: int, _opt_arg: Array) -> bool:
 		return _ref_DungeonBoard.has_sprite(_new_MainGroupTag.ACTOR, x, y)
 
 
-func _switch_pc_sprite(is_active: bool) -> void:
-	var pc: Sprite = _ref_DungeonBoard.get_pc()
-
-	if is_active:
-		_ref_SwitchSprite.switch_sprite(pc, _new_SpriteTypeTag.ACTIVE)
-	else:
-		_ref_SwitchSprite.switch_sprite(pc, _new_SpriteTypeTag.DEFAULT)
-
-
 func _get_hit_position(hit_diagonally: bool) -> Array:
 	var shift_x: int = _target_position[0] - _source_position[0]
 	var shift_y: int = _target_position[1] - _source_position[1]
@@ -238,7 +237,7 @@ func _try_attack(attack_diagonally: bool) -> void:
 
 func _reset_input_state() -> void:
 	_count_input = NO_INPUT
-	_switch_pc_sprite(true)
+	switch_sprite()
 
 
 func _restore_in_cage() -> void:

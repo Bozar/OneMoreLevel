@@ -1,6 +1,6 @@
 const PC_SIGHT: int = 5
 const RESTORE_TURN: int = 3
-const RESTORE_TURN_IN_CAGE: int = 7
+const RESTORE_TURN_IN_CAGE: int = 5
 const MAX_PC_HIT_POINT: int = 9
 const ADD_PC_HIT_POINT: int = 1
 const ADD_PC_HIT_POINT_IN_FOG: int = 2
@@ -10,6 +10,7 @@ const ADD_PC_HIT_POINT_IN_FOG: int = 2
 const MIN_FOG_SIZE: int = 0
 const MAX_FOG_SIZE: int = 5
 const FOG_DURATION: int = 3
+const ABSORB_DURATION: int = 4
 
 const HOUND_SIGHT: int = 6
 const MIN_HOUND_GAP: int = 3
