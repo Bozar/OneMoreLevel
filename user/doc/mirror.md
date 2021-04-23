@@ -27,7 +27,7 @@ You can press Space to wait 1 turn.
 
 When a phantom in the real world bumps adjacent PC, the real world swaps with the mirror world.
 
-When PC bumps a phantom in the real world, four things happen. Firstly, the countdown timer restores 5 turns. Secondly, the phantom disappers. Thirdly, the phantom's image appears in the mirror world. And lastly, one or more phantoms might appear in the real world as mirror reflections.
+When PC bumps a phantom in the real world, four things happen. Firstly, the countdown timer restores 6 turns. Secondly, the phantom disappers. Thirdly, the phantom's image appears in the mirror world. And lastly, one or more phantoms might appear in the real world as mirror reflections.
 
 There can be at most (5 - crystal) phantom images in the mirror world. Random extra images are removed whenever a new image is created.
 
