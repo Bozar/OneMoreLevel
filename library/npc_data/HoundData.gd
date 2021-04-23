@@ -1,19 +1,21 @@
 const PC_SIGHT: int = 5
-const RESTORE_TURN: int = 5
+const RESTORE_TURN: int = 3
+const RESTORE_EXTRA_TURN: int = 4
+const LOSE_TURN: int = 3
+const LOSE_EXTRA_TURN: int = 2
 
 const MIN_FOG_SIZE: int = 0
 const MAX_FOG_SIZE: int = 5
 const FOG_DURATION: int = 3
 
+const HOUND_SIGHT: int = 6
 const MIN_HOUND_GAP: int = 3
 const MAX_HOUND: int = 10
 const MAX_BOSS_HIT_POINT: int = 3
-const MAX_BOSS_ESCAPE: int = 3
 
 const START_RESPAWN: int = 6
 const MIN_MINION_DISTANCE: int = 5
 const MAX_MINION_DISTANCE: int = 10
 const MIN_BOSS_DISTANCE: int = 10
 const MAX_BOSS_DISTANCE: int = 15
-const MIN_BOSS_DURATION: int = 5
-const MAX_BOSS_DURATION: int = 11
+const BOSS_DURATION: int = 10

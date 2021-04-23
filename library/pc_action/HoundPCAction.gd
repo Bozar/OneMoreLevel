@@ -103,11 +103,13 @@ func move() -> void:
 					and _ref_ObjectData.verify_state(ground,
 							_new_ObjectStateTag.ACTIVE):
 				.move()
+				_restore_in_cage()
 				_try_attack(_move_diagonally)
 			_reset_input_state()
 	else:
 		if _ref_ObjectData.verify_state(ground, _new_ObjectStateTag.DEFAULT):
 			.move()
+			_restore_in_cage()
 			_try_attack(_move_diagonally)
 
 
@@ -117,8 +119,10 @@ func wait() -> void:
 			_reset_input_state()
 		else:
 			.wait()
+			_restore_in_cage()
 	else:
 		.wait()
+		_restore_in_cage()
 
 
 func _is_checkmate() -> bool:
@@ -234,3 +238,19 @@ func _try_attack(attack_diagonally: bool) -> void:
 func _reset_input_state() -> void:
 	_count_input = NO_INPUT
 	_switch_pc_sprite(true)
+
+
+func _restore_in_cage() -> void:
+	var pc: Sprite = _ref_DungeonBoard.get_pc()
+	var pos: Array = _new_ConvertCoord.vector_to_array(pc.position)
+	var neighbor: Array = _new_CoordCalculator.get_neighbor(pos[0], pos[1], 1)
+	var is_surrounded: bool = true
+
+	for i in neighbor:
+		if not _ref_DungeonBoard.has_sprite(_new_MainGroupTag.BUILDING,
+				i[0], i[1]):
+			is_surrounded = false
+			break
+	if is_surrounded:
+		_ref_CountDown.add_count(_new_HoundData.RESTORE_TURN \
+				+ _new_HoundData.RESTORE_EXTRA_TURN)

@@ -2,11 +2,12 @@ extends "res://library/npc_ai/AITemplate.gd"
 
 
 const INIT_DURATION: int = -1
+const ONE_STEP_IN_FOG: int = 1
+const ONE_STEP_OUTSIDE_FOG: int = 2
 
 var _new_HoundData := preload("res://library/npc_data/HoundData.gd").new()
 
 var _boss_duration: int = INIT_DURATION
-var _boss_escape: int = 0
 
 
 func _init(parent_node: Node2D).(parent_node) -> void:
@@ -14,26 +15,49 @@ func _init(parent_node: Node2D).(parent_node) -> void:
 
 
 func take_action() -> void:
+	var is_boss: bool = false
+	var ground: Sprite
+	var is_in_fog: Array = []
+	var self_is_in_fog: bool
+	var pc_is_in_fog: bool
+
 	if _self.is_in_group(_new_SubGroupTag.HOUND_BOSS):
+		is_boss = true
 		if not _boss_countdown():
 			return
 
+	for i in [_self_pos, _pc_pos]:
+		ground = _ref_DungeonBoard.get_sprite(_new_MainGroupTag.GROUND,
+				i[0], i[1])
+		is_in_fog.push_back(_ref_ObjectData.verify_state(ground,
+				_new_ObjectStateTag.ACTIVE))
+	self_is_in_fog = is_in_fog[0]
+	pc_is_in_fog = is_in_fog[1]
+
+	if _can_hit_pc(self_is_in_fog, pc_is_in_fog):
+		_ref_CountDown.subtract_count(_new_HoundData.LOSE_TURN)
+		if pc_is_in_fog:
+			_ref_CountDown.subtract_count(_new_HoundData.LOSE_EXTRA_TURN)
+		# _ref_EndGame.player_lose()
+	elif _can_see_pc(is_boss):
+		_hound_approach(self_is_in_fog, pc_is_in_fog)
+
 	_switch_sprite()
+
+
+func remove_data(actor: Sprite) -> void:
+	if actor.is_in_group(_new_SubGroupTag.HOUND_BOSS):
+		_boss_duration = INIT_DURATION
 
 
 func _switch_sprite() -> void:
 	var pos: Array = _new_ConvertCoord.vector_to_array(_self.position)
 	var ground: Sprite = _ref_DungeonBoard.get_sprite(_new_MainGroupTag.GROUND,
 			pos[0], pos[1])
-	var hit_point: int
 	var sprite_type: String
 
 	if _ref_ObjectData.verify_state(ground, _new_ObjectStateTag.ACTIVE):
-		if _self.is_in_group(_new_SubGroupTag.HOUND_BOSS):
-			hit_point = _ref_ObjectData.get_hit_point(_self)
-			sprite_type = _new_SpriteTypeTag.convert_digit_to_tag(hit_point)
-		else:
-			sprite_type = _new_SpriteTypeTag.ACTIVE
+		sprite_type = _new_SpriteTypeTag.ACTIVE
 	else:
 		sprite_type = _new_SpriteTypeTag.DEFAULT
 	_ref_SwitchSprite.switch_sprite(_self, sprite_type)
@@ -41,24 +65,105 @@ func _switch_sprite() -> void:
 
 func _boss_countdown() -> bool:
 	var boss_to_pc: int
-	var extra_duration: int
+	var hit_point: int
 
 	if _boss_duration == INIT_DURATION:
 		boss_to_pc = _new_CoordCalculator.get_range(_self_pos[0], _self_pos[1],
 				_pc_pos[0], _pc_pos[1])
-		extra_duration = _ref_RandomNumber.get_int(
-				_new_HoundData.MIN_BOSS_DURATION,
-				_new_HoundData.MAX_BOSS_DURATION)
-		_boss_duration = boss_to_pc + extra_duration
+		_boss_duration = boss_to_pc + _new_HoundData.BOSS_DURATION
 
 	if _boss_duration > 0:
 		_boss_duration -= 1
 		return true
 	else:
-		_boss_duration = INIT_DURATION
-		_boss_escape += 1
+		hit_point = _ref_ObjectData.get_hit_point(_self)
+		# If boss is hit by PC, its hit point adds by 1 before it is removed.
+		# Otherwise add hit point by 1 in HoundProgress.
+		# HoundPCAction._try_set_and_get_boss_hit_point().
+		# HoundProgress.remove_actor().
 		_ref_RemoveObject.remove(_new_MainGroupTag.ACTOR,
 				_self_pos[0], _self_pos[1])
-		if _boss_escape == _new_HoundData.MAX_BOSS_ESCAPE:
+		# Player wins if boss leaves the third time.
+		if hit_point + 1 == _new_HoundData.MAX_BOSS_HIT_POINT:
 			_ref_EndGame.player_win()
 		return false
+
+
+func _can_hit_pc(self_is_in_fog: bool, pc_is_in_fog: bool) -> bool:
+	if self_is_in_fog != pc_is_in_fog:
+		return false
+	elif self_is_in_fog:
+		return _new_CoordCalculator.is_inside_range(_self_pos[0], _self_pos[1],
+				_pc_pos[0], _pc_pos[1], ONE_STEP_IN_FOG)
+	else:
+		return _new_CoordCalculator.is_inside_range(_self_pos[0], _self_pos[1],
+				_pc_pos[0], _pc_pos[1], ONE_STEP_OUTSIDE_FOG) \
+						and (_self_pos[0] != _pc_pos[0]) \
+						and (_self_pos[1] != _pc_pos[1])
+
+
+func _can_see_pc(is_boss: bool) -> bool:
+	if is_boss:
+		return true
+	return _new_CoordCalculator.is_inside_range(_self_pos[0], _self_pos[1],
+			_pc_pos[0], _pc_pos[1], _new_HoundData.HOUND_SIGHT)
+
+
+func _hound_approach(self_is_in_fog: bool, pc_is_in_fog: bool) -> void:
+	var start_point: Array
+	var alternative_start: Array = []
+	var one_step: int
+
+	start_point = _new_CoordCalculator.get_neighbor(_pc_pos[0], _pc_pos[1],
+			ONE_STEP_OUTSIDE_FOG)
+	_new_ArrayHelper.filter_element(start_point, self,
+			"_verify_and_get_start_point", [pc_is_in_fog, alternative_start])
+	# PC is in fog and is surrounded by four walls.
+	if start_point.size() == 0:
+		start_point = alternative_start
+
+	if self_is_in_fog:
+		one_step = ONE_STEP_IN_FOG
+	else:
+		one_step = ONE_STEP_OUTSIDE_FOG
+
+	_approach_pc(start_point, one_step, [self_is_in_fog])
+
+
+func _is_passable_func(source_array: Array, current_index: int,
+		opt_arg: Array) -> bool:
+	var x: int = source_array[current_index][0]
+	var y: int = source_array[current_index][1]
+	var self_is_in_fog: bool = opt_arg[0]
+
+	if _ref_DungeonBoard.has_sprite(_new_MainGroupTag.ACTOR, x, y):
+		return false
+	elif self_is_in_fog:
+		return _new_CoordCalculator.is_inside_range(x, y,
+				_self_pos[0], _self_pos[1], 1)
+	else:
+		if _new_CoordCalculator.is_inside_range(x, y,
+				_self_pos[0], _self_pos[1], 1):
+			return true
+		return (x != _self_pos[0]) and (y != _self_pos[1])
+
+
+func _verify_and_get_start_point(source: Array, index: int, opt_arg: Array) \
+		-> bool:
+	var x: int = source[index][0]
+	var y: int = source[index][1]
+	var pc_is_in_fog: bool = opt_arg[0]
+	var alternative_start: Array = opt_arg[1]
+
+	if _ref_DungeonBoard.has_sprite(_new_MainGroupTag.BUILDING, x, y):
+		return false
+
+	if _new_CoordCalculator.is_inside_range(x, y, _pc_pos[0], _pc_pos[1], 1) \
+			or ((x != _pc_pos[0]) and (y != _pc_pos[1])):
+		alternative_start.push_back([x, y])
+
+	if pc_is_in_fog:
+		return _new_CoordCalculator.is_inside_range(x, y,
+				_pc_pos[0], _pc_pos[1], 1)
+	else:
+		return (x != _pc_pos[0]) and (y != _pc_pos[1])

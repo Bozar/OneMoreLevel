@@ -13,7 +13,6 @@ var _minion_trigger: bool = false
 var _boss_trigger: bool = true
 var _boss_hit_point: int = 0
 var _all_counters: Array = []
-var _counter_index: int = -1
 
 
 func _init(parent_node: Node2D).(parent_node) -> void:
@@ -24,6 +23,7 @@ func _init(parent_node: Node2D).(parent_node) -> void:
 func end_world(pc_x: int, pc_y: int) -> void:
 	_respawn_boss(pc_x, pc_y)
 	_respawn_minion(pc_x, pc_y)
+	_boss_absorb_fog()
 	_add_or_remove_fog()
 
 
@@ -33,13 +33,12 @@ func create_actor(actor: Sprite, sub_group: String, _x: int, _y: int) -> void:
 
 	_ref_ObjectData.set_hit_point(actor, _boss_hit_point)
 
-	_counter_index += 1
 	if _all_counters.size() == 0:
 		_all_counters = _ref_DungeonBoard.get_sprites_by_tag(
 				_new_SubGroupTag.COUNTER)
 		_new_ArrayHelper.rand_picker(_all_counters, _all_counters.size(),
 				_ref_RandomNumber)
-	_ref_SwitchSprite.switch_sprite(_all_counters[_counter_index],
+	_ref_SwitchSprite.switch_sprite(_all_counters[_boss_hit_point],
 			_new_SpriteTypeTag.PASSIVE)
 
 
@@ -51,10 +50,40 @@ func remove_actor(actor: Sprite, x: int, y: int) -> void:
 			_minion_trigger = true
 	elif actor.is_in_group(_new_SubGroupTag.HOUND_BOSS):
 		_boss_trigger = true
+		# The boss is hit by PC.
+		# HoundPCAction._try_set_and_get_boss_hit_point().
 		if _ref_ObjectData.get_hit_point(actor) > _boss_hit_point:
-			_boss_hit_point = _ref_ObjectData.get_hit_point(actor)
-			_ref_SwitchSprite.switch_sprite(_all_counters[_counter_index],
+			_ref_SwitchSprite.switch_sprite(_all_counters[_boss_hit_point],
 					_new_SpriteTypeTag.ACTIVE)
+			_boss_hit_point = _ref_ObjectData.get_hit_point(actor)
+		# The boss is removed due to running out of time.
+		# HoundAI._boss_countdown().
+		else:
+			_boss_hit_point += 1
+
+
+func _boss_absorb_fog() -> void:
+	var find_boss: Array = _ref_DungeonBoard.get_sprites_by_tag(
+			_new_SubGroupTag.HOUND_BOSS)
+	var boss_pos: Array
+	var boss_hit_point: int
+	var neighbor: Array
+	var ground: Sprite
+
+	if find_boss.size() == 0:
+		return
+
+	boss_pos = _new_ConvertCoord.vector_to_array(find_boss[0].position)
+	boss_hit_point = _ref_ObjectData.get_hit_point(find_boss[0])
+	neighbor = _new_CoordCalculator.get_neighbor(boss_pos[0], boss_pos[1],
+			boss_hit_point, true)
+
+	for i in neighbor:
+		ground = _ref_DungeonBoard.get_sprite(_new_MainGroupTag.GROUND,
+				i[0], i[1])
+		if ground == null:
+			continue
+		_ref_ObjectData.subtract_hit_point(ground, _new_HoundData.FOG_DURATION)
 
 
 func _add_or_remove_fog() -> void:
@@ -92,6 +121,7 @@ func _add_or_remove_fog() -> void:
 			_ref_ObjectData.subtract_hit_point(i, 1)
 			_set_ground_state(i, true)
 		else:
+			_ref_ObjectData.set_hit_point(i, 0)
 			_set_ground_state(i, false)
 
 
