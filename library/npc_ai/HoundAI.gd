@@ -185,6 +185,7 @@ func _set_pc_hit_point(add_hit_point: int) -> void:
 	var phantom: Sprite
 	var x: int
 	var y: int
+	var new_sprite_type: String
 
 	if find_phantom.size() == 0:
 		while true:
@@ -203,8 +204,7 @@ func _set_pc_hit_point(add_hit_point: int) -> void:
 			else:
 				break
 		phantom = _ref_CreateObject.create_and_fetch(_spr_Counter,
-				_new_MainGroupTag.ACTOR, _new_SubGroupTag.PHANTOM,
-				x, y)
+				_new_MainGroupTag.ACTOR, _new_SubGroupTag.PHANTOM, x, y)
 	else:
 		phantom = find_phantom[0]
 
@@ -212,8 +212,8 @@ func _set_pc_hit_point(add_hit_point: int) -> void:
 	pc_hit_point = min(pc_hit_point, _new_HoundData.MAX_PC_HIT_POINT) as int
 
 	_ref_ObjectData.set_hit_point(pc, pc_hit_point)
-	_ref_SwitchSprite.switch_sprite(phantom,
-			_new_SpriteTypeTag.convert_digit_to_tag(
-					_new_HoundData.MAX_PC_HIT_POINT - pc_hit_point))
+	new_sprite_type = _new_SpriteTypeTag.convert_digit_to_tag(
+			_new_HoundData.MAX_PC_HIT_POINT - pc_hit_point)
+	_ref_SwitchSprite.switch_sprite(phantom, new_sprite_type)
 	if pc_hit_point == _new_HoundData.MAX_PC_HIT_POINT:
 		_ref_EndGame.player_lose()
