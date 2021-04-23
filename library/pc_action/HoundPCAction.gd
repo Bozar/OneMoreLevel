@@ -228,6 +228,7 @@ func _try_attack(attack_diagonally: bool) -> void:
 	if not _can_hit_target(hit_pos[0], hit_pos[1], attack_diagonally):
 		return
 
+	_try_hit_phantom(hit_pos[0], hit_pos[1])
 	hit_point = _try_set_and_get_boss_hit_point(hit_pos[0], hit_pos[1])
 	_ref_RemoveObject.remove(_new_MainGroupTag.ACTOR, hit_pos[0], hit_pos[1])
 	if hit_point == _new_HoundData.MAX_BOSS_HIT_POINT:
@@ -252,5 +253,13 @@ func _restore_in_cage() -> void:
 			is_surrounded = false
 			break
 	if is_surrounded:
-		_ref_CountDown.add_count(_new_HoundData.RESTORE_TURN \
-				+ _new_HoundData.RESTORE_EXTRA_TURN)
+		_ref_CountDown.add_count(_new_HoundData.RESTORE_TURN_IN_CAGE)
+
+
+func _try_hit_phantom(x: int, y: int) -> void:
+	var actor: Sprite = _ref_DungeonBoard.get_sprite(_new_MainGroupTag.ACTOR,
+			x, y)
+	var pc: Sprite = _ref_DungeonBoard.get_pc()
+
+	if actor.is_in_group(_new_SubGroupTag.PHANTOM):
+		_ref_ObjectData.set_hit_point(pc, 0)

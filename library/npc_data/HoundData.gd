@@ -1,8 +1,11 @@
 const PC_SIGHT: int = 5
 const RESTORE_TURN: int = 3
-const RESTORE_EXTRA_TURN: int = 4
-const LOSE_TURN: int = 3
-const LOSE_EXTRA_TURN: int = 2
+const RESTORE_TURN_IN_CAGE: int = 7
+const MAX_PC_HIT_POINT: int = 9
+const ADD_PC_HIT_POINT: int = 1
+const ADD_PC_HIT_POINT_IN_FOG: int = 2
+# const LOSE_TURN: int = 3
+# const LOSE_EXTRA_TURN: int = 2
 
 const MIN_FOG_SIZE: int = 0
 const MAX_FOG_SIZE: int = 5

@@ -5,6 +5,8 @@ const INIT_DURATION: int = -1
 const ONE_STEP_IN_FOG: int = 1
 const ONE_STEP_OUTSIDE_FOG: int = 2
 
+var _spr_Counter := preload("res://sprite/Counter.tscn")
+
 var _new_HoundData := preload("res://library/npc_data/HoundData.gd").new()
 
 var _boss_duration: int = INIT_DURATION
@@ -20,8 +22,11 @@ func take_action() -> void:
 	var is_in_fog: Array = []
 	var self_is_in_fog: bool
 	var pc_is_in_fog: bool
+	var add_hit_point: int
 
-	if _self.is_in_group(_new_SubGroupTag.HOUND_BOSS):
+	if _self.is_in_group(_new_SubGroupTag.PHANTOM):
+		return
+	elif _self.is_in_group(_new_SubGroupTag.HOUND_BOSS):
 		is_boss = true
 		if not _boss_countdown():
 			return
@@ -35,9 +40,12 @@ func take_action() -> void:
 	pc_is_in_fog = is_in_fog[1]
 
 	if _can_hit_pc(self_is_in_fog, pc_is_in_fog):
-		_ref_CountDown.subtract_count(_new_HoundData.LOSE_TURN)
+		add_hit_point = _new_HoundData.ADD_PC_HIT_POINT
+		# _ref_CountDown.subtract_count(_new_HoundData.LOSE_TURN)
 		if pc_is_in_fog:
-			_ref_CountDown.subtract_count(_new_HoundData.LOSE_EXTRA_TURN)
+			add_hit_point = _new_HoundData.ADD_PC_HIT_POINT_IN_FOG
+			# _ref_CountDown.subtract_count(_new_HoundData.LOSE_EXTRA_TURN)
+		_set_pc_hit_point(add_hit_point)
 		# _ref_EndGame.player_lose()
 	elif _can_see_pc(is_boss):
 		_hound_approach(self_is_in_fog, pc_is_in_fog)
@@ -167,3 +175,42 @@ func _verify_and_get_start_point(source: Array, index: int, opt_arg: Array) \
 				_pc_pos[0], _pc_pos[1], 1)
 	else:
 		return (x != _pc_pos[0]) and (y != _pc_pos[1])
+
+
+func _set_pc_hit_point(add_hit_point: int) -> void:
+	var pc: Sprite = _ref_DungeonBoard.get_pc()
+	var pc_hit_point: int = _ref_ObjectData.get_hit_point(pc)
+	var find_phantom: Array = _ref_DungeonBoard.get_sprites_by_tag(
+			_new_SubGroupTag.PHANTOM)
+	var phantom: Sprite
+	var x: int
+	var y: int
+
+	if find_phantom.size() == 0:
+		while true:
+			x = _ref_RandomNumber.get_x_coord()
+			y = _ref_RandomNumber.get_y_coord()
+			if _ref_DungeonBoard.has_sprite(_new_MainGroupTag.BUILDING, x, y):
+				continue
+			elif _ref_DungeonBoard.has_sprite(_new_MainGroupTag.ACTOR, x, y):
+				continue
+			elif _new_CoordCalculator.is_inside_range(x, y,
+					_pc_pos[0], _pc_pos[1], _new_HoundData.MIN_BOSS_DISTANCE):
+				continue
+			else:
+				break
+		phantom = _ref_CreateObject.create_and_fetch(_spr_Counter,
+				_new_MainGroupTag.ACTOR, _new_SubGroupTag.PHANTOM,
+				x, y)
+	else:
+		phantom = find_phantom[0]
+
+	pc_hit_point += add_hit_point
+	pc_hit_point = min(pc_hit_point, _new_HoundData.MAX_PC_HIT_POINT) as int
+
+	_ref_ObjectData.set_hit_point(pc, pc_hit_point)
+	_ref_SwitchSprite.switch_sprite(phantom,
+			_new_SpriteTypeTag.convert_digit_to_tag(
+					_new_HoundData.MAX_PC_HIT_POINT - pc_hit_point))
+	if pc_hit_point == _new_HoundData.MAX_PC_HIT_POINT:
+		_ref_EndGame.player_lose()
