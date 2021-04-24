@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=2]
+[gd_scene load_steps=9 format=2]
 
 [ext_resource path="res://resource/curses_vector_24x36.png" type="Texture" id=1]
 
@@ -15,19 +15,24 @@ region = Rect2( 0, 396, 24, 36 )
 [sub_resource type="AtlasTexture" id=3]
 flags = 4
 atlas = ExtResource( 1 )
-region = Rect2( 192, 36, 24, 36 )
+region = Rect2( 264, 470, 24, 30 )
 
 [sub_resource type="AtlasTexture" id=4]
 flags = 4
 atlas = ExtResource( 1 )
-region = Rect2( 216, 36, 24, 36 )
+region = Rect2( 192, 36, 24, 36 )
 
 [sub_resource type="AtlasTexture" id=5]
 flags = 4
 atlas = ExtResource( 1 )
-region = Rect2( 264, 36, 24, 36 )
+region = Rect2( 216, 36, 24, 36 )
 
 [sub_resource type="AtlasTexture" id=6]
+flags = 4
+atlas = ExtResource( 1 )
+region = Rect2( 264, 36, 24, 36 )
+
+[sub_resource type="AtlasTexture" id=7]
 flags = 4
 atlas = ExtResource( 1 )
 region = Rect2( 240, 36, 24, 36 )
@@ -41,18 +46,22 @@ texture = SubResource( 1 )
 visible = false
 texture = SubResource( 2 )
 
-[node name="up" type="Sprite" parent="."]
+[node name="active_1" type="Sprite" parent="."]
 visible = false
 texture = SubResource( 3 )
 
-[node name="down" type="Sprite" parent="."]
+[node name="up" type="Sprite" parent="."]
 visible = false
 texture = SubResource( 4 )
 
-[node name="left" type="Sprite" parent="."]
+[node name="down" type="Sprite" parent="."]
 visible = false
 texture = SubResource( 5 )
 
-[node name="right" type="Sprite" parent="."]
+[node name="left" type="Sprite" parent="."]
 visible = false
 texture = SubResource( 6 )
+
+[node name="right" type="Sprite" parent="."]
+visible = false
+texture = SubResource( 7 )

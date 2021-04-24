@@ -22,7 +22,10 @@ func switch_sprite() -> void:
 			pc_pos[0], pc_pos[1])
 
 	if _ref_ObjectData.verify_state(ground, _new_ObjectStateTag.ACTIVE):
-		_ref_SwitchSprite.switch_sprite(pc, _new_SpriteTypeTag.ACTIVE)
+		if _ref_ObjectData.get_hit_point(ground) == 0:
+			_ref_SwitchSprite.switch_sprite(pc, _new_SpriteTypeTag.ACTIVE_1)
+		else:
+			_ref_SwitchSprite.switch_sprite(pc, _new_SpriteTypeTag.ACTIVE)
 	else:
 		_ref_SwitchSprite.switch_sprite(pc, _new_SpriteTypeTag.DEFAULT)
 
