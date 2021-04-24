@@ -116,13 +116,14 @@ func _set_ground_state(ground: Sprite, is_active: bool) -> void:
 
 
 func _respawn_minion(pc_x: int, pc_y: int) -> void:
+	# Once respawn is started, keep adding 1 hound every turn until there are 10
+	# hounds.
+	if _current_hound == _new_HoundData.MAX_HOUND:
+		_minion_trigger = false
 	if not _minion_trigger:
 		return
 
 	_current_hound += 1
-	# If player kills the tenth hound during respawn, the boss will not appear.
-	# if _current_hound == _new_HoundData.MAX_HOUND:
-	# 	_minion_trigger = false
 	_respawn_actor(pc_x, pc_y,
 			_new_HoundData.MIN_MINION_DISTANCE,
 			_new_HoundData.MAX_MINION_DISTANCE,
@@ -134,7 +135,6 @@ func _respawn_boss(pc_x: int, pc_y: int) -> void:
 		return
 
 	_boss_trigger = false
-	_minion_trigger = false
 	_respawn_actor(pc_x, pc_y,
 			_new_HoundData.MIN_BOSS_DISTANCE,
 			_new_HoundData.MAX_BOSS_DISTANCE,
