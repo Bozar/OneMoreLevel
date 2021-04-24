@@ -10,6 +10,7 @@ var _spr_Counter := preload("res://sprite/Counter.tscn")
 var _new_HoundData := preload("res://library/npc_data/HoundData.gd").new()
 
 var _boss_duration: int = INIT_DURATION
+var _player_lose: bool = false
 
 
 func _init(parent_node: Node2D).(parent_node) -> void:
@@ -50,6 +51,8 @@ func take_action() -> void:
 	elif _can_see_pc(is_boss):
 		_hound_approach(self_is_in_fog, pc_is_in_fog)
 
+	if is_boss and (not _player_lose):
+		_boss_absorb_fog()
 	_switch_sprite()
 
 
@@ -217,4 +220,27 @@ func _set_pc_hit_point(add_hit_point: int) -> void:
 			_new_HoundData.MAX_PC_HIT_POINT - pc_hit_point)
 	_ref_SwitchSprite.switch_sprite(phantom, new_sprite_type)
 	if pc_hit_point == _new_HoundData.MAX_PC_HIT_POINT:
+		_player_lose = true
 		_ref_EndGame.player_lose()
+
+
+func _boss_absorb_fog() -> void:
+	var hit_point: int = _ref_ObjectData.get_hit_point(_self)
+	var pos: Array = _new_ConvertCoord.vector_to_array(_self.position)
+	var neighbor: Array = _new_CoordCalculator.get_neighbor(pos[0], pos[1],
+			hit_point, true)
+	var ground: Sprite
+
+	for i in neighbor:
+		ground = _ref_DungeonBoard.get_sprite(_new_MainGroupTag.GROUND,
+				i[0], i[1])
+		# Change ground hit point but leave state unchanged. Update state in
+		# HoundProgress._add_or_remove_fog().
+		if (ground == null) or (_ref_ObjectData.verify_state(ground,
+				_new_ObjectStateTag.DEFAULT)):
+			continue
+		_ref_ObjectData.subtract_hit_point(ground,
+				_new_HoundData.ABSORB_DURATION)
+		if _ref_ObjectData.get_hit_point(ground) < 1:
+			_ref_ObjectData.set_hit_point(ground, 0)
+			_ref_SwitchSprite.switch_sprite(ground, _new_SpriteTypeTag.ACTIVE_1)

@@ -23,7 +23,6 @@ func _init(parent_node: Node2D).(parent_node) -> void:
 func end_world(pc_x: int, pc_y: int) -> void:
 	_respawn_boss(pc_x, pc_y)
 	_respawn_minion(pc_x, pc_y)
-	_boss_absorb_fog()
 	_add_or_remove_fog()
 
 
@@ -60,31 +59,6 @@ func remove_actor(actor: Sprite, x: int, y: int) -> void:
 		# HoundAI._boss_countdown().
 		else:
 			_boss_hit_point += 1
-
-
-func _boss_absorb_fog() -> void:
-	var find_boss: Array = _ref_DungeonBoard.get_sprites_by_tag(
-			_new_SubGroupTag.HOUND_BOSS)
-	var boss_pos: Array
-	var boss_hit_point: int
-	var neighbor: Array
-	var ground: Sprite
-
-	if find_boss.size() == 0:
-		return
-
-	boss_pos = _new_ConvertCoord.vector_to_array(find_boss[0].position)
-	boss_hit_point = _ref_ObjectData.get_hit_point(find_boss[0])
-	neighbor = _new_CoordCalculator.get_neighbor(boss_pos[0], boss_pos[1],
-			boss_hit_point, true)
-
-	for i in neighbor:
-		ground = _ref_DungeonBoard.get_sprite(_new_MainGroupTag.GROUND,
-				i[0], i[1])
-		if ground == null:
-			continue
-		_ref_ObjectData.subtract_hit_point(ground,
-				_new_HoundData.ABSORB_DURATION)
 
 
 func _add_or_remove_fog() -> void:
