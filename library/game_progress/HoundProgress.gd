@@ -120,8 +120,9 @@ func _respawn_minion(pc_x: int, pc_y: int) -> void:
 		return
 
 	_current_hound += 1
-	if _current_hound == _new_HoundData.MAX_HOUND:
-		_minion_trigger = false
+	# If player kills the tenth hound during respawn, the boss will not appear.
+	# if _current_hound == _new_HoundData.MAX_HOUND:
+	# 	_minion_trigger = false
 	_respawn_actor(pc_x, pc_y,
 			_new_HoundData.MIN_MINION_DISTANCE,
 			_new_HoundData.MAX_MINION_DISTANCE,
@@ -133,6 +134,7 @@ func _respawn_boss(pc_x: int, pc_y: int) -> void:
 		return
 
 	_boss_trigger = false
+	_minion_trigger = false
 	_respawn_actor(pc_x, pc_y,
 			_new_HoundData.MIN_BOSS_DISTANCE,
 			_new_HoundData.MAX_BOSS_DISTANCE,
