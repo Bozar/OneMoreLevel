@@ -123,7 +123,7 @@ func _remove_frog() -> void:
 
 	for i in frog:
 		pos = _new_ConvertCoord.vector_to_array(i.position)
-		_ref_RemoveObject.remove(_new_MainGroupTag.ACTOR, pos[0], pos[1])
+		_ref_RemoveObject.remove_actor(pos[0], pos[1])
 
 
 func _refresh_counter() -> void:
@@ -144,8 +144,7 @@ func _filter_create_frog(source: Array, index: int, opt_arg: Array) -> bool:
 
 	if _new_CoordCalculator.is_inside_range(x, y, pc_x, pc_y,
 			_new_FrogData.MIN_DISTANCE) \
-					or _ref_DungeonBoard.has_sprite(
-							_new_MainGroupTag.ACTOR, x, y):
+					or _ref_DungeonBoard.has_actor(x, y):
 		return false
 	return true
 

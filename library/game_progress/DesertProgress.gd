@@ -69,7 +69,7 @@ func _create_worm_head(retry: int) -> void:
 			_new_DesertData.WORM_DISTANCE, true)
 
 	for i in neighbor:
-		if _ref_DungeonBoard.has_sprite(_new_MainGroupTag.ACTOR, i[0], i[1]):
+		if _ref_DungeonBoard.has_actor(i[0], i[1]):
 			_create_worm_head(retry)
 			return
 
@@ -77,12 +77,12 @@ func _create_worm_head(retry: int) -> void:
 		_create_worm_head(retry + 1)
 		return
 
-	_ref_RemoveObject.remove(_new_MainGroupTag.BUILDING, x, y)
-	_ref_RemoveObject.remove(_new_MainGroupTag.TRAP, x, y)
-	_ref_CreateObject.create(_spr_WormHead,
-			_new_MainGroupTag.ACTOR, _new_SubGroupTag.WORM_HEAD, x, y)
+	_ref_RemoveObject.remove_building(x, y)
+	_ref_RemoveObject.remove_trap(x, y)
+	_ref_CreateObject.create(_spr_WormHead, _new_MainGroupTag.ACTOR,
+			_new_SubGroupTag.WORM_HEAD, x, y)
 
 
 func _has_building_or_trap(x: int, y: int) -> bool:
-	return _ref_DungeonBoard.has_sprite(_new_MainGroupTag.BUILDING, x, y) \
-			or _ref_DungeonBoard.has_sprite(_new_MainGroupTag.TRAP, x, y)
+	return _ref_DungeonBoard.has_building(x, y) \
+			or _ref_DungeonBoard.has_trap(x, y)

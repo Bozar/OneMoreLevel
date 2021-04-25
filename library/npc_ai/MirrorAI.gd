@@ -44,15 +44,13 @@ func _attack() -> void:
 func _move() -> void:
 	var new_position: Array
 
-	if _ref_DungeonBoard.has_sprite(_new_MainGroupTag.TRAP,
-			_self_pos[0], _self_pos[1]):
+	if _ref_DungeonBoard.has_trap(_self_pos[0], _self_pos[1]):
 		_ref_SwitchSprite.switch_sprite(_self, _new_SpriteTypeTag.DEFAULT)
 
 	_approach_pc()
 
 	new_position = _new_ConvertCoord.vector_to_array(_self.position)
-	if _ref_DungeonBoard.has_sprite(_new_MainGroupTag.TRAP,
-			new_position[0], new_position[1]):
+	if _ref_DungeonBoard.has_trap(new_position[0], new_position[1]):
 		_ref_SwitchSprite.switch_sprite(_self, _new_SpriteTypeTag.ACTIVE)
 
 
@@ -61,8 +59,7 @@ func _switch_pc_and_image() -> void:
 			_pc_pos[0], _pc_pos[1], _new_DungeonSize.CENTER_X, _pc_pos[1])
 	var pc: Sprite = _ref_DungeonBoard.get_pc()
 
-	if _ref_DungeonBoard.has_sprite(_new_MainGroupTag.TRAP,
-			_pc_pos[0], _pc_pos[1]):
+	if _ref_DungeonBoard.has_trap(_pc_pos[0], _pc_pos[1]):
 		_ref_SwitchSprite.switch_sprite(pc, _new_SpriteTypeTag.DEFAULT)
 		_trap_pos = _pc_pos
 
@@ -81,8 +78,7 @@ func _set_npc_state() -> void:
 		elif _ref_ObjectData.verify_state(i, _new_ObjectStateTag.DEFAULT):
 			_ref_ObjectData.set_state(i, _new_ObjectStateTag.PASSIVE)
 			npc_pos = _new_ConvertCoord.vector_to_array(i.position)
-			if _ref_DungeonBoard.has_sprite(_new_MainGroupTag.TRAP,
-					npc_pos[0], npc_pos[1]):
+			if _ref_DungeonBoard.has_trap(npc_pos[0], npc_pos[1]):
 				_ref_SwitchSprite.switch_sprite(i, _new_SpriteTypeTag.DEFAULT)
 				_trap_pos = npc_pos
 		else:
@@ -91,5 +87,4 @@ func _set_npc_state() -> void:
 
 func _try_remove_trap() -> void:
 	if _trap_pos.size() == 2:
-		_ref_RemoveObject.remove(_new_MainGroupTag.TRAP,
-				_trap_pos[0], _trap_pos[1])
+		_ref_RemoveObject.remove_trap(_trap_pos[0], _trap_pos[1])

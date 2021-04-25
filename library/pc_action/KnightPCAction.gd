@@ -11,7 +11,7 @@ func _init(parent_node: Node2D).(parent_node) -> void:
 
 
 func attack() -> void:
-	var npc: Sprite = _ref_DungeonBoard.get_sprite(_new_MainGroupTag.ACTOR,
+	var npc: Sprite = _ref_DungeonBoard.get_actor(
 			_target_position[0], _target_position[1])
 
 	if _ref_ObjectData.verify_state(npc, _new_ObjectStateTag.DEFAULT):
@@ -58,12 +58,9 @@ func _is_checkmate() -> bool:
 		if not (_ref_DangerZone.is_in_danger(i[0], i[1]) \
 				or _is_occupied(i[0], i[1])):
 			return false
-		elif _ref_DungeonBoard.has_sprite(_new_MainGroupTag.ACTOR,
-				i[0], i[1]):
-			actor = _ref_DungeonBoard.get_sprite(_new_MainGroupTag.ACTOR,
-					i[0], i[1])
-			if _ref_ObjectData.verify_state(actor,
-					_new_ObjectStateTag.ACTIVE):
+		elif _ref_DungeonBoard.has_actor(i[0], i[1]):
+			actor = _ref_DungeonBoard.get_actor(i[0], i[1])
+			if _ref_ObjectData.verify_state(actor, _new_ObjectStateTag.ACTIVE):
 				mirror = _new_CoordCalculator.get_mirror_image(
 						x, y, i[0], i[1])
 				if (mirror.size() >= 2) \
@@ -73,8 +70,7 @@ func _is_checkmate() -> bool:
 
 
 func _hit_knight() -> void:
-	_ref_RemoveObject.remove(_new_MainGroupTag.ACTOR,
-			_target_position[0], _target_position[1])
+	_ref_RemoveObject.remove_actor(_target_position[0], _target_position[1])
 
 
 func _hit_boss(boss: Sprite) -> void:

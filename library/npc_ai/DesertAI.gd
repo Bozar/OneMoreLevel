@@ -78,7 +78,7 @@ func _create_body(id: int, index: int, x: int, y: int) -> void:
 		_ref_CreateObject.create(_spr_WormBody,
 				_new_MainGroupTag.ACTOR, _new_SubGroupTag.WORM_BODY, x, y)
 
-	worm_body = _ref_DungeonBoard.get_sprite(_new_MainGroupTag.ACTOR, x, y)
+	worm_body = _ref_DungeonBoard.get_actor(x, y)
 	_id_to_worm[id][index] = worm_body
 
 	if is_active:
@@ -105,7 +105,7 @@ func _try_random_walk(id: int) -> bool:
 			neighbor.push_back(mirror)
 
 	for i in neighbor:
-		if _ref_DungeonBoard.has_sprite(_new_MainGroupTag.ACTOR, i[0], i[1]) \
+		if _ref_DungeonBoard.has_actor(i[0], i[1]) \
 				and (not _is_pc_pos(i[0], i[1])):
 			continue
 		candidate.push_back(i)
@@ -120,8 +120,8 @@ func _try_random_walk(id: int) -> bool:
 		_ref_EndGame.player_lose()
 		return false
 
-	_ref_RemoveObject.remove(_new_MainGroupTag.BUILDING, move_to[0], move_to[1])
-	_ref_RemoveObject.remove(_new_MainGroupTag.TRAP, move_to[0], move_to[1])
+	_ref_RemoveObject.remove_building(move_to[0], move_to[1])
+	_ref_RemoveObject.remove_trap(move_to[0], move_to[1])
 
 	_set_danger_zone(_self, false)
 	_ref_DungeonBoard.move_sprite(_new_MainGroupTag.ACTOR,
@@ -167,7 +167,7 @@ func _bury_worm(id: int) -> void:
 		if i == null:
 			break
 		pos = _new_ConvertCoord.vector_to_array(i.position)
-		_ref_RemoveObject.remove(_new_MainGroupTag.ACTOR, pos[0], pos[1])
+		_ref_RemoveObject.remove_actor(pos[0], pos[1])
 		if _ref_RandomNumber.get_percent_chance(create_spice):
 			_ref_CreateObject.create(_spr_Treasure,
 					_new_MainGroupTag.TRAP, _new_SubGroupTag.TREASURE,

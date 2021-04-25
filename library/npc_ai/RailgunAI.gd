@@ -29,7 +29,7 @@ func take_action() -> void:
 		# 	_self.modulate = _ref_Palette.DEBUG
 		# 	print("gunshot")
 		_approach_pc()
-		_try_remove_trap()
+		_ref_RemoveObject.remove_trap(_target_pos[0], _target_pos[1])
 
 
 func _switch_mode(aim_mode: bool) -> void:
@@ -69,8 +69,7 @@ func _attack() -> void:
 						_new_SpriteTypeTag.ACTIVE_1)
 				_self.visible = true
 			else:
-				_ref_RemoveObject.remove(_new_MainGroupTag.ACTOR,
-						self_x, self_y)
+				_ref_RemoveObject.remove_actor(self_x, self_y)
 				_ref_CreateObject.create(_spr_Treasure,
 						_new_MainGroupTag.TRAP, _new_SubGroupTag.TREASURE,
 						self_x, self_y)
@@ -123,18 +122,11 @@ func _get_hit_point(shift_x: int, shift_y: int) -> int:
 
 func _block_ray(x: int, y: int) -> bool:
 	return (not _new_CoordCalculator.is_inside_dungeon(x, y)) \
-			or _ref_DungeonBoard.has_sprite(_new_MainGroupTag.BUILDING, x, y)
+			or _ref_DungeonBoard.has_building(x, y)
 
 
 func _is_actor(x: int, y: int) -> bool:
-	return _ref_DungeonBoard.has_sprite(_new_MainGroupTag.ACTOR, x, y)
-
-
-func _try_remove_trap() -> void:
-	if _ref_DungeonBoard.has_sprite(_new_MainGroupTag.TRAP,
-			_target_pos[0], _target_pos[1]):
-		_ref_RemoveObject.remove(_new_MainGroupTag.TRAP,
-				_target_pos[0], _target_pos[1])
+	return _ref_DungeonBoard.has_actor(x, y)
 
 
 func _detect_pc() -> bool:

@@ -91,8 +91,7 @@ func _switch_ground(danger_zone: Array) -> void:
 	var sprite_type: String
 
 	for i in danger_zone:
-		ground_sprite= _ref_DungeonBoard.get_sprite(_new_MainGroupTag.GROUND,
-				i[0], i[1])
+		ground_sprite= _ref_DungeonBoard.get_ground(i[0], i[1])
 		if _ref_DangerZone.is_in_danger(i[0], i[1]):
 			sprite_type = _new_SpriteTypeTag.ACTIVE
 		else:
@@ -110,8 +109,7 @@ func _get_danger_zone() -> Array:
 	var danger_zone: Array
 
 	for i in neighbor:
-		if _ref_DungeonBoard.has_sprite(
-				_new_MainGroupTag.BUILDING, i[0], i[1]):
+		if _ref_DungeonBoard.has_building(i[0], i[1]):
 			continue
 		elif (i[0] == _self_pos[0]) and (i[1] == _self_pos[1]):
 			continue
@@ -173,8 +171,7 @@ func _try_hit_pc(danger_zone: Array) -> void:
 	var victim: Sprite
 
 	for i in danger_zone:
-		victim = _ref_DungeonBoard.get_sprite(_new_MainGroupTag.ACTOR,
-				i[0], i[1])
+		victim = _ref_DungeonBoard.get_actor(i[0], i[1])
 		if victim == null:
 			continue
 		if victim.is_in_group(_new_SubGroupTag.PC):
@@ -183,7 +180,7 @@ func _try_hit_pc(danger_zone: Array) -> void:
 		elif victim.is_in_group(_new_SubGroupTag.KNIGHT) \
 				and _ref_ObjectData.verify_state(victim,
 						_new_ObjectStateTag.PASSIVE):
-			_ref_RemoveObject.remove(_new_MainGroupTag.ACTOR, i[0], i[1])
+			_ref_RemoveObject.remove_actor(i[0], i[1])
 			_ref_CountDown.add_count(_new_KnightData.RESTORE_TURN)
 
 

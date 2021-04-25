@@ -30,12 +30,11 @@ func wait() -> void:
 
 
 func attack() -> void:
-	var worm: Sprite = _ref_DungeonBoard.get_sprite(_new_MainGroupTag.ACTOR,
+	var worm: Sprite = _ref_DungeonBoard.get_actor(
 			_target_position[0], _target_position[1])
 	var is_active_spice: bool = _ref_ObjectData.verify_state(
 			worm, _new_ObjectStateTag.ACTIVE)
-	var pc: Sprite = _ref_DungeonBoard.get_sprite(_new_MainGroupTag.ACTOR,
-			_source_position[0], _source_position[1])
+	var pc: Sprite = _ref_DungeonBoard.get_pc()
 
 	if (not worm.is_in_group(_new_SubGroupTag.WORM_SPICE)) \
 			or _ref_ObjectData.verify_state(worm, _new_ObjectStateTag.PASSIVE):
@@ -68,8 +67,8 @@ func _remove_building_or_trap() -> void:
 	var x: int = _target_position[0]
 	var y: int = _target_position[1]
 
-	_ref_RemoveObject.remove(_new_MainGroupTag.BUILDING, x, y)
-	_ref_RemoveObject.remove(_new_MainGroupTag.TRAP, x, y)
+	_ref_RemoveObject.remove_building(x, y)
+	_ref_RemoveObject.remove_trap(x, y)
 	end_turn = true
 
 
@@ -87,8 +86,7 @@ func _is_checkmate() -> bool:
 	var is_passive: bool
 
 	for i in neighbor:
-		actor = _ref_DungeonBoard.get_sprite(_new_MainGroupTag.ACTOR,
-				i[0], i[1])
+		actor = _ref_DungeonBoard.get_actor(i[0], i[1])
 		if actor == null:
 			continue
 

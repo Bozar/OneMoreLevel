@@ -94,4 +94,4 @@ func _add_or_remove_ground(add_ground: bool, x: int, y: int,
 		_ref_CreateObject.create(new_sprite, _new_MainGroupTag.GROUND, sub_tag,
 				x, y)
 	else:
-		_ref_RemoveObject.remove(_new_MainGroupTag.GROUND, x, y)
+		_ref_RemoveObject.remove_ground(x, y)

@@ -109,7 +109,7 @@ func _init_dungeon() -> void:
 
 	for x in range(_new_DungeonSize.MAX_X):
 		for y in range(_new_DungeonSize.MAX_Y):
-			if _ref_DungeonBoard.has_sprite(_new_MainGroupTag.BUILDING, x, y):
+			if _ref_DungeonBoard.has_building(x, y):
 				_dungeon[x][y] = _new_PathFindingData.OBSTACLE
 			else:
 				_dungeon[x][y] = _new_PathFindingData.UNKNOWN
@@ -119,4 +119,4 @@ func _is_passable_func(source_array: Array, current_index: int,
 		_opt_arg: Array) -> bool:
 	var x: int = source_array[current_index][0]
 	var y: int = source_array[current_index][1]
-	return not _ref_DungeonBoard.has_sprite(_new_MainGroupTag.ACTOR, x, y)
+	return not _ref_DungeonBoard.has_actor(x, y)

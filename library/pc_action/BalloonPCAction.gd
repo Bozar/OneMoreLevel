@@ -44,8 +44,7 @@ func wait() -> void:
 	var add_count: bool = false
 
 	_wind_blow()
-	if _ref_DungeonBoard.has_sprite(_new_MainGroupTag.TRAP,
-			_source_position[0], _source_position[1]):
+	if _ref_DungeonBoard.has_trap(_source_position[0], _source_position[1]):
 		add_count = _reach_destination(_source_position[0], _source_position[1])
 	_end_turn_or_game(add_count)
 
@@ -80,7 +79,7 @@ func set_target_position(direction: String) -> void:
 
 
 func _wind_blow() -> void:
-	var pc: Sprite = _ref_DungeonBoard.get_sprite(_new_MainGroupTag.ACTOR,
+	var pc: Sprite = _ref_DungeonBoard.get_actor(
 			_source_position[0], _source_position[1])
 	var wind_direction: Array = _new_ObjectStateTag.DIRECTION_TO_COORD[ \
 			_ref_ObjectData.get_state(pc)]
@@ -90,8 +89,7 @@ func _wind_blow() -> void:
 	]
 
 	new_position = _try_move_over_border(new_position)
-	if _ref_DungeonBoard.has_sprite(_new_MainGroupTag.BUILDING,
-			new_position[0], new_position[1]):
+	if _ref_DungeonBoard.has_building(new_position[0], new_position[1]):
 		_bounce_off(_source_position[0], _source_position[1],
 				new_position[0], new_position[1])
 	else:
@@ -113,8 +111,7 @@ func _try_move_over_border(position: Array) -> Array:
 
 
 func _reach_destination(x: int, y: int) -> bool:
-	var beacon: Sprite = _ref_DungeonBoard.get_sprite(_new_MainGroupTag.TRAP,
-			x, y)
+	var beacon: Sprite = _ref_DungeonBoard.get_trap(x, y)
 	var add_count: bool = false
 
 	if _ref_ObjectData.verify_state(beacon, _new_ObjectStateTag.DEFAULT):
@@ -133,8 +130,7 @@ func _bounce_off(pc_x: int, pc_y: int, wall_x: int, wall_y: int) -> void:
 			wall_x, wall_y, pc_x, pc_y, true)
 	new_position = _try_move_over_border(new_position)
 
-	if not _ref_DungeonBoard.has_sprite(_new_MainGroupTag.BUILDING,
-			new_position[0], new_position[1]):
+	if not _ref_DungeonBoard.has_building(new_position[0], new_position[1]):
 		_ref_DungeonBoard.move_sprite(_new_MainGroupTag.ACTOR, pc_x, pc_y,
 				new_position[0], new_position[1])
 

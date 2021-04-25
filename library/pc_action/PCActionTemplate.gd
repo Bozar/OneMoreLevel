@@ -99,17 +99,16 @@ func is_inside_dungeon() -> bool:
 
 
 func is_npc() -> bool:
-	return _ref_DungeonBoard.has_sprite(_new_MainGroupTag.ACTOR,
-			_target_position[0], _target_position[1])
+	return _ref_DungeonBoard.has_actor(_target_position[0], _target_position[1])
 
 
 func is_building() -> bool:
-	return _ref_DungeonBoard.has_sprite(_new_MainGroupTag.BUILDING,
+	return _ref_DungeonBoard.has_building(
 			_target_position[0], _target_position[1])
 
 
 func is_trap() -> bool:
-	return _ref_DungeonBoard.has_sprite(_new_MainGroupTag.TRAP,
+	return _ref_DungeonBoard.has_trap(
 			_target_position[0], _target_position[1])
 
 # 1. An action, (move or attack, for example) might call
@@ -127,8 +126,7 @@ func move() -> void:
 
 
 func attack() -> void:
-	_ref_RemoveObject.remove(_new_MainGroupTag.ACTOR,
-			_target_position[0], _target_position[1])
+	_ref_RemoveObject.remove_actor(_target_position[0], _target_position[1])
 	end_turn = true
 
 
@@ -219,8 +217,7 @@ func _render_without_fog_of_war() -> void:
 
 	for x in range(_new_DungeonSize.MAX_X):
 		for y in range(_new_DungeonSize.MAX_Y):
-			ground = _ref_DungeonBoard.get_sprite(_new_MainGroupTag.GROUND,
-					x, y)
+			ground = _ref_DungeonBoard.get_ground(x, y)
 			if ground == null:
 				continue
 			ground.visible = _ground_is_visible(x, y)
@@ -274,7 +271,7 @@ func _ground_is_visible(x: int, y: int) -> bool:
 
 
 func _block_line_of_sight(x: int, y: int, _opt_arg: Array) -> bool:
-	return _ref_DungeonBoard.has_sprite(_new_MainGroupTag.BUILDING, x, y)
+	return _ref_DungeonBoard.has_building(x, y)
 
 
 func _get_sprite_memory(_x: int, _y: int, _main_tag: String, _sub_tag: String) \

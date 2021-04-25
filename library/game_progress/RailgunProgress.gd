@@ -37,7 +37,7 @@ func _respawn_npc(pc_x: int, pc_y: int) -> void:
 		x = _ref_RandomNumber.get_x_coord()
 		y = _ref_RandomNumber.get_y_coord()
 
-		if _ref_DungeonBoard.has_sprite(_new_MainGroupTag.BUILDING, x, y):
+		if _ref_DungeonBoard.has_building(x, y):
 			continue
 		elif _new_CoordCalculator.is_inside_range(x, y, pc_x, pc_y,
 				_new_RailgunData.PC_FRONT_SIGHT):
@@ -47,8 +47,7 @@ func _respawn_npc(pc_x: int, pc_y: int) -> void:
 					_new_RailgunData.NPC_GAP, true)
 			has_neighbor = false
 			for i in neighbor:
-				if _ref_DungeonBoard.has_sprite(_new_MainGroupTag.ACTOR,
-						i[0], i[1]):
+				if _ref_DungeonBoard.has_actor(i[0], i[1]):
 					has_neighbor = true
 					break
 			if has_neighbor:
@@ -57,8 +56,7 @@ func _respawn_npc(pc_x: int, pc_y: int) -> void:
 		break
 
 	if is_valid_coord:
-		if _ref_DungeonBoard.has_sprite(_new_MainGroupTag.TRAP, x, y):
-			_ref_RemoveObject.remove(_new_MainGroupTag.TRAP, x, y)
+		_ref_RemoveObject.remove_trap(x, y)
 		_ref_CreateObject.create(_spr_Devil,
 				_new_MainGroupTag.ACTOR, _new_SubGroupTag.DEVIL, x, y)
 		_alive_npc += 1

@@ -103,14 +103,13 @@ func attack() -> void:
 	_switch_mode(false, pc)
 
 	while _new_CoordCalculator.is_inside_dungeon(x, y) \
-			and (not _ref_DungeonBoard.has_sprite(_new_MainGroupTag.BUILDING,
-					x, y)):
-		if not _ref_DungeonBoard.has_sprite(_new_MainGroupTag.ACTOR, x, y):
+			and (not _ref_DungeonBoard.has_building(x, y)):
+		if not _ref_DungeonBoard.has_actor(x, y):
 			x += _face_direction[0]
 			y += _face_direction[1]
 			continue
 
-		_ref_RemoveObject.remove(_new_MainGroupTag.ACTOR, x, y)
+		_ref_RemoveObject.remove_actor(x, y)
 		_ref_CreateObject.create(_spr_Treasure,
 				_new_MainGroupTag.TRAP, _new_SubGroupTag.TREASURE, x, y)
 
@@ -131,15 +130,13 @@ func attack() -> void:
 
 
 func move() -> void:
-	if _ref_DungeonBoard.has_sprite(_new_MainGroupTag.ACTOR,
-			_target_position[0], _target_position[1]):
+	if _ref_DungeonBoard.has_actor(_target_position[0], _target_position[1]):
 		return
 	_pc_move()
 
 
 func interact_with_trap() -> void:
-	_ref_RemoveObject.remove(_new_MainGroupTag.TRAP,
-			_target_position[0], _target_position[1])
+	_ref_RemoveObject.remove_trap(_target_position[0], _target_position[1])
 	_pc_restore()
 	_pc_move()
 
@@ -165,16 +162,14 @@ func _is_checkmate() -> bool:
 	neighbor = _new_CoordCalculator.get_neighbor(
 			_source_position[0], _source_position[1], 1)
 	for i in neighbor:
-		if not (_ref_DungeonBoard.has_sprite(
-				_new_MainGroupTag.BUILDING, i[0], i[1]) \
-						or _ref_DungeonBoard.has_sprite(
-								_new_MainGroupTag.ACTOR, i[0], i[1])):
+		if not (_ref_DungeonBoard.has_building(i[0], i[1]) \
+						or _ref_DungeonBoard.has_actor(i[0], i[1])):
 			return false
 	return true
 
 
 func _block_ray(x: int, y: int, _opt_arg: Array) -> bool:
-	return _ref_DungeonBoard.has_sprite(_new_MainGroupTag.BUILDING, x, y)
+	return _ref_DungeonBoard.has_building(x, y)
 
 
 func _init_skull_pillar() -> void:
@@ -197,10 +192,8 @@ func _init_skull_pillar() -> void:
 
 		neighbor = _new_CoordCalculator.get_neighbor(pos[0], pos[1], 1, false)
 		for j in neighbor:
-			if _ref_DungeonBoard.has_sprite(_new_MainGroupTag.GROUND,
-					j[0], j[1]):
-				_ref_RemoveObject.remove(_new_MainGroupTag.BUILDING,
-						pos[0], pos[1])
+			if _ref_DungeonBoard.has_ground(j[0], j[1]):
+				_ref_RemoveObject.remove_building(pos[0], pos[1])
 				_ref_CreateObject.create(_spr_Portal,
 						_new_MainGroupTag.BUILDING, _new_SubGroupTag.PILLAR,
 						pos[0], pos[1])
@@ -212,8 +205,7 @@ func _init_counter() -> void:
 	if _counter_sprite.size() == 0:
 		for x in range(_new_DungeonSize.MAX_X - _new_RailgunData.COUNTER_WIDTH,
 				_new_DungeonSize.MAX_X):
-			_counter_sprite.push_back(_ref_DungeonBoard.get_sprite(
-					_new_MainGroupTag.BUILDING,
+			_counter_sprite.push_back(_ref_DungeonBoard.get_building(
 					x, _new_DungeonSize.MAX_Y - 1))
 			_ref_Palette.set_dark_color(_counter_sprite.back(),
 					_new_MainGroupTag.BUILDING)
@@ -265,7 +257,7 @@ func _try_find_pillar() -> void:
 			_plillar_position[0], _plillar_position[1],
 			_new_RailgunData.TOUCH_PILLAR)
 	if _has_found_pillar:
-		pillar = _ref_DungeonBoard.get_sprite(_new_MainGroupTag.BUILDING,
+		pillar = _ref_DungeonBoard.get_building(
 				_plillar_position[0], _plillar_position[1])
 		_ref_SwitchSprite.switch_sprite(pillar, _new_SpriteTypeTag.ACTIVE)
 
@@ -290,8 +282,7 @@ func _set_sprite_memory(x: int, y: int, main_tag: String, _sub_tag: String) \
 
 
 func _do_not_render_building(x: int, y: int) -> bool:
-	var building: Sprite = _ref_DungeonBoard.get_sprite(
-			_new_MainGroupTag.BUILDING, x, y)
+	var building: Sprite = _ref_DungeonBoard.get_building(x, y)
 
 	if building == null:
 		return false

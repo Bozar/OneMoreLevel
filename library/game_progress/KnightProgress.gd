@@ -94,8 +94,8 @@ func _get_position() -> Array:
 
 func _is_occupied(x: int, y: int) -> bool:
 	return (not _new_CoordCalculator.is_inside_dungeon(x, y)) \
-		or _ref_DungeonBoard.has_sprite(_new_MainGroupTag.ACTOR, x, y) \
-		or _ref_DungeonBoard.has_sprite(_new_MainGroupTag.BUILDING, x, y)
+		or _ref_DungeonBoard.has_actor(x, y) \
+		or _ref_DungeonBoard.has_building(x, y)
 
 
 func _is_close_to_pc(x: int, y: int) -> bool:
@@ -108,7 +108,7 @@ func _has_neighbor(x: int, y: int) -> bool:
 	var neighbor: Array = _new_CoordCalculator.get_neighbor(x, y, max_range)
 
 	for i in neighbor:
-		if _ref_DungeonBoard.has_sprite(_new_MainGroupTag.ACTOR, i[0], i[1]):
+		if _ref_DungeonBoard.has_actor(i[0], i[1]):
 			return true
 	return false
 
@@ -119,7 +119,7 @@ func _is_too_sparse(x: int, y: int) -> bool:
 			x, y, _new_KnightData.SIGHT)
 
 	for i in neighbor:
-		if _ref_DungeonBoard.has_sprite(_new_MainGroupTag.ACTOR, i[0], i[1]):
+		if _ref_DungeonBoard.has_actor(i[0], i[1]):
 			actor += 1
 	return actor < _new_KnightData.MIN_NEIGHBOR
 

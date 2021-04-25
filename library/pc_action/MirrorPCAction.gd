@@ -44,7 +44,7 @@ func attack() -> void:
 		_ref_CountDown.add_count(_new_MirrorData.RESTORE_TURN)
 	else:
 		mirror = _get_mirror(_target_position[0], _target_position[1])
-		_ref_RemoveObject.remove(_new_MainGroupTag.ACTOR, mirror[0], mirror[1])
+		_ref_RemoveObject.remove_actor(mirror[0], mirror[1])
 	end_turn = true
 
 
@@ -54,7 +54,7 @@ func interact_with_trap() -> void:
 
 	if not _pc_hit_target:
 		mirror = _get_mirror(_target_position[0], _target_position[1])
-		_ref_RemoveObject.remove(_new_MainGroupTag.TRAP, mirror[0], mirror[1])
+		_ref_RemoveObject.remove_trap(mirror[0], mirror[1])
 
 	_move_pc_and_image()
 	if _ref_ObjectData.get_hit_point(pc) == _new_MirrorData.MAX_CRYSTAL:
@@ -96,8 +96,7 @@ func _target_is_occupied(main_group_tag: String) -> bool:
 
 
 func _create_image_on_the_other_side(x: int, y: int) -> void:
-	var actor: Sprite = _ref_DungeonBoard.get_sprite(_new_MainGroupTag.ACTOR,
-			x, y)
+	var actor: Sprite = _ref_DungeonBoard.get_actor(x, y)
 	var pc: Sprite = _ref_DungeonBoard.get_pc()
 	var mirror: Array = _get_mirror(x, y)
 	var images: Array
@@ -105,13 +104,11 @@ func _create_image_on_the_other_side(x: int, y: int) -> void:
 	var position: Array
 
 	# On this side: Switch phantom's sprite into default.
-	if _ref_DungeonBoard.has_sprite(_new_MainGroupTag.TRAP, x, y):
+	if _ref_DungeonBoard.has_trap(x, y):
 		_ref_SwitchSprite.switch_sprite(actor, _new_SpriteTypeTag.DEFAULT)
 
 	# On the other side: Remove an existing phantom.
-	if _ref_DungeonBoard.has_sprite(
-			_new_MainGroupTag.ACTOR, mirror[0], mirror[1]):
-		_ref_RemoveObject.remove(_new_MainGroupTag.ACTOR, mirror[0], mirror[1])
+	_ref_RemoveObject.remove_actor(mirror[0], mirror[1])
 
 	# Move the phantom to the other side. State: passive. Color: grey.
 	_ref_DungeonBoard.move_sprite(_new_MainGroupTag.ACTOR,
@@ -119,9 +116,7 @@ func _create_image_on_the_other_side(x: int, y: int) -> void:
 	_ref_ObjectData.set_state(actor, _new_ObjectStateTag.PASSIVE)
 
 	# On the other side: Remove a trap.
-	if _ref_DungeonBoard.has_sprite(_new_MainGroupTag.TRAP,
-			mirror[0], mirror[1]):
-		_ref_RemoveObject.remove(_new_MainGroupTag.TRAP, mirror[0], mirror[1])
+	_ref_RemoveObject.remove_trap(mirror[0], mirror[1])
 
 	# There can be at most (5 - crystal) phantom images.
 	images = _ref_DungeonBoard.get_sprites_by_tag(_new_SubGroupTag.PHANTOM)
@@ -133,8 +128,7 @@ func _create_image_on_the_other_side(x: int, y: int) -> void:
 		_new_ArrayHelper.rand_picker(images, remove, _ref_RandomNumber)
 		for i in images:
 			position = _new_ConvertCoord.vector_to_array(i.position)
-			_ref_RemoveObject.remove(_new_MainGroupTag.ACTOR,
-					position[0], position[1])
+			_ref_RemoveObject.remove_actor(position[0], position[1])
 
 
 func _create_image_on_the_same_side(x: int, y: int) -> void:
@@ -158,12 +152,10 @@ func _create_image_on_the_same_side(x: int, y: int) -> void:
 			continue
 
 		# Continue if there is a building blocks the image.
-		if _ref_DungeonBoard.has_sprite(
-				_new_MainGroupTag.BUILDING, mirror[0], mirror[1]):
+		if _ref_DungeonBoard.has_building(mirror[0], mirror[1]):
 			continue
 		# Continue if there is an actor blocks the image.
-		elif _ref_DungeonBoard.has_sprite(
-				_new_MainGroupTag.ACTOR, mirror[0], mirror[1]):
+		elif _ref_DungeonBoard.has_actor(mirror[0], mirror[1]):
 			continue
 		# Continue if the phantom and its image are on different sides.
 		elif ((x - _new_DungeonSize.CENTER_X) \
@@ -177,10 +169,8 @@ func _create_image_on_the_same_side(x: int, y: int) -> void:
 				mirror[0], mirror[1])
 
 		# Switch the actor's sprite to active.
-		if _ref_DungeonBoard.has_sprite(
-				_new_MainGroupTag.TRAP, mirror[0], mirror[1]):
-			actor = _ref_DungeonBoard.get_sprite(
-					_new_MainGroupTag.ACTOR, mirror[0], mirror[1])
+		if _ref_DungeonBoard.has_trap(mirror[0], mirror[1]):
+			actor = _ref_DungeonBoard.get_actor(mirror[0], mirror[1])
 			_ref_SwitchSprite.switch_sprite(actor, _new_SpriteTypeTag.ACTIVE)
 
 
@@ -211,13 +201,12 @@ func _get_mirror_position(x: int, y: int, x_shift: int, y_shift: int,
 # 0: Continue. 1: Stop ray cast. 2: Stop ray cast and store current position.
 func _cast_ray(x: int, y: int, x_shift: int, y_shift: int) -> int:
 	# An actor blocks the ray.
-	if _ref_DungeonBoard.has_sprite(_new_MainGroupTag.ACTOR, x, y):
+	if _ref_DungeonBoard.has_actor(x, y):
 		return 1
 	# A building blocks the ray.
-	elif _ref_DungeonBoard.has_sprite(_new_MainGroupTag.BUILDING, x, y):
+	elif _ref_DungeonBoard.has_building(x, y):
 		# Create a refelection if the building (mirror) is facing the source.
-		if _ref_DungeonBoard.has_sprite(
-				_new_MainGroupTag.BUILDING, x + x_shift, y + y_shift):
+		if _ref_DungeonBoard.has_building(x + x_shift, y + y_shift):
 			return 1
 		return 2
 	# The middle border stops the ray.
@@ -236,8 +225,8 @@ func _filter_create_image(source: Array, index: int, opt_arg: Array) -> bool:
 
 
 func _block_line_of_sight(x: int, y: int, _opt_arg: Array) -> bool:
-	return _ref_DungeonBoard.has_sprite(_new_MainGroupTag.BUILDING, x, y) \
-			or _ref_DungeonBoard.has_sprite(_new_MainGroupTag.ACTOR, x, y)
+	return _ref_DungeonBoard.has_building(x, y) \
+			or _ref_DungeonBoard.has_actor(x, y)
 
 
 func _reset_sprite_color() -> void:
@@ -245,14 +234,12 @@ func _reset_sprite_color() -> void:
 	var pos: Array
 
 	for y in range(0, _new_DungeonSize.MAX_Y):
-		set_this = _ref_DungeonBoard.get_sprite(_new_MainGroupTag.BUILDING,
-				_new_DungeonSize.CENTER_X, y)
+		set_this = _ref_DungeonBoard.get_building(_new_DungeonSize.CENTER_X, y)
 		_ref_Palette.set_default_color(set_this, _new_MainGroupTag.BUILDING)
 
 	for i in _ref_DungeonBoard.get_sprites_by_tag(_new_MainGroupTag.TRAP):
 		pos = _new_ConvertCoord.vector_to_array(i.position)
-		i.visible = not _ref_DungeonBoard.has_sprite(_new_MainGroupTag.ACTOR,
-				pos[0], pos[1])
+		i.visible = not _ref_DungeonBoard.has_actor(pos[0], pos[1])
 		_ref_Palette.set_default_color(i, _new_MainGroupTag.TRAP)
 
 

@@ -37,8 +37,7 @@ func render_fov() -> void:
 
 	for x in range(_new_DungeonSize.MAX_X):
 		for y in range(_new_DungeonSize.MAX_Y):
-			ground = _ref_DungeonBoard.get_sprite(_new_MainGroupTag.GROUND,
-					x, y)
+			ground = _ref_DungeonBoard.get_ground(x, y)
 			if ground == null:
 				continue
 			ground.visible = true
@@ -105,8 +104,7 @@ func _is_opposite_direction(source: int, target: int) -> bool:
 
 
 func _get_ground_direction(x: int, y: int) -> int:
-	var ground: Sprite = _ref_DungeonBoard.get_sprite(_new_MainGroupTag.GROUND,
-			x, y)
+	var ground: Sprite = _ref_DungeonBoard.get_ground(x, y)
 
 	if ground == null:
 		return INVALID_DIRECTION
@@ -122,8 +120,7 @@ func _try_reduce_extra_turn() -> void:
 
 
 func _switch_lighthouse_color() -> void:
-	var lighthouse: Sprite = _ref_DungeonBoard.get_sprite(
-			_new_MainGroupTag.BUILDING,
+	var lighthouse: Sprite = _ref_DungeonBoard.get_building(
 			_new_DungeonSize.CENTER_X, _new_DungeonSize.CENTER_Y)
 
 	if _extra_turn_counter == _new_StyxData.EXTRA_TURN_COUNTER:

@@ -23,8 +23,7 @@ func _init(parent_node: Node2D).(parent_node) -> void:
 func remove_trap(_trap: Sprite, x: int, y: int) -> void:
 	var pc: Sprite = _ref_DungeonBoard.get_pc()
 	var hp: int = _ref_ObjectData.get_hit_point(pc)
-	var crystal_base: Sprite = _ref_DungeonBoard.get_sprite(
-			_new_MainGroupTag.BUILDING,
+	var crystal_base: Sprite = _ref_DungeonBoard.get_building(
 			_new_DungeonSize.CENTER_X, CRYSTAL_BASE_Y[hp])
 
 	_ref_SwitchSprite.switch_sprite(crystal_base, _new_SpriteTypeTag.ACTIVE)
@@ -56,14 +55,14 @@ func _replenish_crystal() -> void:
 		elif _new_CoordCalculator.is_inside_range(
 				x, y, mirror[0], mirror[1], _new_MirrorData.CRYSTAL_DISTANCE):
 			continue
-		elif _ref_DungeonBoard.has_sprite(_new_MainGroupTag.BUILDING, x, y):
+		elif _ref_DungeonBoard.has_building(x, y):
 			continue
-		elif _ref_DungeonBoard.has_sprite(_new_MainGroupTag.ACTOR, x, y):
+		elif _ref_DungeonBoard.has_actor(x, y):
 			if has_npc < 100:
 				has_npc += 1
 				continue
 			else:
-				_ref_RemoveObject.remove(_new_MainGroupTag.ACTOR, x, y)
+				_ref_RemoveObject.remove_actor(x, y)
 				break
 		else:
 			break

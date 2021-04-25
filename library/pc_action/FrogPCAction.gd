@@ -25,11 +25,9 @@ func is_npc() -> bool:
 	var reach_y: int = (_target_position[1] - _source_position[1]) * 2 \
 			+ _source_position[1]
 
-	if _ref_DungeonBoard.has_sprite(_new_MainGroupTag.ACTOR,
-			_target_position[0], _target_position[1]):
+	if _ref_DungeonBoard.has_actor(_target_position[0], _target_position[1]):
 		return true
-	elif _ref_DungeonBoard.has_sprite(_new_MainGroupTag.ACTOR,
-			reach_x, reach_y):
+	elif _ref_DungeonBoard.has_actor(reach_x, reach_y):
 		_target_position[0] = reach_x
 		_target_position[1] = reach_y
 		return true
@@ -100,4 +98,4 @@ func _set_pc_state(state_tag: String) -> void:
 
 
 func _block_line_of_sight(x: int, y: int, _opt_arg: Array) -> bool:
-	return _ref_DungeonBoard.has_sprite(_new_MainGroupTag.ACTOR, x, y)
+	return _ref_DungeonBoard.has_actor(x, y)

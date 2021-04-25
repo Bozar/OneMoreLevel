@@ -78,8 +78,7 @@ func _random_walk() -> void:
 
 
 func _set_danger_zone(x: int, y: int, danger: bool) -> void:
-	var ground: Sprite = _ref_DungeonBoard.get_sprite(
-			_new_MainGroupTag.GROUND, x, y)
+	var ground: Sprite = _ref_DungeonBoard.get_ground(x, y)
 
 	_ref_DangerZone.set_danger_zone(x, y, danger)
 	if _ref_DangerZone.is_in_danger(x, y):
@@ -107,7 +106,7 @@ func _path_is_clear() -> bool:
 				if counter > 0:
 					return false
 				break
-			if _ref_DungeonBoard.has_sprite(_new_MainGroupTag.ACTOR, x, y):
+			if _ref_DungeonBoard.has_actor(x, y):
 				counter += 1
 	return true
 
@@ -125,8 +124,7 @@ func _filter_rand_walk(source: Array, index: int, _opt_arg: Array) -> bool:
 
 	if (self_x == sor_x) or (self_y == sor_y) \
 			or _ref_DangerZone.is_in_danger(sor_x, sor_y) \
-			or _ref_DungeonBoard.has_sprite(
-					_new_MainGroupTag.ACTOR, sor_x, sor_y):
+			or _ref_DungeonBoard.has_actor(sor_x, sor_y):
 		return false
 	return true
 
