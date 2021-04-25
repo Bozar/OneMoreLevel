@@ -7,15 +7,15 @@ flags = 4
 atlas = ExtResource( 1 )
 region = Rect2( 240, 540, 24, 36 )
 
-[sub_resource type="AtlasTexture" id=5]
+[sub_resource type="AtlasTexture" id=2]
 flags = 4
 atlas = ExtResource( 1 )
 region = Rect2( 216, 540, 24, 36 )
 
-[sub_resource type="AtlasTexture" id=6]
+[sub_resource type="AtlasTexture" id=3]
 flags = 4
 atlas = ExtResource( 1 )
-region = Rect2( 192, 540, 24, 36 )
+region = Rect2( 264, 72, 24, 36 )
 
 [node name="FloorHound" type="Sprite"]
 
@@ -24,8 +24,8 @@ texture = SubResource( 1 )
 
 [node name="active" type="Sprite" parent="."]
 visible = false
-texture = SubResource( 5 )
+texture = SubResource( 2 )
 
 [node name="active_1" type="Sprite" parent="."]
 visible = false
-texture = SubResource( 6 )
+texture = SubResource( 3 )
