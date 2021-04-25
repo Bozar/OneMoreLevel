@@ -77,8 +77,7 @@ func _add_or_remove_fog() -> void:
 			_fog_source[i][2] += 1
 			neighbor = _new_CoordCalculator.get_neighbor(x, y, fog_range, true)
 			for j in neighbor:
-				ground = _ref_DungeonBoard.get_sprite(_new_MainGroupTag.GROUND,
-						j[0], j[1])
+				ground = _ref_DungeonBoard.get_ground(j[0], j[1])
 				if ground != null:
 					_ref_ObjectData.add_hit_point(ground,
 							_new_HoundData.FOG_DURATION)
@@ -152,9 +151,9 @@ func _respawn_actor(pc_x: int, pc_y: int, min_distance: int, max_distance: int,
 		x = _ref_RandomNumber.get_x_coord()
 		y = _ref_RandomNumber.get_y_coord()
 		next_loop = false
-		if _ref_DungeonBoard.has_sprite(_new_MainGroupTag.BUILDING, x, y):
+		if _ref_DungeonBoard.has_building(x, y):
 			next_loop = true
-		elif _ref_DungeonBoard.has_sprite(_new_MainGroupTag.ACTOR, x, y):
+		elif _ref_DungeonBoard.has_actor(x, y):
 			next_loop = true
 		elif _new_CoordCalculator.is_inside_range(x, y, pc_x, pc_y,
 				min_distance):
@@ -166,8 +165,7 @@ func _respawn_actor(pc_x: int, pc_y: int, min_distance: int, max_distance: int,
 			neighbor = _new_CoordCalculator.get_neighbor(x, y,
 					_new_HoundData.MIN_HOUND_GAP)
 			for i in neighbor:
-				if _ref_DungeonBoard.has_sprite(_new_MainGroupTag.ACTOR,
-						i[0], i[1]):
+				if _ref_DungeonBoard.has_actor(i[0], i[1]):
 					next_loop = true
 					break
 		if not next_loop:

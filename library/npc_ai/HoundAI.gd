@@ -33,8 +33,7 @@ func take_action() -> void:
 			return
 
 	for i in [_self_pos, _pc_pos]:
-		ground = _ref_DungeonBoard.get_sprite(_new_MainGroupTag.GROUND,
-				i[0], i[1])
+		ground = _ref_DungeonBoard.get_ground(i[0], i[1])
 		is_in_fog.push_back(_ref_ObjectData.verify_state(ground,
 				_new_ObjectStateTag.ACTIVE))
 	self_is_in_fog = is_in_fog[0]
@@ -46,6 +45,8 @@ func take_action() -> void:
 		if pc_is_in_fog:
 			add_hit_point = _new_HoundData.ADD_PC_HIT_POINT_IN_FOG
 			# _ref_CountDown.subtract_count(_new_HoundData.LOSE_EXTRA_TURN)
+		if is_boss:
+			add_hit_point += _new_HoundData.ADD_PC_HIT_POINT_FROM_BOSS
 		_set_pc_hit_point(add_hit_point)
 		# _ref_EndGame.player_lose()
 	elif _can_see_pc(is_boss):
@@ -63,8 +64,7 @@ func remove_data(actor: Sprite) -> void:
 
 func _switch_sprite() -> void:
 	var pos: Array = _new_ConvertCoord.vector_to_array(_self.position)
-	var ground: Sprite = _ref_DungeonBoard.get_sprite(_new_MainGroupTag.GROUND,
-			pos[0], pos[1])
+	var ground: Sprite = _ref_DungeonBoard.get_ground(pos[0], pos[1])
 	var sprite_type: String
 
 	if _ref_ObjectData.verify_state(ground, _new_ObjectStateTag.ACTIVE):
@@ -147,7 +147,7 @@ func _is_passable_func(source_array: Array, current_index: int,
 	var y: int = source_array[current_index][1]
 	var self_is_in_fog: bool = opt_arg[0]
 
-	if _ref_DungeonBoard.has_sprite(_new_MainGroupTag.ACTOR, x, y):
+	if _ref_DungeonBoard.has_actor(x, y):
 		return false
 	elif self_is_in_fog:
 		return _new_CoordCalculator.is_inside_range(x, y,
@@ -166,7 +166,7 @@ func _verify_and_get_start_point(source: Array, index: int, opt_arg: Array) \
 	var pc_is_in_fog: bool = opt_arg[0]
 	var alternative_start: Array = opt_arg[1]
 
-	if _ref_DungeonBoard.has_sprite(_new_MainGroupTag.BUILDING, x, y):
+	if _ref_DungeonBoard.has_building(x, y):
 		return false
 
 	if _new_CoordCalculator.is_inside_range(x, y, _pc_pos[0], _pc_pos[1], 1) \
@@ -194,9 +194,9 @@ func _set_pc_hit_point(add_hit_point: int) -> void:
 		while true:
 			x = _ref_RandomNumber.get_x_coord()
 			y = _ref_RandomNumber.get_y_coord()
-			if _ref_DungeonBoard.has_sprite(_new_MainGroupTag.BUILDING, x, y):
+			if _ref_DungeonBoard.has_building(x, y):
 				continue
-			elif _ref_DungeonBoard.has_sprite(_new_MainGroupTag.ACTOR, x, y):
+			elif _ref_DungeonBoard.has_actor(x, y):
 				continue
 			elif _new_CoordCalculator.is_inside_range(x, y,
 					_pc_pos[0], _pc_pos[1], _new_HoundData.MIN_BOSS_DISTANCE):
@@ -232,8 +232,7 @@ func _boss_absorb_fog() -> void:
 	var ground: Sprite
 
 	for i in neighbor:
-		ground = _ref_DungeonBoard.get_sprite(_new_MainGroupTag.GROUND,
-				i[0], i[1])
+		ground = _ref_DungeonBoard.get_ground(i[0], i[1])
 		# Change ground hit point but leave state unchanged. Update state in
 		# HoundProgress._add_or_remove_fog().
 		if (ground == null) or (_ref_ObjectData.verify_state(ground,

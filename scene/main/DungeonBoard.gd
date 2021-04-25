@@ -106,6 +106,38 @@ func get_sprites_by_tag(group_tag: String) -> Array:
 	# return get_tree().get_nodes_in_group(group_tag)
 
 
+func get_actor(x: int, y: int) -> Sprite:
+	return get_sprite(_new_MainGroupTag.ACTOR, x, y)
+
+
+func has_actor(x: int, y: int) -> bool:
+	return has_sprite(_new_MainGroupTag.ACTOR, x, y)
+
+
+func get_building(x: int, y: int) -> Sprite:
+	return get_sprite(_new_MainGroupTag.BUILDING, x, y)
+
+
+func has_building(x: int, y: int) -> bool:
+	return has_sprite(_new_MainGroupTag.BUILDING, x, y)
+
+
+func get_trap(x: int, y: int) -> Sprite:
+	return get_sprite(_new_MainGroupTag.TRAP, x, y)
+
+
+func has_trap(x: int, y: int) -> bool:
+	return has_sprite(_new_MainGroupTag.TRAP, x, y)
+
+
+func get_ground(x: int, y: int) -> Sprite:
+	return get_sprite(_new_MainGroupTag.GROUND, x, y)
+
+
+func has_ground(x: int, y: int) -> bool:
+	return has_sprite(_new_MainGroupTag.GROUND, x, y)
+
+
 func move_sprite(main_group: String, source_x: int, source_y: int,
 		target_x: int, target_y: int) -> void:
 	var sprite: Sprite = get_sprite(main_group, source_x, source_y)
