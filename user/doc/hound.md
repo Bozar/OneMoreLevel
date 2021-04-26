@@ -20,11 +20,13 @@ When inside a fog, PC has one of six symbols:
 
 * A porous rectangle: You stand in a fog.
 * A solid rectangle: You stand in a fog which might disappear the next turn.
-* One of four arrows: You have pressed an arrow key. Press another valid key to move into a diagonal grid.
+* One of four arrows: You have pressed an arrow key. Press another valid key to spend one turn and move into a diagonal grid.
 
 A valid key refers to an arrow key that is vertical to your last input direction (for example: Right and Up, Down and Left). An invalid key includes an arrow key that is the same as or opposite to your previous input (for example: Up and Up, Left and Right) or Space. An invalid input resets PC to his normal state: a porous or solid rectangle. Press Space in normal state to wait one turn.
 
-A valid move or wait, whether inside or outside a fog, costs one turn. You perform an attack automatically after a valid move. You can only hit a target on your right hand.
+You cannot enter or leave a fog actively. The boundary of a fog acts like a wall. You either have to wait until a fog engulfs or spits you, or enter a grid that is about to change the next turn.
+
+You perform an attack automatically after a valid move. You can only hit a target on your right hand.
 
 Outside fog, move (x), hit (!) and ground (.):
 
@@ -41,7 +43,7 @@ Here is a tip to infer your attacking point. First you need to reach the start p
 
 When you hit a target (a hound, the hound leader, or your doppleganger), it disappears and you restore 2 turns. Such a hit has other effects, including but not limit to emerging a fog. More on this below.
 
-As mentioned above, a valid move or wait costs 1 turn. You have at most 24 turns. You lose the game if running out of time. In addition to restore turns by attacking, every time you move into or wait inside an unbroken stone cage grants 4 turns. However, the game ends at once if you can no longer escape from a cage.
+As mentioned above, a valid move or wait, whether inside or outside a fog, costs 1 turn. You have at most 24 turns. You lose the game if running out of time. In addition to restore turns by attacking, every time you move into or wait inside an unbroken stone cage grants 4 turns. However, the game ends at once if you can no longer escape from a cage.
 
 ## Hound AI and Doppleganger
 
