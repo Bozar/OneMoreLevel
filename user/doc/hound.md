@@ -41,9 +41,9 @@ Inside fog, move (x), hit (!) and ground (.):
 
 Here is a tip to infer your attacking point. First you need to reach the start point. When outside a fog, it is a diagonal position to the target. When inside a fog, it is on a straight line with the target and exactly one step away. Then link a line between you and your target, rotate it counterclockwise by 45 degrees. The nearest grid on the line is your destination.
 
-When you hit a target (a hound, the hound leader, or your doppleganger), it disappears and you restore 1 turn. Such a hit has other effects, including but not limit to emerging a fog. More on this below.
+When you hit a target (a hound, the hound leader, or your doppleganger), it disappears and you restore 2 turns. Such a hit has other effects, including but not limit to emerging a fog. More on this below.
 
-As mentioned above, a valid move or wait, whether inside or outside a fog, costs 1 turn. You have at most 24 turns. You lose the game if running out of time. In addition to restore turns by attacking, every time you move into or wait inside an unbroken stone cage grants 6 turns. However, the game ends at once if you can no longer escape from a cage.
+As mentioned above, a valid move or wait, whether inside or outside a fog, costs 1 turn. You have at most 24 turns. You lose the game if running out of time. In addition to restore turns by attacking, every time you move into or wait inside an unbroken stone cage grants 4 turns. However, the game ends at once if you can no longer escape from a cage.
 
 ## Hound AI and Doppleganger
 
