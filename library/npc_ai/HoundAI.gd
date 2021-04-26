@@ -68,10 +68,11 @@ func _switch_sprite() -> void:
 	var sprite_type: String
 
 	if _ref_ObjectData.verify_state(ground, _new_ObjectStateTag.ACTIVE):
-		if _ref_ObjectData.get_hit_point(ground) == 0:
-			sprite_type = _new_SpriteTypeTag.ACTIVE_1
-		else:
-			sprite_type = _new_SpriteTypeTag.ACTIVE
+		# if _ref_ObjectData.get_hit_point(ground) == 0:
+		# 	sprite_type = _new_SpriteTypeTag.ACTIVE_1
+		# else:
+		# 	sprite_type = _new_SpriteTypeTag.ACTIVE
+		sprite_type = _new_SpriteTypeTag.ACTIVE
 	else:
 		sprite_type = _new_SpriteTypeTag.DEFAULT
 	_ref_SwitchSprite.switch_sprite(_self, sprite_type)
