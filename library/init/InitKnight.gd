@@ -57,7 +57,7 @@ func _init_wall() -> void:
 	var new_sprite: PackedScene
 	var new_sub_tag: String
 
-	# Draw a rectangular. A 3*3 square block is too big.
+	# Draw a rectangle. A 3*3 square block is too big.
 	while width + height == MAX_BLOCK_SIZE * 2:
 		width = _ref_RandomNumber.get_int(MIN_BLOCK_SIZE, MAX_BLOCK_SIZE + 1)
 		height = _ref_RandomNumber.get_int(MIN_BLOCK_SIZE, MAX_BLOCK_SIZE + 1)

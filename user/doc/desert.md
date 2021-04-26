@@ -14,7 +14,7 @@ You might lose the game due to one of three reasons.
 
 You can survive in desert for at most 24 turns. Every spice and quality spice extends your remaining time by 5 turns.
 
-PC's symbol changes into a rectangular when being adjacent to a sandworm's head. The game ends if the sandworm intends to move into PC's position the next turn.
+PC's symbol changes into a rectangle when being adjacent to a sandworm's head. The game ends if the sandworm intends to move into PC's position the next turn.
 
 If you are surrounded by four solid blocks when your turn starts, the game ends automatically.
 
