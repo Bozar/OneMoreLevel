@@ -12,7 +12,7 @@ Strips of land (#, grey hashtag) are surrounded by swamp (-, grey dash). PC has 
 
 * @: You stand on land.
 * Three horizonal lines: You stand in swamp.
-* A porous rectangle: You stand in swamp. Your next movement out of the swamp costs 2 turns.
+* A dotted rectangle: You stand in swamp. Your next movement out of the swamp costs 2 turns.
 
 Press arrow keys to move one step if there are no frogs nearby. Moving out of land costs 1 turn. Leaving swamp costs 1 or 2 turns based on an internal counter. The counter starts from 0 and adds by 1 every time before you leave a swamp grid. When it reaches 3, moving costs 2 turns and the counter resets to 0. Otherwise it costs 1 turn to move. Hitting a frog also resets the counter to 0. Please beware that the counter is only affected by moving away from swamp and hitting a frog. It has nothing to do with waiting or any other factors.
 
