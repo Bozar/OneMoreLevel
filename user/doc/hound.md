@@ -18,8 +18,8 @@ When outside a fog, press an arrow key to move one step in a cardinal direction.
 
 When inside a fog, PC has one of six symbols:
 
-* A porous rectangle: You stand in a fog.
-* A solid rectangle: You stand in a fog which might disappear the next turn.
+* Three horizonal lines: You stand in a fog.
+* A porous rectangle: You stand in a fog which might disappear the next turn.
 * One of four arrows: You have pressed an arrow key. Press another valid key to spend one turn and move into a diagonal grid.
 
 A valid key refers to an arrow key that is vertical to your last input direction (for example: Right and Up, Down and Left). An invalid key includes an arrow key that is the same as or opposite to your previous input (for example: Up and Up, Left and Right) or Space. An invalid input resets PC to his normal state: a porous or solid rectangle. Press Space in normal state to wait one turn.
