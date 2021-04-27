@@ -10,9 +10,13 @@ const SEED: String = "rng_seed"
 const WORLD_TAG: String = "world_tag"
 const EXCLUDE_WORLD: String = "exclude_world"
 const SHOW_FULL_MAP: String = "show_full_map"
+const PALETTE: String = "palette"
 
-const EXE_PATH: String = "data/setting.json"
-const RES_PATH: String = "res://bin/setting.json"
+const SETTING_EXE_PATH: String = "data/setting.json"
+const SETTING_RES_PATH: String = "res://bin/setting.json"
+
+const PALETTE_EXE_PATH: String = "data/"
+const PALETTE_RES_PATH: String = "res://bin/"
 
 const TRANSFER_SCENE: String = "res://scene/transfer_data/TransferData.tscn"
 const TRANSFER_NODE: String = "/root/TransferData"
@@ -24,39 +28,33 @@ var _rng_seed: int
 var _world_tag: String
 var _exclude_world: Array
 var _show_full_map: bool
+var _palette: Dictionary
 var _json_parse_error: bool
 
 
 func load_setting() -> void:
 	var setting_file: File = File.new()
 	var load_path: String = ""
-	var parse_result: JSONParseResult
 	var setting_data: Dictionary
 	var __
 	var transfer: Game_TransferData
 
-	for i in [EXE_PATH, RES_PATH]:
+	for i in [SETTING_EXE_PATH, SETTING_RES_PATH]:
 		if setting_file.file_exists(i):
 			load_path = i
 			break
 	if load_path == "":
 		setting_data = {}
 	else:
-		__ = setting_file.open(load_path, File.READ)
-		parse_result = JSON.parse(setting_file.get_as_text())
-		if parse_result.error == OK:
-			setting_data = parse_result.get_result()
-			_json_parse_error = false
-		else:
-			setting_data = {}
-			_json_parse_error = true
-		setting_file.close()
+		_json_parse_error = not _try_read_file(load_path, setting_file,
+				setting_data)
 
 	_wizard_mode = _set_wizard_mode(setting_data)
 	_rng_seed = _set_rng_seed(setting_data)
 	_world_tag = _set_world_tag(setting_data)
 	_exclude_world = _set_exclude_world(setting_data)
 	_show_full_map = _set_show_full_map(setting_data)
+	_palette = _set_palette(setting_data)
 
 	if get_tree().root.has_node(TRANSFER_NODE):
 		transfer = get_tree().root.get_node(TRANSFER_NODE)
@@ -94,6 +92,10 @@ func get_exclude_world() -> Array:
 
 func get_show_full_map() -> bool:
 	return _show_full_map
+
+
+func get_palette() -> Dictionary:
+	return _palette
 
 
 func get_json_parse_error() -> bool:
@@ -141,3 +143,41 @@ func _set_show_full_map(setting) -> bool:
 	if not setting.has(SHOW_FULL_MAP):
 		return false
 	return setting[SHOW_FULL_MAP] as bool
+
+
+func _set_palette(setting) -> Dictionary:
+	var palette_file: File = File.new()
+	var load_path: String = ""
+	var read_palette: Dictionary = {}
+
+	if not setting.has(PALETTE):
+		return {}
+
+	for i in [PALETTE_EXE_PATH, PALETTE_RES_PATH]:
+		if palette_file.file_exists(i + setting[PALETTE]):
+			load_path = i + setting[PALETTE]
+			break
+	if load_path == "":
+		return {}
+	elif _try_read_file(load_path, palette_file, read_palette):
+		return read_palette
+	return {}
+
+
+func _try_read_file(load_path: String, read_this: File,
+			out__get_content: Dictionary) -> bool:
+	var __ = read_this.open(load_path, File.READ)
+	var try_parse: JSONParseResult
+	var save_result: Dictionary
+	var parse_success: bool = false
+
+	out__get_content.clear()
+	try_parse= JSON.parse(read_this.get_as_text())
+	if try_parse.error == OK:
+		parse_success = true
+		save_result = try_parse.get_result()
+		for i in save_result.keys():
+			out__get_content[i] = save_result[i]
+
+	read_this.close()
+	return parse_success

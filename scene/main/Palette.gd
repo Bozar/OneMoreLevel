@@ -72,8 +72,7 @@ const SUB_TAG_TO_COLOR: Dictionary = {
 }
 
 
-func _ready() -> void:
-	VisualServer.set_default_clear_color(BLACK)
+var _ref_GameSetting: Game_GameSetting
 
 
 func get_default_color(main_tag: String, sub_tag: String = "") -> String:
@@ -128,3 +127,9 @@ func get_text_color(is_light_color: bool) -> String:
 	if is_light_color:
 		return TAG_TO_COLOR[GUI_TEXT]
 	return TAG_TO_COLOR[DARK_GUI_TEXT]
+
+
+func _on_GameSetting_setting_loaded() -> void:
+	# var palette: Dictionary = _ref_GameSetting.get_palette()
+	# VisualServer.set_default_clear_color(palette["color_value"]["black"])
+	pass
