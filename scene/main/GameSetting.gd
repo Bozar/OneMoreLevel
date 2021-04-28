@@ -103,24 +103,24 @@ func get_json_parse_error() -> bool:
 
 
 func _set_wizard_mode(setting) -> bool:
-	if not setting.has(WIZARD):
-		return false
-	return setting[WIZARD] as bool
+	if setting.has(WIZARD) and (setting[WIZARD] is bool):
+		return setting[WIZARD]
+	return false
 
 
 func _set_rng_seed(setting) -> int:
 	var random: int
 
-	if not setting.has(SEED):
-		return 0
-	random = setting[SEED] as int
-	return 0 if random < 1 else random
+	if setting.has(SEED) and (setting[SEED] is float):
+		random = setting[SEED] as int
+		return 0 if random < 1 else random
+	return 0
 
 
 func _set_world_tag(setting) -> String:
 	var new_world: String = ""
 
-	if setting.has(WORLD_TAG):
+	if setting.has(WORLD_TAG) and (setting[WORLD_TAG] is String):
 		new_world = setting[WORLD_TAG].to_lower()
 		if not _new_WorldTag.is_valid_world_tag(new_world):
 			new_world = ""
@@ -130,32 +130,34 @@ func _set_world_tag(setting) -> String:
 func _set_exclude_world(setting) -> Array:
 	var exclude: Array = []
 
-	if not setting.has(EXCLUDE_WORLD):
-		return [_new_WorldTag.DEMO]
-
-	exclude = setting[EXCLUDE_WORLD] as Array
-	for i in range(exclude.size()):
-		exclude[i] = (exclude[i] as String).to_lower()
-	return exclude
+	if setting.has(EXCLUDE_WORLD) and (setting[EXCLUDE_WORLD] is Array):
+		exclude = setting[EXCLUDE_WORLD]
+		for i in range(exclude.size()):
+			if exclude[i] is String:
+				exclude[i] = (exclude[i]).to_lower()
+		return exclude
+	return [_new_WorldTag.DEMO]
 
 
 func _set_show_full_map(setting) -> bool:
-	if not setting.has(SHOW_FULL_MAP):
-		return false
-	return setting[SHOW_FULL_MAP] as bool
+	if setting.has(SHOW_FULL_MAP) and (setting[SHOW_FULL_MAP] is bool):
+		return setting[SHOW_FULL_MAP]
+	return false
 
 
 func _set_palette(setting) -> Dictionary:
 	var palette_file: File = File.new()
 	var load_path: String = ""
+	var file_name: String = ""
 	var read_palette: Dictionary = {}
 
-	if not setting.has(PALETTE):
+	if not (setting.has(PALETTE) and (setting[PALETTE] is String)):
 		return {}
 
+	file_name = setting[PALETTE]
 	for i in [PALETTE_EXE_PATH, PALETTE_RES_PATH]:
-		if palette_file.file_exists(i + setting[PALETTE]):
-			load_path = i + setting[PALETTE]
+		if palette_file.file_exists(i + file_name):
+			load_path = i + file_name
 			break
 	if load_path == "":
 		return {}
