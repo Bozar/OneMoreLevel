@@ -17,6 +17,7 @@ const SETTING_RES_PATH: String = "res://bin/setting.json"
 
 const PALETTE_EXE_PATH: String = "data/"
 const PALETTE_RES_PATH: String = "res://bin/"
+const JSON_EXTENSION: String = ".json"
 
 const TRANSFER_SCENE: String = "res://scene/transfer_data/TransferData.tscn"
 const TRANSFER_NODE: String = "/root/TransferData"
@@ -156,8 +157,11 @@ func _set_palette(setting) -> Dictionary:
 
 	file_name = setting[PALETTE]
 	for i in [PALETTE_EXE_PATH, PALETTE_RES_PATH]:
-		if palette_file.file_exists(i + file_name):
-			load_path = i + file_name
+		for j in ["", JSON_EXTENSION]:
+			if palette_file.file_exists(i + file_name + j):
+				load_path = i + file_name + j
+				break
+		if load_path != "":
 			break
 	if load_path == "":
 		return {}
