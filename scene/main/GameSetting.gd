@@ -7,7 +7,7 @@ signal setting_saved(save_data)
 
 const WIZARD: String = "wizard_mode"
 const SEED: String = "rng_seed"
-const WORLD_TAG: String = "world_tag"
+const INCLUDE_WORLD: String = "include_world"
 const EXCLUDE_WORLD: String = "exclude_world"
 const SHOW_FULL_MAP: String = "show_full_map"
 const PALETTE: String = "palette"
@@ -26,7 +26,7 @@ var _new_WorldTag := preload("res://library/WorldTag.gd").new()
 
 var _wizard_mode: bool
 var _rng_seed: int
-var _world_tag: String
+var _include_world: Array
 var _exclude_world: Array
 var _show_full_map: bool
 var _palette: Dictionary
@@ -34,12 +34,14 @@ var _json_parse_error: bool
 
 
 func load_setting() -> void:
+# func load_setting(array_helper) -> void:
 	var setting_file: File = File.new()
 	var load_path: String = ""
 	var setting_data: Dictionary
 	var __
 	var transfer: Game_TransferData
 
+	# _new_ArrayHelper = array_helper
 	for i in [SETTING_EXE_PATH, SETTING_RES_PATH]:
 		if setting_file.file_exists(i):
 			load_path = i
@@ -52,7 +54,7 @@ func load_setting() -> void:
 
 	_wizard_mode = _set_wizard_mode(setting_data)
 	_rng_seed = _set_rng_seed(setting_data)
-	_world_tag = _set_world_tag(setting_data)
+	_include_world = _set_include_world(setting_data)
 	_exclude_world = _set_exclude_world(setting_data)
 	_show_full_map = _set_show_full_map(setting_data)
 	_palette = _set_palette(setting_data)
@@ -60,7 +62,7 @@ func load_setting() -> void:
 	if get_tree().root.has_node(TRANSFER_NODE):
 		transfer = get_tree().root.get_node(TRANSFER_NODE)
 		_rng_seed = transfer.rng_seed
-		_world_tag = transfer.world_tag
+		_include_world = [transfer.world_tag]
 
 		get_tree().root.remove_child(transfer)
 		transfer.queue_free()
@@ -83,8 +85,8 @@ func get_rng_seed() -> int:
 	return _rng_seed
 
 
-func get_world_tag() -> String:
-	return _world_tag
+func get_include_world() -> Array:
+	return _include_world
 
 
 func get_exclude_world() -> Array:
@@ -118,26 +120,20 @@ func _set_rng_seed(setting) -> int:
 	return 0
 
 
-func _set_world_tag(setting) -> String:
-	var new_world: String = ""
+func _set_include_world(setting) -> Array:
+	var include: Array = []
 
-	if setting.has(WORLD_TAG) and (setting[WORLD_TAG] is String):
-		new_world = setting[WORLD_TAG].to_lower()
-		if not _new_WorldTag.is_valid_world_tag(new_world):
-			new_world = ""
-	return new_world
+	if setting.has(INCLUDE_WORLD) and (setting[INCLUDE_WORLD] is Array):
+		include = setting[INCLUDE_WORLD]
+	return include
 
 
 func _set_exclude_world(setting) -> Array:
-	var exclude: Array = []
+	var exclude: Array = [_new_WorldTag.DEMO]
 
 	if setting.has(EXCLUDE_WORLD) and (setting[EXCLUDE_WORLD] is Array):
 		exclude = setting[EXCLUDE_WORLD]
-		for i in range(exclude.size()):
-			if exclude[i] is String:
-				exclude[i] = (exclude[i]).to_lower()
-		return exclude
-	return [_new_WorldTag.DEMO]
+	return exclude
 
 
 func _set_show_full_map(setting) -> bool:

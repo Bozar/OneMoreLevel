@@ -55,9 +55,7 @@ Set `wizard_mode` to `true` to enable wizard keys. When in wizard mode, there is
 
 Set `rng_seed` to a positive integer as a random number generator seed.
 
-Feed `world_tag` with a string in `data/world_list.md` to specify the dungeon type.
-
-Add world names from `data/world_list.md` to `exclude_world` to filter out these worlds from rotation.
+Add world names from `data/world_list.md` to `include_world` or `exclude_world` to customize your world rotation list.
 
 Set `show_full_map` to `true` to disable fog of war.
 

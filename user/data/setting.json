@@ -1,7 +1,7 @@
 {
     "wizard_mode": false,
     "rng_seed": 0,
-    "world_tag": "",
+    "include_world": [],
     "show_full_map": false,
     "palette": "",
     "exclude_world": [
