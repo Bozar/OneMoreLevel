@@ -7,5 +7,6 @@
 * hound
 * knight
 * mirror
+* ninja
 * railgun
 * styx
