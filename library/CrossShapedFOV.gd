@@ -3,19 +3,18 @@ class_name Game_CrossShapedFOV
 
 # How to use it?
 #
-# 1. Set DUNGEON_WIDTH and DUNGEON_HEIGHT.
-# 2: Call set_rectangular_sight() to set local data. [*]
-# 3: Call is_in_sight() to check whether a given position is in sight.
+# 1: Call set_rectangular_sight() to set local data. [*]
+# 2: Call is_in_sight() to check whether a given position is in sight.
 #
 # [*]
 #
-# 2.1 Beware that [face_x, face_y] could only be [x, 0] or [0, y]. The coord
+# 1.1 Beware that [face_x, face_y] could only be [x, 0] or [0, y]. The coord
 # points to a cardinal direction relative to [center_x, center_y].
-# 2.2 The function requires four ranges in clock wise direction, starting from
+# 1.2 The function requires four ranges in clock wise direction, starting from
 # front_range.
-# 2.3 It also requires a function reference to decide whether a grid is
+# 1.3 It also requires a function reference to decide whether a grid is
 # occupied. Refer to FuncRef in Godot manual.
-# 2.4 Optionally, call set_t_shaped_sight() or set_symmetric_sight(). They wrap
+# 1.4 Optionally, call set_t_shaped_sight() or set_symmetric_sight(). They wrap
 # around set_rectangular_sight() and accept fewer arguments to create a more
 # symmetric field of view.
 #
@@ -41,14 +40,13 @@ class_name Game_CrossShapedFOV
 # rectangle. Then we verify if it is close enough to an axis.
 #
 
-const DUNGEON_WIDTH: int = 21
-const DUNGEON_HEIGHT: int = 15
-
 const COORD_WARNING: String = "Neither face_x nor face_y is zero."
 const T_SHAPED_BACK: int = 1
 const SYMMETRIC_X: int = 0
 const SYMMETRIC_Y: int = 1
 
+var _dungeon_width: int
+var _dungeon_height: int
 var _max_x: int
 var _max_y: int
 var _min_x: int
@@ -60,7 +58,8 @@ var _half_width: int
 
 # is_obstacle_func(x: int, y: int, opt_arg: Array) -> bool
 # Return true if a grid [x, y] is blocked.
-func set_rectangular_sight(center_x: int, center_y: int,
+func set_rectangular_sight(dungeon_width: int, dungeon_height: int,
+		center_x: int, center_y: int,
 		face_x: int, face_y: int, half_width: int,
 		front_range: int, right_range: int, back_range: int, left_range: int,
 		func_host: Object, is_obstacle_func: String, opt_arg: Array) -> void:
@@ -69,6 +68,8 @@ func set_rectangular_sight(center_x: int, center_y: int,
 	var cast_ray_arg: Array
 
 	# Set initial data.
+	_dungeon_width = dungeon_width
+	_dungeon_height = dungeon_height
 	_center_x = center_x
 	_max_x = center_x
 	_min_x = center_x
@@ -106,19 +107,23 @@ func set_rectangular_sight(center_x: int, center_y: int,
 		_update_min_max(end_point[0], end_point[1])
 
 
-func set_t_shaped_sight(center_x: int, center_y: int,
+func set_t_shaped_sight(dungeon_width: int, dungeon_height: int,
+		center_x: int, center_y: int,
 		face_x: int, face_y: int, half_width: int,
 		front_range: int, side_range: int,
 		func_host: Object, is_obstacle_func: String, opt_arg: Array) -> void:
-	set_rectangular_sight(center_x, center_y, face_x, face_y,
+	set_rectangular_sight(dungeon_width, dungeon_height,
+			center_x, center_y, face_x, face_y,
 			half_width, front_range, side_range, T_SHAPED_BACK, side_range,
 			func_host, is_obstacle_func, opt_arg)
 
 
-func set_symmetric_sight(center_x: int, center_y: int,
+func set_symmetric_sight(dungeon_width: int, dungeon_height: int,
+		center_x: int, center_y: int,
 		half_width: int, max_range: int,
 		func_host: Object, is_obstacle_func: String, opt_arg: Array) -> void:
-	set_rectangular_sight(center_x, center_y, SYMMETRIC_X, SYMMETRIC_Y,
+	set_rectangular_sight(dungeon_width, dungeon_height,
+			center_x, center_y, SYMMETRIC_X, SYMMETRIC_Y,
 			half_width, max_range, max_range, max_range, max_range,
 			func_host, is_obstacle_func, opt_arg)
 
@@ -168,5 +173,5 @@ func _normalize_coord(coord: int) -> int:
 
 
 func _is_inside_dungeon(x: int, y: int) -> bool:
-	return (x > -1) and (x < DUNGEON_WIDTH) \
-			and (y > -1) and (y < DUNGEON_HEIGHT)
+	return (x > -1) and (x < _dungeon_width) \
+			and (y > -1) and (y < _dungeon_height)

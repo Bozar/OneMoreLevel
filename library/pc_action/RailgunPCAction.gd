@@ -46,6 +46,7 @@ func render_fov() -> void:
 		return
 
 	_new_CrossShapedFOV.set_t_shaped_sight(
+			Game_DungeonSize.MAX_X, Game_DungeonSize.MAX_Y,
 			_source_position[0], _source_position[1],
 			_face_direction[0], _face_direction[1],
 			HALF_SIGHT_WIDTH,

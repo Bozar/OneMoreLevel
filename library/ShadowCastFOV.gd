@@ -7,10 +7,9 @@ class_name Game_ShadowCastFOV
 #
 # How to use it?
 #
-# 1. Set DUNGEON_WIDTH and DUNGEON_HEIGHT.
-# 2. Call set_field_of_view(). It requires a function reference to decide
+# 1. Call set_field_of_view(). It requires a function reference to decide
 # whether a grid is occupied. Refer to FuncRef in Godot manual.
-# 3. Call is_in_sight() to check if a grid is in sight.
+# 2. Call is_in_sight() to check if a grid is in sight.
 #
 # How does it work internally?
 #
@@ -38,13 +37,12 @@ class_name Game_ShadowCastFOV
 #       v
 #
 
-const DUNGEON_WIDTH: int = 21
-const DUNGEON_HEIGHT: int = 15
-
 const MIN_LEFT_SLOPE: float = 0.0
 const MAX_RIGHT_SLOPE: float = 1.0
 const MAX_OCTANT: int = 8
 
+var _dungeon_width: int
+var _dungeon_height: int
 var _dungeon: Dictionary
 var _center_x: int
 var _center_y: int
@@ -52,8 +50,11 @@ var _center_y: int
 
 # block_ray_func(x: int, y: int, opt_arg: Array) -> bool
 # Return true if a grid [x, y] is blocked.
-func set_field_of_view(x: int, y: int, max_range: int,
+func set_field_of_view(dungeon_width: int, dungeon_height: int,
+		x: int, y: int, max_range: int,
 		func_host: Object, block_ray_func: String, opt_arg: Array) -> void:
+	_dungeon_width = dungeon_width
+	_dungeon_height = dungeon_height
 	_reset_dungeon()
 	_dungeon[x][y] = true
 	_center_x = x
@@ -73,11 +74,11 @@ func is_in_sight(x: int, y: int) -> bool:
 
 func _reset_dungeon() -> void:
 	if _dungeon.size() == 0:
-		for x in range(DUNGEON_WIDTH):
+		for x in range(_dungeon_width):
 			_dungeon[x] = []
-			_dungeon[x].resize(DUNGEON_HEIGHT)
-	for x in range(DUNGEON_WIDTH):
-		for y in range(DUNGEON_HEIGHT):
+			_dungeon[x].resize(_dungeon_height)
+	for x in range(_dungeon_width):
+		for y in range(_dungeon_height):
 			_dungeon[x][y] = false
 
 
@@ -193,5 +194,5 @@ func _convert_coord(octant: int, source_x: int, source_y: int,
 
 
 func _is_inside_dungeon(x: int, y: int) -> bool:
-	return (x > -1) and (x < DUNGEON_WIDTH) \
-			and (y > -1) and (y < DUNGEON_HEIGHT)
+	return (x > -1) and (x < _dungeon_width) \
+			and (y > -1) and (y < _dungeon_height)

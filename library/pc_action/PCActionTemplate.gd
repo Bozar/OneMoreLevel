@@ -149,6 +149,7 @@ func render_fov() -> void:
 		return
 
 	_new_ShadowCastFOV.set_field_of_view(
+			Game_DungeonSize.MAX_X, Game_DungeonSize.MAX_Y,
 			_source_position[0], _source_position[1], _fov_render_range,
 			self, "_block_line_of_sight", [])
 
