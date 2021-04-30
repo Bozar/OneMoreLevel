@@ -1,4 +1,4 @@
-extends "res://library/init/WorldTemplate.gd"
+extends Game_WorldTemplate
 # Initialize a simple map for testing.
 
 

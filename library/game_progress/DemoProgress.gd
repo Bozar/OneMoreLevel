@@ -1,4 +1,4 @@
-extends "res://library/game_progress/ProgressTemplate.gd"
+extends Game_ProgressTemplate
 
 
 func _init(parent_node: Node2D).(parent_node) -> void:

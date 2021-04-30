@@ -1,4 +1,4 @@
-extends "res://library/init/WorldTemplate.gd"
+extends Game_WorldTemplate
 
 
 var _spr_Crystal := preload("res://sprite/Crystal.tscn")

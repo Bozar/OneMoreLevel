@@ -1,4 +1,4 @@
-extends "res://library/init/WorldTemplate.gd"
+extends Game_WorldTemplate
 
 
 const ROOM_SIZE: int = 4
@@ -15,8 +15,6 @@ var _spr_WallHound := preload("res://sprite/WallHound.tscn")
 var _spr_Hound := preload("res://sprite/Hound.tscn")
 # var _spr_HoundBoss := preload("res://sprite/HoundBoss.tscn")
 
-var _new_HoundData := preload("res://library/npc_data/HoundData.gd").new()
-
 
 func _init(parent_node: Node2D).(parent_node) -> void:
 	pass
@@ -26,8 +24,8 @@ func get_blueprint() -> Array:
 	_init_wall()
 	_init_floor(_spr_FloorHound)
 	_create_pc()
-	_init_actor(_new_HoundData.MIN_HOUND_GAP, INVALID_COORD, INVALID_COORD,
-			_new_HoundData.MAX_HOUND, _spr_Hound, _new_SubGroupTag.HOUND)
+	_init_actor(Game_HoundData.MIN_HOUND_GAP, INVALID_COORD, INVALID_COORD,
+			Game_HoundData.MAX_HOUND, _spr_Hound, _new_SubGroupTag.HOUND)
 	# _init_actor(1, INVALID_COORD, INVALID_COORD,
 	# 		1, _spr_HoundBoss, _new_SubGroupTag.HOUND_BOSS)
 
@@ -91,7 +89,7 @@ func _create_pc() -> void:
 			if _is_occupied(i[0], i[1]):
 				continue
 			neighbor = _new_CoordCalculator.get_neighbor(x, y,
-					_new_HoundData.PC_SIGHT, true)
+					Game_HoundData.PC_SIGHT, true)
 			for j in neighbor:
 				_occupy_position(j[0], j[1])
 			_add_to_blueprint(_spr_PCHound,

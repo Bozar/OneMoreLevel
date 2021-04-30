@@ -1,4 +1,4 @@
-extends "res://library/npc_ai/AITemplate.gd"
+extends Game_AITemplate
 
 
 const WAIT_HIT_POINT: int = 1

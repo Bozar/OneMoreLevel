@@ -1,4 +1,4 @@
-extends "res://library/npc_ai/AITemplate.gd"
+extends Game_AITemplate
 
 
 var _new_KnightData := preload("res://library/npc_data/KnightData.gd").new()

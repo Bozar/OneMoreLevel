@@ -1,4 +1,4 @@
-extends "res://library/npc_ai/AITemplate.gd"
+extends Game_AITemplate
 
 
 const DIRECTION_TO_SHIFT: Dictionary = {

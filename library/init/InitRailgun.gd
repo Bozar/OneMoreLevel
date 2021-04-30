@@ -1,4 +1,4 @@
-extends "res://library/init/WorldTemplate.gd"
+extends Game_WorldTemplate
 
 
 const PATH_LENGTH: int = 10

@@ -1,4 +1,4 @@
-extends "res://library/pc_action/PCActionTemplate.gd"
+extends Game_PCActionTemplate
 
 
 var _new_FrogData := preload("res://library/npc_data/FrogData.gd").new()

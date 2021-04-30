@@ -1,3 +1,6 @@
+class_name Game_HoundData
+
+
 const PC_SIGHT: int = 5
 const RESTORE_TURN: int = 3
 const RESTORE_TURN_IN_CAGE: int = 5

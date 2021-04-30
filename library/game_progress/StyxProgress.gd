@@ -1,4 +1,4 @@
-extends "res://library/game_progress/ProgressTemplate.gd"
+extends Game_ProgressTemplate
 
 
 var _new_StyxData := preload("res://library/npc_data/StyxData.gd").new()

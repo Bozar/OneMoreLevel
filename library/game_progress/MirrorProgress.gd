@@ -1,4 +1,4 @@
-extends "res://library/game_progress/ProgressTemplate.gd"
+extends Game_ProgressTemplate
 
 
 const MIRROR_DATA := preload("res://library/npc_data/MirrorData.gd")

@@ -1,4 +1,4 @@
-extends "res://library/npc_ai/AITemplate.gd"
+extends Game_AITemplate
 
 
 const INIT_DURATION: int = -1
@@ -6,8 +6,6 @@ const ONE_STEP_IN_FOG: int = 1
 const ONE_STEP_OUTSIDE_FOG: int = 2
 
 var _spr_Counter := preload("res://sprite/Counter.tscn")
-
-var _new_HoundData := preload("res://library/npc_data/HoundData.gd").new()
 
 var _boss_duration: int = INIT_DURATION
 var _player_lose: bool = false
@@ -40,13 +38,13 @@ func take_action() -> void:
 	pc_is_in_fog = is_in_fog[1]
 
 	if _can_hit_pc(self_is_in_fog, pc_is_in_fog):
-		add_hit_point = _new_HoundData.ADD_PC_HIT_POINT
-		# _ref_CountDown.subtract_count(_new_HoundData.LOSE_TURN)
+		add_hit_point = Game_HoundData.ADD_PC_HIT_POINT
+		# _ref_CountDown.subtract_count(Game_HoundData.LOSE_TURN)
 		if pc_is_in_fog:
-			add_hit_point = _new_HoundData.ADD_PC_HIT_POINT_IN_FOG
-			# _ref_CountDown.subtract_count(_new_HoundData.LOSE_EXTRA_TURN)
+			add_hit_point = Game_HoundData.ADD_PC_HIT_POINT_IN_FOG
+			# _ref_CountDown.subtract_count(Game_HoundData.LOSE_EXTRA_TURN)
 		if is_boss:
-			add_hit_point += _new_HoundData.ADD_PC_HIT_POINT_FROM_BOSS
+			add_hit_point += Game_HoundData.ADD_PC_HIT_POINT_FROM_BOSS
 		_set_pc_hit_point(add_hit_point)
 		# _ref_EndGame.player_lose()
 	elif _can_see_pc(is_boss):
@@ -85,7 +83,7 @@ func _boss_countdown() -> bool:
 	if _boss_duration == INIT_DURATION:
 		boss_to_pc = _new_CoordCalculator.get_range(_self_pos[0], _self_pos[1],
 				_pc_pos[0], _pc_pos[1])
-		_boss_duration = boss_to_pc + _new_HoundData.BOSS_DURATION
+		_boss_duration = boss_to_pc + Game_HoundData.BOSS_DURATION
 
 	if _boss_duration > 0:
 		_boss_duration -= 1
@@ -98,7 +96,7 @@ func _boss_countdown() -> bool:
 		# HoundProgress.remove_actor().
 		_ref_RemoveObject.remove_actor(_self_pos[0], _self_pos[1])
 		# Player wins if boss leaves the third time.
-		if hit_point + 1 == _new_HoundData.MAX_BOSS_HIT_POINT:
+		if hit_point + 1 == Game_HoundData.MAX_BOSS_HIT_POINT:
 			_ref_EndGame.player_win()
 		return false
 
@@ -120,7 +118,7 @@ func _can_see_pc(is_boss: bool) -> bool:
 	if is_boss:
 		return true
 	return _new_CoordCalculator.is_inside_range(_self_pos[0], _self_pos[1],
-			_pc_pos[0], _pc_pos[1], _new_HoundData.HOUND_SIGHT)
+			_pc_pos[0], _pc_pos[1], Game_HoundData.HOUND_SIGHT)
 
 
 func _hound_approach(self_is_in_fog: bool, pc_is_in_fog: bool) -> void:
@@ -202,10 +200,10 @@ func _set_pc_hit_point(add_hit_point: int) -> void:
 			elif _ref_DungeonBoard.has_actor(x, y):
 				continue
 			elif _new_CoordCalculator.is_inside_range(x, y,
-					_pc_pos[0], _pc_pos[1], _new_HoundData.MIN_BOSS_DISTANCE):
+					_pc_pos[0], _pc_pos[1], Game_HoundData.MIN_BOSS_DISTANCE):
 				continue
 			elif not _new_CoordCalculator.is_inside_range(x, y,
-					_pc_pos[0], _pc_pos[1], _new_HoundData.MAX_BOSS_DISTANCE):
+					_pc_pos[0], _pc_pos[1], Game_HoundData.MAX_BOSS_DISTANCE):
 				continue
 			else:
 				break
@@ -216,13 +214,13 @@ func _set_pc_hit_point(add_hit_point: int) -> void:
 		phantom = find_phantom[0]
 
 	pc_hit_point += add_hit_point
-	pc_hit_point = min(pc_hit_point, _new_HoundData.MAX_PC_HIT_POINT) as int
+	pc_hit_point = min(pc_hit_point, Game_HoundData.MAX_PC_HIT_POINT) as int
 
 	_ref_ObjectData.set_hit_point(pc, pc_hit_point)
 	new_sprite_type = _new_SpriteTypeTag.convert_digit_to_tag(
-			_new_HoundData.MAX_PC_HIT_POINT - pc_hit_point)
+			Game_HoundData.MAX_PC_HIT_POINT - pc_hit_point)
 	_ref_SwitchSprite.switch_sprite(phantom, new_sprite_type)
-	if pc_hit_point == _new_HoundData.MAX_PC_HIT_POINT:
+	if pc_hit_point == Game_HoundData.MAX_PC_HIT_POINT:
 		_player_lose = true
 		_ref_EndGame.player_lose()
 
@@ -242,7 +240,7 @@ func _boss_absorb_fog() -> void:
 				_new_ObjectStateTag.DEFAULT)):
 			continue
 		_ref_ObjectData.subtract_hit_point(ground,
-				_new_HoundData.ABSORB_DURATION)
+				Game_HoundData.ABSORB_DURATION)
 		if _ref_ObjectData.get_hit_point(ground) < 1:
 			_ref_ObjectData.set_hit_point(ground, 0)
 			_ref_SwitchSprite.switch_sprite(ground, _new_SpriteTypeTag.ACTIVE_1)

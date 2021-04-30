@@ -1,4 +1,4 @@
-extends "res://library/npc_ai/AITemplate.gd"
+extends Game_AITemplate
 
 
 var _spr_WormBody := preload("res://sprite/WormBody.tscn")

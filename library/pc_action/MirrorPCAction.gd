@@ -1,4 +1,4 @@
-extends "res://library/pc_action/PCActionTemplate.gd"
+extends Game_PCActionTemplate
 
 
 var _spr_Phantom := preload("res://sprite/Phantom.tscn")

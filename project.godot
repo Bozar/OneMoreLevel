@@ -74,6 +74,11 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://scene/main/HitPoint.gd"
 }, {
+"base": "Reference",
+"class": "Game_HoundData",
+"language": "GDScript",
+"path": "res://library/npc_data/HoundData.gd"
+}, {
 "base": "Node2D",
 "class": "Game_InitWorld",
 "language": "GDScript",
@@ -173,6 +178,7 @@ _global_script_class_icons={
 "Game_HelpInput": "",
 "Game_HelpVScroll": "",
 "Game_HitPoint": "",
+"Game_HoundData": "",
 "Game_InitWorld": "",
 "Game_ObjectData": "",
 "Game_ObjectState": "",

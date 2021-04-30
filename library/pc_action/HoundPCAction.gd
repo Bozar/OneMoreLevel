@@ -1,18 +1,16 @@
-extends "res://library/pc_action/PCActionTemplate.gd"
+extends Game_PCActionTemplate
 
 
 const NO_INPUT: int = 0
 const INPUT_ONCE: int = 1
 const INPUT_TWICE: int = 2
 
-var _new_HoundData := preload("res://library/npc_data/HoundData.gd").new()
-
 var _move_diagonally: bool
 var _count_input: int = NO_INPUT
 
 
 func _init(parent_node: Node2D).(parent_node) -> void:
-	_fov_render_range = _new_HoundData.PC_SIGHT
+	_fov_render_range = Game_HoundData.PC_SIGHT
 
 
 func switch_sprite() -> void:
@@ -219,9 +217,9 @@ func _try_attack(attack_diagonally: bool) -> void:
 	hit_point = _try_set_and_get_boss_hit_point(hit_pos[0], hit_pos[1])
 	_ref_RemoveObject.remove_actor(hit_pos[0], hit_pos[1])
 
-	if hit_point == _new_HoundData.MAX_BOSS_HIT_POINT:
+	if hit_point == Game_HoundData.MAX_BOSS_HIT_POINT:
 		_ref_EndGame.player_win()
-	_ref_CountDown.add_count(_new_HoundData.RESTORE_TURN)
+	_ref_CountDown.add_count(Game_HoundData.RESTORE_TURN)
 
 
 func _reset_input_state() -> void:
@@ -240,7 +238,7 @@ func _restore_in_cage() -> void:
 			is_surrounded = false
 			break
 	if is_surrounded:
-		_ref_CountDown.add_count(_new_HoundData.RESTORE_TURN_IN_CAGE)
+		_ref_CountDown.add_count(Game_HoundData.RESTORE_TURN_IN_CAGE)
 
 
 func _try_hit_phantom(x: int, y: int) -> void:

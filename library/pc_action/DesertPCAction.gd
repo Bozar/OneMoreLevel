@@ -1,4 +1,4 @@
-extends "res://library/pc_action/PCActionTemplate.gd"
+extends Game_PCActionTemplate
 
 
 const MAX_NEIGHBOR: int = 4

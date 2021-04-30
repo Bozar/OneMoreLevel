@@ -1,4 +1,4 @@
-extends "res://library/init/WorldTemplate.gd"
+extends Game_WorldTemplate
 
 
 var _spr_Lighthouse := preload("res://sprite/Lighthouse.tscn")

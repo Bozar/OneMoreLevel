@@ -1,14 +1,12 @@
-extends "res://library/game_progress/ProgressTemplate.gd"
+extends Game_ProgressTemplate
 
 
 var _spr_Hound := preload("res://sprite/Hound.tscn")
 var _spr_HoundBoss := preload("res://sprite/HoundBoss.tscn")
 
-var _new_HoundData := preload("res://library/npc_data/HoundData.gd").new()
-
 var _fog_source: Array = []
 var _all_grounds: Array = []
-var _current_hound: int = _new_HoundData.MAX_HOUND
+var _current_hound: int = Game_HoundData.MAX_HOUND
 var _minion_trigger: bool = false
 var _boss_trigger: bool = true
 var _boss_hit_point: int = 0
@@ -43,9 +41,9 @@ func create_actor(actor: Sprite, sub_group: String, _x: int, _y: int) -> void:
 
 func remove_actor(actor: Sprite, x: int, y: int) -> void:
 	if actor.is_in_group(_new_SubGroupTag.HOUND):
-		_fog_source.push_back([x, y, _new_HoundData.MIN_FOG_SIZE])
+		_fog_source.push_back([x, y, Game_HoundData.MIN_FOG_SIZE])
 		_current_hound -= 1
-		if _current_hound <= _new_HoundData.START_RESPAWN:
+		if _current_hound <= Game_HoundData.START_RESPAWN:
 			_minion_trigger = true
 	elif actor.is_in_group(_new_SubGroupTag.HOUND_BOSS):
 		_boss_trigger = true
@@ -73,14 +71,14 @@ func _add_or_remove_fog() -> void:
 		x = _fog_source[i][0]
 		y = _fog_source[i][1]
 		fog_range = _fog_source[i][2]
-		if fog_range < _new_HoundData.MAX_FOG_SIZE:
+		if fog_range < Game_HoundData.MAX_FOG_SIZE:
 			_fog_source[i][2] += 1
 			neighbor = _new_CoordCalculator.get_neighbor(x, y, fog_range, true)
 			for j in neighbor:
 				ground = _ref_DungeonBoard.get_ground(j[0], j[1])
 				if ground != null:
 					_ref_ObjectData.add_hit_point(ground,
-							_new_HoundData.FOG_DURATION)
+							Game_HoundData.FOG_DURATION)
 		else:
 			remove_index.push_back(i)
 
@@ -117,26 +115,26 @@ func _set_ground_state(ground: Sprite, is_active: bool) -> void:
 func _respawn_minion(pc_x: int, pc_y: int) -> void:
 	# Once respawn is started, keep adding 1 hound every turn until there are 10
 	# hounds.
-	if _current_hound == _new_HoundData.MAX_HOUND:
+	if _current_hound == Game_HoundData.MAX_HOUND:
 		_minion_trigger = false
 	if not _minion_trigger:
 		return
 
 	_current_hound += 1
 	_respawn_actor(pc_x, pc_y,
-			_new_HoundData.MIN_MINION_DISTANCE,
-			_new_HoundData.MAX_MINION_DISTANCE,
+			Game_HoundData.MIN_MINION_DISTANCE,
+			Game_HoundData.MAX_MINION_DISTANCE,
 			_spr_Hound, _new_SubGroupTag.HOUND)
 
 
 func _respawn_boss(pc_x: int, pc_y: int) -> void:
-	if (not _boss_trigger) or (_current_hound < _new_HoundData.MAX_HOUND):
+	if (not _boss_trigger) or (_current_hound < Game_HoundData.MAX_HOUND):
 		return
 
 	_boss_trigger = false
 	_respawn_actor(pc_x, pc_y,
-			_new_HoundData.MIN_BOSS_DISTANCE,
-			_new_HoundData.MAX_BOSS_DISTANCE,
+			Game_HoundData.MIN_BOSS_DISTANCE,
+			Game_HoundData.MAX_BOSS_DISTANCE,
 			_spr_HoundBoss, _new_SubGroupTag.HOUND_BOSS)
 
 
@@ -163,7 +161,7 @@ func _respawn_actor(pc_x: int, pc_y: int, min_distance: int, max_distance: int,
 			next_loop = true
 		else:
 			neighbor = _new_CoordCalculator.get_neighbor(x, y,
-					_new_HoundData.MIN_HOUND_GAP)
+					Game_HoundData.MIN_HOUND_GAP)
 			for i in neighbor:
 				if _ref_DungeonBoard.has_actor(i[0], i[1]):
 					next_loop = true

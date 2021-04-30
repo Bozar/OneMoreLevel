@@ -1,4 +1,4 @@
-extends "res://library/game_progress/ProgressTemplate.gd"
+extends Game_ProgressTemplate
 
 
 var _spr_Knight := preload("res://sprite/Knight.tscn")
