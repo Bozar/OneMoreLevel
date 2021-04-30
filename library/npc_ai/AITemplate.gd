@@ -20,7 +20,6 @@ var _ref_Palette: Game_Palette
 var _new_ConvertCoord := preload("res://library/ConvertCoord.gd").new()
 var _new_CoordCalculator := preload("res://library/CoordCalculator.gd").new()
 var _new_SpriteTypeTag := preload("res://library/SpriteTypeTag.gd").new()
-var _new_PathFindingData := preload("res://library/PathFindingData.gd").new()
 var _new_DijkstraPathFinding := preload("res://library/DijkstraPathFinding.gd").new()
 var _new_ArrayHelper := preload("res://library/ArrayHelper.gd").new()
 
@@ -78,8 +77,8 @@ func _approach_pc(start_point: Array = [_pc_pos], one_step: int = 1,
 
 	_init_dungeon()
 	for i in start_point:
-		if _dungeon[i[0]][i[1]] == _new_PathFindingData.UNKNOWN:
-			_dungeon[i[0]][i[1]] = _new_PathFindingData.DESTINATION
+		if _dungeon[i[0]][i[1]] == Game_PathFindingData.UNKNOWN:
+			_dungeon[i[0]][i[1]] = Game_PathFindingData.DESTINATION
 		else:
 			push_warning(INVALID_START_POINT)
 			return
@@ -106,9 +105,9 @@ func _init_dungeon() -> void:
 	for x in range(Game_DungeonSize.MAX_X):
 		for y in range(Game_DungeonSize.MAX_Y):
 			if _ref_DungeonBoard.has_building(x, y):
-				_dungeon[x][y] = _new_PathFindingData.OBSTACLE
+				_dungeon[x][y] = Game_PathFindingData.OBSTACLE
 			else:
-				_dungeon[x][y] = _new_PathFindingData.UNKNOWN
+				_dungeon[x][y] = Game_PathFindingData.UNKNOWN
 
 
 func _is_passable_func(source_array: Array, current_index: int,

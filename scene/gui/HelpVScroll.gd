@@ -8,7 +8,6 @@ const DUNGEON: String = "HelpHBox/Dungeon"
 
 var _ref_Palette: Game_Palette
 
-var _new_ScreenTag: = preload("res://library/ScreenTag.gd").new()
 var _new_InitWorldData := preload("res://library/InitWorldData.gd").new()
 
 var _help_text: Array
@@ -69,7 +68,7 @@ func _on_InitWorld_world_selected(new_world: String) -> void:
 func _on_SwitchScreen_screen_switched(screen_tag: String) -> void:
 	_reset_scroll_bar()
 	_reset_index()
-	visible = (screen_tag == _new_ScreenTag.HELP)
+	visible = (screen_tag == Game_ScreenTag.HELP)
 	get_node(DUNGEON).text = _help_text[_help_index]
 
 

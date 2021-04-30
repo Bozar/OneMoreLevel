@@ -5,8 +5,6 @@ class_name Game_HelpInput
 var _ref_SwitchScreen: Game_SwitchScreen
 var _ref_HelpVScroll: Game_HelpVScroll
 
-var _new_ScreenTag: = preload("res://library/ScreenTag.gd").new()
-
 var _input_to_funcref: Dictionary
 
 
@@ -16,7 +14,7 @@ func _on_InitWorld_world_selected(_new_world: String) -> void:
 
 	_input_to_funcref = {
 		Game_InputTag.HELP:
-			[_ref_SwitchScreen, "switch_to_screen", [_new_ScreenTag.MAIN]],
+			[_ref_SwitchScreen, "switch_to_screen", [Game_ScreenTag.MAIN]],
 		Game_InputTag.MOVE_DOWN:
 			[_ref_HelpVScroll, "slide_scroll_bar", [true, true]],
 		Game_InputTag.MOVE_UP:
@@ -45,4 +43,4 @@ func _unhandled_input(event: InputEvent) -> void:
 
 
 func _on_SwitchScreen_screen_switched(screen_tag: String) -> void:
-	set_process_unhandled_input(screen_tag == _new_ScreenTag.HELP)
+	set_process_unhandled_input(screen_tag == Game_ScreenTag.HELP)

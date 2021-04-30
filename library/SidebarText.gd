@@ -1,3 +1,6 @@
+class_name Game_SidebarText
+
+
 const VERSION: String = "{0}0.3.2"
 # const VERSION: String = "{0}0.3.1-\nNightly-\n04-16-2021"
 

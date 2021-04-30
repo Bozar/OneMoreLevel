@@ -21,7 +21,6 @@ var _ref_Palette: Game_Palette
 var _new_ConvertCoord := preload("res://library/ConvertCoord.gd").new()
 var _new_SpriteTypeTag := preload("res://library/SpriteTypeTag.gd").new()
 var _new_InitWorldData := preload("res://library/InitWorldData.gd").new()
-var _new_ScreenTag: = preload("res://library/ScreenTag.gd").new()
 
 var _pc_action: Game_PCActionTemplate
 var _direction: String
@@ -43,7 +42,7 @@ func _unhandled_input(event: InputEvent) -> void:
 	elif _verify_input(event, Game_InputTag.COPY_SEED):
 		OS.set_clipboard(_ref_RandomNumber.get_rng_seed() as String)
 	elif _verify_input(event, Game_InputTag.HELP):
-		_ref_SwitchScreen.switch_to_screen(_new_ScreenTag.HELP)
+		_ref_SwitchScreen.switch_to_screen(Game_ScreenTag.HELP)
 	elif _end_game:
 		if _verify_input(event, Game_InputTag.RELOAD):
 			get_node(RELOAD_GAME).reload()
@@ -104,7 +103,7 @@ func _on_EndGame_game_over(win: bool) -> void:
 
 
 func _on_SwitchScreen_screen_switched(screen_tag: String) -> void:
-	set_process_unhandled_input(screen_tag == _new_ScreenTag.MAIN)
+	set_process_unhandled_input(screen_tag == Game_ScreenTag.MAIN)
 
 
 func _is_move_input(event: InputEvent) -> bool:

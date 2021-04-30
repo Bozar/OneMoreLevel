@@ -1,5 +1,4 @@
 var _new_CoordCalculator := preload("res://library/CoordCalculator.gd").new()
-var _new_PathFindingData := preload("res://library/PathFindingData.gd").new()
 var _new_ArrayHelper := preload("res://library/ArrayHelper.gd").new()
 
 
@@ -11,7 +10,7 @@ func get_path(dungeon: Dictionary, start_x: int, start_y: int, one_step: int,
 		func_host: Object, is_passable_func: String, opt_arg: Array) -> Array:
 	var neighbor: Array = _new_CoordCalculator.get_neighbor(start_x, start_y,
 			one_step)
-	var min_distance: int = _new_PathFindingData.OBSTACLE
+	var min_distance: int = Game_PathFindingData.OBSTACLE
 	var x: int
 	var y: int
 	var current_index: int = 0
@@ -22,7 +21,7 @@ func get_path(dungeon: Dictionary, start_x: int, start_y: int, one_step: int,
 	for i in neighbor.size():
 		x = neighbor[i][0]
 		y = neighbor[i][1]
-		if _is_valid_distance(dungeon, x, y, _new_PathFindingData.OBSTACLE):
+		if _is_valid_distance(dungeon, x, y, Game_PathFindingData.OBSTACLE):
 			if dungeon[x][y] < min_distance:
 				min_distance = dungeon[x][y]
 				_new_ArrayHelper.swap_element(neighbor, 0, i)
@@ -49,7 +48,7 @@ func get_map(dungeon: Dictionary, end_point: Array) -> Dictionary:
 	for i in neighbor:
 		x = i[0]
 		y = i[1]
-		if dungeon[x][y] == _new_PathFindingData.UNKNOWN:
+		if dungeon[x][y] == Game_PathFindingData.UNKNOWN:
 			dungeon[x][y] = _get_distance(dungeon, x, y)
 			end_point.push_back(i)
 	return get_map(dungeon, end_point)
@@ -58,7 +57,7 @@ func get_map(dungeon: Dictionary, end_point: Array) -> Dictionary:
 func _get_distance(dungeon: Dictionary, center_x: int, center_y: int) -> int:
 	var neighbor: Array = _new_CoordCalculator.get_neighbor(
 			center_x, center_y, 1)
-	var min_distance: int = _new_PathFindingData.OBSTACLE
+	var min_distance: int = Game_PathFindingData.OBSTACLE
 	var x: int
 	var y: int
 
@@ -67,11 +66,11 @@ func _get_distance(dungeon: Dictionary, center_x: int, center_y: int) -> int:
 		y = i[1]
 		if _is_valid_distance(dungeon, x, y, min_distance):
 			min_distance = dungeon[x][y]
-	min_distance = min(min_distance + 1, _new_PathFindingData.OBSTACLE) as int
+	min_distance = min(min_distance + 1, Game_PathFindingData.OBSTACLE) as int
 	return min_distance
 
 
 func _is_valid_distance(dungeon: Dictionary, x: int, y: int,
 		max_distance: int) -> bool:
 	return (dungeon[x][y] < max_distance) \
-			and (dungeon[x][y] > _new_PathFindingData.UNKNOWN)
+			and (dungeon[x][y] > Game_PathFindingData.UNKNOWN)

@@ -12,7 +12,7 @@ const HELP_PATH: String = "res://user/doc/%str%.md"
 const GENERAL_HELP: String = "res://user/doc/general.md"
 const KEY_BINDING_HELP: String = "res://user/doc/keybinding.md"
 
-var _new_WorldTag := preload("res://library/WorldTag.gd").new()
+var _new_WorldTag := Game_WorldTag.new()
 
 
 func get_world_template(world_tag: String) -> Game_WorldTemplate:

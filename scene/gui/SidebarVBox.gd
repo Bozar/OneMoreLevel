@@ -16,10 +16,8 @@ var _ref_DungeonBoard: Game_DungeonBoard
 var _ref_GameSetting: Game_GameSetting
 var _ref_Palette: Game_Palette
 
-var _new_WorldTag := preload("res://library/WorldTag.gd").new()
+var _new_WorldTag := Game_WorldTag.new()
 var _new_ConvertCoord := preload("res://library/ConvertCoord.gd").new()
-var _new_SidebarText := preload("res://library/SidebarText.gd").new()
-var _new_ScreenTag := preload("res://library/ScreenTag.gd").new()
 
 var _node_to_color: Dictionary
 
@@ -39,7 +37,7 @@ func _on_InitWorld_world_selected(new_world: String) -> void:
 	get_node(MESSAGE).text = ""
 
 	get_node(WORLD).text = _new_WorldTag.get_world_name(new_world)
-	get_node(HELP).text = _new_SidebarText.HELP
+	get_node(HELP).text = Game_SidebarText.HELP
 	get_node(VERSION).text = _get_version()
 	get_node(SEED).text = _get_seed()
 
@@ -54,13 +52,13 @@ func _on_Schedule_turn_started(current_sprite: Sprite) -> void:
 func _on_EndGame_game_over(win: bool) -> void:
 	get_node(TURN).text = _get_turn()
 	if win:
-		get_node(MESSAGE).text = _new_SidebarText.WIN
+		get_node(MESSAGE).text = Game_SidebarText.WIN
 	else:
-		get_node(MESSAGE).text = _new_SidebarText.LOSE
+		get_node(MESSAGE).text = Game_SidebarText.LOSE
 
 
 func _on_SwitchScreen_screen_switched(screen_tag: String) -> void:
-	visible = (screen_tag == _new_ScreenTag.MAIN)
+	visible = (screen_tag == Game_ScreenTag.MAIN)
 
 
 func _set_color() -> void:
@@ -69,7 +67,7 @@ func _set_color() -> void:
 
 
 func _get_turn() -> String:
-	return _new_SidebarText.TURN.format([_ref_CountDown.get_count(true)])
+	return Game_SidebarText.TURN.format([_ref_CountDown.get_count(true)])
 
 
 func _get_warning() -> String:
@@ -77,7 +75,7 @@ func _get_warning() -> String:
 	var pc_pos: Array = _new_ConvertCoord.vector_to_array(pc.position)
 
 	if _ref_DangerZone.is_in_danger(pc_pos[0], pc_pos[1]):
-		return _new_SidebarText.DANGER
+		return Game_SidebarText.DANGER
 	return  ""
 
 
@@ -87,12 +85,12 @@ func _get_seed() -> String:
 	var _body: String = _rng_seed.substr(3, 3)
 	var _tail: String = _rng_seed.substr(6)
 
-	return _new_SidebarText.SEED.format([_head, _body, _tail])
+	return Game_SidebarText.SEED.format([_head, _body, _tail])
 
 
 func _get_version() -> String:
 	if _ref_GameSetting.get_json_parse_error():
-		return _new_SidebarText.VERSION.format([_new_SidebarText.PARSE_ERROR])
+		return Game_SidebarText.VERSION.format([Game_SidebarText.PARSE_ERROR])
 	elif _ref_GameSetting.get_wizard_mode():
-		return _new_SidebarText.VERSION.format([_new_SidebarText.WIZARD])
-	return _new_SidebarText.VERSION.format([""])
+		return Game_SidebarText.VERSION.format([Game_SidebarText.WIZARD])
+	return Game_SidebarText.VERSION.format([""])
