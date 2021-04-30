@@ -21,11 +21,11 @@ func switch_sprite() -> void:
 
 	if _ground_is_active(pc_pos[0], pc_pos[1]):
 		if _ref_ObjectData.get_hit_point(ground) == 0:
-			new_sprite_type = _new_SpriteTypeTag.ACTIVE_1
+			new_sprite_type = Game_SpriteTypeTag.ACTIVE_1
 		else:
-			new_sprite_type = _new_SpriteTypeTag.ACTIVE
+			new_sprite_type = Game_SpriteTypeTag.ACTIVE
 	else:
-		new_sprite_type = _new_SpriteTypeTag.DEFAULT
+		new_sprite_type = Game_SpriteTypeTag.DEFAULT
 	_ref_SwitchSprite.switch_sprite(pc, new_sprite_type)
 
 

@@ -17,7 +17,7 @@ func renew_world(_pc_x: int, _pc_y: int) -> void:
 		_wind_duration = Game_BalloonData.WIND_DURATION
 	else:
 		ground = _ref_DungeonBoard.get_ground(0, _wind_duration)
-		_ref_SwitchSprite.switch_sprite(ground, _new_SpriteTypeTag.DEFAULT)
+		_ref_SwitchSprite.switch_sprite(ground, Game_SpriteTypeTag.DEFAULT)
 		_wind_duration -= 1
 
 

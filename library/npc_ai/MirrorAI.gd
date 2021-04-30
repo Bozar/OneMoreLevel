@@ -43,13 +43,13 @@ func _move() -> void:
 	var new_position: Array
 
 	if _ref_DungeonBoard.has_trap(_self_pos[0], _self_pos[1]):
-		_ref_SwitchSprite.switch_sprite(_self, _new_SpriteTypeTag.DEFAULT)
+		_ref_SwitchSprite.switch_sprite(_self, Game_SpriteTypeTag.DEFAULT)
 
 	_approach_pc()
 
 	new_position = _new_ConvertCoord.vector_to_array(_self.position)
 	if _ref_DungeonBoard.has_trap(new_position[0], new_position[1]):
-		_ref_SwitchSprite.switch_sprite(_self, _new_SpriteTypeTag.ACTIVE)
+		_ref_SwitchSprite.switch_sprite(_self, Game_SpriteTypeTag.ACTIVE)
 
 
 func _switch_pc_and_image() -> void:
@@ -58,7 +58,7 @@ func _switch_pc_and_image() -> void:
 	var pc: Sprite = _ref_DungeonBoard.get_pc()
 
 	if _ref_DungeonBoard.has_trap(_pc_pos[0], _pc_pos[1]):
-		_ref_SwitchSprite.switch_sprite(pc, _new_SpriteTypeTag.DEFAULT)
+		_ref_SwitchSprite.switch_sprite(pc, Game_SpriteTypeTag.DEFAULT)
 		_trap_pos = _pc_pos
 
 	_ref_DungeonBoard.swap_sprite(Game_MainGroupTag.ACTOR,
@@ -77,7 +77,7 @@ func _set_npc_state() -> void:
 			_ref_ObjectData.set_state(i, Game_ObjectStateTag.PASSIVE)
 			npc_pos = _new_ConvertCoord.vector_to_array(i.position)
 			if _ref_DungeonBoard.has_trap(npc_pos[0], npc_pos[1]):
-				_ref_SwitchSprite.switch_sprite(i, _new_SpriteTypeTag.DEFAULT)
+				_ref_SwitchSprite.switch_sprite(i, Game_SpriteTypeTag.DEFAULT)
 				_trap_pos = npc_pos
 		else:
 			_ref_ObjectData.set_state(i, Game_ObjectStateTag.DEFAULT)

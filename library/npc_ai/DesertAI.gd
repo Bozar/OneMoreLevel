@@ -81,7 +81,7 @@ func _create_body(id: int, index: int, x: int, y: int) -> void:
 
 	if is_active:
 		_ref_ObjectData.set_state(worm_body, Game_ObjectStateTag.ACTIVE)
-		_ref_SwitchSprite.switch_sprite(worm_body, _new_SpriteTypeTag.ACTIVE)
+		_ref_SwitchSprite.switch_sprite(worm_body, Game_SpriteTypeTag.ACTIVE)
 		_id_to_has_active_spice[id] = true
 		_quality_spice_chance = 0
 
@@ -113,8 +113,8 @@ func _try_random_walk(id: int) -> bool:
 	move_to = candidate[_ref_RandomNumber.get_int(0, candidate.size())]
 
 	if _is_pc_pos(move_to[0], move_to[1]):
-		_ref_SwitchSprite.switch_sprite(pc, _new_SpriteTypeTag.ACTIVE)
-		_ref_SwitchSprite.switch_sprite(_self, _new_SpriteTypeTag.ACTIVE)
+		_ref_SwitchSprite.switch_sprite(pc, Game_SpriteTypeTag.ACTIVE)
+		_ref_SwitchSprite.switch_sprite(_self, Game_SpriteTypeTag.ACTIVE)
 		_ref_EndGame.player_lose()
 		return false
 

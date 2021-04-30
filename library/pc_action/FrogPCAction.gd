@@ -78,11 +78,11 @@ func switch_sprite() -> void:
 
 	if _is_in_swamp(x, y):
 		if _step_counter == Game_FrogData.SINK_IN_MUD - 1:
-			_ref_SwitchSprite.switch_sprite(pc, _new_SpriteTypeTag.PASSIVE_1)
+			_ref_SwitchSprite.switch_sprite(pc, Game_SpriteTypeTag.PASSIVE_1)
 		else:
-			_ref_SwitchSprite.switch_sprite(pc, _new_SpriteTypeTag.PASSIVE)
+			_ref_SwitchSprite.switch_sprite(pc, Game_SpriteTypeTag.PASSIVE)
 	else:
-		_ref_SwitchSprite.switch_sprite(pc, _new_SpriteTypeTag.DEFAULT)
+		_ref_SwitchSprite.switch_sprite(pc, Game_SpriteTypeTag.DEFAULT)
 
 
 func _is_in_swamp(x: int, y: int) -> bool:

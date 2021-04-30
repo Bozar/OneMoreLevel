@@ -114,7 +114,7 @@ func _reach_destination(x: int, y: int) -> bool:
 
 	if _ref_ObjectData.verify_state(beacon, Game_ObjectStateTag.DEFAULT):
 		_count_beacon -= 1
-		_ref_SwitchSprite.switch_sprite(beacon, _new_SpriteTypeTag.PASSIVE)
+		_ref_SwitchSprite.switch_sprite(beacon, Game_SpriteTypeTag.PASSIVE)
 
 	if not _ref_ObjectData.verify_state(beacon, Game_ObjectStateTag.PASSIVE):
 		add_count = true

@@ -1,3 +1,6 @@
+class_name Game_ZIndex
+
+
 const MAIN_GROUP_TO_Z_INDEX: Dictionary = {
 	Game_MainGroupTag.INVALID: -100,
 	Game_MainGroupTag.GROUND: 0,

@@ -67,12 +67,12 @@ func _switch_sprite() -> void:
 
 	if _ref_ObjectData.verify_state(ground, Game_ObjectStateTag.ACTIVE):
 		# if _ref_ObjectData.get_hit_point(ground) == 0:
-		# 	sprite_type = _new_SpriteTypeTag.ACTIVE_1
+		# 	sprite_type = Game_SpriteTypeTag.ACTIVE_1
 		# else:
-		# 	sprite_type = _new_SpriteTypeTag.ACTIVE
-		sprite_type = _new_SpriteTypeTag.ACTIVE
+		# 	sprite_type = Game_SpriteTypeTag.ACTIVE
+		sprite_type = Game_SpriteTypeTag.ACTIVE
 	else:
-		sprite_type = _new_SpriteTypeTag.DEFAULT
+		sprite_type = Game_SpriteTypeTag.DEFAULT
 	_ref_SwitchSprite.switch_sprite(_self, sprite_type)
 
 
@@ -243,4 +243,4 @@ func _boss_absorb_fog() -> void:
 				Game_HoundData.ABSORB_DURATION)
 		if _ref_ObjectData.get_hit_point(ground) < 1:
 			_ref_ObjectData.set_hit_point(ground, 0)
-			_ref_SwitchSprite.switch_sprite(ground, _new_SpriteTypeTag.ACTIVE_1)
+			_ref_SwitchSprite.switch_sprite(ground, Game_SpriteTypeTag.ACTIVE_1)

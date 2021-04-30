@@ -30,10 +30,10 @@ var _ref_Palette: Game_Palette
 
 var _new_CoordCalculator := preload("res://library/CoordCalculator.gd").new()
 var _new_ConvertCoord := preload("res://library/ConvertCoord.gd").new()
-var _new_SpriteTypeTag := preload("res://library/SpriteTypeTag.gd").new()
 var _new_ArrayHelper := preload("res://library/ArrayHelper.gd").new()
 var _new_ShadowCastFOV := preload("res://library/ShadowCastFOV.gd").new()
 var _new_CrossShapedFOV := preload("res://library/CrossShapedFOV.gd").new()
+var _new_SpriteTypeTag := Game_SpriteTypeTag.new()
 
 var _source_position: Array
 var _target_position: Array
@@ -172,9 +172,9 @@ func switch_sprite() -> void:
 	var pc: Sprite = _ref_DungeonBoard.get_pc()
 
 	if _ref_DangerZone.is_in_danger(_source_position[0], _source_position[1]):
-		_ref_SwitchSprite.switch_sprite(pc, _new_SpriteTypeTag.ACTIVE)
+		_ref_SwitchSprite.switch_sprite(pc, Game_SpriteTypeTag.ACTIVE)
 	else:
-		_ref_SwitchSprite.switch_sprite(pc, _new_SpriteTypeTag.DEFAULT)
+		_ref_SwitchSprite.switch_sprite(pc, Game_SpriteTypeTag.DEFAULT)
 
 
 func game_over(win: bool) -> void:

@@ -1,3 +1,6 @@
+class_name Game_SpriteTypeTag
+
+
 const DEFAULT: String = "default"
 const DEFAULT_1: String = "default_1"
 const DEFAULT_2: String = "default_2"

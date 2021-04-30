@@ -25,8 +25,8 @@ var _spr_Floor := preload("res://sprite/Floor.tscn")
 
 var _new_ConvertCoord := preload("res://library/ConvertCoord.gd").new()
 var _new_CoordCalculator := preload("res://library/CoordCalculator.gd").new()
-var _new_SpriteTypeTag := preload("res://library/SpriteTypeTag.gd").new()
 var _new_ArrayHelper := preload("res://library/ArrayHelper.gd").new()
+var _new_SpriteTypeTag := Game_SpriteTypeTag.new()
 
 
 # Refer: GameProgress.gd.

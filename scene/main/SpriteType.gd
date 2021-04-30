@@ -2,14 +2,12 @@ extends Node2D
 class_name Game_SpriteType
 
 
-var _new_SpriteTypeTag := preload("res://library/SpriteTypeTag.gd").new()
-
 var _id_to_sprite_type: Dictionary = {}
 
 
 func get_sprite_type(id: int) -> String:
 	if not _id_to_sprite_type.has(id):
-		_id_to_sprite_type[id] = _new_SpriteTypeTag.DEFAULT
+		_id_to_sprite_type[id] = Game_SpriteTypeTag.DEFAULT
 	return _id_to_sprite_type[id]
 
 

@@ -235,6 +235,11 @@ _global_script_classes=[ {
 "path": "res://scene/main/SpriteType.gd"
 }, {
 "base": "Reference",
+"class": "Game_SpriteTypeTag",
+"language": "GDScript",
+"path": "res://library/SpriteTypeTag.gd"
+}, {
+"base": "Reference",
 "class": "Game_StyxData",
 "language": "GDScript",
 "path": "res://library/npc_data/StyxData.gd"
@@ -268,6 +273,11 @@ _global_script_classes=[ {
 "class": "Game_WorldTemplate",
 "language": "GDScript",
 "path": "res://library/init/WorldTemplate.gd"
+}, {
+"base": "Reference",
+"class": "Game_ZIndex",
+"language": "GDScript",
+"path": "res://library/ZIndex.gd"
 } ]
 _global_script_class_icons={
 "Game_AITemplate": "",
@@ -315,13 +325,15 @@ _global_script_class_icons={
 "Game_SidebarText": "",
 "Game_SidebarVBox": "",
 "Game_SpriteType": "",
+"Game_SpriteTypeTag": "",
 "Game_StyxData": "",
 "Game_SubGroupTag": "",
 "Game_SwitchScreen": "",
 "Game_SwitchSprite": "",
 "Game_TransferData": "",
 "Game_WorldTag": "",
-"Game_WorldTemplate": ""
+"Game_WorldTemplate": "",
+"Game_ZIndex": ""
 }
 
 [application]

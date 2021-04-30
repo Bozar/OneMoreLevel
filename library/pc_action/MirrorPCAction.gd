@@ -103,7 +103,7 @@ func _create_image_on_the_other_side(x: int, y: int) -> void:
 
 	# On this side: Switch phantom's sprite into default.
 	if _ref_DungeonBoard.has_trap(x, y):
-		_ref_SwitchSprite.switch_sprite(actor, _new_SpriteTypeTag.DEFAULT)
+		_ref_SwitchSprite.switch_sprite(actor, Game_SpriteTypeTag.DEFAULT)
 
 	# On the other side: Remove an existing phantom.
 	_ref_RemoveObject.remove_actor(mirror[0], mirror[1])
@@ -169,7 +169,7 @@ func _create_image_on_the_same_side(x: int, y: int) -> void:
 		# Switch the actor's sprite to active.
 		if _ref_DungeonBoard.has_trap(mirror[0], mirror[1]):
 			actor = _ref_DungeonBoard.get_actor(mirror[0], mirror[1])
-			_ref_SwitchSprite.switch_sprite(actor, _new_SpriteTypeTag.ACTIVE)
+			_ref_SwitchSprite.switch_sprite(actor, Game_SpriteTypeTag.ACTIVE)
 
 
 func _get_mirror_position(x: int, y: int, x_shift: int, y_shift: int,

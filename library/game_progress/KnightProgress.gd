@@ -16,7 +16,7 @@ var _switch_number: Array
 
 func _init(parent_node: Node2D).(parent_node) -> void:
 	_switch_number = [
-		_new_SpriteTypeTag.ONE, _new_SpriteTypeTag.TWO, _new_SpriteTypeTag.THREE
+		Game_SpriteTypeTag.ONE, Game_SpriteTypeTag.TWO, Game_SpriteTypeTag.THREE
 	]
 
 

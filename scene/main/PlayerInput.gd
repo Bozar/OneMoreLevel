@@ -19,7 +19,6 @@ var _ref_GameSetting: Game_GameSetting
 var _ref_Palette: Game_Palette
 
 var _new_ConvertCoord := preload("res://library/ConvertCoord.gd").new()
-var _new_SpriteTypeTag := preload("res://library/SpriteTypeTag.gd").new()
 var _new_InitWorldData := preload("res://library/InitWorldData.gd").new()
 
 var _pc_action: Game_PCActionTemplate

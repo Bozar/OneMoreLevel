@@ -235,7 +235,7 @@ func _switch_mode(aim_mode: bool, pc: Sprite) -> void:
 		new_sprite = _new_SpriteTypeTag.convert_digit_to_tag(_ammo)
 	else:
 		new_state = Game_ObjectStateTag.DEFAULT
-		new_sprite = _new_SpriteTypeTag.DEFAULT
+		new_sprite = Game_SpriteTypeTag.DEFAULT
 
 	_ref_ObjectData.set_state(pc, new_state)
 	_ref_SwitchSprite.switch_sprite(pc, new_sprite)
@@ -257,7 +257,7 @@ func _try_find_pillar() -> void:
 	if _has_found_pillar:
 		pillar = _ref_DungeonBoard.get_building(
 				_plillar_position[0], _plillar_position[1])
-		_ref_SwitchSprite.switch_sprite(pillar, _new_SpriteTypeTag.ACTIVE)
+		_ref_SwitchSprite.switch_sprite(pillar, Game_SpriteTypeTag.ACTIVE)
 
 
 func _set_move_hit_point() -> void:

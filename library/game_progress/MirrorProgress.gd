@@ -24,7 +24,7 @@ func remove_trap(_trap: Sprite, x: int, y: int) -> void:
 	var crystal_base: Sprite = _ref_DungeonBoard.get_building(
 			Game_DungeonSize.CENTER_X, CRYSTAL_BASE_Y[hp])
 
-	_ref_SwitchSprite.switch_sprite(crystal_base, _new_SpriteTypeTag.ACTIVE)
+	_ref_SwitchSprite.switch_sprite(crystal_base, Game_SpriteTypeTag.ACTIVE)
 	_ref_ObjectData.add_hit_point(pc, 1)
 	_ref_DangerZone.set_danger_zone(x, y, false)
 

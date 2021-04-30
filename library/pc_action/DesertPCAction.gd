@@ -40,7 +40,7 @@ func attack() -> void:
 		return
 
 	_ref_ObjectData.set_state(worm, Game_ObjectStateTag.PASSIVE)
-	_ref_SwitchSprite.switch_sprite(worm, _new_SpriteTypeTag.PASSIVE)
+	_ref_SwitchSprite.switch_sprite(worm, Game_SpriteTypeTag.PASSIVE)
 
 	if is_active_spice:
 		_ref_ObjectData.add_hit_point(pc, 1)
@@ -107,9 +107,9 @@ func _switch_to_number(is_number: bool) -> void:
 		type_tag = _new_SpriteTypeTag.convert_digit_to_tag(
 				_ref_ObjectData.get_hit_point(pc))
 	elif _ref_DangerZone.is_in_danger(_source_position[0], _source_position[1]):
-		type_tag = _new_SpriteTypeTag.ACTIVE
+		type_tag = Game_SpriteTypeTag.ACTIVE
 	else:
-		type_tag = _new_SpriteTypeTag.DEFAULT
+		type_tag = Game_SpriteTypeTag.DEFAULT
 	_ref_SwitchSprite.switch_sprite(pc, type_tag)
 
 

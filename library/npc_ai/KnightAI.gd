@@ -8,9 +8,9 @@ var _hit_to_sprite: Dictionary
 
 func _init(parent_node: Node2D).(parent_node) -> void:
 	_hit_to_sprite = {
-		0: _new_SpriteTypeTag.DEFAULT,
-		1: _new_SpriteTypeTag.DEFAULT_2,
-		2: _new_SpriteTypeTag.DEFAULT_3,
+		0: Game_SpriteTypeTag.DEFAULT,
+		1: Game_SpriteTypeTag.DEFAULT_2,
+		2: Game_SpriteTypeTag.DEFAULT_3,
 	}
 
 
@@ -50,12 +50,12 @@ func _attack() -> void:
 		_prepare_second_attack(id)
 	else:
 		_ref_ObjectData.set_state(_self, Game_ObjectStateTag.PASSIVE)
-		_ref_SwitchSprite.switch_sprite(_self, _new_SpriteTypeTag.PASSIVE)
+		_ref_SwitchSprite.switch_sprite(_self, Game_SpriteTypeTag.PASSIVE)
 
 
 func _recover() -> void:
 	var hit: int = _ref_ObjectData.get_hit_point(_self)
-	var new_sprite: String = _new_SpriteTypeTag.DEFAULT
+	var new_sprite: String = Game_SpriteTypeTag.DEFAULT
 
 	_ref_ObjectData.set_state(_self, Game_ObjectStateTag.DEFAULT)
 
@@ -70,7 +70,7 @@ func _alert() -> void:
 	var danger_zone: Array = _get_danger_zone()
 
 	_ref_ObjectData.set_state(_self, Game_ObjectStateTag.ACTIVE)
-	_ref_SwitchSprite.switch_sprite(_self, _new_SpriteTypeTag.ACTIVE)
+	_ref_SwitchSprite.switch_sprite(_self, Game_SpriteTypeTag.ACTIVE)
 
 	_id_to_danger_zone[id] = danger_zone
 	_set_danger_zone(danger_zone, true)
@@ -91,9 +91,9 @@ func _switch_ground(danger_zone: Array) -> void:
 	for i in danger_zone:
 		ground_sprite= _ref_DungeonBoard.get_ground(i[0], i[1])
 		if _ref_DangerZone.is_in_danger(i[0], i[1]):
-			sprite_type = _new_SpriteTypeTag.ACTIVE
+			sprite_type = Game_SpriteTypeTag.ACTIVE
 		else:
-			sprite_type = _new_SpriteTypeTag.DEFAULT
+			sprite_type = Game_SpriteTypeTag.DEFAULT
 		_ref_SwitchSprite.switch_sprite(ground_sprite, sprite_type)
 
 

@@ -36,7 +36,7 @@ func create_actor(actor: Sprite, sub_group: String, _x: int, _y: int) -> void:
 		_new_ArrayHelper.rand_picker(_all_counters, _all_counters.size(),
 				_ref_RandomNumber)
 	_ref_SwitchSprite.switch_sprite(_all_counters[_boss_hit_point],
-			_new_SpriteTypeTag.PASSIVE)
+			Game_SpriteTypeTag.PASSIVE)
 
 
 func remove_actor(actor: Sprite, x: int, y: int) -> void:
@@ -51,7 +51,7 @@ func remove_actor(actor: Sprite, x: int, y: int) -> void:
 		# HoundPCAction._try_set_and_get_boss_hit_point().
 		if _ref_ObjectData.get_hit_point(actor) > _boss_hit_point:
 			_ref_SwitchSprite.switch_sprite(_all_counters[_boss_hit_point],
-					_new_SpriteTypeTag.ACTIVE)
+					Game_SpriteTypeTag.ACTIVE)
 			_boss_hit_point = _ref_ObjectData.get_hit_point(actor)
 		# The boss is removed due to running out of time.
 		# HoundAI._boss_countdown().
@@ -103,12 +103,12 @@ func _set_ground_state(ground: Sprite, is_active: bool) -> void:
 	if is_active:
 		_ref_ObjectData.set_state(ground, Game_ObjectStateTag.ACTIVE)
 		if _ref_ObjectData.get_hit_point(ground) == 0:
-			new_sprite_type = _new_SpriteTypeTag.ACTIVE_1
+			new_sprite_type = Game_SpriteTypeTag.ACTIVE_1
 		else:
-			new_sprite_type = _new_SpriteTypeTag.ACTIVE
+			new_sprite_type = Game_SpriteTypeTag.ACTIVE
 	else:
 		_ref_ObjectData.set_state(ground, Game_ObjectStateTag.DEFAULT)
-		new_sprite_type = _new_SpriteTypeTag.DEFAULT
+		new_sprite_type = Game_SpriteTypeTag.DEFAULT
 	_ref_SwitchSprite.switch_sprite(ground, new_sprite_type)
 
 
