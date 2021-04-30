@@ -18,7 +18,6 @@ var _ref_GameSetting : Game_GameSetting
 var _ref_DangerZone: Game_DangerZone
 var _ref_Schedule: Game_Schedule
 
-var _new_DungeonSize := preload("res://library/DungeonSize.gd").new()
 var _new_MainGroupTag := preload("res://library/MainGroupTag.gd").new()
 var _new_SubGroupTag := preload("res://library/SubGroupTag.gd").new()
 var _new_InputTag := preload("res://library/InputTag.gd").new()
@@ -79,15 +78,15 @@ func _get_world() -> Game_WorldTemplate:
 func _init_indicator(x: int, y: int) -> void:
 	_ref_CreateObject.create(_spr_TriangleRight,
 			_new_MainGroupTag.INDICATOR, _new_SubGroupTag.ARROW_RIGHT,
-			0, y, -_new_DungeonSize.ARROW_MARGIN)
+			0, y, -Game_DungeonSize.ARROW_MARGIN)
 
 	_ref_CreateObject.create(_spr_TriangleDown,
 			_new_MainGroupTag.INDICATOR, _new_SubGroupTag.ARROW_DOWN,
-			x, 0, 0, -_new_DungeonSize.ARROW_MARGIN)
+			x, 0, 0, -Game_DungeonSize.ARROW_MARGIN)
 
 	_ref_CreateObject.create(_spr_TriangleUp,
 			_new_MainGroupTag.INDICATOR, _new_SubGroupTag.ARROW_UP,
-			x, _new_DungeonSize.MAX_Y - 1, 0, _new_DungeonSize.ARROW_MARGIN)
+			x, Game_DungeonSize.MAX_Y - 1, 0, Game_DungeonSize.ARROW_MARGIN)
 
 
 func _is_pc(group_name: String) -> bool:

@@ -1,6 +1,3 @@
-var _new_DungeonSize := preload("res://library/DungeonSize.gd").new()
-
-
 func get_range(x_source: int, y_source: int, x_target: int, y_target: int) \
 		-> int:
 	var delta_x: int = abs(x_source - x_target) as int
@@ -54,5 +51,5 @@ func get_mirror_image(source_x: int, source_y: int,
 
 
 func is_inside_dungeon(x: int, y: int) -> bool:
-	return (x > -1) and (x < _new_DungeonSize.MAX_X) \
-			and (y > -1) and (y < _new_DungeonSize.MAX_Y)
+	return (x > -1) and (x < Game_DungeonSize.MAX_X) \
+			and (y > -1) and (y < Game_DungeonSize.MAX_Y)

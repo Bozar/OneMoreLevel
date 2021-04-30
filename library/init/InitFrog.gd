@@ -26,10 +26,10 @@ func _init_swamp() -> void:
 	while counter < Game_FrogData.MAX_LAND:
 		counter += _init_path()
 
-	for i in range(_new_DungeonSize.MAX_X):
-		for j in range(_new_DungeonSize.MAX_Y):
-			if (i == _new_DungeonSize.MAX_X - 1) \
-					and (j == _new_DungeonSize.MAX_Y - 1):
+	for i in range(Game_DungeonSize.MAX_X):
+		for j in range(Game_DungeonSize.MAX_Y):
+			if (i == Game_DungeonSize.MAX_X - 1) \
+					and (j == Game_DungeonSize.MAX_Y - 1):
 				_add_to_blueprint(_spr_Counter, _new_MainGroupTag.GROUND,
 						_new_SubGroupTag.COUNTER, i, j)
 			elif _is_occupied(i, j):

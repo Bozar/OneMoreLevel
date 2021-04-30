@@ -54,7 +54,7 @@ func _move() -> void:
 
 func _switch_pc_and_image() -> void:
 	var mirror: Array = _new_CoordCalculator.get_mirror_image(
-			_pc_pos[0], _pc_pos[1], _new_DungeonSize.CENTER_X, _pc_pos[1])
+			_pc_pos[0], _pc_pos[1], Game_DungeonSize.CENTER_X, _pc_pos[1])
 	var pc: Sprite = _ref_DungeonBoard.get_pc()
 
 	if _ref_DungeonBoard.has_trap(_pc_pos[0], _pc_pos[1]):

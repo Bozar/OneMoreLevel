@@ -13,7 +13,6 @@ var _spr_Floor := preload("res://sprite/Floor.tscn")
 var _spr_Wall := preload("res://sprite/Wall.tscn")
 var _spr_PC := preload("res://sprite/PC.tscn")
 
-var _new_DungeonSize := preload("res://library/DungeonSize.gd").new()
 var _new_MainGroupTag := preload("res://library/MainGroupTag.gd").new()
 var _new_SubGroupTag := preload("res://library/SubGroupTag.gd").new()
 var _new_CoordCalculator := preload("res://library/CoordCalculator.gd").new()
@@ -46,10 +45,10 @@ func get_blueprint() -> Array:
 
 
 func _init_dungeon_board() -> void:
-	for i in range(_new_DungeonSize.MAX_X):
+	for i in range(Game_DungeonSize.MAX_X):
 		_dungeon_with_int[i] = []
-		_dungeon_with_int[i].resize(_new_DungeonSize.MAX_Y)
-		for j in range(_new_DungeonSize.MAX_Y):
+		_dungeon_with_int[i].resize(Game_DungeonSize.MAX_Y)
+		for j in range(Game_DungeonSize.MAX_Y):
 			_dungeon_with_int[i][j] = DEFAULT_MARKER
 
 
@@ -83,8 +82,8 @@ func _add_to_blueprint(scene: PackedScene,
 
 
 func _init_floor(floor_sprite: PackedScene = _spr_Floor) -> void:
-	for x in range(_new_DungeonSize.MAX_X):
-		for y in range(_new_DungeonSize.MAX_Y):
+	for x in range(Game_DungeonSize.MAX_X):
+		for y in range(Game_DungeonSize.MAX_Y):
 			if _is_occupied(x, y):
 				continue
 			_add_to_blueprint(floor_sprite,

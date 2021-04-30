@@ -45,9 +45,9 @@ func _init_wall() -> void:
 	# Because the minimum block size is greater than 1 and it will be shrinked
 	# by 1 grid later.
 	var x: int = _ref_RandomNumber.get_int(-MAX_BLOCK_SIZE + 2,
-			_new_DungeonSize.MAX_X - 1)
+			Game_DungeonSize.MAX_X - 1)
 	var y: int = _ref_RandomNumber.get_int(-MAX_BLOCK_SIZE + 2,
-			_new_DungeonSize.MAX_Y - 1)
+			Game_DungeonSize.MAX_Y - 1)
 	var width: int = MAX_BLOCK_SIZE
 	var height: int = MAX_BLOCK_SIZE
 	var block: Array
@@ -121,12 +121,12 @@ func _fill_hole() -> void:
 	var neighbor: Array
 	var fill_this: bool
 
-	for x in range(_new_DungeonSize.MAX_X):
-		for y in range(_new_DungeonSize.MAX_Y):
+	for x in range(Game_DungeonSize.MAX_X):
+		for y in range(Game_DungeonSize.MAX_Y):
 			if _get_terrain_marker(x, y) == WALL_MARKER:
 				continue
-			elif (x != 0) and (x != _new_DungeonSize.MAX_X - 1) \
-					and (y != 0) and (y != _new_DungeonSize.MAX_Y - 1):
+			elif (x != 0) and (x != Game_DungeonSize.MAX_X - 1) \
+					and (y != 0) and (y != Game_DungeonSize.MAX_Y - 1):
 				continue
 
 			neighbor = _new_CoordCalculator.get_neighbor(x, y, 1)
@@ -142,8 +142,8 @@ func _fill_hole() -> void:
 
 
 func _create_floor():
-	for x in range(_new_DungeonSize.MAX_X):
-		for y in range(_new_DungeonSize.MAX_Y):
+	for x in range(Game_DungeonSize.MAX_X):
+		for y in range(Game_DungeonSize.MAX_Y):
 			if _get_terrain_marker(x, y) == WALL_MARKER:
 				continue
 			_add_to_blueprint(_spr_Floor,

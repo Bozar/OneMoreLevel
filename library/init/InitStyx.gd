@@ -13,18 +13,18 @@ func _init(parent_node: Node2D).(parent_node) -> void:
 func get_blueprint() -> Array:
 	_init_building()
 	_init_river()
-	_init_pc(0, 1, _new_DungeonSize.MAX_Y - 2)
+	_init_pc(0, 1, Game_DungeonSize.MAX_Y - 2)
 
 	return _blueprint
 
 
 func _init_building() -> void:
-	var lighthouse_x: int = _new_DungeonSize.CENTER_X
-	var lighthouse_y: int = _new_DungeonSize.CENTER_Y
+	var lighthouse_x: int = Game_DungeonSize.CENTER_X
+	var lighthouse_y: int = Game_DungeonSize.CENTER_Y
 	var harbor: Array = [
 		[1, 1],
-		[_new_DungeonSize.MAX_X - 2, 1],
-		[_new_DungeonSize.MAX_X - 2, _new_DungeonSize.MAX_Y - 2],
+		[Game_DungeonSize.MAX_X - 2, 1],
+		[Game_DungeonSize.MAX_X - 2, Game_DungeonSize.MAX_Y - 2],
 	]
 
 	_add_to_blueprint(_spr_Lighthouse,
@@ -48,8 +48,8 @@ func _set_static_area(x: int, y: int, max_range: int) -> void:
 
 
 func _init_river() -> void:
-	for i in range(_new_DungeonSize.MAX_X):
-		for j in range(_new_DungeonSize.MAX_Y):
+	for i in range(Game_DungeonSize.MAX_X):
+		for j in range(Game_DungeonSize.MAX_Y):
 			if _is_occupied(i, j):
 				continue
 			_add_to_blueprint(_spr_Arrow,

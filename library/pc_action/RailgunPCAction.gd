@@ -52,8 +52,8 @@ func render_fov() -> void:
 			Game_RailgunData.PC_FRONT_SIGHT, Game_RailgunData.PC_SIDE_SIGHT,
 			self, "_block_line_of_sight", [])
 
-	for x in range(_new_DungeonSize.MAX_X):
-		for y in range(_new_DungeonSize.MAX_Y):
+	for x in range(Game_DungeonSize.MAX_X):
+		for y in range(Game_DungeonSize.MAX_Y):
 			for i in _new_MainGroupTag.DUNGEON_OBJECT:
 				match i:
 					_new_MainGroupTag.ACTOR:
@@ -185,7 +185,7 @@ func _init_skull_pillar() -> void:
 		pos = _new_ConvertCoord.vector_to_array(i.position)
 		if _new_CoordCalculator.is_inside_range(pos[0], pos[1],
 				_source_position[0], _source_position[1],
-				_new_DungeonSize.CENTER_X):
+				Game_DungeonSize.CENTER_X):
 			continue
 
 		neighbor = _new_CoordCalculator.get_neighbor(pos[0], pos[1], 1, false)
@@ -201,10 +201,10 @@ func _init_skull_pillar() -> void:
 
 func _init_counter() -> void:
 	if _counter_sprite.size() == 0:
-		for x in range(_new_DungeonSize.MAX_X - Game_RailgunData.COUNTER_WIDTH,
-				_new_DungeonSize.MAX_X):
+		for x in range(Game_DungeonSize.MAX_X - Game_RailgunData.COUNTER_WIDTH,
+				Game_DungeonSize.MAX_X):
 			_counter_sprite.push_back(_ref_DungeonBoard.get_building(
-					x, _new_DungeonSize.MAX_Y - 1))
+					x, Game_DungeonSize.MAX_Y - 1))
 			_ref_Palette.set_dark_color(_counter_sprite.back(),
 					_new_MainGroupTag.BUILDING)
 

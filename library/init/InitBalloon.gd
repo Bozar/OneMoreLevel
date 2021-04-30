@@ -44,9 +44,9 @@ func get_blueprint() -> Array:
 
 
 func _get_zone_coord() -> Array:
-	var width: int = floor(_new_DungeonSize.MAX_X / 3.0) as int
-	var middle_y: int = _new_DungeonSize.CENTER_Y
-	var bottom_y: int = _new_DungeonSize.MAX_Y
+	var width: int = floor(Game_DungeonSize.MAX_X / 3.0) as int
+	var middle_y: int = Game_DungeonSize.CENTER_Y
+	var bottom_y: int = Game_DungeonSize.MAX_Y
 	var left_top: int = 1
 	var right_bottom: int = 3
 	var valid_position: Array = [
@@ -129,8 +129,8 @@ func _init_single_wall(retry: int, count_wall: int) -> void:
 	if (count_wall > Game_BalloonData.MAX_WALL) or (retry > max_retry):
 		return
 
-	x = _ref_RandomNumber.get_int(0, _new_DungeonSize.MAX_X - block_size)
-	y = _ref_RandomNumber.get_int(0, _new_DungeonSize.MAX_Y - block_size)
+	x = _ref_RandomNumber.get_int(0, Game_DungeonSize.MAX_X - block_size)
+	y = _ref_RandomNumber.get_int(0, Game_DungeonSize.MAX_Y - block_size)
 	for i in range(x, x + block_size):
 		for j in range(y, y + block_size):
 			if _is_occupied(i, j):

@@ -66,10 +66,10 @@ func _get_top_left_position() -> Array:
 	var step: int = ROOM_SIZE + CORRIDOR_WIDTH
 
 	# By setting MIN_X to 1, it is guarantted that every grid is reachable.
-	for x in range(MIN_X, _new_DungeonSize.MAX_X, step):
-		if x + ROOM_SIZE < _new_DungeonSize.MAX_X:
-			for y in range(MIN_Y, _new_DungeonSize.MAX_Y, step):
-				if y + ROOM_SIZE < _new_DungeonSize.MAX_Y:
+	for x in range(MIN_X, Game_DungeonSize.MAX_X, step):
+		if x + ROOM_SIZE < Game_DungeonSize.MAX_X:
+			for y in range(MIN_Y, Game_DungeonSize.MAX_Y, step):
+				if y + ROOM_SIZE < Game_DungeonSize.MAX_Y:
 					valid_position.push_back([x, y])
 	return valid_position
 

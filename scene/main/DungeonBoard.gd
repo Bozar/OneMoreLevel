@@ -2,7 +2,6 @@ extends Node2D
 class_name Game_DungeonBoard
 
 
-var _new_DungeonSize := preload("res://library/DungeonSize.gd").new()
 var _new_MainGroupTag := preload("res://library/MainGroupTag.gd").new()
 var _new_SubGroupTag := preload("res://library/SubGroupTag.gd").new()
 var _new_ConvertCoord := preload("res://library/ConvertCoord.gd").new()
@@ -198,9 +197,9 @@ func _on_RemoveObject_sprite_removed(_sprite: Sprite, main_group: String,
 func _init_dict() -> void:
 	for i in _new_MainGroupTag.DUNGEON_OBJECT:
 		_sprite_dict[i] = {}
-		for x in range(_new_DungeonSize.MAX_X):
+		for x in range(Game_DungeonSize.MAX_X):
 			_sprite_dict[i][x] = []
-			_sprite_dict[i][x].resize(_new_DungeonSize.MAX_Y)
+			_sprite_dict[i][x].resize(Game_DungeonSize.MAX_Y)
 
 
 # Move arrow indicators when PC moves.

@@ -7,7 +7,6 @@ class_name Game_PCActionTemplate
 const INPUT_TAG := preload("res://library/InputTag.gd")
 const OBJECT_STATE_TAG := preload("res://library/ObjectStateTag.gd")
 const SPRITE_TYPE_TAG := preload("res://library/SpriteTypeTag.gd")
-const DUNGEON_SIZE := preload("res://library/DungeonSize.gd")
 
 const INPUT_TO_SPRITE: Dictionary = {
 	INPUT_TAG.MOVE_UP: SPRITE_TYPE_TAG.UP,
@@ -37,7 +36,6 @@ var _new_SubGroupTag := preload("res://library/SubGroupTag.gd").new()
 var _new_CoordCalculator := preload("res://library/CoordCalculator.gd").new()
 var _new_ConvertCoord := preload("res://library/ConvertCoord.gd").new()
 var _new_ObjectStateTag := preload("res://library/ObjectStateTag.gd").new()
-var _new_DungeonSize := preload("res://library/DungeonSize.gd").new()
 var _new_SpriteTypeTag := preload("res://library/SpriteTypeTag.gd").new()
 var _new_ArrayHelper := preload("res://library/ArrayHelper.gd").new()
 var _new_ShadowCastFOV := preload("res://library/ShadowCastFOV.gd").new()
@@ -169,8 +167,8 @@ func render_fov() -> void:
 			_source_position[0], _source_position[1], _fov_render_range,
 			self, "_block_line_of_sight", [])
 
-	for x in range(_new_DungeonSize.MAX_X):
-		for y in range(_new_DungeonSize.MAX_Y):
+	for x in range(Game_DungeonSize.MAX_X):
+		for y in range(Game_DungeonSize.MAX_Y):
 			for i in _new_MainGroupTag.DUNGEON_OBJECT:
 				_set_sprite_color(x, y, i, "",
 						_new_ShadowCastFOV, "is_in_sight")
@@ -215,8 +213,8 @@ func _render_end_game(win: bool) -> void:
 func _render_without_fog_of_war() -> void:
 	var ground: Sprite
 
-	for x in range(_new_DungeonSize.MAX_X):
-		for y in range(_new_DungeonSize.MAX_Y):
+	for x in range(Game_DungeonSize.MAX_X):
+		for y in range(Game_DungeonSize.MAX_Y):
 			ground = _ref_DungeonBoard.get_ground(x, y)
 			if ground == null:
 				continue

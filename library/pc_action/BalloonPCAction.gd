@@ -2,12 +2,12 @@ extends Game_PCActionTemplate
 
 
 const TELEPORT_X: Dictionary = {
-	-1: DUNGEON_SIZE.MAX_X - 1,
-	DUNGEON_SIZE.MAX_X: 0,
+	-1: Game_DungeonSize.MAX_X - 1,
+	Game_DungeonSize.MAX_X: 0,
 }
 const TELEPORT_Y: Dictionary = {
-	-1: DUNGEON_SIZE.MAX_Y - 1,
-	DUNGEON_SIZE.MAX_Y: 0,
+	-1: Game_DungeonSize.MAX_Y - 1,
+	Game_DungeonSize.MAX_Y: 0,
 }
 
 var _count_beacon: int = Game_BalloonData.MAX_TRAP
@@ -30,8 +30,8 @@ func render_fov() -> void:
 			_source_position[0], _source_position[1], _fov_render_range,
 			self, "_block_line_of_sight", [])
 
-	for x in range(_new_DungeonSize.MAX_X):
-		for y in range(_new_DungeonSize.MAX_Y):
+	for x in range(Game_DungeonSize.MAX_X):
+		for y in range(Game_DungeonSize.MAX_Y):
 			for i in _new_MainGroupTag.DUNGEON_OBJECT:
 				if i != _new_MainGroupTag.TRAP:
 					_set_sprite_color(x, y, i, "",

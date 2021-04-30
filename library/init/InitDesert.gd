@@ -33,8 +33,8 @@ func _init_wall(count: int = 0) -> void:
 	var max_length: int = 6
 	var wall_length: int = _ref_RandomNumber.get_int(min_length, max_length)
 	var treasure: int = _ref_RandomNumber.get_int(0, wall_length)
-	var x: int = _ref_RandomNumber.get_int(0, _new_DungeonSize.MAX_X)
-	var y: int = _ref_RandomNumber.get_int(0, _new_DungeonSize.MAX_Y)
+	var x: int = _ref_RandomNumber.get_int(0, Game_DungeonSize.MAX_X)
+	var y: int = _ref_RandomNumber.get_int(0, Game_DungeonSize.MAX_Y)
 	var direction: int = _ref_RandomNumber.get_int(0, 2)
 
 	if direction == 0:

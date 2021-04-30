@@ -22,7 +22,7 @@ func remove_trap(_trap: Sprite, x: int, y: int) -> void:
 	var pc: Sprite = _ref_DungeonBoard.get_pc()
 	var hp: int = _ref_ObjectData.get_hit_point(pc)
 	var crystal_base: Sprite = _ref_DungeonBoard.get_building(
-			_new_DungeonSize.CENTER_X, CRYSTAL_BASE_Y[hp])
+			Game_DungeonSize.CENTER_X, CRYSTAL_BASE_Y[hp])
 
 	_ref_SwitchSprite.switch_sprite(crystal_base, _new_SpriteTypeTag.ACTIVE)
 	_ref_ObjectData.add_hit_point(pc, 1)
@@ -38,12 +38,12 @@ func _replenish_crystal() -> void:
 	var pc: Sprite = _ref_DungeonBoard.get_pc()
 	var pc_pos: Array = _new_ConvertCoord.vector_to_array(pc.position)
 	var mirror: Array = _new_CoordCalculator.get_mirror_image(
-			pc_pos[0], pc_pos[1], _new_DungeonSize.CENTER_X, pc_pos[1])
+			pc_pos[0], pc_pos[1], Game_DungeonSize.CENTER_X, pc_pos[1])
 	var has_npc: int = 0
 
 	while true:
 		# x = _ref_RandomNumber.get_int(
-		# 	_new_DungeonSize.CENTER_X, _new_DungeonSize.MAX_X)
+		# 	Game_DungeonSize.CENTER_X, Game_DungeonSize.MAX_X)
 		x = _ref_RandomNumber.get_x_coord()
 		y = _ref_RandomNumber.get_y_coord()
 

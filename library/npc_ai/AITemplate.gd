@@ -23,7 +23,6 @@ var _new_ObjectStateTag := preload("res://library/ObjectStateTag.gd").new()
 var _new_SpriteTypeTag := preload("res://library/SpriteTypeTag.gd").new()
 var _new_MainGroupTag := preload("res://library/MainGroupTag.gd").new()
 var _new_SubGroupTag := preload("res://library/SubGroupTag.gd").new()
-var _new_DungeonSize := preload("res://library/DungeonSize.gd").new()
 var _new_PathFindingData := preload("res://library/PathFindingData.gd").new()
 var _new_DijkstraPathFinding := preload("res://library/DijkstraPathFinding.gd").new()
 var _new_ArrayHelper := preload("res://library/ArrayHelper.gd").new()
@@ -103,12 +102,12 @@ func _approach_pc(start_point: Array = [_pc_pos], one_step: int = 1,
 
 func _init_dungeon() -> void:
 	if _dungeon.size() < 1:
-		for x in range(_new_DungeonSize.MAX_X):
+		for x in range(Game_DungeonSize.MAX_X):
 			_dungeon[x] = []
-			_dungeon[x].resize(_new_DungeonSize.MAX_Y)
+			_dungeon[x].resize(Game_DungeonSize.MAX_Y)
 
-	for x in range(_new_DungeonSize.MAX_X):
-		for y in range(_new_DungeonSize.MAX_Y):
+	for x in range(Game_DungeonSize.MAX_X):
+		for y in range(Game_DungeonSize.MAX_Y):
 			if _ref_DungeonBoard.has_building(x, y):
 				_dungeon[x][y] = _new_PathFindingData.OBSTACLE
 			else:

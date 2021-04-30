@@ -1,3 +1,6 @@
+class_name Game_DungeonSize
+
+
 const MAX_X: int = 21
 const MAX_Y: int = 15
 

@@ -34,7 +34,7 @@ func _init_middle_border() -> void:
 	var new_sprite: PackedScene
 	var sub_group_tag: String
 
-	for i in range(_new_DungeonSize.MAX_Y):
+	for i in range(Game_DungeonSize.MAX_Y):
 		if i in crystal_base:
 			new_sprite = _spr_CrystalBase
 			sub_group_tag = _new_SubGroupTag.CRYSTAL_BASE
@@ -44,8 +44,8 @@ func _init_middle_border() -> void:
 
 		_add_to_blueprint(new_sprite,
 				_new_MainGroupTag.BUILDING, sub_group_tag,
-				_new_DungeonSize.CENTER_X, i)
-		_occupy_position(_new_DungeonSize.CENTER_X, i)
+				Game_DungeonSize.CENTER_X, i)
+		_occupy_position(Game_DungeonSize.CENTER_X, i)
 
 
 func _init_wall() -> void:
@@ -62,13 +62,13 @@ func _init_wall() -> void:
 		[[1, 2], [2, 2]],
 	]
 
-	for i in range(1, _new_DungeonSize.CENTER_X, block_size):
-		if i + block_size < _new_DungeonSize.CENTER_X:
+	for i in range(1, Game_DungeonSize.CENTER_X, block_size):
+		if i + block_size < Game_DungeonSize.CENTER_X:
 			valid_x.push_back(i)
 		else:
 			break
-	for j in range(1, _new_DungeonSize.MAX_Y, block_size):
-		if j + block_size < _new_DungeonSize.MAX_Y:
+	for j in range(1, Game_DungeonSize.MAX_Y, block_size):
+		if j + block_size < Game_DungeonSize.MAX_Y:
 			valid_y.push_back(j)
 		else:
 			break
@@ -86,7 +86,7 @@ func _init_wall() -> void:
 
 func _create_reflection(x: int, y: int) -> void:
 	var mirror: Array = _new_CoordCalculator.get_mirror_image(x, y,
-			_new_DungeonSize.CENTER_X, y)
+			Game_DungeonSize.CENTER_X, y)
 	_create_mirror(mirror[0], mirror[1])
 
 
@@ -103,13 +103,13 @@ func _create_pc() -> void:
 	var neighbor: Array
 
 	while true:
-		pc_x = _ref_RandomNumber.get_int(0, _new_DungeonSize.CENTER_X)
-		pc_y = _ref_RandomNumber.get_int(0, _new_DungeonSize.MAX_Y)
+		pc_x = _ref_RandomNumber.get_int(0, Game_DungeonSize.CENTER_X)
+		pc_y = _ref_RandomNumber.get_int(0, Game_DungeonSize.MAX_Y)
 		if not _is_occupied(pc_x, pc_y):
 			break
 
 	mirror = _new_CoordCalculator.get_mirror_image(pc_x, pc_y,
-			_new_DungeonSize.CENTER_X, pc_y)
+			Game_DungeonSize.CENTER_X, pc_y)
 	neighbor = _new_CoordCalculator.get_neighbor(pc_x, pc_y,
 					Game_MirrorData.CRYSTAL_DISTANCE, true) \
 			+ _new_CoordCalculator.get_neighbor(mirror[0], mirror[1],
@@ -155,8 +155,8 @@ func _init_phantom() -> void:
 			break
 		retry += 1
 
-		x = _ref_RandomNumber.get_int(0, _new_DungeonSize.CENTER_X)
-		y = _ref_RandomNumber.get_int(0, _new_DungeonSize.MAX_Y)
+		x = _ref_RandomNumber.get_int(0, Game_DungeonSize.CENTER_X)
+		y = _ref_RandomNumber.get_int(0, Game_DungeonSize.MAX_Y)
 		if _is_occupied(x, y):
 			continue
 

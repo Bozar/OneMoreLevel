@@ -33,8 +33,8 @@ func render_fov() -> void:
 		_render_without_fog_of_war()
 		return
 
-	for x in range(_new_DungeonSize.MAX_X):
-		for y in range(_new_DungeonSize.MAX_Y):
+	for x in range(Game_DungeonSize.MAX_X):
+		for y in range(Game_DungeonSize.MAX_Y):
 			ground = _ref_DungeonBoard.get_ground(x, y)
 			if ground == null:
 				continue
@@ -119,7 +119,7 @@ func _try_reduce_extra_turn() -> void:
 
 func _switch_lighthouse_color() -> void:
 	var lighthouse: Sprite = _ref_DungeonBoard.get_building(
-			_new_DungeonSize.CENTER_X, _new_DungeonSize.CENTER_Y)
+			Game_DungeonSize.CENTER_X, Game_DungeonSize.CENTER_Y)
 
 	if _extra_turn_counter == Game_StyxData.EXTRA_TURN_COUNTER:
 		_ref_Palette.set_dark_color(lighthouse, _new_MainGroupTag.BUILDING)

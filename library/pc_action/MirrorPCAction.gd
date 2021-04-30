@@ -70,13 +70,13 @@ func _is_checkmate() -> bool:
 	for i in npc:
 		if _ref_ObjectData.verify_state(i, _new_ObjectStateTag.DEFAULT):
 			return false
-	return (_source_position[0] - _new_DungeonSize.CENTER_X) \
-			* (trap_x - _new_DungeonSize.CENTER_X) > 0
+	return (_source_position[0] - Game_DungeonSize.CENTER_X) \
+			* (trap_x - Game_DungeonSize.CENTER_X) > 0
 
 
 func _get_mirror(x: int, y: int) -> Array:
 	return _new_CoordCalculator.get_mirror_image(x, y,
-			_new_DungeonSize.CENTER_X, y)
+			Game_DungeonSize.CENTER_X, y)
 
 
 func _target_is_occupied(main_group_tag: String) -> bool:
@@ -137,11 +137,11 @@ func _create_image_on_the_same_side(x: int, y: int) -> void:
 	# Cast a ray to the top.
 	wall += _get_mirror_position(x, y, 0, -1, 0)
 	# Cast a ray to the bottom.
-	wall += _get_mirror_position(x, y, 0, 1, _new_DungeonSize.MAX_Y)
+	wall += _get_mirror_position(x, y, 0, 1, Game_DungeonSize.MAX_Y)
 	# Cast a ray to the left.
 	wall += _get_mirror_position(x, y, -1, 0, 0)
 	# Cast a ray to the right.
-	wall += _get_mirror_position(x, y, 1, 0, _new_DungeonSize.MAX_X)
+	wall += _get_mirror_position(x, y, 1, 0, Game_DungeonSize.MAX_X)
 
 	for i in wall:
 		# Continue if the image is outside the dungeon.
@@ -156,8 +156,8 @@ func _create_image_on_the_same_side(x: int, y: int) -> void:
 		elif _ref_DungeonBoard.has_actor(mirror[0], mirror[1]):
 			continue
 		# Continue if the phantom and its image are on different sides.
-		elif ((x - _new_DungeonSize.CENTER_X) \
-				* (mirror[0] - _new_DungeonSize.CENTER_X)) < 0:
+		elif ((x - Game_DungeonSize.CENTER_X) \
+				* (mirror[0] - Game_DungeonSize.CENTER_X)) < 0:
 			continue
 
 		# Create a new actor.
@@ -208,7 +208,7 @@ func _cast_ray(x: int, y: int, x_shift: int, y_shift: int) -> int:
 			return 1
 		return 2
 	# The middle border stops the ray.
-	elif x == _new_DungeonSize.CENTER_X:
+	elif x == Game_DungeonSize.CENTER_X:
 		return 1
 	# Keep casting the ray if nothing happens.
 	return 0
@@ -231,8 +231,8 @@ func _reset_sprite_color() -> void:
 	var set_this: Sprite
 	var pos: Array
 
-	for y in range(0, _new_DungeonSize.MAX_Y):
-		set_this = _ref_DungeonBoard.get_building(_new_DungeonSize.CENTER_X, y)
+	for y in range(0, Game_DungeonSize.MAX_Y):
+		set_this = _ref_DungeonBoard.get_building(Game_DungeonSize.CENTER_X, y)
 		_ref_Palette.set_default_color(set_this, _new_MainGroupTag.BUILDING)
 
 	for i in _ref_DungeonBoard.get_sprites_by_tag(_new_MainGroupTag.TRAP):

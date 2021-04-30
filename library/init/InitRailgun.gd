@@ -40,8 +40,8 @@ func _set_start_point(end_point: Array) -> void:
 	var y: int
 
 	while true:
-		x = _ref_RandomNumber.get_int(1, _new_DungeonSize.MAX_X)
-		y = _ref_RandomNumber.get_int(0, _new_DungeonSize.MAX_Y)
+		x = _ref_RandomNumber.get_int(1, Game_DungeonSize.MAX_X)
+		y = _ref_RandomNumber.get_int(0, Game_DungeonSize.MAX_Y)
 		if _is_even(x):
 			x -= 1
 		if _is_odd(y):
@@ -102,16 +102,16 @@ func _is_odd(number: int) -> bool:
 
 
 func _is_counter(x: int, y: int) -> bool:
-	return (x >= _new_DungeonSize.MAX_X - Game_RailgunData.COUNTER_WIDTH) \
-			and (y == _new_DungeonSize.MAX_Y - 1)
+	return (x >= Game_DungeonSize.MAX_X - Game_RailgunData.COUNTER_WIDTH) \
+			and (y == Game_DungeonSize.MAX_Y - 1)
 
 
 func _add_wall_blueprint() -> void:
 	var new_sprite: PackedScene
 	var new_sub_group: String
 
-	for i in range(0, _new_DungeonSize.MAX_X):
-		for j in range(0, _new_DungeonSize.MAX_Y):
+	for i in range(0, Game_DungeonSize.MAX_X):
+		for j in range(0, Game_DungeonSize.MAX_Y):
 			_reverse_occupy(i, j)
 			if _is_occupied(i, j):
 				if _is_counter(i, j):

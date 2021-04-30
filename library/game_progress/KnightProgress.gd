@@ -84,8 +84,8 @@ func _spawn_npc(scene: PackedScene, sub_tag: String) -> void:
 
 
 func _get_position() -> Array:
-	var x: int = _ref_RandomNumber.get_int(0, _new_DungeonSize.MAX_X)
-	var y: int = _ref_RandomNumber.get_int(0, _new_DungeonSize.MAX_Y)
+	var x: int = _ref_RandomNumber.get_x_coord()
+	var y: int = _ref_RandomNumber.get_y_coord()
 
 	return [x, y]
 

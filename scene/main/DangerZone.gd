@@ -2,7 +2,6 @@ extends Node2D
 class_name Game_DangerZone
 
 
-var _new_DungeonSize := preload("res://library/DungeonSize.gd").new()
 var _new_CoordCalculator := preload("res://library/CoordCalculator.gd").new()
 
 # <x: int, <y: int, state: int>>
@@ -10,9 +9,9 @@ var _coord_to_state: Dictionary = {}
 
 
 func _ready() -> void:
-	for x in range(_new_DungeonSize.MAX_X):
+	for x in range(Game_DungeonSize.MAX_X):
 		_coord_to_state[x] = []
-		for _y in range(_new_DungeonSize.MAX_Y):
+		for _y in range(Game_DungeonSize.MAX_Y):
 			_coord_to_state[x].push_back(0)
 
 
