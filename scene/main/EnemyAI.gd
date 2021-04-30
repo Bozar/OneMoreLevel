@@ -17,7 +17,6 @@ var _ref_CreateObject : Game_CreateObject
 var _ref_Palette: Game_Palette
 
 var _new_SubGroupTag := preload("res://library/SubGroupTag.gd").new()
-var _new_WorldTag := preload("res://library/WorldTag.gd").new()
 var _new_InitWorldData := preload("res://library/InitWorldData.gd").new()
 
 var _world_tag: String

@@ -4,15 +4,14 @@ class_name Game_PCActionTemplate
 # The child should also implement _init() to pass arguments.
 
 
-const INPUT_TAG := preload("res://library/InputTag.gd")
 const OBJECT_STATE_TAG := preload("res://library/ObjectStateTag.gd")
 const SPRITE_TYPE_TAG := preload("res://library/SpriteTypeTag.gd")
 
 const INPUT_TO_SPRITE: Dictionary = {
-	INPUT_TAG.MOVE_UP: SPRITE_TYPE_TAG.UP,
-	INPUT_TAG.MOVE_DOWN: SPRITE_TYPE_TAG.DOWN,
-	INPUT_TAG.MOVE_LEFT: SPRITE_TYPE_TAG.LEFT,
-	INPUT_TAG.MOVE_RIGHT: SPRITE_TYPE_TAG.RIGHT,
+	Game_InputTag.MOVE_UP: SPRITE_TYPE_TAG.UP,
+	Game_InputTag.MOVE_DOWN: SPRITE_TYPE_TAG.DOWN,
+	Game_InputTag.MOVE_LEFT: SPRITE_TYPE_TAG.LEFT,
+	Game_InputTag.MOVE_RIGHT: SPRITE_TYPE_TAG.RIGHT,
 }
 
 var message: String setget set_message, get_message
@@ -30,7 +29,6 @@ var _ref_DangerZone: Game_DangerZone
 var _ref_GameSetting: Game_GameSetting
 var _ref_Palette: Game_Palette
 
-var _new_InputTag := preload("res://library/InputTag.gd").new()
 var _new_MainGroupTag := preload("res://library/MainGroupTag.gd").new()
 var _new_SubGroupTag := preload("res://library/SubGroupTag.gd").new()
 var _new_CoordCalculator := preload("res://library/CoordCalculator.gd").new()
@@ -150,7 +148,7 @@ func set_source_position() -> void:
 
 
 func set_target_position(direction: String) -> void:
-	var shift: Array = _new_InputTag.DIRECTION_TO_COORD[direction]
+	var shift: Array = Game_InputTag.DIRECTION_TO_COORD[direction]
 
 	_target_position = [
 		_source_position[0] + shift[0], _source_position[1] + shift[1]

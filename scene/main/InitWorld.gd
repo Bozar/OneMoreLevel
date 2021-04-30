@@ -18,19 +18,17 @@ var _ref_GameSetting : Game_GameSetting
 var _ref_DangerZone: Game_DangerZone
 var _ref_Schedule: Game_Schedule
 
+var _new_WorldTag := Game_WorldTag.new()
+var _new_InitWorldData := Game_InitWorldData.new()
 var _new_MainGroupTag := preload("res://library/MainGroupTag.gd").new()
 var _new_SubGroupTag := preload("res://library/SubGroupTag.gd").new()
-var _new_InputTag := preload("res://library/InputTag.gd").new()
-var _new_WorldTag := preload("res://library/WorldTag.gd").new()
-var _new_InitWorldData := preload("res://library/InitWorldData.gd").new()
 var _new_ArrayHelper := preload("res://library/ArrayHelper.gd").new()
 
 var _world_tag: String
 var _world_template: Game_WorldTemplate
 
-
 # func _unhandled_input(event: InputEvent) -> void:
-# 	if event.is_action_pressed(_new_InputTag.INIT_WORLD):
+# 	if event.is_action_pressed(Game_InputTag.INIT_WORLD):
 # 		init_world()
 #
 # 		set_process_unhandled_input(false)
@@ -67,7 +65,7 @@ func _get_world() -> Game_WorldTemplate:
 		_new_ArrayHelper.filter_element(full_tag, self, "_filter_get_world",
 				[exclude_world])
 		if full_tag.size() == 0:
-			full_tag = [_new_WorldTag.DEMO]
+			full_tag = [Game_WorldTag.DEMO]
 		_new_ArrayHelper.rand_picker(full_tag, 1, _ref_RandomNumber)
 		_world_tag = full_tag[0]
 	emit_signal("world_selected", _world_tag)

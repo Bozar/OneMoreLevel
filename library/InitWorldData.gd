@@ -1,3 +1,6 @@
+class_name Game_InitWorldData
+
+
 const PLACEHOLDER: String = "%str%"
 
 const INIT_PATH: String = "res://library/init/Init%str%.gd"

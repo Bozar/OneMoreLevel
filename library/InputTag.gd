@@ -1,3 +1,6 @@
+class_name Game_InputTag
+
+
 const MOVE_LEFT: String = "move_left"
 const MOVE_RIGHT: String = "move_right"
 const MOVE_UP: String = "move_up"
@@ -28,3 +31,10 @@ const DIRECTION_TO_COORD: Dictionary = {
 	MOVE_LEFT: [-1, 0],
 	MOVE_RIGHT: [1, 0],
 }
+
+const MOVE_INPUT: Array = [
+	MOVE_LEFT,
+	MOVE_RIGHT,
+	MOVE_UP,
+	MOVE_DOWN,
+]

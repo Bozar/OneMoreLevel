@@ -1,4 +1,4 @@
-extends "res://library/InputTemplate.gd"
+extends Game_InputTemplate
 class_name Game_PlayerInput
 
 
@@ -19,8 +19,6 @@ var _ref_GameSetting: Game_GameSetting
 var _ref_Palette: Game_Palette
 
 var _new_ConvertCoord := preload("res://library/ConvertCoord.gd").new()
-var _new_WorldTag := preload("res://library/WorldTag.gd").new()
-var _new_InputTag := preload("res://library/InputTag.gd").new()
 var _new_SubGroupTag := preload("res://library/SubGroupTag.gd").new()
 var _new_SpriteTypeTag := preload("res://library/SpriteTypeTag.gd").new()
 var _new_InitWorldData := preload("res://library/InitWorldData.gd").new()
@@ -30,32 +28,25 @@ var _pc_action: Game_PCActionTemplate
 var _direction: String
 var _end_game: bool = false
 
-var _move_inputs: Array = [
-	_new_InputTag.MOVE_LEFT,
-	_new_InputTag.MOVE_RIGHT,
-	_new_InputTag.MOVE_UP,
-	_new_InputTag.MOVE_DOWN,
-]
-
 
 func _unhandled_input(event: InputEvent) -> void:
 	var may_have_conflict: bool = true
 
 	_pc_action.reset_state()
 
-	if _verify_input(event, _new_InputTag.QUIT):
+	if _verify_input(event, Game_InputTag.QUIT):
 		get_tree().quit()
-	elif _verify_input(event, _new_InputTag.FORCE_RELOAD):
+	elif _verify_input(event, Game_InputTag.FORCE_RELOAD):
 		get_node(RELOAD_GAME).reload()
-	elif _verify_input(event, _new_InputTag.REPLAY_DUNGEON):
+	elif _verify_input(event, Game_InputTag.REPLAY_DUNGEON):
 		_ref_GameSetting.save_setting()
 		get_node(RELOAD_GAME).reload()
-	elif _verify_input(event, _new_InputTag.COPY_SEED):
+	elif _verify_input(event, Game_InputTag.COPY_SEED):
 		OS.set_clipboard(_ref_RandomNumber.get_rng_seed() as String)
-	elif _verify_input(event, _new_InputTag.HELP):
+	elif _verify_input(event, Game_InputTag.HELP):
 		_ref_SwitchScreen.switch_to_screen(_new_ScreenTag.HELP)
 	elif _end_game:
-		if _verify_input(event, _new_InputTag.RELOAD):
+		if _verify_input(event, Game_InputTag.RELOAD):
 			get_node(RELOAD_GAME).reload()
 	else:
 		may_have_conflict = false
@@ -63,15 +54,15 @@ func _unhandled_input(event: InputEvent) -> void:
 		return
 
 	if _ref_GameSetting.get_wizard_mode():
-		if _verify_input(event, _new_InputTag.ADD_TURN):
+		if _verify_input(event, Game_InputTag.ADD_TURN):
 			_ref_CountDown.add_count(1)
-		elif _verify_input(event, _new_InputTag.FULLY_RESTORE_TURN):
+		elif _verify_input(event, Game_InputTag.FULLY_RESTORE_TURN):
 			_ref_CountDown.add_count(99)
 
 	_pc_action.set_source_position()
 	if _is_move_input(event):
 		_handle_move_input()
-	elif _verify_input(event, _new_InputTag.WAIT):
+	elif _verify_input(event, Game_InputTag.WAIT):
 		_pc_action.wait()
 
 	# Do not end PC's turn if game ends.
@@ -118,7 +109,7 @@ func _on_SwitchScreen_screen_switched(screen_tag: String) -> void:
 
 
 func _is_move_input(event: InputEvent) -> bool:
-	for m in _move_inputs:
+	for m in Game_InputTag.MOVE_INPUT:
 		if event.is_action_pressed(m):
 			_direction = m
 			return true

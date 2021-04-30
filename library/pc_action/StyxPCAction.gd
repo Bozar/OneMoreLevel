@@ -11,10 +11,10 @@ const STATE_TO_INT: Dictionary = {
 	OBJECT_STATE_TAG.DEFAULT: INVALID_DIRECTION,
 }
 const INPUT_TO_INT: Dictionary = {
-	INPUT_TAG.MOVE_UP: 1,
-	INPUT_TAG.MOVE_DOWN: -1,
-	INPUT_TAG.MOVE_LEFT: 2,
-	INPUT_TAG.MOVE_RIGHT: -2,
+	Game_InputTag.MOVE_UP: 1,
+	Game_InputTag.MOVE_DOWN: -1,
+	Game_InputTag.MOVE_LEFT: 2,
+	Game_InputTag.MOVE_RIGHT: -2,
 }
 
 var _extra_turn_counter: int = 0

@@ -1,3 +1,6 @@
+class_name Game_WorldTag
+
+
 const INVALID: String = "INVALID"
 const DEMO: String = "demo"
 

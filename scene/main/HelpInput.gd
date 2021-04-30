@@ -1,11 +1,10 @@
-extends "res://library/InputTemplate.gd"
+extends Game_InputTemplate
 class_name Game_HelpInput
 
 
 var _ref_SwitchScreen: Game_SwitchScreen
 var _ref_HelpVScroll: Game_HelpVScroll
 
-var _new_InputTag := preload("res://library/InputTag.gd").new()
 var _new_ScreenTag: = preload("res://library/ScreenTag.gd").new()
 
 var _input_to_funcref: Dictionary
@@ -16,23 +15,23 @@ func _on_InitWorld_world_selected(_new_world: String) -> void:
 		return
 
 	_input_to_funcref = {
-		_new_InputTag.HELP:
+		Game_InputTag.HELP:
 			[_ref_SwitchScreen, "switch_to_screen", [_new_ScreenTag.MAIN]],
-		_new_InputTag.MOVE_DOWN:
+		Game_InputTag.MOVE_DOWN:
 			[_ref_HelpVScroll, "slide_scroll_bar", [true, true]],
-		_new_InputTag.MOVE_UP:
+		Game_InputTag.MOVE_UP:
 			[_ref_HelpVScroll, "slide_scroll_bar", [true, false]],
-		_new_InputTag.PAGE_DOWN:
+		Game_InputTag.PAGE_DOWN:
 			[_ref_HelpVScroll, "slide_scroll_bar", [false, true]],
-		_new_InputTag.PAGE_UP:
+		Game_InputTag.PAGE_UP:
 			[_ref_HelpVScroll, "slide_scroll_bar", [false, false]],
-		_new_InputTag.SCROLL_TO_BOTTOM:
+		Game_InputTag.SCROLL_TO_BOTTOM:
 			[_ref_HelpVScroll, "scroll_to_top_or_bottom", [true]],
-		_new_InputTag.SCROLL_TO_TOP:
+		Game_InputTag.SCROLL_TO_TOP:
 			[_ref_HelpVScroll, "scroll_to_top_or_bottom", [false]],
-		_new_InputTag.NEXT_HELP:
+		Game_InputTag.NEXT_HELP:
 			[_ref_HelpVScroll, "switch_help_text", [true]],
-		_new_InputTag.PREVIOUS_HELP:
+		Game_InputTag.PREVIOUS_HELP:
 			[_ref_HelpVScroll, "switch_help_text", [false]],
 	}
 

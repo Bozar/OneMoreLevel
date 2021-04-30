@@ -22,8 +22,6 @@ const JSON_EXTENSION: String = ".json"
 const TRANSFER_SCENE: String = "res://scene/transfer_data/TransferData.tscn"
 const TRANSFER_NODE: String = "/root/TransferData"
 
-var _new_WorldTag := preload("res://library/WorldTag.gd").new()
-
 var _wizard_mode: bool
 var _rng_seed: int
 var _include_world: Array
@@ -129,7 +127,7 @@ func _set_include_world(setting) -> Array:
 
 
 func _set_exclude_world(setting) -> Array:
-	var exclude: Array = [_new_WorldTag.DEMO]
+	var exclude: Array = [Game_WorldTag.DEMO]
 
 	if setting.has(EXCLUDE_WORLD) and (setting[EXCLUDE_WORLD] is Array):
 		exclude = setting[EXCLUDE_WORLD]
