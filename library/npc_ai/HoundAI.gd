@@ -33,7 +33,7 @@ func take_action() -> void:
 	for i in [_self_pos, _pc_pos]:
 		ground = _ref_DungeonBoard.get_ground(i[0], i[1])
 		is_in_fog.push_back(_ref_ObjectData.verify_state(ground,
-				_new_ObjectStateTag.ACTIVE))
+				Game_ObjectStateTag.ACTIVE))
 	self_is_in_fog = is_in_fog[0]
 	pc_is_in_fog = is_in_fog[1]
 
@@ -65,7 +65,7 @@ func _switch_sprite() -> void:
 	var ground: Sprite = _ref_DungeonBoard.get_ground(pos[0], pos[1])
 	var sprite_type: String
 
-	if _ref_ObjectData.verify_state(ground, _new_ObjectStateTag.ACTIVE):
+	if _ref_ObjectData.verify_state(ground, Game_ObjectStateTag.ACTIVE):
 		# if _ref_ObjectData.get_hit_point(ground) == 0:
 		# 	sprite_type = _new_SpriteTypeTag.ACTIVE_1
 		# else:
@@ -237,7 +237,7 @@ func _boss_absorb_fog() -> void:
 		# Change ground hit point but leave state unchanged. Update state in
 		# HoundProgress._add_or_remove_fog().
 		if (ground == null) or (_ref_ObjectData.verify_state(ground,
-				_new_ObjectStateTag.DEFAULT)):
+				Game_ObjectStateTag.DEFAULT)):
 			continue
 		_ref_ObjectData.subtract_hit_point(ground,
 				Game_HoundData.ABSORB_DURATION)

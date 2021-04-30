@@ -80,7 +80,7 @@ func _create_body(id: int, index: int, x: int, y: int) -> void:
 	_id_to_worm[id][index] = worm_body
 
 	if is_active:
-		_ref_ObjectData.set_state(worm_body, _new_ObjectStateTag.ACTIVE)
+		_ref_ObjectData.set_state(worm_body, Game_ObjectStateTag.ACTIVE)
 		_ref_SwitchSprite.switch_sprite(worm_body, _new_SpriteTypeTag.ACTIVE)
 		_id_to_has_active_spice[id] = true
 		_quality_spice_chance = 0
@@ -200,7 +200,7 @@ func _set_danger_zone(head: Sprite, is_danger: bool) -> void:
 
 
 func _is_passive_spice(spice: Sprite) -> bool:
-	return _ref_ObjectData.verify_state(spice, _new_ObjectStateTag.PASSIVE)
+	return _ref_ObjectData.verify_state(spice, Game_ObjectStateTag.PASSIVE)
 
 
 func _has_spice(body: Sprite) -> bool:

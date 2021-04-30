@@ -19,7 +19,6 @@ var _ref_Palette: Game_Palette
 
 var _new_ConvertCoord := preload("res://library/ConvertCoord.gd").new()
 var _new_CoordCalculator := preload("res://library/CoordCalculator.gd").new()
-var _new_ObjectStateTag := preload("res://library/ObjectStateTag.gd").new()
 var _new_SpriteTypeTag := preload("res://library/SpriteTypeTag.gd").new()
 var _new_PathFindingData := preload("res://library/PathFindingData.gd").new()
 var _new_DijkstraPathFinding := preload("res://library/DijkstraPathFinding.gd").new()

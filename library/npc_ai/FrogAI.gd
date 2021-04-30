@@ -33,7 +33,7 @@ func _can_grapple() -> bool:
 	var pc_y: int = _pc_pos[1]
 	var pc: Sprite = _ref_DungeonBoard.get_pc()
 
-	if _ref_ObjectData.verify_state(pc, _new_ObjectStateTag.PASSIVE):
+	if _ref_ObjectData.verify_state(pc, Game_ObjectStateTag.PASSIVE):
 		return false
 	elif _new_CoordCalculator.is_inside_range(self_x, self_y, pc_x, pc_y,
 			Game_FrogData.ATTACK_RANGE):

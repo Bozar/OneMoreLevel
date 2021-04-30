@@ -12,7 +12,7 @@ func take_action() -> void:
 	var pc: Sprite = _ref_DungeonBoard.get_pc()
 	var distance: int
 
-	if _ref_ObjectData.verify_state(_self, _new_ObjectStateTag.PASSIVE):
+	if _ref_ObjectData.verify_state(_self, Game_ObjectStateTag.PASSIVE):
 		return
 	elif _self.is_in_group(Game_SubGroupTag.PC_MIRROR_IMAGE):
 		return
@@ -73,14 +73,14 @@ func _set_npc_state() -> void:
 	for i in npc:
 		if i.is_in_group(Game_SubGroupTag.PC_MIRROR_IMAGE):
 			continue
-		elif _ref_ObjectData.verify_state(i, _new_ObjectStateTag.DEFAULT):
-			_ref_ObjectData.set_state(i, _new_ObjectStateTag.PASSIVE)
+		elif _ref_ObjectData.verify_state(i, Game_ObjectStateTag.DEFAULT):
+			_ref_ObjectData.set_state(i, Game_ObjectStateTag.PASSIVE)
 			npc_pos = _new_ConvertCoord.vector_to_array(i.position)
 			if _ref_DungeonBoard.has_trap(npc_pos[0], npc_pos[1]):
 				_ref_SwitchSprite.switch_sprite(i, _new_SpriteTypeTag.DEFAULT)
 				_trap_pos = npc_pos
 		else:
-			_ref_ObjectData.set_state(i, _new_ObjectStateTag.DEFAULT)
+			_ref_ObjectData.set_state(i, Game_ObjectStateTag.DEFAULT)
 
 
 func _try_remove_trap() -> void:

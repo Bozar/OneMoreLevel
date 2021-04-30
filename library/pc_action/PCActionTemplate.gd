@@ -4,7 +4,6 @@ class_name Game_PCActionTemplate
 # The child should also implement _init() to pass arguments.
 
 
-const OBJECT_STATE_TAG := preload("res://library/ObjectStateTag.gd")
 const SPRITE_TYPE_TAG := preload("res://library/SpriteTypeTag.gd")
 
 const INPUT_TO_SPRITE: Dictionary = {
@@ -31,7 +30,6 @@ var _ref_Palette: Game_Palette
 
 var _new_CoordCalculator := preload("res://library/CoordCalculator.gd").new()
 var _new_ConvertCoord := preload("res://library/ConvertCoord.gd").new()
-var _new_ObjectStateTag := preload("res://library/ObjectStateTag.gd").new()
 var _new_SpriteTypeTag := preload("res://library/SpriteTypeTag.gd").new()
 var _new_ArrayHelper := preload("res://library/ArrayHelper.gd").new()
 var _new_ShadowCastFOV := preload("res://library/ShadowCastFOV.gd").new()

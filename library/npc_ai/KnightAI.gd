@@ -16,10 +16,10 @@ func _init(parent_node: Node2D).(parent_node) -> void:
 
 func take_action() -> void:
 	# Active -> Passive.
-	if _ref_ObjectData.verify_state(_self, _new_ObjectStateTag.ACTIVE):
+	if _ref_ObjectData.verify_state(_self, Game_ObjectStateTag.ACTIVE):
 		_attack()
 	# Passive -> Default.
-	elif _ref_ObjectData.verify_state(_self, _new_ObjectStateTag.PASSIVE):
+	elif _ref_ObjectData.verify_state(_self, Game_ObjectStateTag.PASSIVE):
 		_recover()
 	# Default -> Active.
 	elif _new_CoordCalculator.is_inside_range(
@@ -49,7 +49,7 @@ func _attack() -> void:
 	if _can_attack_twice():
 		_prepare_second_attack(id)
 	else:
-		_ref_ObjectData.set_state(_self, _new_ObjectStateTag.PASSIVE)
+		_ref_ObjectData.set_state(_self, Game_ObjectStateTag.PASSIVE)
 		_ref_SwitchSprite.switch_sprite(_self, _new_SpriteTypeTag.PASSIVE)
 
 
@@ -57,7 +57,7 @@ func _recover() -> void:
 	var hit: int = _ref_ObjectData.get_hit_point(_self)
 	var new_sprite: String = _new_SpriteTypeTag.DEFAULT
 
-	_ref_ObjectData.set_state(_self, _new_ObjectStateTag.DEFAULT)
+	_ref_ObjectData.set_state(_self, Game_ObjectStateTag.DEFAULT)
 
 	if _self.is_in_group(Game_SubGroupTag.KNIGHT_BOSS) \
 			and _hit_to_sprite.has(hit):
@@ -69,7 +69,7 @@ func _alert() -> void:
 	var id: int = _self.get_instance_id()
 	var danger_zone: Array = _get_danger_zone()
 
-	_ref_ObjectData.set_state(_self, _new_ObjectStateTag.ACTIVE)
+	_ref_ObjectData.set_state(_self, Game_ObjectStateTag.ACTIVE)
 	_ref_SwitchSprite.switch_sprite(_self, _new_SpriteTypeTag.ACTIVE)
 
 	_id_to_danger_zone[id] = danger_zone
@@ -176,7 +176,7 @@ func _try_hit_pc(danger_zone: Array) -> void:
 			# print("pc dead")
 		elif victim.is_in_group(Game_SubGroupTag.KNIGHT) \
 				and _ref_ObjectData.verify_state(victim,
-						_new_ObjectStateTag.PASSIVE):
+						Game_ObjectStateTag.PASSIVE):
 			_ref_RemoveObject.remove_actor(i[0], i[1])
 			_ref_CountDown.add_count(Game_KnightData.RESTORE_TURN)
 

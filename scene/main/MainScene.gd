@@ -1,4 +1,4 @@
-extends "res://library/RootNodeTemplate.gd"
+extends Game_RootNodeTemplate
 
 
 const INIT_WORLD: String = "InitWorld"
