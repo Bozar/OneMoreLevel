@@ -19,7 +19,6 @@ var _ref_GameSetting: Game_GameSetting
 var _ref_Palette: Game_Palette
 
 var _new_ConvertCoord := preload("res://library/ConvertCoord.gd").new()
-var _new_SubGroupTag := preload("res://library/SubGroupTag.gd").new()
 var _new_SpriteTypeTag := preload("res://library/SpriteTypeTag.gd").new()
 var _new_InitWorldData := preload("res://library/InitWorldData.gd").new()
 var _new_ScreenTag: = preload("res://library/ScreenTag.gd").new()
@@ -80,12 +79,12 @@ func _on_InitWorld_world_selected(new_world: String) -> void:
 
 func _on_CreateObject_sprite_created(_new_sprite: Sprite,
 		_main_group: String, sub_group: String, _x: int, _y: int) -> void:
-	if sub_group == _new_SubGroupTag.PC:
+	if sub_group == Game_SubGroupTag.PC:
 		set_process_unhandled_input(true)
 
 
 func _on_Schedule_turn_started(current_sprite: Sprite) -> void:
-	if not current_sprite.is_in_group(_new_SubGroupTag.PC):
+	if not current_sprite.is_in_group(Game_SubGroupTag.PC):
 		return
 
 	_pc_action.set_source_position()

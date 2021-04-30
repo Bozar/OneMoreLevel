@@ -2,9 +2,6 @@ extends Node2D
 class_name Game_Palette
 
 
-const MAIN_GROUP_TAG := preload("res://library/MainGroupTag.gd")
-const SUB_GROUP_TAG := preload("res://library/SubGroupTag.gd")
-
 const BACKGROUND: String = "background"
 const INDICATOR: String = "indicator"
 
@@ -73,7 +70,7 @@ const DEFAULT_TAG_TO_COLOR: Dictionary = {
 }
 
 const SUB_TAG_TO_COLOR: Dictionary = {
-	SUB_GROUP_TAG.PC_MIRROR_IMAGE: DARK_ACTOR,
+	Game_SubGroupTag.PC_MIRROR_IMAGE: DARK_ACTOR,
 }
 
 var _ref_GameSetting: Game_GameSetting
@@ -86,15 +83,15 @@ func get_default_color(main_tag: String, sub_tag: String = "") -> String:
 		return _tag_to_color[SUB_TAG_TO_COLOR[sub_tag]]
 	else:
 		match main_tag:
-			MAIN_GROUP_TAG.GROUND:
+			Game_MainGroupTag.GROUND:
 				return _tag_to_color[GROUND]
-			MAIN_GROUP_TAG.TRAP:
+			Game_MainGroupTag.TRAP:
 				return _tag_to_color[TRAP]
-			MAIN_GROUP_TAG.BUILDING:
+			Game_MainGroupTag.BUILDING:
 				return _tag_to_color[BUILDING]
-			MAIN_GROUP_TAG.ACTOR:
+			Game_MainGroupTag.ACTOR:
 				return _tag_to_color[ACTOR]
-			MAIN_GROUP_TAG.INDICATOR:
+			Game_MainGroupTag.INDICATOR:
 				return _tag_to_color[INDICATOR]
 			_:
 				return DEBUG
@@ -105,13 +102,13 @@ func get_dark_color(main_tag: String, sub_tag: String = "") -> String:
 		return _tag_to_color[SUB_TAG_TO_COLOR[sub_tag]]
 	else:
 		match main_tag:
-			MAIN_GROUP_TAG.GROUND:
+			Game_MainGroupTag.GROUND:
 				return _tag_to_color[DARK_GROUND]
-			MAIN_GROUP_TAG.TRAP:
+			Game_MainGroupTag.TRAP:
 				return _tag_to_color[DARK_TRAP]
-			MAIN_GROUP_TAG.BUILDING:
+			Game_MainGroupTag.BUILDING:
 				return _tag_to_color[DARK_BUILDING]
-			MAIN_GROUP_TAG.ACTOR:
+			Game_MainGroupTag.ACTOR:
 				return _tag_to_color[DARK_ACTOR]
 			_:
 				return DEBUG

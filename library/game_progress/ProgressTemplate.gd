@@ -1,7 +1,6 @@
 class_name Game_ProgressTemplate
 
 
-const MAIN_GROUP_TAG := preload("res://library/MainGroupTag.gd")
 const OBJECT_STATE_TAG := preload("res://library/ObjectStateTag.gd")
 const SPRITE_TYPE_TAG := preload("res://library/SpriteTypeTag.gd")
 
@@ -25,8 +24,6 @@ var _ref_Palette: Game_Palette
 
 var _spr_Floor := preload("res://sprite/Floor.tscn")
 
-var _new_MainGroupTag := preload("res://library/MainGroupTag.gd").new()
-var _new_SubGroupTag := preload("res://library/SubGroupTag.gd").new()
 var _new_ConvertCoord := preload("res://library/ConvertCoord.gd").new()
 var _new_CoordCalculator := preload("res://library/CoordCalculator.gd").new()
 var _new_SpriteTypeTag := preload("res://library/SpriteTypeTag.gd").new()
@@ -88,9 +85,9 @@ func game_over(_win: bool) -> void:
 
 func _add_or_remove_ground(add_ground: bool, x: int, y: int,
 		new_sprite: PackedScene = _spr_Floor,
-		sub_tag: String = _new_SubGroupTag.FLOOR) -> void:
+		sub_tag: String = Game_SubGroupTag.FLOOR) -> void:
 	if add_ground:
-		_ref_CreateObject.create(new_sprite, _new_MainGroupTag.GROUND, sub_tag,
+		_ref_CreateObject.create(new_sprite, Game_MainGroupTag.GROUND, sub_tag,
 				x, y)
 	else:
 		_ref_RemoveObject.remove_ground(x, y)

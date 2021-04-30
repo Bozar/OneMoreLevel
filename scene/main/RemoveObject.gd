@@ -6,8 +6,6 @@ signal sprite_removed(remove_sprite, main_group, x, y)
 
 var _ref_DungeonBoard: Game_DungeonBoard
 
-var _new_MainGroupTag := preload("res://library/MainGroupTag.gd").new()
-
 
 func remove(main_group: String, x: int, y: int) -> void:
 	var sprite: Sprite = _ref_DungeonBoard.get_sprite(main_group, x, y)
@@ -19,16 +17,16 @@ func remove(main_group: String, x: int, y: int) -> void:
 
 
 func remove_actor(x: int, y: int) -> void:
-	remove(_new_MainGroupTag.ACTOR, x, y)
+	remove(Game_MainGroupTag.ACTOR, x, y)
 
 
 func remove_building(x: int, y: int) -> void:
-	remove(_new_MainGroupTag.BUILDING, x, y)
+	remove(Game_MainGroupTag.BUILDING, x, y)
 
 
 func remove_trap(x: int, y: int) -> void:
-	remove(_new_MainGroupTag.TRAP, x, y)
+	remove(Game_MainGroupTag.TRAP, x, y)
 
 
 func remove_ground(x: int, y: int) -> void:
-	remove(_new_MainGroupTag.GROUND, x, y)
+	remove(Game_MainGroupTag.GROUND, x, y)

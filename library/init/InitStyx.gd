@@ -28,13 +28,13 @@ func _init_building() -> void:
 	]
 
 	_add_to_blueprint(_spr_Lighthouse,
-			_new_MainGroupTag.BUILDING, _new_SubGroupTag.LIGHTHOUSE,
+			Game_MainGroupTag.BUILDING, Game_SubGroupTag.LIGHTHOUSE,
 			lighthouse_x, lighthouse_y)
 	_set_static_area(lighthouse_x, lighthouse_y, Game_StyxData.LIGHTHOUSE)
 
 	for i in harbor:
 		_add_to_blueprint(_spr_Harbor,
-				_new_MainGroupTag.BUILDING, _new_SubGroupTag.HARBOR,
+				Game_MainGroupTag.BUILDING, Game_SubGroupTag.HARBOR,
 				i[0], i[1])
 		_set_static_area(i[0], i[1], Game_StyxData.HARBOR)
 
@@ -53,4 +53,4 @@ func _init_river() -> void:
 			if _is_occupied(i, j):
 				continue
 			_add_to_blueprint(_spr_Arrow,
-					_new_MainGroupTag.GROUND, _new_SubGroupTag.ARROW, i, j)
+					Game_MainGroupTag.GROUND, Game_SubGroupTag.ARROW, i, j)

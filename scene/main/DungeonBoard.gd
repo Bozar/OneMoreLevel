@@ -2,8 +2,6 @@ extends Node2D
 class_name Game_DungeonBoard
 
 
-var _new_MainGroupTag := preload("res://library/MainGroupTag.gd").new()
-var _new_SubGroupTag := preload("res://library/SubGroupTag.gd").new()
 var _new_ConvertCoord := preload("res://library/ConvertCoord.gd").new()
 var _new_CoordCalculator := preload("res://library/CoordCalculator.gd").new()
 var _new_ArrayHelper := preload("res://library/ArrayHelper.gd").new()
@@ -13,9 +11,9 @@ var _sprite_dict: Dictionary
 var _pc: Sprite
 
 var _sub_group_to_sprite: Dictionary = {
-	_new_SubGroupTag.ARROW_RIGHT: null,
-	_new_SubGroupTag.ARROW_DOWN: null,
-	_new_SubGroupTag.ARROW_UP: null,
+	Game_SubGroupTag.ARROW_RIGHT: null,
+	Game_SubGroupTag.ARROW_DOWN: null,
+	Game_SubGroupTag.ARROW_UP: null,
 }
 
 
@@ -48,20 +46,20 @@ func get_sprite(main_group: String, x: int, y: int) -> Sprite:
 	return null
 
 
-# There should be only one sprite in the group `_new_SubGroupTag.PC`.
+# There should be only one sprite in the group `Game_SubGroupTag.PC`.
 # The PC sprite should not be removed throughout the game.
 func get_pc() -> Sprite:
 	var find_pc: Array
 
 	if _pc == null:
-		find_pc = get_sprites_by_tag(_new_SubGroupTag.PC)
+		find_pc = get_sprites_by_tag(Game_SubGroupTag.PC)
 		if find_pc.size() > 0:
 			_pc = find_pc[0]
 	return _pc
 
 
 func get_npc() -> Array:
-	var npc: Array = get_sprites_by_tag(_new_MainGroupTag.ACTOR)
+	var npc: Array = get_sprites_by_tag(Game_MainGroupTag.ACTOR)
 	_new_ArrayHelper.filter_element(npc, self, "_filter_get_npc", [])
 	return npc
 
@@ -106,35 +104,35 @@ func get_sprites_by_tag(group_tag: String) -> Array:
 
 
 func get_actor(x: int, y: int) -> Sprite:
-	return get_sprite(_new_MainGroupTag.ACTOR, x, y)
+	return get_sprite(Game_MainGroupTag.ACTOR, x, y)
 
 
 func has_actor(x: int, y: int) -> bool:
-	return has_sprite(_new_MainGroupTag.ACTOR, x, y)
+	return has_sprite(Game_MainGroupTag.ACTOR, x, y)
 
 
 func get_building(x: int, y: int) -> Sprite:
-	return get_sprite(_new_MainGroupTag.BUILDING, x, y)
+	return get_sprite(Game_MainGroupTag.BUILDING, x, y)
 
 
 func has_building(x: int, y: int) -> bool:
-	return has_sprite(_new_MainGroupTag.BUILDING, x, y)
+	return has_sprite(Game_MainGroupTag.BUILDING, x, y)
 
 
 func get_trap(x: int, y: int) -> Sprite:
-	return get_sprite(_new_MainGroupTag.TRAP, x, y)
+	return get_sprite(Game_MainGroupTag.TRAP, x, y)
 
 
 func has_trap(x: int, y: int) -> bool:
-	return has_sprite(_new_MainGroupTag.TRAP, x, y)
+	return has_sprite(Game_MainGroupTag.TRAP, x, y)
 
 
 func get_ground(x: int, y: int) -> Sprite:
-	return get_sprite(_new_MainGroupTag.GROUND, x, y)
+	return get_sprite(Game_MainGroupTag.GROUND, x, y)
 
 
 func has_ground(x: int, y: int) -> bool:
-	return has_sprite(_new_MainGroupTag.GROUND, x, y)
+	return has_sprite(Game_MainGroupTag.GROUND, x, y)
 
 
 func move_sprite(main_group: String, source_x: int, source_y: int,
@@ -175,14 +173,14 @@ func _on_CreateObject_sprite_created(new_sprite: Sprite,
 	var pos: Array
 
 	# Save references to arrow indicators.
-	if main_group == _new_MainGroupTag.INDICATOR:
+	if main_group == Game_MainGroupTag.INDICATOR:
 		for i in _sub_group_to_sprite.keys():
 			if i == sub_group:
 				_sub_group_to_sprite[i] = new_sprite
 		return
 
 	# Save references to dungeon sprites.
-	for i in _new_MainGroupTag.DUNGEON_OBJECT:
+	for i in Game_MainGroupTag.DUNGEON_OBJECT:
 		if i == main_group:
 			pos = _new_ConvertCoord.vector_to_array(new_sprite.position)
 			_sprite_dict[i][pos[0]][pos[1]] = new_sprite
@@ -195,7 +193,7 @@ func _on_RemoveObject_sprite_removed(_sprite: Sprite, main_group: String,
 
 
 func _init_dict() -> void:
-	for i in _new_MainGroupTag.DUNGEON_OBJECT:
+	for i in Game_MainGroupTag.DUNGEON_OBJECT:
 		_sprite_dict[i] = {}
 		for x in range(Game_DungeonSize.MAX_X):
 			_sprite_dict[i][x] = []
@@ -204,14 +202,14 @@ func _init_dict() -> void:
 
 # Move arrow indicators when PC moves.
 func _try_move_arrow(sprite: Sprite) -> void:
-	if not sprite.is_in_group(_new_SubGroupTag.PC):
+	if not sprite.is_in_group(Game_SubGroupTag.PC):
 		return
 
-	_sub_group_to_sprite[_new_SubGroupTag.ARROW_RIGHT] \
+	_sub_group_to_sprite[Game_SubGroupTag.ARROW_RIGHT] \
 			.position.y = sprite.position.y
-	_sub_group_to_sprite[_new_SubGroupTag.ARROW_DOWN] \
+	_sub_group_to_sprite[Game_SubGroupTag.ARROW_DOWN] \
 			.position.x = sprite.position.x
-	_sub_group_to_sprite[_new_SubGroupTag.ARROW_UP] \
+	_sub_group_to_sprite[Game_SubGroupTag.ARROW_UP] \
 			.position.x = sprite.position.x
 
 
@@ -222,4 +220,4 @@ func _filter_get_sprites_by_tag(source: Array, index: int,
 
 func _filter_get_npc(source: Array, index: int, _opt_arg: Array) -> bool:
 	return not (source[index].is_queued_for_deletion() \
-			or source[index].is_in_group(_new_SubGroupTag.PC))
+			or source[index].is_in_group(Game_SubGroupTag.PC))

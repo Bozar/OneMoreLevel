@@ -13,8 +13,6 @@ var _spr_Floor := preload("res://sprite/Floor.tscn")
 var _spr_Wall := preload("res://sprite/Wall.tscn")
 var _spr_PC := preload("res://sprite/PC.tscn")
 
-var _new_MainGroupTag := preload("res://library/MainGroupTag.gd").new()
-var _new_SubGroupTag := preload("res://library/SubGroupTag.gd").new()
 var _new_CoordCalculator := preload("res://library/CoordCalculator.gd").new()
 var _new_ArrayHelper := preload("res://library/ArrayHelper.gd").new()
 
@@ -87,7 +85,7 @@ func _init_floor(floor_sprite: PackedScene = _spr_Floor) -> void:
 			if _is_occupied(x, y):
 				continue
 			_add_to_blueprint(floor_sprite,
-					_new_MainGroupTag.GROUND, _new_SubGroupTag.FLOOR, x, y)
+					Game_MainGroupTag.GROUND, Game_SubGroupTag.FLOOR, x, y)
 
 
 func _init_actor(min_distance: int, x: int, y: int, max_actor: int,
@@ -108,7 +106,7 @@ func _init_actor(min_distance: int, x: int, y: int, max_actor: int,
 	neighbor = _new_CoordCalculator.get_neighbor(x, y, min_distance, true)
 	for i in neighbor:
 		_occupy_position(i[0], i[1])
-	_add_to_blueprint(actor_scene, _new_MainGroupTag.ACTOR, sub_tag, x, y)
+	_add_to_blueprint(actor_scene, Game_MainGroupTag.ACTOR, sub_tag, x, y)
 
 	_init_actor(min_distance, x, y, max_actor, actor_scene, sub_tag)
 
@@ -116,4 +114,4 @@ func _init_actor(min_distance: int, x: int, y: int, max_actor: int,
 func _init_pc(min_distance: int = 0,
 		x: int = INVALID_COORD, y: int = INVALID_COORD,
 		pc_scene: PackedScene = _spr_PC) -> void:
-	_init_actor(min_distance, x, y, 1, pc_scene, _new_SubGroupTag.PC)
+	_init_actor(min_distance, x, y, 1, pc_scene, Game_SubGroupTag.PC)

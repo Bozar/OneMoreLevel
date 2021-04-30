@@ -20,8 +20,6 @@ var _ref_Schedule: Game_Schedule
 
 var _new_WorldTag := Game_WorldTag.new()
 var _new_InitWorldData := Game_InitWorldData.new()
-var _new_MainGroupTag := preload("res://library/MainGroupTag.gd").new()
-var _new_SubGroupTag := preload("res://library/SubGroupTag.gd").new()
 var _new_ArrayHelper := preload("res://library/ArrayHelper.gd").new()
 
 var _world_tag: String
@@ -75,20 +73,20 @@ func _get_world() -> Game_WorldTemplate:
 
 func _init_indicator(x: int, y: int) -> void:
 	_ref_CreateObject.create(_spr_TriangleRight,
-			_new_MainGroupTag.INDICATOR, _new_SubGroupTag.ARROW_RIGHT,
+			Game_MainGroupTag.INDICATOR, Game_SubGroupTag.ARROW_RIGHT,
 			0, y, -Game_DungeonSize.ARROW_MARGIN)
 
 	_ref_CreateObject.create(_spr_TriangleDown,
-			_new_MainGroupTag.INDICATOR, _new_SubGroupTag.ARROW_DOWN,
+			Game_MainGroupTag.INDICATOR, Game_SubGroupTag.ARROW_DOWN,
 			x, 0, 0, -Game_DungeonSize.ARROW_MARGIN)
 
 	_ref_CreateObject.create(_spr_TriangleUp,
-			_new_MainGroupTag.INDICATOR, _new_SubGroupTag.ARROW_UP,
+			Game_MainGroupTag.INDICATOR, Game_SubGroupTag.ARROW_UP,
 			x, Game_DungeonSize.MAX_Y - 1, 0, Game_DungeonSize.ARROW_MARGIN)
 
 
 func _is_pc(group_name: String) -> bool:
-	return group_name == _new_SubGroupTag.PC
+	return group_name == Game_SubGroupTag.PC
 
 
 func _filter_get_world(source: Array, index: int, opt_arg: Array) -> bool:

@@ -21,8 +21,6 @@ var _new_ConvertCoord := preload("res://library/ConvertCoord.gd").new()
 var _new_CoordCalculator := preload("res://library/CoordCalculator.gd").new()
 var _new_ObjectStateTag := preload("res://library/ObjectStateTag.gd").new()
 var _new_SpriteTypeTag := preload("res://library/SpriteTypeTag.gd").new()
-var _new_MainGroupTag := preload("res://library/MainGroupTag.gd").new()
-var _new_SubGroupTag := preload("res://library/SubGroupTag.gd").new()
 var _new_PathFindingData := preload("res://library/PathFindingData.gd").new()
 var _new_DijkstraPathFinding := preload("res://library/DijkstraPathFinding.gd").new()
 var _new_ArrayHelper := preload("res://library/ArrayHelper.gd").new()
@@ -94,7 +92,7 @@ func _approach_pc(start_point: Array = [_pc_pos], one_step: int = 1,
 
 	if destination.size() > 0:
 		_new_ArrayHelper.rand_picker(destination, 1, _ref_RandomNumber)
-		_ref_DungeonBoard.move_sprite(_new_MainGroupTag.ACTOR,
+		_ref_DungeonBoard.move_sprite(Game_MainGroupTag.ACTOR,
 				_self_pos[0], _self_pos[1],
 				destination[0][0], destination[0][1])
 		_target_pos = destination[0]

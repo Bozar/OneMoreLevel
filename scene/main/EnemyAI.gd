@@ -16,7 +16,6 @@ var _ref_CountDown: Game_CountDown
 var _ref_CreateObject : Game_CreateObject
 var _ref_Palette: Game_Palette
 
-var _new_SubGroupTag := preload("res://library/SubGroupTag.gd").new()
 var _new_InitWorldData := preload("res://library/InitWorldData.gd").new()
 
 var _world_tag: String
@@ -24,7 +23,7 @@ var _ai: Game_AITemplate
 
 
 func _on_Schedule_turn_started(current_sprite: Sprite) -> void:
-	if current_sprite.is_in_group(_new_SubGroupTag.PC):
+	if current_sprite.is_in_group(Game_SubGroupTag.PC):
 		return
 
 	_ai.set_local_var(current_sprite)
@@ -40,7 +39,7 @@ func _on_InitWorld_world_selected(new_world: String) -> void:
 
 func _on_CreateObject_sprite_created(_new_sprite: Sprite,
 		_main_group: String, sub_group: String, _x: int, _y: int) -> void:
-	if sub_group != _new_SubGroupTag.PC:
+	if sub_group != Game_SubGroupTag.PC:
 		return
 	# Refer: AITemplate.gd.
 	_ai = _new_InitWorldData.get_enemy_ai(_world_tag).new(self)

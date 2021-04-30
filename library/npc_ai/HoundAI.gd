@@ -23,9 +23,9 @@ func take_action() -> void:
 	var pc_is_in_fog: bool
 	var add_hit_point: int
 
-	if _self.is_in_group(_new_SubGroupTag.PHANTOM):
+	if _self.is_in_group(Game_SubGroupTag.PHANTOM):
 		return
-	elif _self.is_in_group(_new_SubGroupTag.HOUND_BOSS):
+	elif _self.is_in_group(Game_SubGroupTag.HOUND_BOSS):
 		is_boss = true
 		if not _boss_countdown():
 			return
@@ -56,7 +56,7 @@ func take_action() -> void:
 
 
 func remove_data(actor: Sprite) -> void:
-	if actor.is_in_group(_new_SubGroupTag.HOUND_BOSS):
+	if actor.is_in_group(Game_SubGroupTag.HOUND_BOSS):
 		_boss_duration = INIT_DURATION
 
 
@@ -185,7 +185,7 @@ func _set_pc_hit_point(add_hit_point: int) -> void:
 	var pc: Sprite = _ref_DungeonBoard.get_pc()
 	var pc_hit_point: int = _ref_ObjectData.get_hit_point(pc)
 	var find_phantom: Array = _ref_DungeonBoard.get_sprites_by_tag(
-			_new_SubGroupTag.PHANTOM)
+			Game_SubGroupTag.PHANTOM)
 	var phantom: Sprite
 	var x: int
 	var y: int
@@ -208,7 +208,7 @@ func _set_pc_hit_point(add_hit_point: int) -> void:
 			else:
 				break
 		phantom = _ref_CreateObject.create_and_fetch(_spr_Counter,
-				_new_MainGroupTag.ACTOR, _new_SubGroupTag.PHANTOM, x, y)
+				Game_MainGroupTag.ACTOR, Game_SubGroupTag.PHANTOM, x, y)
 		add_hit_point = 0
 	else:
 		phantom = find_phantom[0]

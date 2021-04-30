@@ -16,11 +16,11 @@ func render_fov() -> void:
 
 
 func is_npc() -> bool:
-	return _target_is_occupied(_new_MainGroupTag.ACTOR)
+	return _target_is_occupied(Game_MainGroupTag.ACTOR)
 
 
 func is_trap() -> bool:
-	return _target_is_occupied(_new_MainGroupTag.TRAP)
+	return _target_is_occupied(Game_MainGroupTag.TRAP)
 
 
 func move() -> void:
@@ -62,9 +62,9 @@ func interact_with_trap() -> void:
 
 func _is_checkmate() -> bool:
 	var npc: Array = _ref_DungeonBoard.get_sprites_by_tag(
-			_new_SubGroupTag.PHANTOM)
+			Game_SubGroupTag.PHANTOM)
 	var trap: Sprite = _ref_DungeonBoard.get_sprites_by_tag(
-			_new_SubGroupTag.CRYSTAL)[0]
+			Game_SubGroupTag.CRYSTAL)[0]
 	var trap_x: int = _new_ConvertCoord.vector_to_array(trap.position)[0]
 
 	for i in npc:
@@ -109,7 +109,7 @@ func _create_image_on_the_other_side(x: int, y: int) -> void:
 	_ref_RemoveObject.remove_actor(mirror[0], mirror[1])
 
 	# Move the phantom to the other side. State: passive. Color: grey.
-	_ref_DungeonBoard.move_sprite(_new_MainGroupTag.ACTOR,
+	_ref_DungeonBoard.move_sprite(Game_MainGroupTag.ACTOR,
 			x, y, mirror[0], mirror[1])
 	_ref_ObjectData.set_state(actor, _new_ObjectStateTag.PASSIVE)
 
@@ -117,7 +117,7 @@ func _create_image_on_the_other_side(x: int, y: int) -> void:
 	_ref_RemoveObject.remove_trap(mirror[0], mirror[1])
 
 	# There can be at most (5 - crystal) phantom images.
-	images = _ref_DungeonBoard.get_sprites_by_tag(_new_SubGroupTag.PHANTOM)
+	images = _ref_DungeonBoard.get_sprites_by_tag(Game_SubGroupTag.PHANTOM)
 	_new_ArrayHelper.filter_element(images, self, "_filter_create_image",
 			[actor])
 	remove = images.size() + 1 - (Game_MirrorData.MAX_PHANTOM \
@@ -163,7 +163,7 @@ func _create_image_on_the_same_side(x: int, y: int) -> void:
 		# Create a new actor.
 		_ref_CreateObject.create(
 				_spr_Phantom,
-				_new_MainGroupTag.ACTOR, _new_SubGroupTag.PHANTOM,
+				Game_MainGroupTag.ACTOR, Game_SubGroupTag.PHANTOM,
 				mirror[0], mirror[1])
 
 		# Switch the actor's sprite to active.
@@ -233,12 +233,12 @@ func _reset_sprite_color() -> void:
 
 	for y in range(0, Game_DungeonSize.MAX_Y):
 		set_this = _ref_DungeonBoard.get_building(Game_DungeonSize.CENTER_X, y)
-		_ref_Palette.set_default_color(set_this, _new_MainGroupTag.BUILDING)
+		_ref_Palette.set_default_color(set_this, Game_MainGroupTag.BUILDING)
 
-	for i in _ref_DungeonBoard.get_sprites_by_tag(_new_MainGroupTag.TRAP):
+	for i in _ref_DungeonBoard.get_sprites_by_tag(Game_MainGroupTag.TRAP):
 		pos = _new_ConvertCoord.vector_to_array(i.position)
 		i.visible = not _ref_DungeonBoard.has_actor(pos[0], pos[1])
-		_ref_Palette.set_default_color(i, _new_MainGroupTag.TRAP)
+		_ref_Palette.set_default_color(i, Game_MainGroupTag.TRAP)
 
 
 func _move_pc_and_image() -> void:
@@ -247,9 +247,9 @@ func _move_pc_and_image() -> void:
 	var target_mirror: Array = _get_mirror(
 			_target_position[0], _target_position[1])
 
-	_ref_DungeonBoard.move_sprite(_new_MainGroupTag.ACTOR,
+	_ref_DungeonBoard.move_sprite(Game_MainGroupTag.ACTOR,
 			_source_position[0], _source_position[1],
 			_target_position[0], _target_position[1])
-	_ref_DungeonBoard.move_sprite(_new_MainGroupTag.ACTOR,
+	_ref_DungeonBoard.move_sprite(Game_MainGroupTag.ACTOR,
 			source_mirror[0], source_mirror[1],
 			target_mirror[0], target_mirror[1])

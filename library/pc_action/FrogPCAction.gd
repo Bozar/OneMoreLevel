@@ -87,7 +87,7 @@ func switch_sprite() -> void:
 
 func _is_in_swamp(x: int, y: int) -> bool:
 	return _ref_DungeonBoard.has_sprite_with_sub_tag(
-			_new_MainGroupTag.GROUND, _new_SubGroupTag.SWAMP, x, y)
+			Game_MainGroupTag.GROUND, Game_SubGroupTag.SWAMP, x, y)
 
 
 func _set_pc_state(state_tag: String) -> void:

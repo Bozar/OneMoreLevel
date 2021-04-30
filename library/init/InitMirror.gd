@@ -37,13 +37,13 @@ func _init_middle_border() -> void:
 	for i in range(Game_DungeonSize.MAX_Y):
 		if i in crystal_base:
 			new_sprite = _spr_CrystalBase
-			sub_group_tag = _new_SubGroupTag.CRYSTAL_BASE
+			sub_group_tag = Game_SubGroupTag.CRYSTAL_BASE
 		else:
 			new_sprite = _spr_Wall
-			sub_group_tag = _new_SubGroupTag.WALL
+			sub_group_tag = Game_SubGroupTag.WALL
 
 		_add_to_blueprint(new_sprite,
-				_new_MainGroupTag.BUILDING, sub_group_tag,
+				Game_MainGroupTag.BUILDING, sub_group_tag,
 				Game_DungeonSize.CENTER_X, i)
 		_occupy_position(Game_DungeonSize.CENTER_X, i)
 
@@ -92,7 +92,7 @@ func _create_reflection(x: int, y: int) -> void:
 
 func _create_mirror(x: int, y: int) -> void:
 	_add_to_blueprint(_spr_Wall,
-			_new_MainGroupTag.BUILDING, _new_SubGroupTag.WALL, x, y)
+			Game_MainGroupTag.BUILDING, Game_SubGroupTag.WALL, x, y)
 	_occupy_position(x, y)
 
 
@@ -116,10 +116,10 @@ func _create_pc() -> void:
 					Game_MirrorData.CRYSTAL_DISTANCE, true)
 
 	_add_to_blueprint(_spr_PC,
-			_new_MainGroupTag.ACTOR, _new_SubGroupTag.PC,
+			Game_MainGroupTag.ACTOR, Game_SubGroupTag.PC,
 			pc_x, pc_y)
 	_add_to_blueprint(_spr_PCMirrorImage,
-			_new_MainGroupTag.ACTOR, _new_SubGroupTag.PC_MIRROR_IMAGE,
+			Game_MainGroupTag.ACTOR, Game_SubGroupTag.PC_MIRROR_IMAGE,
 			mirror[0], mirror[1])
 
 	for i in neighbor:
@@ -138,7 +138,7 @@ func _init_crystal() -> void:
 		break
 
 	_add_to_blueprint(_spr_Crystal,
-			_new_MainGroupTag.TRAP, _new_SubGroupTag.CRYSTAL,
+			Game_MainGroupTag.TRAP, Game_SubGroupTag.CRYSTAL,
 			x, y)
 	_occupy_position(x, y)
 	_ref_DangerZone.set_danger_zone(x, y, true)
@@ -169,6 +169,6 @@ func _create_phantom(x: int, y: int) -> void:
 			Game_MirrorData.PHANTOM_SIGHT, true)
 
 	_add_to_blueprint(_spr_Phantom,
-			_new_MainGroupTag.ACTOR, _new_SubGroupTag.PHANTOM, x, y)
+			Game_MainGroupTag.ACTOR, Game_SubGroupTag.PHANTOM, x, y)
 	for i in neighbor:
 		_occupy_position(i[0], i[1])

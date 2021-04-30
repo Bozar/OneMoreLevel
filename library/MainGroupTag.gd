@@ -1,3 +1,6 @@
+class_name Game_MainGroupTag
+
+
 const INVALID: String = "invalid"
 
 const GROUND: String = "ground"

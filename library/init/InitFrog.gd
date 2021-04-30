@@ -15,7 +15,7 @@ func get_blueprint() -> Array:
 	_init_pc(Game_FrogData.MIN_DISTANCE, INVALID_COORD, INVALID_COORD,
 			_spr_PCFrog)
 	_init_actor(0, INVALID_COORD, INVALID_COORD,
-			Game_FrogData.MAX_FROG, _spr_Frog, _new_SubGroupTag.FROG)
+			Game_FrogData.MAX_FROG, _spr_Frog, Game_SubGroupTag.FROG)
 
 	return _blueprint
 
@@ -30,14 +30,14 @@ func _init_swamp() -> void:
 		for j in range(Game_DungeonSize.MAX_Y):
 			if (i == Game_DungeonSize.MAX_X - 1) \
 					and (j == Game_DungeonSize.MAX_Y - 1):
-				_add_to_blueprint(_spr_Counter, _new_MainGroupTag.GROUND,
-						_new_SubGroupTag.COUNTER, i, j)
+				_add_to_blueprint(_spr_Counter, Game_MainGroupTag.GROUND,
+						Game_SubGroupTag.COUNTER, i, j)
 			elif _is_occupied(i, j):
-				_add_to_blueprint(_spr_Wall, _new_MainGroupTag.GROUND,
-						_new_SubGroupTag.LAND, i, j)
+				_add_to_blueprint(_spr_Wall, Game_MainGroupTag.GROUND,
+						Game_SubGroupTag.LAND, i, j)
 			else:
-				_add_to_blueprint(_spr_Floor, _new_MainGroupTag.GROUND,
-						_new_SubGroupTag.SWAMP, i, j)
+				_add_to_blueprint(_spr_Floor, Game_MainGroupTag.GROUND,
+						Game_SubGroupTag.SWAMP, i, j)
 
 
 func _init_path() -> int:

@@ -190,7 +190,7 @@ func _can_hit_target(x: int, y: int, hit_diagonally: bool) -> bool:
 
 	if _ground_is_active(x, y) == hit_diagonally:
 		actor = _ref_DungeonBoard.get_actor(x, y)
-		if actor.is_in_group(_new_SubGroupTag.HOUND_BOSS):
+		if actor.is_in_group(Game_SubGroupTag.HOUND_BOSS):
 			return hit_diagonally
 		return true
 	return false
@@ -199,7 +199,7 @@ func _can_hit_target(x: int, y: int, hit_diagonally: bool) -> bool:
 func _try_set_and_get_boss_hit_point(x: int, y: int) -> int:
 	var actor: Sprite = _ref_DungeonBoard.get_actor(x, y)
 
-	if actor.is_in_group(_new_SubGroupTag.HOUND_BOSS):
+	if actor.is_in_group(Game_SubGroupTag.HOUND_BOSS):
 		_ref_ObjectData.add_hit_point(actor, 1)
 		return _ref_ObjectData.get_hit_point(actor)
 	return 0
@@ -245,7 +245,7 @@ func _try_hit_phantom(x: int, y: int) -> void:
 	var actor: Sprite = _ref_DungeonBoard.get_actor(x, y)
 	var pc: Sprite = _ref_DungeonBoard.get_pc()
 
-	if actor.is_in_group(_new_SubGroupTag.PHANTOM):
+	if actor.is_in_group(Game_SubGroupTag.PHANTOM):
 		_ref_ObjectData.set_hit_point(pc, 0)
 
 

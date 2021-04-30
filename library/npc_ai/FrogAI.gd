@@ -71,7 +71,7 @@ func _random_walk() -> void:
 	_new_ArrayHelper.rand_picker(neighbor, 1, _ref_RandomNumber)
 	x = neighbor[0][0]
 	y = neighbor[0][1]
-	_ref_DungeonBoard.move_sprite(_new_MainGroupTag.ACTOR,
+	_ref_DungeonBoard.move_sprite(Game_MainGroupTag.ACTOR,
 			_self_pos[0], _self_pos[1], x, y)
 
 
@@ -100,7 +100,7 @@ func _path_is_clear() -> bool:
 			if not _new_CoordCalculator.is_inside_dungeon(x, y):
 				break
 			if _ref_DungeonBoard.has_sprite_with_sub_tag(
-					_new_MainGroupTag.ACTOR, _new_SubGroupTag.PC, x, y):
+					Game_MainGroupTag.ACTOR, Game_SubGroupTag.PC, x, y):
 				if counter > 0:
 					return false
 				break
@@ -137,7 +137,7 @@ func _dup_rand_walk(source: Array, index: int, opt_arg: Array) -> int:
 	var max_distance: int = opt_arg[0]
 	var repeat: int = 1
 	var swamp: int = 1 if _ref_DungeonBoard.has_sprite_with_sub_tag(
-			_new_MainGroupTag.GROUND, _new_SubGroupTag.SWAMP, sor_x, sor_y) \
+			Game_MainGroupTag.GROUND, Game_SubGroupTag.SWAMP, sor_x, sor_y) \
 			else 0
 
 	# If a frog is not too far away from PC, it favors swamp grids.

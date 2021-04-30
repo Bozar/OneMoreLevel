@@ -29,8 +29,6 @@ var _ref_DangerZone: Game_DangerZone
 var _ref_GameSetting: Game_GameSetting
 var _ref_Palette: Game_Palette
 
-var _new_MainGroupTag := preload("res://library/MainGroupTag.gd").new()
-var _new_SubGroupTag := preload("res://library/SubGroupTag.gd").new()
 var _new_CoordCalculator := preload("res://library/CoordCalculator.gd").new()
 var _new_ConvertCoord := preload("res://library/ConvertCoord.gd").new()
 var _new_ObjectStateTag := preload("res://library/ObjectStateTag.gd").new()
@@ -115,7 +113,7 @@ func is_trap() -> bool:
 # This leads to a potential and satisfying situation in which players find that
 # they beat the game in the last turn.
 func move() -> void:
-	_ref_DungeonBoard.move_sprite(_new_MainGroupTag.ACTOR,
+	_ref_DungeonBoard.move_sprite(Game_MainGroupTag.ACTOR,
 			_source_position[0], _source_position[1],
 			_target_position[0], _target_position[1])
 	end_turn = true
@@ -167,7 +165,7 @@ func render_fov() -> void:
 
 	for x in range(Game_DungeonSize.MAX_X):
 		for y in range(Game_DungeonSize.MAX_Y):
-			for i in _new_MainGroupTag.DUNGEON_OBJECT:
+			for i in Game_MainGroupTag.DUNGEON_OBJECT:
 				_set_sprite_color(x, y, i, "",
 						_new_ShadowCastFOV, "is_in_sight")
 
@@ -189,7 +187,7 @@ func game_over(win: bool) -> void:
 func _is_occupied(x: int, y: int) -> bool:
 	if not _new_CoordCalculator.is_inside_dungeon(x, y):
 		return true
-	for i in _new_MainGroupTag.ABOVE_GROUND_OBJECT:
+	for i in Game_MainGroupTag.ABOVE_GROUND_OBJECT:
 		if _ref_DungeonBoard.has_sprite(i, x, y):
 			return true
 	return false
@@ -205,7 +203,7 @@ func _render_end_game(win: bool) -> void:
 	_source_position = _new_ConvertCoord.vector_to_array(pc.position)
 	render_fov()
 	if not win:
-		_ref_Palette.set_dark_color(pc, _new_MainGroupTag.ACTOR)
+		_ref_Palette.set_dark_color(pc, Game_MainGroupTag.ACTOR)
 
 
 func _render_without_fog_of_war() -> void:
@@ -217,7 +215,7 @@ func _render_without_fog_of_war() -> void:
 			if ground == null:
 				continue
 			ground.visible = _ground_is_visible(x, y)
-			_ref_Palette.set_dark_color(ground, _new_MainGroupTag.GROUND)
+			_ref_Palette.set_dark_color(ground, Game_MainGroupTag.GROUND)
 
 
 # is_in_sight_func(x: int, y: int) -> bool
@@ -228,7 +226,7 @@ func _set_sprite_color(x: int, y: int, main_tag: String, sub_tag: String,
 
 	if set_this == null:
 		return
-	if main_tag == _new_MainGroupTag.GROUND:
+	if main_tag == Game_MainGroupTag.GROUND:
 		set_this.visible = _ground_is_visible(x, y)
 	if is_in_sight.call_func(x, y):
 		_ref_Palette.set_default_color(set_this, main_tag, sub_tag)
@@ -247,7 +245,7 @@ func _set_sprite_color_with_memory(x: int, y: int, main_tag: String,
 		return
 	set_this.visible = true
 	if is_in_sight.call_func(x, y):
-		if main_tag == _new_MainGroupTag.GROUND:
+		if main_tag == Game_MainGroupTag.GROUND:
 			set_this.visible = _ground_is_visible(x, y)
 		if remember_sprite:
 			_set_sprite_memory(x, y, main_tag, sub_tag)
@@ -260,7 +258,7 @@ func _set_sprite_color_with_memory(x: int, y: int, main_tag: String,
 
 
 func _ground_is_visible(x: int, y: int) -> bool:
-	for i in _new_MainGroupTag.ABOVE_GROUND_OBJECT:
+	for i in Game_MainGroupTag.ABOVE_GROUND_OBJECT:
 		if _ref_DungeonBoard.has_sprite(i, x, y):
 			return false
 	return true

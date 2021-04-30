@@ -33,7 +33,7 @@ func get_blueprint() -> Array:
 		if i == pc_index:
 			_init_pc(0, x, y, _spr_PCBalloon)
 			_add_to_blueprint(_spr_Floor,
-					_new_MainGroupTag.GROUND, _new_SubGroupTag.FLOOR, x, y)
+					Game_MainGroupTag.GROUND, Game_SubGroupTag.FLOOR, x, y)
 		else:
 			_init_wall_beacon(x, y)
 
@@ -94,11 +94,11 @@ func _get_position(min_x: int, max_x: int, min_y: int, max_y: int) -> Array:
 func _init_indicator() -> void:
 	for x in range(2):
 		_add_to_blueprint(_spr_Arrow,
-				_new_MainGroupTag.GROUND, _new_SubGroupTag.ARROW, x, 0)
+				Game_MainGroupTag.GROUND, Game_SubGroupTag.ARROW, x, 0)
 		_occupy_position(x, 0)
 	for y in range(1, 3):
 		_add_to_blueprint(_spr_Arrow,
-				_new_MainGroupTag.GROUND, _new_SubGroupTag.ARROW, 0, y)
+				Game_MainGroupTag.GROUND, Game_SubGroupTag.ARROW, 0, y)
 		_occupy_position(0, y)
 
 
@@ -108,12 +108,12 @@ func _init_wall_beacon(x: int, y: int) -> void:
 
 	for i in wall:
 		_add_to_blueprint(_spr_Wall,
-				_new_MainGroupTag.BUILDING, _new_SubGroupTag.WALL,
+				Game_MainGroupTag.BUILDING, Game_SubGroupTag.WALL,
 				i[0], i[1])
 		_occupy_position(i[0], i[1])
 
 	_add_to_blueprint(_spr_WormSpice,
-			_new_MainGroupTag.TRAP, _new_SubGroupTag.TREASURE,
+			Game_MainGroupTag.TRAP, Game_SubGroupTag.TREASURE,
 			beacon[0], beacon[1])
 	_occupy_position(beacon[0], beacon[1])
 
@@ -139,7 +139,7 @@ func _init_single_wall(retry: int, count_wall: int) -> void:
 
 	if build_wall:
 		_add_to_blueprint(_spr_Wall,
-				_new_MainGroupTag.BUILDING, _new_SubGroupTag.WALL,
+				Game_MainGroupTag.BUILDING, Game_SubGroupTag.WALL,
 				x + move_to_center, y + move_to_center)
 		_occupy_position(x + move_to_center, y + move_to_center)
 		count_wall += 1

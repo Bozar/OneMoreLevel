@@ -20,7 +20,7 @@ func end_world(_pc_x: int, _pc_y: int) -> void:
 
 
 func remove_actor(actor: Sprite, _x: int, _y: int) -> void:
-	if not actor.is_in_group(_new_SubGroupTag.WORM_HEAD):
+	if not actor.is_in_group(Game_SubGroupTag.WORM_HEAD):
 		return
 
 	for i in range(_respawn_counter.size()):
@@ -77,8 +77,8 @@ func _create_worm_head(retry: int) -> void:
 
 	_ref_RemoveObject.remove_building(x, y)
 	_ref_RemoveObject.remove_trap(x, y)
-	_ref_CreateObject.create(_spr_WormHead, _new_MainGroupTag.ACTOR,
-			_new_SubGroupTag.WORM_HEAD, x, y)
+	_ref_CreateObject.create(_spr_WormHead, Game_MainGroupTag.ACTOR,
+			Game_SubGroupTag.WORM_HEAD, x, y)
 
 
 func _has_building_or_trap(x: int, y: int) -> bool:

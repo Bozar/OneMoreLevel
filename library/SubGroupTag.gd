@@ -1,3 +1,6 @@
+class_name Game_SubGroupTag
+
+
 const INVALID: String = "invalid"
 const DWARF: String = "dwarf"
 

@@ -9,8 +9,6 @@ const ZERO_TURN: int = 0
 
 var _ref_EndGame: Game_EndGame
 
-var _new_SubGroupTag := preload("res://library/SubGroupTag.gd").new()
-
 var _current_count: int = MAX_TURN
 
 
@@ -29,13 +27,13 @@ func subtract_count(subtract: int) -> void:
 
 
 func _on_Schedule_turn_started(current_sprite: Sprite) -> void:
-	if not current_sprite.is_in_group(_new_SubGroupTag.PC):
+	if not current_sprite.is_in_group(Game_SubGroupTag.PC):
 		return
 	_current_count = _fix_overflow()
 
 
 func _on_Schedule_turn_ended(current_sprite: Sprite) -> void:
-	if current_sprite.is_in_group(_new_SubGroupTag.PC):
+	if current_sprite.is_in_group(Game_SubGroupTag.PC):
 		subtract_count(ONE_TURN)
 	if _current_count < MIN_TURN:
 		_current_count = _fix_overflow()

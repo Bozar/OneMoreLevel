@@ -31,11 +31,11 @@ func get_blueprint() -> Array:
 	_fill_hole()
 	_create_floor()
 
-	_create_actor(_spr_PC, _new_SubGroupTag.PC, MIN_PC_DISTANCE)
-	_create_actor(_spr_KnightCaptain, _new_SubGroupTag.KNIGHT_CAPTAIN,
+	_create_actor(_spr_PC, Game_SubGroupTag.PC, MIN_PC_DISTANCE)
+	_create_actor(_spr_KnightCaptain, Game_SubGroupTag.KNIGHT_CAPTAIN,
 			MIN_NPC_DISTANCE)
 	for _i in range(Game_KnightData.MAX_KNIGHT):
-		_create_actor(_spr_Knight, _new_SubGroupTag.KNIGHT, MIN_NPC_DISTANCE)
+		_create_actor(_spr_Knight, Game_SubGroupTag.KNIGHT, MIN_NPC_DISTANCE)
 
 	return _blueprint
 
@@ -87,14 +87,14 @@ func _init_wall() -> void:
 	for i in block:
 		if _has_counter:
 			new_sprite = _spr_Wall
-			new_sub_tag = _new_SubGroupTag.WALL
+			new_sub_tag = Game_SubGroupTag.WALL
 		else:
 			new_sprite = _spr_Counter
-			new_sub_tag = _new_SubGroupTag.COUNTER
+			new_sub_tag = Game_SubGroupTag.COUNTER
 			_has_counter = true
 		_set_terrain_marker(i[0], i[1], WALL_MARKER)
 		_add_to_blueprint(new_sprite,
-				_new_MainGroupTag.BUILDING, new_sub_tag, i[0], i[1])
+				Game_MainGroupTag.BUILDING, new_sub_tag, i[0], i[1])
 
 
 func _is_empty_space(coord: Array, index: int, _opt_arg: Array) -> bool:
@@ -138,7 +138,7 @@ func _fill_hole() -> void:
 			if fill_this:
 				_set_terrain_marker(x, y, WALL_MARKER)
 				_add_to_blueprint(_spr_Wall,
-						_new_MainGroupTag.BUILDING, _new_SubGroupTag.WALL, x, y)
+						Game_MainGroupTag.BUILDING, Game_SubGroupTag.WALL, x, y)
 
 
 func _create_floor():
@@ -147,7 +147,7 @@ func _create_floor():
 			if _get_terrain_marker(x, y) == WALL_MARKER:
 				continue
 			_add_to_blueprint(_spr_Floor,
-					_new_MainGroupTag.GROUND, _new_SubGroupTag.FLOOR, x, y)
+					Game_MainGroupTag.GROUND, Game_SubGroupTag.FLOOR, x, y)
 
 
 func _create_actor(scene: PackedScene, sub_tag: String, distance: int) -> void:
@@ -164,4 +164,4 @@ func _create_actor(scene: PackedScene, sub_tag: String, distance: int) -> void:
 	neighbor = _new_CoordCalculator.get_neighbor(x, y, distance, true)
 	for i in neighbor:
 		_set_terrain_marker(i[0], i[1], WALL_MARKER)
-	_add_to_blueprint(scene, _new_MainGroupTag.ACTOR, sub_tag, x, y)
+	_add_to_blueprint(scene, Game_MainGroupTag.ACTOR, sub_tag, x, y)
