@@ -1,3 +1,6 @@
+class_name Game_CrossShapedFOV
+
+
 # How to use it?
 #
 # 1. Set DUNGEON_WIDTH and DUNGEON_HEIGHT.

@@ -1,15 +1,6 @@
 class_name Game_ProgressTemplate
 
 
-const SPRITE_TYPE_TAG := preload("res://library/SpriteTypeTag.gd")
-
-const STATE_TO_SPRITE: Dictionary = {
-	Game_ObjectStateTag.UP: SPRITE_TYPE_TAG.UP,
-	Game_ObjectStateTag.DOWN: SPRITE_TYPE_TAG.DOWN,
-	Game_ObjectStateTag.LEFT: SPRITE_TYPE_TAG.LEFT,
-	Game_ObjectStateTag.RIGHT: SPRITE_TYPE_TAG.RIGHT,
-}
-
 var _ref_RandomNumber: Game_RandomNumber
 var _ref_Schedule: Game_Schedule
 var _ref_CreateObject : Game_CreateObject
@@ -23,9 +14,9 @@ var _ref_Palette: Game_Palette
 
 var _spr_Floor := preload("res://sprite/Floor.tscn")
 
-var _new_ConvertCoord := preload("res://library/ConvertCoord.gd").new()
-var _new_CoordCalculator := preload("res://library/CoordCalculator.gd").new()
-var _new_ArrayHelper := preload("res://library/ArrayHelper.gd").new()
+var _new_ConvertCoord := Game_ConvertCoord.new()
+var _new_CoordCalculator := Game_CoordCalculator.new()
+var _new_ArrayHelper := Game_ArrayHelper.new()
 var _new_SpriteTypeTag := Game_SpriteTypeTag.new()
 
 

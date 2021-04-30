@@ -16,7 +16,7 @@ var _ref_CountDown: Game_CountDown
 var _ref_CreateObject : Game_CreateObject
 var _ref_Palette: Game_Palette
 
-var _new_InitWorldData := preload("res://library/InitWorldData.gd").new()
+var _new_InitWorldData := Game_InitWorldData.new()
 
 var _world_tag: String
 var _ai: Game_AITemplate

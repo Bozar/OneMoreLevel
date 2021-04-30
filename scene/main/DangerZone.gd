@@ -2,7 +2,7 @@ extends Node2D
 class_name Game_DangerZone
 
 
-var _new_CoordCalculator := preload("res://library/CoordCalculator.gd").new()
+var _new_CoordCalculator := Game_CoordCalculator.new()
 
 # <x: int, <y: int, state: int>>
 var _coord_to_state: Dictionary = {}

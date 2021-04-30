@@ -1,3 +1,6 @@
+class_name Game_ShadowCastFOV
+
+
 # Recursive Shadow Casting Field of View
 #
 # http://www.roguebasin.com/index.php?title=FOV_using_recursive_shadowcasting

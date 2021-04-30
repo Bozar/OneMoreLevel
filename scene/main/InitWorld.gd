@@ -20,7 +20,7 @@ var _ref_Schedule: Game_Schedule
 
 var _new_WorldTag := Game_WorldTag.new()
 var _new_InitWorldData := Game_InitWorldData.new()
-var _new_ArrayHelper := preload("res://library/ArrayHelper.gd").new()
+var _new_ArrayHelper := Game_ArrayHelper.new()
 
 var _world_tag: String
 var _world_template: Game_WorldTemplate

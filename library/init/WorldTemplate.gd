@@ -7,22 +7,22 @@ class_name Game_WorldTemplate
 const INVALID_COORD: int = -1
 const DEFAULT_MARKER: int = 0
 const OCCUPIED_MARKER: int = 1
-const SPRITE_BLUEPRINT := preload("res://library/init/SpriteBlueprint.gd")
 
 var _spr_Floor := preload("res://sprite/Floor.tscn")
 var _spr_Wall := preload("res://sprite/Wall.tscn")
 var _spr_PC := preload("res://sprite/PC.tscn")
 
-var _new_CoordCalculator := preload("res://library/CoordCalculator.gd").new()
-var _new_ArrayHelper := preload("res://library/ArrayHelper.gd").new()
-
 var _ref_RandomNumber: Game_RandomNumber
 var _ref_DangerZone: Game_DangerZone
+
+var _new_CoordCalculator := Game_CoordCalculator.new()
+var _new_ArrayHelper := Game_ArrayHelper.new()
 
 # {0: [0, ...], 1: [0, ...], ...}
 var _dungeon_with_int: Dictionary = {}
 # [SpriteBlueprint, ...]
 var _blueprint: Array = []
+var _sprite_blueprint := Game_SpriteBlueprint
 
 
 func _init(parent_node: Node2D) -> void:
@@ -75,8 +75,8 @@ func _get_terrain_marker(x: int, y: int) -> int:
 
 func _add_to_blueprint(scene: PackedScene,
 		main_group: String, sub_group: String, x: int, y: int) -> void:
-	_blueprint.push_back(SPRITE_BLUEPRINT.new(
-			scene, main_group, sub_group, x, y))
+	_blueprint.push_back(_sprite_blueprint.new(scene, main_group, sub_group,
+			x, y))
 
 
 func _init_floor(floor_sprite: PackedScene = _spr_Floor) -> void:

@@ -17,7 +17,7 @@ var _ref_GameSetting: Game_GameSetting
 var _ref_Palette: Game_Palette
 
 var _new_WorldTag := Game_WorldTag.new()
-var _new_ConvertCoord := preload("res://library/ConvertCoord.gd").new()
+var _new_ConvertCoord := Game_ConvertCoord.new()
 
 var _node_to_color: Dictionary
 

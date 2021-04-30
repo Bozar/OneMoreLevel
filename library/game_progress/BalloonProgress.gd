@@ -43,7 +43,8 @@ func _set_wind_direction() -> void:
 	_wind_forecast[1] = candidate[0]
 
 	_ref_ObjectData.set_state(pc, _wind_forecast[0])
-	_ref_SwitchSprite.switch_sprite(pc, STATE_TO_SPRITE[_wind_forecast[0]])
+	_ref_SwitchSprite.switch_sprite(pc,
+			Game_ObjectStateTag.STATE_TO_SPRITE[_wind_forecast[0]])
 
 	for x in range(0, 2):
 		ground = _ref_DungeonBoard.get_ground(x, 0)

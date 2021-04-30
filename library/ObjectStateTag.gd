@@ -25,3 +25,10 @@ const OPPOSITE_DIRECTION: Dictionary = {
 	LEFT: RIGHT,
 	RIGHT: LEFT,
 }
+
+const STATE_TO_SPRITE: Dictionary = {
+	UP: Game_SpriteTypeTag.UP,
+	DOWN: Game_SpriteTypeTag.DOWN,
+	LEFT: Game_SpriteTypeTag.LEFT,
+	RIGHT: Game_SpriteTypeTag.RIGHT,
+}

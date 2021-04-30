@@ -7,7 +7,7 @@ signal sprite_created(new_sprite, main_group, sub_group, x, y)
 var _ref_Palette: Game_Palette
 
 var _new_ZIndex := Game_ZIndex.new()
-var _new_ConvertCoord := preload("res://library/ConvertCoord.gd").new()
+var _new_ConvertCoord := Game_ConvertCoord.new()
 
 
 func create_and_fetch(prefab: PackedScene,

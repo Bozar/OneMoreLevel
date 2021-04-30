@@ -1,3 +1,6 @@
+class_name Game_ConvertCoord
+
+
 const START_X: int = 50
 const START_Y: int = 54
 const STEP_X: int = 26

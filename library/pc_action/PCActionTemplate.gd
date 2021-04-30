@@ -4,15 +4,6 @@ class_name Game_PCActionTemplate
 # The child should also implement _init() to pass arguments.
 
 
-const SPRITE_TYPE_TAG := preload("res://library/SpriteTypeTag.gd")
-
-const INPUT_TO_SPRITE: Dictionary = {
-	Game_InputTag.MOVE_UP: SPRITE_TYPE_TAG.UP,
-	Game_InputTag.MOVE_DOWN: SPRITE_TYPE_TAG.DOWN,
-	Game_InputTag.MOVE_LEFT: SPRITE_TYPE_TAG.LEFT,
-	Game_InputTag.MOVE_RIGHT: SPRITE_TYPE_TAG.RIGHT,
-}
-
 var message: String setget set_message, get_message
 var end_turn: bool setget set_end_turn, get_end_turn
 
@@ -28,11 +19,11 @@ var _ref_DangerZone: Game_DangerZone
 var _ref_GameSetting: Game_GameSetting
 var _ref_Palette: Game_Palette
 
-var _new_CoordCalculator := preload("res://library/CoordCalculator.gd").new()
-var _new_ConvertCoord := preload("res://library/ConvertCoord.gd").new()
-var _new_ArrayHelper := preload("res://library/ArrayHelper.gd").new()
-var _new_ShadowCastFOV := preload("res://library/ShadowCastFOV.gd").new()
-var _new_CrossShapedFOV := preload("res://library/CrossShapedFOV.gd").new()
+var _new_CoordCalculator := Game_CoordCalculator.new()
+var _new_ConvertCoord := Game_ConvertCoord.new()
+var _new_ArrayHelper := Game_ArrayHelper.new()
+var _new_ShadowCastFOV := Game_ShadowCastFOV.new()
+var _new_CrossShapedFOV := Game_CrossShapedFOV.new()
 var _new_SpriteTypeTag := Game_SpriteTypeTag.new()
 
 var _source_position: Array

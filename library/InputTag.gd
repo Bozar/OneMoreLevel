@@ -38,3 +38,10 @@ const MOVE_INPUT: Array = [
 	MOVE_UP,
 	MOVE_DOWN,
 ]
+
+const INPUT_TO_SPRITE: Dictionary = {
+	MOVE_UP: Game_SpriteTypeTag.UP,
+	MOVE_DOWN: Game_SpriteTypeTag.DOWN,
+	MOVE_LEFT: Game_SpriteTypeTag.LEFT,
+	MOVE_RIGHT: Game_SpriteTypeTag.RIGHT,
+}

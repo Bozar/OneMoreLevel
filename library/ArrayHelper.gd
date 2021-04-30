@@ -1,3 +1,6 @@
+class_name Game_ArrayHelper
+
+
 const RAND_WARNING: String = "rand_picker(): Rand is not of type Game_RandomNumber."
 const ELEMENT_WARNING: String = "rand_picker(): Pick too many elements."
 

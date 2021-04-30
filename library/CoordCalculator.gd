@@ -1,3 +1,6 @@
+class_name Game_CoordCalculator
+
+
 func get_range(x_source: int, y_source: int, x_target: int, y_target: int) \
 		-> int:
 	var delta_x: int = abs(x_source - x_target) as int

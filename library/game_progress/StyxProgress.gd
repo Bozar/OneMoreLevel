@@ -58,7 +58,8 @@ func _change_water_flow() -> void:
 
 func _rotate_sprite(ground: Sprite, direction: String) -> void:
 	_ref_ObjectData.set_state(ground, direction)
-	_ref_SwitchSprite.switch_sprite(ground, STATE_TO_SPRITE[direction])
+	_ref_SwitchSprite.switch_sprite(ground,
+			Game_ObjectStateTag.STATE_TO_SPRITE[direction])
 
 
 func _filter_change_flow(source: Array, index: int, _opt_arg) -> bool:

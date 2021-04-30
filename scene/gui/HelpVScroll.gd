@@ -8,7 +8,7 @@ const DUNGEON: String = "HelpHBox/Dungeon"
 
 var _ref_Palette: Game_Palette
 
-var _new_InitWorldData := preload("res://library/InitWorldData.gd").new()
+var _new_InitWorldData := Game_InitWorldData.new()
 
 var _help_text: Array
 var _help_index: int

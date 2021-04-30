@@ -1,3 +1,6 @@
+class_name Game_SpriteBlueprint
+
+
 var scene: PackedScene setget set_scene, get_scene
 var main_group: String setget set_main_group, get_main_group
 var sub_group: String setget set_sub_group, get_sub_group
@@ -7,7 +10,6 @@ var y: int setget set_y, get_y
 
 func _init(set_scene: PackedScene, set_main: String, set_sub: String,
 		set_x: int, set_y: int) -> void:
-
 	scene = set_scene
 	main_group = set_main
 	sub_group = set_sub

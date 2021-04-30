@@ -2,9 +2,9 @@ extends Node2D
 class_name Game_DungeonBoard
 
 
-var _new_ConvertCoord := preload("res://library/ConvertCoord.gd").new()
-var _new_CoordCalculator := preload("res://library/CoordCalculator.gd").new()
-var _new_ArrayHelper := preload("res://library/ArrayHelper.gd").new()
+var _new_ConvertCoord := Game_ConvertCoord.new()
+var _new_CoordCalculator := Game_CoordCalculator.new()
+var _new_ArrayHelper := Game_ArrayHelper.new()
 
 # <main_group: String, <column: int, [sprite]>>
 var _sprite_dict: Dictionary

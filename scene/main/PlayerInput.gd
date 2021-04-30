@@ -18,8 +18,8 @@ var _ref_CreateObject: Game_CreateObject
 var _ref_GameSetting: Game_GameSetting
 var _ref_Palette: Game_Palette
 
-var _new_ConvertCoord := preload("res://library/ConvertCoord.gd").new()
-var _new_InitWorldData := preload("res://library/InitWorldData.gd").new()
+var _new_ConvertCoord := Game_ConvertCoord.new()
+var _new_InitWorldData := Game_InitWorldData.new()
 
 var _pc_action: Game_PCActionTemplate
 var _direction: String

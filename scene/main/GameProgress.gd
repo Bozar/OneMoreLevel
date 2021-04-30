@@ -13,8 +13,8 @@ var _ref_DangerZone: Game_DangerZone
 var _ref_EndGame: Game_EndGame
 var _ref_Palette: Game_Palette
 
-var _new_InitWorldData := preload("res://library/InitWorldData.gd").new()
-var _new_ConvertCoord := preload("res://library/ConvertCoord.gd").new()
+var _new_InitWorldData := Game_InitWorldData.new()
+var _new_ConvertCoord := Game_ConvertCoord.new()
 
 var _progress: Game_ProgressTemplate
 var _game_over: bool = false

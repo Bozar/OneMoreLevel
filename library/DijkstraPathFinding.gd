@@ -1,5 +1,8 @@
-var _new_CoordCalculator := preload("res://library/CoordCalculator.gd").new()
-var _new_ArrayHelper := preload("res://library/ArrayHelper.gd").new()
+class_name Game_DijkstraPathFinding
+
+
+var _new_CoordCalculator := Game_CoordCalculator.new()
+var _new_ArrayHelper := Game_ArrayHelper.new()
 
 
 # Find the next step.

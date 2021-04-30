@@ -17,10 +17,10 @@ var _ref_CreateObject : Game_CreateObject
 var _ref_Schedule: Game_Schedule
 var _ref_Palette: Game_Palette
 
-var _new_ConvertCoord := preload("res://library/ConvertCoord.gd").new()
-var _new_CoordCalculator := preload("res://library/CoordCalculator.gd").new()
-var _new_DijkstraPathFinding := preload("res://library/DijkstraPathFinding.gd").new()
-var _new_ArrayHelper := preload("res://library/ArrayHelper.gd").new()
+var _new_ConvertCoord := Game_ConvertCoord.new()
+var _new_CoordCalculator := Game_CoordCalculator.new()
+var _new_DijkstraPathFinding := Game_DijkstraPathFinding.new()
+var _new_ArrayHelper := Game_ArrayHelper.new()
 var _new_SpriteTypeTag := Game_SpriteTypeTag.new()
 
 var _self: Sprite

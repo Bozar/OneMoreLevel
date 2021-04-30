@@ -1,14 +1,12 @@
 extends Game_ProgressTemplate
 
 
-const MIRROR_DATA := preload("res://library/npc_data/MirrorData.gd")
-
 const CRYSTAL_BASE_Y: Array = [
-	MIRROR_DATA.CENTER_Y_1,
-	MIRROR_DATA.CENTER_Y_2,
-	MIRROR_DATA.CENTER_Y_3,
-	MIRROR_DATA.CENTER_Y_4,
-	MIRROR_DATA.CENTER_Y_5,
+	Game_MirrorData.CENTER_Y_1,
+	Game_MirrorData.CENTER_Y_2,
+	Game_MirrorData.CENTER_Y_3,
+	Game_MirrorData.CENTER_Y_4,
+	Game_MirrorData.CENTER_Y_5,
 ]
 
 var _spr_Crystal := preload("res://sprite/Crystal.tscn")
