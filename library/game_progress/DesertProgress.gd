@@ -7,13 +7,11 @@ const RESET_COUNTER: int = -1
 var _spr_WormHead := preload("res://sprite/WormHead.tscn")
 var _spr_Counter := preload("res://sprite/Counter.tscn")
 
-var _new_DesertData := preload("res://library/npc_data/DesertData.gd").new()
-
 var _respawn_counter: Array = []
 
 
 func _init(parent_node: Node2D).(parent_node) -> void:
-	for _i in range(_new_DesertData.MAX_WORM):
+	for _i in range(Game_DesertData.MAX_WORM):
 		_respawn_counter.push_back(-1)
 
 
@@ -28,7 +26,7 @@ func remove_actor(actor: Sprite, _x: int, _y: int) -> void:
 	for i in range(_respawn_counter.size()):
 		if _respawn_counter[i] == RESET_COUNTER:
 			_respawn_counter[i] = _ref_RandomNumber.get_int(
-					_new_DesertData.MIN_COOLDOWN, _new_DesertData.MAX_COOLDOWN)
+					Game_DesertData.MIN_COOLDOWN, Game_DesertData.MAX_COOLDOWN)
 			break
 
 
@@ -53,7 +51,7 @@ func _try_add_new_worm() -> void:
 	for i in range(_respawn_counter.size()):
 		if _respawn_counter[i] == RESET_COUNTER:
 			continue
-		if _respawn_counter[i] == _new_DesertData.MIN_COOLDOWN:
+		if _respawn_counter[i] == Game_DesertData.MIN_COOLDOWN:
 			_create_worm_head(0)
 		_respawn_counter[i] -= 1
 
@@ -66,7 +64,7 @@ func _create_worm_head(retry: int) -> void:
 	x = _ref_RandomNumber.get_x_coord()
 	y = _ref_RandomNumber.get_y_coord()
 	neighbor = _new_CoordCalculator.get_neighbor(x, y,
-			_new_DesertData.WORM_DISTANCE, true)
+			Game_DesertData.WORM_DISTANCE, true)
 
 	for i in neighbor:
 		if _ref_DungeonBoard.has_actor(i[0], i[1]):

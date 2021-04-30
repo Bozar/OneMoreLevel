@@ -7,11 +7,9 @@ const MEMORY_MARKER: int = 1
 var _spr_Treasure := preload("res://sprite/Treasure.tscn")
 var _spr_Portal := preload("res://sprite/Portal.tscn")
 
-var _new_RailgunData := preload("res://library/npc_data/RailgunData.gd").new()
-
 var _counter_sprite: Array = []
-var _kill_count: int = _new_RailgunData.MAX_KILL_COUNT
-var _ammo: int = _new_RailgunData.MAX_AMMO
+var _kill_count: int = Game_RailgunData.MAX_KILL_COUNT
+var _ammo: int = Game_RailgunData.MAX_AMMO
 var _face_direction: Array = [0, -1]
 var _has_found_pillar: bool = false
 var _plillar_position: Array
@@ -51,7 +49,7 @@ func render_fov() -> void:
 			_source_position[0], _source_position[1],
 			_face_direction[0], _face_direction[1],
 			HALF_SIGHT_WIDTH,
-			_new_RailgunData.PC_FRONT_SIGHT, _new_RailgunData.PC_SIDE_SIGHT,
+			Game_RailgunData.PC_FRONT_SIGHT, Game_RailgunData.PC_SIDE_SIGHT,
 			self, "_block_line_of_sight", [])
 
 	for x in range(_new_DungeonSize.MAX_X):
@@ -99,7 +97,7 @@ func attack() -> void:
 		return
 	_ammo -= 1
 	_ammo = max(_ammo, 0) as int
-	_ref_ObjectData.add_hit_point(pc, _new_RailgunData.GUN_SHOT_HP)
+	_ref_ObjectData.add_hit_point(pc, Game_RailgunData.GUN_SHOT_HP)
 	_switch_mode(false, pc)
 
 	while _new_CoordCalculator.is_inside_dungeon(x, y) \
@@ -113,13 +111,13 @@ func attack() -> void:
 		_ref_CreateObject.create(_spr_Treasure,
 				_new_MainGroupTag.TRAP, _new_SubGroupTag.TREASURE, x, y)
 
-		_kill_count -= _new_RailgunData.ONE_KILL
+		_kill_count -= Game_RailgunData.ONE_KILL
 		if _ammo == 0:
-			_kill_count -= _new_RailgunData.ONE_KILL
+			_kill_count -= Game_RailgunData.ONE_KILL
 		if _new_CoordCalculator.is_inside_range(
-				_source_position[0], _source_position[1],
-				x, y, _new_RailgunData.CLOSE_RANGE):
-			_kill_count -= _new_RailgunData.ONE_KILL
+				_source_position[0], _source_position[1], x, y,
+				Game_RailgunData.CLOSE_RANGE):
+			_kill_count -= Game_RailgunData.ONE_KILL
 		_kill_count = max(_kill_count, 0) as int
 		break
 
@@ -148,9 +146,9 @@ func _pc_move() -> void:
 
 
 func _pc_restore() -> void:
-	_ref_CountDown.add_count(_new_RailgunData.RESTORE_TURN)
-	_ammo += _new_RailgunData.RESTORE_AMMO
-	_ammo = min(_ammo, _new_RailgunData.MAX_AMMO) as int
+	_ref_CountDown.add_count(Game_RailgunData.RESTORE_TURN)
+	_ammo += Game_RailgunData.RESTORE_AMMO
+	_ammo = min(_ammo, Game_RailgunData.MAX_AMMO) as int
 
 
 func _is_checkmate() -> bool:
@@ -203,7 +201,7 @@ func _init_skull_pillar() -> void:
 
 func _init_counter() -> void:
 	if _counter_sprite.size() == 0:
-		for x in range(_new_DungeonSize.MAX_X - _new_RailgunData.COUNTER_WIDTH,
+		for x in range(_new_DungeonSize.MAX_X - Game_RailgunData.COUNTER_WIDTH,
 				_new_DungeonSize.MAX_X):
 			_counter_sprite.push_back(_ref_DungeonBoard.get_building(
 					x, _new_DungeonSize.MAX_Y - 1))
@@ -215,12 +213,12 @@ func _render_counter(kill: int) -> void:
 	var counter: Array = []
 	var sprite_type: String
 
-	for _i in range(_new_RailgunData.COUNTER_WIDTH):
-		if kill > _new_RailgunData.COUNTER_DIGIT:
-			counter.push_front(_new_RailgunData.COUNTER_DIGIT)
+	for _i in range(Game_RailgunData.COUNTER_WIDTH):
+		if kill > Game_RailgunData.COUNTER_DIGIT:
+			counter.push_front(Game_RailgunData.COUNTER_DIGIT)
 		else:
 			counter.push_front(kill)
-		kill -= _new_RailgunData.COUNTER_DIGIT
+		kill -= Game_RailgunData.COUNTER_DIGIT
 		kill = max(kill, 0) as int
 
 	for i in range(counter.size()):
@@ -255,7 +253,7 @@ func _try_find_pillar() -> void:
 	_has_found_pillar = _new_CoordCalculator.is_inside_range(
 			_target_position[0], _target_position[1],
 			_plillar_position[0], _plillar_position[1],
-			_new_RailgunData.TOUCH_PILLAR)
+			Game_RailgunData.TOUCH_PILLAR)
 	if _has_found_pillar:
 		pillar = _ref_DungeonBoard.get_building(
 				_plillar_position[0], _plillar_position[1])

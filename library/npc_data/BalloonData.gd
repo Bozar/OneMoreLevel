@@ -1,3 +1,6 @@
+class_name Game_BalloonData
+
+
 const WIND_DURATION: int = 2
 const RENDER_RANGE: int = 3
 

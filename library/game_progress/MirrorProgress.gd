@@ -13,8 +13,6 @@ const CRYSTAL_BASE_Y: Array = [
 
 var _spr_Crystal := preload("res://sprite/Crystal.tscn")
 
-var _new_MirrorData := preload("res://library/npc_data/MirrorData.gd").new()
-
 
 func _init(parent_node: Node2D).(parent_node) -> void:
 	pass
@@ -30,7 +28,7 @@ func remove_trap(_trap: Sprite, x: int, y: int) -> void:
 	_ref_ObjectData.add_hit_point(pc, 1)
 	_ref_DangerZone.set_danger_zone(x, y, false)
 
-	if _ref_ObjectData.get_hit_point(pc) < _new_MirrorData.MAX_CRYSTAL:
+	if _ref_ObjectData.get_hit_point(pc) < Game_MirrorData.MAX_CRYSTAL:
 		_replenish_crystal()
 
 
@@ -49,11 +47,11 @@ func _replenish_crystal() -> void:
 		x = _ref_RandomNumber.get_x_coord()
 		y = _ref_RandomNumber.get_y_coord()
 
-		if _new_CoordCalculator.is_inside_range(
-				x, y, pc_pos[0], pc_pos[1], _new_MirrorData.CRYSTAL_DISTANCE):
+		if _new_CoordCalculator.is_inside_range(x, y, pc_pos[0], pc_pos[1],
+				Game_MirrorData.CRYSTAL_DISTANCE):
 			continue
-		elif _new_CoordCalculator.is_inside_range(
-				x, y, mirror[0], mirror[1], _new_MirrorData.CRYSTAL_DISTANCE):
+		elif _new_CoordCalculator.is_inside_range(x, y, mirror[0], mirror[1],
+				Game_MirrorData.CRYSTAL_DISTANCE):
 			continue
 		elif _ref_DungeonBoard.has_building(x, y):
 			continue

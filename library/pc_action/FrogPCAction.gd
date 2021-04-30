@@ -1,14 +1,12 @@
 extends Game_PCActionTemplate
 
 
-var _new_FrogData := preload("res://library/npc_data/FrogData.gd").new()
-
 var _pass_next_turn: bool
 var _step_counter: int = 0
 
 
 func _init(parent_node: Node2D).(parent_node) -> void:
-	_fov_render_range = _new_FrogData.RENDER_RANGE
+	_fov_render_range = Game_FrogData.RENDER_RANGE
 
 
 func allow_input() -> bool:
@@ -45,7 +43,7 @@ func is_trap() -> bool:
 func move() -> void:
 	if _is_in_swamp(_source_position[0], _source_position[1]):
 		_step_counter += 1
-		if _step_counter >= _new_FrogData.SINK_IN_MUD:
+		if _step_counter >= Game_FrogData.SINK_IN_MUD:
 			_pass_next_turn = true
 			_step_counter = 0
 	.move()
@@ -60,7 +58,7 @@ func attack() -> void:
 	# removed.
 	if _ref_ObjectData.get_hit_point(pc) > 0:
 		_ref_EndGame.player_win()
-	_ref_CountDown.add_count(_new_FrogData.RESTORE_TURN)
+	_ref_CountDown.add_count(Game_FrogData.RESTORE_TURN)
 
 
 func wait() -> void:
@@ -79,7 +77,7 @@ func switch_sprite() -> void:
 	var y: int = _source_position[1]
 
 	if _is_in_swamp(x, y):
-		if _step_counter == _new_FrogData.SINK_IN_MUD - 1:
+		if _step_counter == Game_FrogData.SINK_IN_MUD - 1:
 			_ref_SwitchSprite.switch_sprite(pc, _new_SpriteTypeTag.PASSIVE_1)
 		else:
 			_ref_SwitchSprite.switch_sprite(pc, _new_SpriteTypeTag.PASSIVE)

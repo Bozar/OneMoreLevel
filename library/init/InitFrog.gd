@@ -5,8 +5,6 @@ var _spr_PCFrog := preload("res://sprite/PCFrog.tscn")
 var _spr_Frog := preload("res://sprite/Frog.tscn")
 var _spr_Counter := preload("res://sprite/Counter.tscn")
 
-var _new_FrogData  := preload("res://library/npc_data/FrogData.gd").new()
-
 
 func _init(parent_node: Node2D).(parent_node) -> void:
 	pass
@@ -14,10 +12,10 @@ func _init(parent_node: Node2D).(parent_node) -> void:
 
 func get_blueprint() -> Array:
 	_init_swamp()
-	_init_pc(_new_FrogData.MIN_DISTANCE, INVALID_COORD, INVALID_COORD,
+	_init_pc(Game_FrogData.MIN_DISTANCE, INVALID_COORD, INVALID_COORD,
 			_spr_PCFrog)
 	_init_actor(0, INVALID_COORD, INVALID_COORD,
-			_new_FrogData.MAX_FROG, _spr_Frog, _new_SubGroupTag.FROG)
+			Game_FrogData.MAX_FROG, _spr_Frog, _new_SubGroupTag.FROG)
 
 	return _blueprint
 
@@ -25,7 +23,7 @@ func get_blueprint() -> Array:
 func _init_swamp() -> void:
 	var counter: int = 0
 
-	while counter < _new_FrogData.MAX_LAND:
+	while counter < Game_FrogData.MAX_LAND:
 		counter += _init_path()
 
 	for i in range(_new_DungeonSize.MAX_X):
@@ -55,7 +53,7 @@ func _init_path() -> int:
 		if not _is_occupied(x, y):
 			break
 
-	for _i in range(_new_FrogData.PATH_LENGTH):
+	for _i in range(Game_FrogData.PATH_LENGTH):
 		_occupy_position(x, y)
 		current_length += 1
 

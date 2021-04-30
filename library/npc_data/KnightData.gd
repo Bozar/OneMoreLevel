@@ -1,3 +1,6 @@
+class_name Game_KnightData
+
+
 const MAX_BOSS_HP: int = 2
 
 const RANGE: int = 1

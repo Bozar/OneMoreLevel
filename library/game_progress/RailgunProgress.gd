@@ -5,9 +5,7 @@ const MAX_RETRY: int = 99
 
 var _spr_Devil := preload("res://sprite/Devil.tscn")
 
-var _new_RailgunData := preload("res://library/npc_data/RailgunData.gd").new()
-
-var _alive_npc: int = _new_RailgunData.MAX_NPC
+var _alive_npc: int = Game_RailgunData.MAX_NPC
 
 
 func _init(parent_node: Node2D).(parent_node) -> void:
@@ -15,9 +13,9 @@ func _init(parent_node: Node2D).(parent_node) -> void:
 
 
 func end_world(pc_x: int, pc_y: int) -> void:
-	if _new_RailgunData.MAX_NPC - _alive_npc < _new_RailgunData.TRIGGER_RESPAWN:
+	if Game_RailgunData.MAX_NPC - _alive_npc < Game_RailgunData.TRIGGER_RESPAWN:
 		return
-	for _i in range(_new_RailgunData.TRIGGER_RESPAWN):
+	for _i in range(Game_RailgunData.TRIGGER_RESPAWN):
 		_respawn_npc(pc_x, pc_y)
 
 
@@ -40,11 +38,11 @@ func _respawn_npc(pc_x: int, pc_y: int) -> void:
 		if _ref_DungeonBoard.has_building(x, y):
 			continue
 		elif _new_CoordCalculator.is_inside_range(x, y, pc_x, pc_y,
-				_new_RailgunData.PC_FRONT_SIGHT):
+				Game_RailgunData.PC_FRONT_SIGHT):
 			continue
 		else:
 			neighbor = _new_CoordCalculator.get_neighbor(x, y,
-					_new_RailgunData.NPC_GAP, true)
+					Game_RailgunData.NPC_GAP, true)
 			has_neighbor = false
 			for i in neighbor:
 				if _ref_DungeonBoard.has_actor(i[0], i[1]):

@@ -1,8 +1,6 @@
 extends Game_AITemplate
 
 
-var _new_MirrorData := preload("res://library/npc_data/MirrorData.gd").new()
-
 var _trap_pos: Array
 
 
@@ -24,15 +22,15 @@ func take_action() -> void:
 	distance = _new_CoordCalculator.get_range(_self_pos[0], _self_pos[1],
 			_pc_pos[0], _pc_pos[1])
 
-	if distance > _new_MirrorData.PHANTOM_SIGHT:
+	if distance > Game_MirrorData.PHANTOM_SIGHT:
 		return
-	elif distance == _new_MirrorData.ATTACK_RANGE:
+	elif distance == Game_MirrorData.ATTACK_RANGE:
 		_attack()
 	else:
 		_move()
 
 	_try_remove_trap()
-	if _ref_ObjectData.get_hit_point(pc) == _new_MirrorData.MAX_CRYSTAL:
+	if _ref_ObjectData.get_hit_point(pc) == Game_MirrorData.MAX_CRYSTAL:
 		_ref_EndGame.player_win()
 
 

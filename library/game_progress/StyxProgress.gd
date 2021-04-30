@@ -1,8 +1,6 @@
 extends Game_ProgressTemplate
 
 
-var _new_StyxData := preload("res://library/npc_data/StyxData.gd").new()
-
 var _init_world: bool = true
 
 
@@ -47,7 +45,7 @@ func _change_water_flow() -> void:
 		pos = _new_ConvertCoord.vector_to_array(i.position)
 		x = pos[0]
 		y = pos[1]
-		for _j in range(_new_StyxData.FLOW_LENGTH):
+		for _j in range(Game_StyxData.FLOW_LENGTH):
 			x += _new_ObjectStateTag.DIRECTION_TO_COORD[direction][0]
 			y += _new_ObjectStateTag.DIRECTION_TO_COORD[direction][1]
 			flow = _ref_DungeonBoard.get_ground(x, y)

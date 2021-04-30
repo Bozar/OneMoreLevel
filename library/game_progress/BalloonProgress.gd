@@ -1,8 +1,6 @@
 extends Game_ProgressTemplate
 
 
-var _new_BalloonData := preload("res://library/npc_data/BalloonData.gd").new()
-
 var _wind_duration: int = 0
 var _wind_forecast: Array = []
 
@@ -16,7 +14,7 @@ func renew_world(_pc_x: int, _pc_y: int) -> void:
 
 	if _wind_duration < 1:
 		_set_wind_direction()
-		_wind_duration = _new_BalloonData.WIND_DURATION
+		_wind_duration = Game_BalloonData.WIND_DURATION
 	else:
 		ground = _ref_DungeonBoard.get_ground(0, _wind_duration)
 		_ref_SwitchSprite.switch_sprite(ground, _new_SpriteTypeTag.DEFAULT)

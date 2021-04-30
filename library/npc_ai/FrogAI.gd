@@ -4,8 +4,6 @@ extends Game_AITemplate
 const WAIT_HIT_POINT: int = 1
 const CAST_RAY: Array = [[0, 1], [0, -1], [1, 0], [-1, 0]]
 
-var _new_FrogData := preload("res://library/npc_data/FrogData.gd").new()
-
 
 func _init(parent_node: Node2D).(parent_node) -> void:
 	pass
@@ -24,7 +22,7 @@ func take_action() -> void:
 
 func _reset_hit_point() -> void:
 	var hp: int = _ref_RandomNumber.get_int(
-			_new_FrogData.MIN_WAIT, _new_FrogData.MAX_WAIT)
+			Game_FrogData.MIN_WAIT, Game_FrogData.MAX_WAIT)
 	_ref_ObjectData.set_hit_point(_self, hp)
 
 
@@ -38,14 +36,14 @@ func _can_grapple() -> bool:
 	if _ref_ObjectData.verify_state(pc, _new_ObjectStateTag.PASSIVE):
 		return false
 	elif _new_CoordCalculator.is_inside_range(self_x, self_y, pc_x, pc_y,
-			_new_FrogData.ATTACK_RANGE):
+			Game_FrogData.ATTACK_RANGE):
 		return _path_is_clear()
 	return false
 
 
 func _grapple() -> void:
 	var neighbor: Array = _new_CoordCalculator.get_neighbor(
-			_self_pos[0], _self_pos[1], _new_FrogData.ATTACK_RANGE)
+			_self_pos[0], _self_pos[1], Game_FrogData.ATTACK_RANGE)
 	var pc_move: Array = _new_CoordCalculator.get_neighbor(
 			_pc_pos[0], _pc_pos[1], 1, true)
 
@@ -96,7 +94,7 @@ func _path_is_clear() -> bool:
 		x = _self_pos[0]
 		y = _self_pos[1]
 		counter = 0
-		for _j in range(_new_FrogData.ATTACK_RANGE):
+		for _j in range(Game_FrogData.ATTACK_RANGE):
 			x += i[0]
 			y += i[1]
 			if not _new_CoordCalculator.is_inside_dungeon(x, y):
@@ -144,7 +142,7 @@ func _dup_rand_walk(source: Array, index: int, opt_arg: Array) -> int:
 
 	# If a frog is not too far away from PC, it favors swamp grids.
 	if _new_CoordCalculator.is_inside_range(self_x, self_y, pc_x, pc_y,
-			_new_FrogData.MID_DISTANCE):
+			Game_FrogData.MID_DISTANCE):
 		repeat += swamp
 	# If a frog is far away from PC, it favors grids that are closer to PC,
 	# especially when the grid is swamp.

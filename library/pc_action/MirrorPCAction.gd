@@ -3,13 +3,11 @@ extends Game_PCActionTemplate
 
 var _spr_Phantom := preload("res://sprite/Phantom.tscn")
 
-var _new_MirrorData := preload("res://library/npc_data/MirrorData.gd").new()
-
 var _pc_hit_target: bool
 
 
 func _init(parent_node: Node2D).(parent_node) -> void:
-	_fov_render_range = _new_MirrorData.RENDER_RANGE
+	_fov_render_range = Game_MirrorData.RENDER_RANGE
 
 
 func render_fov() -> void:
@@ -39,9 +37,9 @@ func attack() -> void:
 				_target_position[0], _target_position[1])
 		_create_image_on_the_same_side(
 				_target_position[0], _target_position[1])
-		if _ref_ObjectData.get_hit_point(pc) == _new_MirrorData.MAX_CRYSTAL:
+		if _ref_ObjectData.get_hit_point(pc) == Game_MirrorData.MAX_CRYSTAL:
 			_ref_EndGame.player_win()
-		_ref_CountDown.add_count(_new_MirrorData.RESTORE_TURN)
+		_ref_CountDown.add_count(Game_MirrorData.RESTORE_TURN)
 	else:
 		mirror = _get_mirror(_target_position[0], _target_position[1])
 		_ref_RemoveObject.remove_actor(mirror[0], mirror[1])
@@ -57,7 +55,7 @@ func interact_with_trap() -> void:
 		_ref_RemoveObject.remove_trap(mirror[0], mirror[1])
 
 	_move_pc_and_image()
-	if _ref_ObjectData.get_hit_point(pc) == _new_MirrorData.MAX_CRYSTAL:
+	if _ref_ObjectData.get_hit_point(pc) == Game_MirrorData.MAX_CRYSTAL:
 		_ref_EndGame.player_win()
 	end_turn = true
 
@@ -122,7 +120,7 @@ func _create_image_on_the_other_side(x: int, y: int) -> void:
 	images = _ref_DungeonBoard.get_sprites_by_tag(_new_SubGroupTag.PHANTOM)
 	_new_ArrayHelper.filter_element(images, self, "_filter_create_image",
 			[actor])
-	remove = images.size() + 1 - (_new_MirrorData.MAX_PHANTOM \
+	remove = images.size() + 1 - (Game_MirrorData.MAX_PHANTOM \
 			- _ref_ObjectData.get_hit_point(pc))
 	if remove > 0:
 		_new_ArrayHelper.rand_picker(images, remove, _ref_RandomNumber)

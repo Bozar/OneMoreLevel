@@ -8,8 +8,6 @@ var _spr_WormBody := preload("res://sprite/WormBody.tscn")
 var _spr_WormSpice := preload("res://sprite/WormSpice.tscn")
 var _spr_WormTail := preload("res://sprite/WormTail.tscn")
 
-var _new_DesertData := preload("res://library/npc_data/DesertData.gd").new()
-
 
 func _init(parent_node: Node2D).(parent_node) -> void:
 	pass
@@ -18,8 +16,8 @@ func _init(parent_node: Node2D).(parent_node) -> void:
 func get_blueprint() -> Array:
 	_init_wall()
 	_init_floor()
-	_init_actor(_new_DesertData.WORM_DISTANCE, INVALID_COORD, INVALID_COORD,
-			_new_DesertData.MAX_WORM,
+	_init_actor(Game_DesertData.WORM_DISTANCE, INVALID_COORD, INVALID_COORD,
+			Game_DesertData.MAX_WORM,
 			_spr_WormHead, _new_SubGroupTag.WORM_HEAD)
 	_init_pc(0, INVALID_COORD, INVALID_COORD, _spr_PCDesert)
 

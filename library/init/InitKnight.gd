@@ -18,8 +18,6 @@ var _spr_Knight := preload("res://sprite/Knight.tscn")
 var _spr_KnightCaptain := preload("res://sprite/KnightCaptain.tscn")
 var _spr_Counter := preload("res://sprite/Counter.tscn")
 
-var _new_KnightData := preload("res://library/npc_data/KnightData.gd").new()
-
 var _has_counter: bool = false
 
 
@@ -36,7 +34,7 @@ func get_blueprint() -> Array:
 	_create_actor(_spr_PC, _new_SubGroupTag.PC, MIN_PC_DISTANCE)
 	_create_actor(_spr_KnightCaptain, _new_SubGroupTag.KNIGHT_CAPTAIN,
 			MIN_NPC_DISTANCE)
-	for _i in range(_new_KnightData.MAX_KNIGHT):
+	for _i in range(Game_KnightData.MAX_KNIGHT):
 		_create_actor(_spr_Knight, _new_SubGroupTag.KNIGHT, MIN_NPC_DISTANCE)
 
 	return _blueprint

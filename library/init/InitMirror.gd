@@ -6,8 +6,6 @@ var _spr_CrystalBase := preload("res://sprite/CrystalBase.tscn")
 var _spr_PCMirrorImage := preload("res://sprite/PCMirrorImage.tscn")
 var _spr_Phantom := preload("res://sprite/Phantom.tscn")
 
-var _new_MirrorData := preload("res://library/npc_data/MirrorData.gd").new()
-
 
 func _init(parent_node: Node2D).(parent_node) -> void:
 	pass
@@ -27,11 +25,11 @@ func get_blueprint() -> Array:
 
 func _init_middle_border() -> void:
 	var crystal_base: Array = [
-		_new_MirrorData.CENTER_Y_1,
-		_new_MirrorData.CENTER_Y_2,
-		_new_MirrorData.CENTER_Y_3,
-		_new_MirrorData.CENTER_Y_4,
-		_new_MirrorData.CENTER_Y_5,
+		Game_MirrorData.CENTER_Y_1,
+		Game_MirrorData.CENTER_Y_2,
+		Game_MirrorData.CENTER_Y_3,
+		Game_MirrorData.CENTER_Y_4,
+		Game_MirrorData.CENTER_Y_5,
 	]
 	var new_sprite: PackedScene
 	var sub_group_tag: String
@@ -113,9 +111,9 @@ func _create_pc() -> void:
 	mirror = _new_CoordCalculator.get_mirror_image(pc_x, pc_y,
 			_new_DungeonSize.CENTER_X, pc_y)
 	neighbor = _new_CoordCalculator.get_neighbor(pc_x, pc_y,
-					_new_MirrorData.CRYSTAL_DISTANCE, true) \
+					Game_MirrorData.CRYSTAL_DISTANCE, true) \
 			+ _new_CoordCalculator.get_neighbor(mirror[0], mirror[1],
-					_new_MirrorData.CRYSTAL_DISTANCE, true)
+					Game_MirrorData.CRYSTAL_DISTANCE, true)
 
 	_add_to_blueprint(_spr_PC,
 			_new_MainGroupTag.ACTOR, _new_SubGroupTag.PC,
@@ -152,7 +150,7 @@ func _init_phantom() -> void:
 	var x: int
 	var y: int
 
-	while count_phantom < _new_MirrorData.MAX_PHANTOM:
+	while count_phantom < Game_MirrorData.MAX_PHANTOM:
 		if retry > 999:
 			break
 		retry += 1
@@ -167,8 +165,8 @@ func _init_phantom() -> void:
 
 
 func _create_phantom(x: int, y: int) -> void:
-	var neighbor: Array = _new_CoordCalculator.get_neighbor(
-			x, y, _new_MirrorData.PHANTOM_SIGHT, true)
+	var neighbor: Array = _new_CoordCalculator.get_neighbor(x, y,
+			Game_MirrorData.PHANTOM_SIGHT, true)
 
 	_add_to_blueprint(_spr_Phantom,
 			_new_MainGroupTag.ACTOR, _new_SubGroupTag.PHANTOM, x, y)

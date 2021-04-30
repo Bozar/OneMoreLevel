@@ -3,13 +3,11 @@ extends Game_PCActionTemplate
 
 const MAX_NEIGHBOR: int = 4
 
-var _new_DesertData := preload("res://library/npc_data/DesertData.gd").new()
-
 var _pc_is_number: bool = false
 
 
 func _init(parent_node: Node2D).(parent_node) -> void:
-	_fov_render_range = _new_DesertData.RENDER_RANGE
+	_fov_render_range = Game_DesertData.RENDER_RANGE
 
 
 func switch_sprite() -> void:
@@ -46,16 +44,16 @@ func attack() -> void:
 
 	if is_active_spice:
 		_ref_ObjectData.add_hit_point(pc, 1)
-	if _ref_ObjectData.get_hit_point(pc) < _new_DesertData.MAX_SPICE:
+	if _ref_ObjectData.get_hit_point(pc) < Game_DesertData.MAX_SPICE:
 		end_turn = true
 	else:
 		_ref_EndGame.player_win()
 		end_turn = false
-	_ref_CountDown.add_count(_new_DesertData.RESTORE_TURN)
+	_ref_CountDown.add_count(Game_DesertData.RESTORE_TURN)
 
 
 func interact_with_trap() -> void:
-	_ref_CountDown.add_count(_new_DesertData.RESTORE_TURN)
+	_ref_CountDown.add_count(Game_DesertData.RESTORE_TURN)
 	_remove_building_or_trap()
 
 

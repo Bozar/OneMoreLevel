@@ -5,8 +5,6 @@ var _spr_Lighthouse := preload("res://sprite/Lighthouse.tscn")
 var _spr_Harbor := preload("res://sprite/Harbor.tscn")
 var _spr_Arrow := preload("res://sprite/Arrow.tscn")
 
-var _new_StyxData := preload("res://library/npc_data/StyxData.gd").new()
-
 
 func _init(parent_node: Node2D).(parent_node) -> void:
 	pass
@@ -32,13 +30,13 @@ func _init_building() -> void:
 	_add_to_blueprint(_spr_Lighthouse,
 			_new_MainGroupTag.BUILDING, _new_SubGroupTag.LIGHTHOUSE,
 			lighthouse_x, lighthouse_y)
-	_set_static_area(lighthouse_x, lighthouse_y, _new_StyxData.LIGHTHOUSE)
+	_set_static_area(lighthouse_x, lighthouse_y, Game_StyxData.LIGHTHOUSE)
 
 	for i in harbor:
 		_add_to_blueprint(_spr_Harbor,
 				_new_MainGroupTag.BUILDING, _new_SubGroupTag.HARBOR,
 				i[0], i[1])
-		_set_static_area(i[0], i[1], _new_StyxData.HARBOR)
+		_set_static_area(i[0], i[1], Game_StyxData.HARBOR)
 
 
 func _set_static_area(x: int, y: int, max_range: int) -> void:

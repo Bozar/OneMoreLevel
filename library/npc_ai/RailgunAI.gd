@@ -10,8 +10,6 @@ const DIRECTION_TO_SHIFT: Dictionary = {
 
 var _spr_Treasure := preload("res://sprite/Treasure.tscn")
 
-var _new_RailgunData := preload("res://library/npc_data/RailgunData.gd").new()
-
 
 func _init(parent_node: Node2D).(parent_node) -> void:
 	pass
@@ -25,7 +23,7 @@ func take_action() -> void:
 		_switch_mode(true)
 	elif _detect_pc():
 		# if _new_CoordCalculator.get_range(_self_pos[0], _self_pos[1],
-		# 		_pc_pos[0], _pc_pos[1]) > _new_RailgunData.NPC_SIGHT:
+		# 		_pc_pos[0], _pc_pos[1]) > Game_RailgunData.NPC_SIGHT:
 		# 	_self.modulate = _ref_Palette.DEBUG
 		# 	print("gunshot")
 		_approach_pc()
@@ -87,7 +85,7 @@ func _is_in_close_range() -> bool:
 	if (self_x != pc_x) and (self_y != pc_y):
 		return false
 	elif not _new_CoordCalculator.is_inside_range(self_x, self_y, pc_x, pc_y,
-			_new_RailgunData.PC_SIDE_SIGHT):
+			Game_RailgunData.PC_SIDE_SIGHT):
 		return false
 
 	shift_x = _get_direction(self_x, pc_x)
@@ -133,9 +131,9 @@ func _detect_pc() -> bool:
 	var detect_distance: int
 	var pc: Sprite = _ref_DungeonBoard.get_pc()
 
-	if _ref_ObjectData.get_hit_point(pc) > _new_RailgunData.GUN_SHOT_HP:
-		detect_distance = _new_RailgunData.NPC_EAR_SHOT
+	if _ref_ObjectData.get_hit_point(pc) > Game_RailgunData.GUN_SHOT_HP:
+		detect_distance = Game_RailgunData.NPC_EAR_SHOT
 	else:
-		detect_distance = _new_RailgunData.NPC_SIGHT
+		detect_distance = Game_RailgunData.NPC_SIGHT
 	return _new_CoordCalculator.is_inside_range(_self_pos[0], _self_pos[1],
 			_pc_pos[0], _pc_pos[1], detect_distance)

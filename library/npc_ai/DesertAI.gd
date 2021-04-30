@@ -7,8 +7,6 @@ var _spr_WormTail := preload("res://sprite/WormTail.tscn")
 var _spr_Treasure := preload("res://sprite/Treasure.tscn")
 var _spr_Wall := preload("res://sprite/Wall.tscn")
 
-var _new_DesertData := preload("res://library/npc_data/DesertData.gd").new()
-
 # int: Array[Sprite]
 var _id_to_worm: Dictionary = {}
 # int: bool
@@ -39,13 +37,13 @@ func take_action() -> void:
 		# Move body.
 		_move_body(id)
 	else:
-		_ref_ObjectData.add_hit_point(_self, _new_DesertData.HP_WAIT)
-	_ref_ObjectData.add_hit_point(_self, _new_DesertData.HP_TURN)
+		_ref_ObjectData.add_hit_point(_self, Game_DesertData.HP_WAIT)
+	_ref_ObjectData.add_hit_point(_self, Game_DesertData.HP_TURN)
 
 
 func _init_worm(id: int) -> void:
 	var worm_length: int = _ref_RandomNumber.get_int(
-			_new_DesertData.MIN_LENGTH, _new_DesertData.MAX_LENGTH)
+			Game_DesertData.MIN_LENGTH, Game_DesertData.MAX_LENGTH)
 
 	_id_to_worm[id] = []
 	_id_to_worm[id].resize(worm_length)
@@ -67,8 +65,8 @@ func _create_body(id: int, index: int, x: int, y: int) -> void:
 				_spr_WormTail,
 				_new_MainGroupTag.ACTOR, _new_SubGroupTag.WORM_BODY, x, y)
 	# Create spice.
-	elif (index >= _new_DesertData.SPICE_START) \
-			and (index < _new_DesertData.SPICE_END):
+	elif (index >= Game_DesertData.SPICE_START) \
+			and (index < Game_DesertData.SPICE_END):
 		is_active = (not _id_to_has_active_spice[id]) \
 				and _ref_RandomNumber.get_percent_chance(_quality_spice_chance)
 		_ref_CreateObject.create(_spr_WormSpice,
@@ -154,14 +152,14 @@ func _move_body(id: int) -> void:
 
 func _bury_worm(id: int) -> void:
 	var worm: Array = _id_to_worm[id]
-	var create_spice: int = _new_DesertData.CREATE_SPICE
+	var create_spice: int = Game_DesertData.CREATE_SPICE
 	var pos: Array
 
-	for i in range(_new_DesertData.SPICE_END):
+	for i in range(Game_DesertData.SPICE_END):
 		if worm[i] == null:
 			break
 		if _has_spice(worm[i]) and (not _is_passive_spice(worm[i])):
-			create_spice += _new_DesertData.BONUS_CREATE_SPICE
+			create_spice += Game_DesertData.BONUS_CREATE_SPICE
 
 	for i in worm:
 		if i == null:
@@ -178,7 +176,7 @@ func _bury_worm(id: int) -> void:
 					pos[0], pos[1])
 
 	_clear_worm_data(id)
-	_quality_spice_chance += _new_DesertData.CREATE_QUALITY_SPICE
+	_quality_spice_chance += Game_DesertData.CREATE_QUALITY_SPICE
 
 
 func _can_bury_worm(id: int) -> bool:
@@ -189,8 +187,8 @@ func _can_bury_worm(id: int) -> bool:
 		if i == null:
 			break
 		if _has_spice(i) and _is_passive_spice(i):
-			hit_point -= _new_DesertData.HP_SPICE
-	return hit_point > _new_DesertData.HP_BURY
+			hit_point -= Game_DesertData.HP_SPICE
+	return hit_point > Game_DesertData.HP_BURY
 
 
 func _set_danger_zone(head: Sprite, is_danger: bool) -> void:

@@ -1,8 +1,6 @@
 extends Game_AITemplate
 
 
-var _new_KnightData := preload("res://library/npc_data/KnightData.gd").new()
-
 var _id_to_danger_zone: Dictionary = {}
 var _boss_attack_count: int = 0
 var _hit_to_sprite: Dictionary
@@ -26,7 +24,7 @@ func take_action() -> void:
 	# Default -> Active.
 	elif _new_CoordCalculator.is_inside_range(
 			_pc_pos[0], _pc_pos[1], _self_pos[0], _self_pos[1],
-			_new_KnightData.RANGE):
+			Game_KnightData.RANGE):
 		_alert()
 	# Approach.
 	elif _is_ready_to_move():
@@ -137,7 +135,7 @@ func _get_danger_zone() -> Array:
 func _is_final_boss() -> bool:
 	return _self.is_in_group(_new_SubGroupTag.KNIGHT_BOSS) \
 			and (_ref_ObjectData.get_hit_point(_self)
-					== _new_KnightData.MAX_BOSS_HP)
+					== Game_KnightData.MAX_BOSS_HP)
 
 
 func _can_attack_twice() -> bool:
@@ -145,9 +143,8 @@ func _can_attack_twice() -> bool:
 		return false
 	if _boss_attack_count > 0:
 		return false
-	if not _new_CoordCalculator.is_inside_range(
-			_pc_pos[0], _pc_pos[1], _self_pos[0], _self_pos[1],
-			_new_KnightData.RANGE):
+	if not _new_CoordCalculator.is_inside_range(_pc_pos[0], _pc_pos[1],
+			_self_pos[0], _self_pos[1], Game_KnightData.RANGE):
 		return false
 	return true
 
@@ -181,21 +178,21 @@ func _try_hit_pc(danger_zone: Array) -> void:
 				and _ref_ObjectData.verify_state(victim,
 						_new_ObjectStateTag.PASSIVE):
 			_ref_RemoveObject.remove_actor(i[0], i[1])
-			_ref_CountDown.add_count(_new_KnightData.RESTORE_TURN)
+			_ref_CountDown.add_count(Game_KnightData.RESTORE_TURN)
 
 
 func _is_ready_to_move() -> bool:
 	var sight: int
 
 	if _self.is_in_group(_new_SubGroupTag.KNIGHT):
-		sight = _new_KnightData.SIGHT
+		sight = Game_KnightData.SIGHT
 	else:
-		sight = _new_KnightData.ELITE_SIGHT
+		sight = Game_KnightData.ELITE_SIGHT
 
 	if not _new_CoordCalculator.is_inside_range(
 			_pc_pos[0], _pc_pos[1], _self_pos[0], _self_pos[1], sight):
 		return false
 
-	if _ref_RandomNumber.get_percent_chance(_new_KnightData.WAIT_CHANCE):
+	if _ref_RandomNumber.get_percent_chance(Game_KnightData.WAIT_CHANCE):
 		return false
 	return true

@@ -3,11 +3,9 @@ extends Game_PCActionTemplate
 
 const HALF_WIDTH: int = 1
 
-var _new_KnightData := preload("res://library/npc_data/KnightData.gd").new()
-
 
 func _init(parent_node: Node2D).(parent_node) -> void:
-	_fov_render_range = _new_KnightData.RENDER_RANGE
+	_fov_render_range = Game_KnightData.RENDER_RANGE
 
 
 func attack() -> void:
@@ -27,7 +25,7 @@ func attack() -> void:
 			_hit_boss(npc)
 		else:
 			_hit_knight()
-		_ref_CountDown.add_count(_new_KnightData.RESTORE_TURN)
+		_ref_CountDown.add_count(Game_KnightData.RESTORE_TURN)
 		end_turn = true
 	else:
 		end_turn = false
@@ -79,7 +77,7 @@ func _hit_boss(boss: Sprite) -> void:
 	var teleport_x: int
 	var teleport_y: int
 
-	if _ref_ObjectData.get_hit_point(boss) < _new_KnightData.MAX_BOSS_HP:
+	if _ref_ObjectData.get_hit_point(boss) < Game_KnightData.MAX_BOSS_HP:
 		_ref_ObjectData.add_hit_point(boss, 1)
 
 		while is_occupied or is_too_close:
@@ -89,7 +87,7 @@ func _hit_boss(boss: Sprite) -> void:
 			is_too_close = _new_CoordCalculator.is_inside_range(
 					teleport_x, teleport_y,
 					_source_position[0], _source_position[1],
-					_new_KnightData.ELITE_SIGHT)
+					Game_KnightData.ELITE_SIGHT)
 
 		_ref_DungeonBoard.move_sprite(_new_MainGroupTag.ACTOR,
 				_target_position[0], _target_position[1],

@@ -17,8 +17,6 @@ const INPUT_TO_INT: Dictionary = {
 	INPUT_TAG.MOVE_RIGHT: -2,
 }
 
-var _new_StyxData := preload("res://library/npc_data/StyxData.gd").new()
-
 var _extra_turn_counter: int = 0
 # var _ground_sprite: Array
 
@@ -43,9 +41,9 @@ func render_fov() -> void:
 			ground.visible = true
 			distance = _new_CoordCalculator.get_range(x, y,
 					_source_position[0], _source_position[1])
-			if distance > _new_StyxData.PC_MAX_SIGHT:
+			if distance > Game_StyxData.PC_MAX_SIGHT:
 				ground.visible = false
-			elif distance > _new_StyxData.PC_SIGHT:
+			elif distance > Game_StyxData.PC_SIGHT:
 				_ref_Palette.set_dark_color(ground, _new_MainGroupTag.GROUND)
 			elif distance > 0:
 				_ref_Palette.set_default_color(ground, _new_MainGroupTag.GROUND)
@@ -112,10 +110,10 @@ func _get_ground_direction(x: int, y: int) -> int:
 
 
 func _try_reduce_extra_turn() -> void:
-	if _extra_turn_counter < _new_StyxData.EXTRA_TURN_COUNTER:
+	if _extra_turn_counter < Game_StyxData.EXTRA_TURN_COUNTER:
 		_extra_turn_counter += 1
 	else:
-		_ref_CountDown.subtract_count(_new_StyxData.EXTRA_TURN)
+		_ref_CountDown.subtract_count(Game_StyxData.EXTRA_TURN)
 		_extra_turn_counter = 0
 
 
@@ -123,7 +121,7 @@ func _switch_lighthouse_color() -> void:
 	var lighthouse: Sprite = _ref_DungeonBoard.get_building(
 			_new_DungeonSize.CENTER_X, _new_DungeonSize.CENTER_Y)
 
-	if _extra_turn_counter == _new_StyxData.EXTRA_TURN_COUNTER:
+	if _extra_turn_counter == Game_StyxData.EXTRA_TURN_COUNTER:
 		_ref_Palette.set_dark_color(lighthouse, _new_MainGroupTag.BUILDING)
 	else:
 		_ref_Palette.set_default_color(lighthouse, _new_MainGroupTag.BUILDING)

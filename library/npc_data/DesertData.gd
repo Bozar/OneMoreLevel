@@ -1,3 +1,6 @@
+class_name Game_DesertData
+
+
 const MAX_LENGTH: int = 20
 const MIN_LENGTH: int = 10
 const SPICE_START: int = 2

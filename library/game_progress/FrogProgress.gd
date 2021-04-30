@@ -5,8 +5,6 @@ var _spr_Frog := preload("res://sprite/Frog.tscn")
 var _spr_FrogPrincess := preload("res://sprite/FrogPrincess.tscn")
 var _spr_Counter := preload("res://sprite/Counter.tscn")
 
-var _new_FrogData := preload("res://library/npc_data/FrogData.gd").new()
-
 # wave counter:
 # 0: 8 frogs | when 4 frogs disappear ->
 # 1: princess, submerge land | when princess disappears ->
@@ -30,13 +28,13 @@ func end_world(pc_x: int, pc_y: int) -> void:
 		_refresh_counter()
 
 		if _wave_counter == 1:
-			_submerge_land(_new_FrogData.SUBMERGE_LAND)
+			_submerge_land(Game_FrogData.SUBMERGE_LAND)
 			_remove_frog()
 			_create_princess(pc_x, pc_y)
 		elif _wave_counter == 2:
 			_create_frog(pc_x, pc_y)
 		elif _wave_counter == 3:
-			_submerge_land(_new_FrogData.SUBMERGE_MORE_LAND)
+			_submerge_land(Game_FrogData.SUBMERGE_MORE_LAND)
 			_create_princess(pc_x, pc_y)
 		elif _wave_counter == -3:
 			_create_princess(pc_x, pc_y)
@@ -48,7 +46,7 @@ func remove_actor(actor: Sprite, _x: int, _y: int) -> void:
 
 	if actor.is_in_group(_new_SubGroupTag.FROG):
 		_kill_counter += 1
-		if _kill_counter == _new_FrogData.HALF_FROG:
+		if _kill_counter == Game_FrogData.HALF_FROG:
 			_kill_counter = 0
 			if (_wave_counter == 0) or (_wave_counter == 2) \
 					or (_wave_counter == 3):
@@ -72,11 +70,11 @@ func remove_actor(actor: Sprite, _x: int, _y: int) -> void:
 
 func _create_frog(pc_x: int, pc_y: int) -> void:
 	var neighbor: Array = _new_CoordCalculator.get_neighbor(
-			pc_x, pc_y, _new_FrogData.MAX_DISTANCE)
+			pc_x, pc_y, Game_FrogData.MAX_DISTANCE)
 
 	_new_ArrayHelper.filter_element(neighbor, self, "_filter_create_frog",
 			[pc_x, pc_y])
-	_new_ArrayHelper.rand_picker(neighbor, _new_FrogData.MAX_FROG,
+	_new_ArrayHelper.rand_picker(neighbor, Game_FrogData.MAX_FROG,
 			_ref_RandomNumber)
 
 	for i in neighbor:
@@ -87,7 +85,7 @@ func _create_frog(pc_x: int, pc_y: int) -> void:
 
 func _create_princess(pc_x: int, pc_y: int) -> void:
 	var neighbor: Array = _new_CoordCalculator.get_neighbor(
-			pc_x, pc_y, _new_FrogData.MAX_PRINCESS_DISTANCE)
+			pc_x, pc_y, Game_FrogData.MAX_PRINCESS_DISTANCE)
 
 	_new_ArrayHelper.filter_element(neighbor, self, "_filter_create_frog",
 			[pc_x, pc_y])
@@ -143,7 +141,7 @@ func _filter_create_frog(source: Array, index: int, opt_arg: Array) -> bool:
 	var pc_y: int = opt_arg[1]
 
 	if _new_CoordCalculator.is_inside_range(x, y, pc_x, pc_y,
-			_new_FrogData.MIN_DISTANCE) \
+			Game_FrogData.MIN_DISTANCE) \
 					or _ref_DungeonBoard.has_actor(x, y):
 		return false
 	return true

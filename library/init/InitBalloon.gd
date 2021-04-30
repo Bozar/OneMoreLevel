@@ -5,8 +5,6 @@ var _spr_PCBalloon := preload("res://sprite/PCBalloon.tscn")
 var _spr_WormSpice := preload("res://sprite/WormSpice.tscn")
 var _spr_Arrow := preload("res://sprite/Arrow.tscn")
 
-var _new_BalloonData := preload("res://library/npc_data/BalloonData.gd")
-
 
 func _init(parent_node: Node2D).(parent_node) -> void:
 	pass
@@ -128,7 +126,7 @@ func _init_single_wall(retry: int, count_wall: int) -> void:
 	var x: int
 	var y: int
 
-	if (count_wall > _new_BalloonData.MAX_WALL) or (retry > max_retry):
+	if (count_wall > Game_BalloonData.MAX_WALL) or (retry > max_retry):
 		return
 
 	x = _ref_RandomNumber.get_int(0, _new_DungeonSize.MAX_X - block_size)

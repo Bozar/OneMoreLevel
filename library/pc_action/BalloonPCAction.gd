@@ -10,13 +10,11 @@ const TELEPORT_Y: Dictionary = {
 	DUNGEON_SIZE.MAX_Y: 0,
 }
 
-var _new_BalloonData := preload("res://library/npc_data/BalloonData.gd").new()
-
-var _count_beacon: int = _new_BalloonData.MAX_TRAP
+var _count_beacon: int = Game_BalloonData.MAX_TRAP
 
 
 func _init(parent_node: Node2D).(parent_node) -> void:
-	_fov_render_range = _new_BalloonData.RENDER_RANGE
+	_fov_render_range = Game_BalloonData.RENDER_RANGE
 
 
 func switch_sprite() -> void:
@@ -160,7 +158,7 @@ func _end_turn_or_game(add_count: bool) -> void:
 		if add_count:
 			player_win = false
 		else:
-			player_win = _count_beacon < _new_BalloonData.MAX_REMAINING_TRAP
+			player_win = _count_beacon < Game_BalloonData.MAX_REMAINING_TRAP
 	else:
 		player_win = false
 
@@ -168,5 +166,5 @@ func _end_turn_or_game(add_count: bool) -> void:
 		_ref_EndGame.player_win()
 	else:
 		if add_count:
-			_ref_CountDown.add_count(_new_BalloonData.RESTORE_TURN)
+			_ref_CountDown.add_count(Game_BalloonData.RESTORE_TURN)
 		end_turn = true

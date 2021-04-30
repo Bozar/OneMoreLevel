@@ -1,3 +1,6 @@
+class_name Game_RailgunData
+
+
 const PC_FRONT_SIGHT: int = 6
 const PC_SIDE_SIGHT: int = 4
 const CLOSE_RANGE: int = 1

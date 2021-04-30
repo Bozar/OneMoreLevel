@@ -8,8 +8,6 @@ var _spr_PCRailgun := preload("res://sprite/PCRailgun.tscn")
 var _spr_Devil := preload("res://sprite/Devil.tscn")
 var _spr_Counter := preload("res://sprite/Counter.tscn")
 
-var _new_RailgunData := preload("res://library/npc_data/RailgunData.gd").new()
-
 
 func _init(parent_node: Node2D).(parent_node) -> void:
 	pass
@@ -18,10 +16,10 @@ func _init(parent_node: Node2D).(parent_node) -> void:
 func get_blueprint() -> Array:
 	_init_wall()
 	_init_floor()
-	_init_pc(_new_RailgunData.PC_FRONT_SIGHT, INVALID_COORD, INVALID_COORD,
+	_init_pc(Game_RailgunData.PC_FRONT_SIGHT, INVALID_COORD, INVALID_COORD,
 			_spr_PCRailgun)
-	_init_actor(_new_RailgunData.NPC_GAP, INVALID_COORD, INVALID_COORD,
-			_new_RailgunData.MAX_NPC,
+	_init_actor(Game_RailgunData.NPC_GAP, INVALID_COORD, INVALID_COORD,
+			Game_RailgunData.MAX_NPC,
 			_spr_Devil, _new_SubGroupTag.DEVIL)
 
 	return _blueprint
@@ -104,7 +102,7 @@ func _is_odd(number: int) -> bool:
 
 
 func _is_counter(x: int, y: int) -> bool:
-	return (x >= _new_DungeonSize.MAX_X - _new_RailgunData.COUNTER_WIDTH) \
+	return (x >= _new_DungeonSize.MAX_X - Game_RailgunData.COUNTER_WIDTH) \
 			and (y == _new_DungeonSize.MAX_Y - 1)
 
 
