@@ -80,6 +80,11 @@ _global_script_classes=[ {
 "path": "res://scene/main/DungeonBoard.gd"
 }, {
 "base": "Reference",
+"class": "Game_DungeonPrefab",
+"language": "GDScript",
+"path": "res://library/DungeonPrefab.gd"
+}, {
+"base": "Reference",
 "class": "Game_DungeonSize",
 "language": "GDScript",
 "path": "res://library/DungeonSize.gd"
@@ -329,6 +334,7 @@ _global_script_class_icons={
 "Game_DesertData": "",
 "Game_DijkstraPathFinding": "",
 "Game_DungeonBoard": "",
+"Game_DungeonPrefab": "",
 "Game_DungeonSize": "",
 "Game_EndGame": "",
 "Game_EnemyAI": "",
