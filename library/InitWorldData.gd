@@ -34,21 +34,16 @@ func get_progress(world_tag: String) -> Game_ProgressTemplate:
 func get_help(world_tag: String) -> Array:
 	var world_name: String = _new_WorldTag.get_world_name(world_tag).to_lower()
 	var dungeon: String = HELP_PATH.replace(PLACEHOLDER, world_name)
+	var parse_file: Game_FileParser
+	var result: Array = []
 
-	return [
-		_read_file(dungeon),
-		_read_file(KEY_BINDING_HELP),
-		_read_file(GENERAL_HELP)
-	]
-
-
-func _read_file(file_path: String) -> String:
-	var new_file: File = File.new()
-	var __ = new_file.open(file_path, File.READ)
-	var text: String = new_file.get_as_text()
-	new_file.close()
-
-	return text
+	for i in [dungeon, KEY_BINDING_HELP, GENERAL_HELP]:
+		parse_file = Game_FileIOHelper.read_as_text(i)
+		if parse_file.parse_success:
+			result.push_back(parse_file.output_text)
+		else:
+			result.push_back("")
+	return result
 
 
 func _load_data(file_path: String, world_tag: String):

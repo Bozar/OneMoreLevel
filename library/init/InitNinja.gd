@@ -17,7 +17,7 @@ func get_blueprint() -> Array:
 
 
 func _init_wall() -> void:
-	var new_file: String = _new_DungeonPrefab.get_file_list(
+	var new_file: String = Game_FileIOHelper.get_file_list(
 			_new_DungeonPrefab.RESOURCE_PATH + "ninja")[0]
 	var dungeon_prefab: Dictionary = _new_DungeonPrefab.get_prefab(new_file)
 

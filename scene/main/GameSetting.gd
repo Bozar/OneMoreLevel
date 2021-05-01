@@ -32,23 +32,17 @@ var _json_parse_error: bool
 
 
 func load_setting() -> void:
-# func load_setting(array_helper) -> void:
-	var setting_file: File = File.new()
-	var load_path: String = ""
-	var setting_data: Dictionary
+	var setting_data: Dictionary = {}
 	var __
 	var transfer: Game_TransferData
+	var json_parser: Game_FileParser
 
-	# _new_ArrayHelper = array_helper
 	for i in [SETTING_EXE_PATH, SETTING_RES_PATH]:
-		if setting_file.file_exists(i):
-			load_path = i
+		json_parser = Game_FileIOHelper.read_as_json(i)
+		_json_parse_error = not json_parser.parse_success
+		if json_parser.parse_success:
+			setting_data = json_parser.output_json
 			break
-	if load_path == "":
-		setting_data = {}
-	else:
-		_json_parse_error = not _try_read_file(load_path, setting_file,
-				setting_data)
 
 	_wizard_mode = _set_wizard_mode(setting_data)
 	_rng_seed = _set_rng_seed(setting_data)
@@ -141,10 +135,8 @@ func _set_show_full_map(setting) -> bool:
 
 
 func _set_palette(setting) -> Dictionary:
-	var palette_file: File = File.new()
-	var load_path: String = ""
 	var file_name: String = ""
-	var read_palette: Dictionary = {}
+	var json_parser: Game_FileParser
 
 	if not (setting.has(PALETTE) and (setting[PALETTE] is String)):
 		return {}
@@ -152,32 +144,7 @@ func _set_palette(setting) -> Dictionary:
 	file_name = setting[PALETTE]
 	for i in [PALETTE_EXE_PATH, PALETTE_RES_PATH]:
 		for j in ["", JSON_EXTENSION]:
-			if palette_file.file_exists(i + file_name + j):
-				load_path = i + file_name + j
-				break
-		if load_path != "":
-			break
-	if load_path == "":
-		return {}
-	elif _try_read_file(load_path, palette_file, read_palette):
-		return read_palette
+			json_parser = Game_FileIOHelper.read_as_json(i + file_name + j)
+			if json_parser.parse_success:
+				return json_parser.output_json
 	return {}
-
-
-func _try_read_file(load_path: String, read_this: File,
-			out__get_content: Dictionary) -> bool:
-	var __ = read_this.open(load_path, File.READ)
-	var try_parse: JSONParseResult
-	var save_result: Dictionary
-	var parse_success: bool = false
-
-	out__get_content.clear()
-	try_parse= JSON.parse(read_this.get_as_text())
-	if try_parse.error == OK:
-		parse_success = true
-		save_result = try_parse.get_result()
-		for i in save_result.keys():
-			out__get_content[i] = save_result[i]
-
-	read_this.close()
-	return parse_success

@@ -100,6 +100,16 @@ _global_script_classes=[ {
 "path": "res://scene/main/EnemyAI.gd"
 }, {
 "base": "Reference",
+"class": "Game_FileIOHelper",
+"language": "GDScript",
+"path": "res://library/FileIOHelper.gd"
+}, {
+"base": "Reference",
+"class": "Game_FileParser",
+"language": "GDScript",
+"path": "res://library/FileParser.gd"
+}, {
+"base": "Reference",
 "class": "Game_FrogData",
 "language": "GDScript",
 "path": "res://library/npc_data/FrogData.gd"
@@ -338,6 +348,8 @@ _global_script_class_icons={
 "Game_DungeonSize": "",
 "Game_EndGame": "",
 "Game_EnemyAI": "",
+"Game_FileIOHelper": "",
+"Game_FileParser": "",
 "Game_FrogData": "",
 "Game_GameProgress": "",
 "Game_GameSetting": "",
