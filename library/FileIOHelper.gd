@@ -56,6 +56,6 @@ static func get_file_list(path_to_dir: String) -> Array:
 		file_name = dir.get_next()
 		while file_name != "":
 			if not dir.current_is_dir():
-				file_list.push_back(path_to_dir + "/" + file_name)
+				file_list.push_back(dir.get_current_dir() + "/" + file_name)
 			file_name = dir.get_next()
 	return file_list
