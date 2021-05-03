@@ -4,14 +4,17 @@ extends Game_WorldTemplate
 const PATH_TO_PREFABS: String = "ninja"
 const TORII_CHAR: String = "X"
 const RESPAWN_CHAR: String = "R"
+const PC_CHAR: String = "@"
 const MAX_PREFAB: int = 1
+const MAX_PC: int = 1
 const FLIP_PREFAB: int = 50
 
 var _spr_Portal := preload("res://sprite/Portal.tscn")
 var _spr_Dwarf := preload("res://sprite/Dwarf.tscn")
 
 var _new_DungeonPrefab := Game_DungeonPrefab.new()
-var _respawn_point: Array = []
+var _respawn_position: Array = []
+var _pc_position: Array = []
 
 
 func _init(parent_node: Node2D).(parent_node) -> void:
@@ -20,9 +23,9 @@ func _init(parent_node: Node2D).(parent_node) -> void:
 
 func get_blueprint() -> Array:
 	_init_wall()
-	_init_npc()
+	_create_npc()
 	_init_floor()
-	_init_pc()
+	_create_pc()
 
 	return _blueprint
 
@@ -49,18 +52,26 @@ func _init_wall() -> void:
 					_add_to_blueprint(_spr_Portal, Game_MainGroupTag.BUILDING,
 							Game_SubGroupTag.PILLAR, x, y)
 				RESPAWN_CHAR:
-					_respawn_point.push_back([x, y])
+					_respawn_position.push_back([x, y])
+				PC_CHAR:
+					_pc_position.push_back([x, y])
 
 
-func _init_npc() -> void:
-	_new_ArrayHelper.rand_picker(_respawn_point, _respawn_point.size(),
+func _create_npc() -> void:
+	_new_ArrayHelper.rand_picker(_respawn_position, _respawn_position.size(),
 			_ref_RandomNumber)
-	for i in _respawn_point.size():
+	for i in _respawn_position.size():
 		if i < Game_NinjaData.MAX_NPC:
 			_add_to_blueprint(_spr_Dwarf,
 					Game_MainGroupTag.ACTOR, Game_SubGroupTag.DWARF,
-					_respawn_point[i][0], _respawn_point[i][1])
+					_respawn_position[i][0], _respawn_position[i][1])
 		_add_to_blueprint(_spr_Floor,
 				Game_MainGroupTag.GROUND, Game_SubGroupTag.RESPAWN,
-				_respawn_point[i][0], _respawn_point[i][1])
-		_occupy_position(_respawn_point[i][0], _respawn_point[i][1])
+				_respawn_position[i][0], _respawn_position[i][1])
+		_occupy_position(_respawn_position[i][0], _respawn_position[i][1])
+
+
+func _create_pc() -> void:
+	_new_ArrayHelper.rand_picker(_pc_position, MAX_PC, _ref_RandomNumber)
+	_add_to_blueprint(_spr_PC, Game_MainGroupTag.ACTOR, Game_SubGroupTag.PC,
+			_pc_position[0][0], _pc_position[0][1])
