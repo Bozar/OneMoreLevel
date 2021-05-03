@@ -25,6 +25,7 @@ const PHANTOM: String = "phantom"
 const FLOOR: String = "floor"
 const WALL: String = "wall"
 const PILLAR: String = "pillar"
+const RESPAWN: String = "respawn"
 
 const TREASURE: String = "treasure"
 
@@ -46,3 +47,7 @@ const DEVIL: String = "devil"
 
 const HOUND: String = "hound"
 const HOUND_BOSS: String = "hound_boss"
+
+const NINJA: String = "ninja"
+const BUTTERFLY_NINJA: String = "butterfly_ninja"
+const SHADOW_NINJA: String = "shadow_ninja"
