@@ -2,7 +2,6 @@ extends Game_PCActionTemplate
 
 
 const HALF_SIGHT_WIDTH: int = 1
-const MEMORY_MARKER: int = 1
 
 var _spr_Treasure := preload("res://sprite/Treasure.tscn")
 var _spr_Portal := preload("res://sprite/Portal.tscn")
@@ -266,18 +265,6 @@ func _set_move_hit_point() -> void:
 
 	if _ref_ObjectData.get_hit_point(pc) > 0:
 		_ref_ObjectData.set_hit_point(pc, 0)
-
-
-func _get_sprite_memory(x: int, y: int, main_tag: String, _sub_tag: String) \
-		-> bool:
-	var this_sprite: Sprite = _ref_DungeonBoard.get_sprite(main_tag, x, y)
-	return _ref_ObjectData.get_hit_point(this_sprite) == MEMORY_MARKER
-
-
-func _set_sprite_memory(x: int, y: int, main_tag: String, _sub_tag: String) \
-		-> void:
-	var this_sprite: Sprite = _ref_DungeonBoard.get_sprite(main_tag, x, y)
-	_ref_ObjectData.set_hit_point(this_sprite, MEMORY_MARKER)
 
 
 func _do_not_render_building(x: int, y: int) -> bool:
