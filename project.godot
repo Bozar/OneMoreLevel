@@ -29,6 +29,11 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://library/npc_data/BalloonData.gd"
 }, {
+"base": "Node2D",
+"class": "Game_BoolState",
+"language": "GDScript",
+"path": "res://scene/main/BoolState.gd"
+}, {
 "base": "Reference",
 "class": "Game_ConvertCoord",
 "language": "GDScript",
@@ -334,6 +339,7 @@ _global_script_class_icons={
 "Game_ArrayHelper": "",
 "Game_AutoStart": "",
 "Game_BalloonData": "",
+"Game_BoolState": "",
 "Game_ConvertCoord": "",
 "Game_CoordCalculator": "",
 "Game_CountDown": "",
