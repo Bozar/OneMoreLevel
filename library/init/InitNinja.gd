@@ -25,15 +25,15 @@ func _init(parent_node: Node2D).(parent_node) -> void:
 
 
 func get_blueprint() -> Array:
-	_init_wall()
+	_create_wall()
+	_create_floor()
 	_create_npc()
-	_init_floor()
 	_create_pc()
 
 	return _blueprint
 
 
-func _init_wall() -> void:
+func _create_wall() -> void:
 	var file_list: Array = Game_FileIOHelper.get_file_list(
 			_new_DungeonPrefab.RESOURCE_PATH + PATH_TO_PREFABS)
 	var packed_prefab: Game_DungeonPrefab.PackedPrefab
@@ -60,26 +60,32 @@ func _init_wall() -> void:
 					_pc_position.push_back([x, y])
 
 
+func _create_floor() -> void:
+	for i in _respawn_position:
+		_add_to_blueprint(_spr_Floor,
+				Game_MainGroupTag.GROUND, Game_SubGroupTag.RESPAWN, i[0], i[1])
+		_occupy_position(i[0], i[1])
+	_init_floor()
+
+
 func _create_npc() -> void:
-	_new_ArrayHelper.rand_picker(_respawn_position, _respawn_position.size(),
+	var new_ninja: PackedScene
+	var new_sub_tag: String
+
+	_new_ArrayHelper.rand_picker(_respawn_position, Game_NinjaData.MAX_NPC,
 			_ref_RandomNumber)
 	for i in _respawn_position.size():
 		if i < Game_NinjaData.MAX_SHADOW:
-			_add_to_blueprint(_spr_NinjaShadow,
-					Game_MainGroupTag.ACTOR, Game_SubGroupTag.SHADOW_NINJA,
-					_respawn_position[i][0], _respawn_position[i][1])
+			new_ninja = _spr_NinjaShadow
+			new_sub_tag = Game_SubGroupTag.SHADOW_NINJA
 		elif i < Game_NinjaData.MAX_SHADOW + Game_NinjaData.MAX_BUTTERFLY:
-			_add_to_blueprint(_spr_NinjaButterfly,
-					Game_MainGroupTag.ACTOR, Game_SubGroupTag.BUTTERFLY_NINJA,
-					_respawn_position[i][0], _respawn_position[i][1])
-		elif i < Game_NinjaData.MAX_NPC:
-			_add_to_blueprint(_spr_Ninja,
-					Game_MainGroupTag.ACTOR, Game_SubGroupTag.NINJA,
-					_respawn_position[i][0], _respawn_position[i][1])
-		_add_to_blueprint(_spr_Floor,
-				Game_MainGroupTag.GROUND, Game_SubGroupTag.RESPAWN,
+			new_ninja = _spr_NinjaButterfly
+			new_sub_tag = Game_SubGroupTag.BUTTERFLY_NINJA
+		else:
+			new_ninja = _spr_Ninja
+			new_sub_tag = Game_SubGroupTag.NINJA
+		_add_to_blueprint(new_ninja, Game_MainGroupTag.ACTOR, new_sub_tag,
 				_respawn_position[i][0], _respawn_position[i][1])
-		_occupy_position(_respawn_position[i][0], _respawn_position[i][1])
 
 
 func _create_pc() -> void:
