@@ -1,5 +1,9 @@
 class_name Game_NinjaData
 
 
-const MAX_NPC: int = 10
 const PC_SIGHT: int = 6
+
+const MAX_NPC: int = 10
+const MAX_MINION: int = 4
+const MAX_BUTTERFLY: int = 4
+const MAX_SHADOW: int = 2

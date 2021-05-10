@@ -9,8 +9,11 @@ const MAX_PREFAB: int = 1
 const MAX_PC: int = 1
 const FLIP_PREFAB: int = 50
 
+var _spr_PCNinja := preload("res://sprite/PCNinja.tscn")
 var _spr_Portal := preload("res://sprite/Portal.tscn")
-var _spr_Dwarf := preload("res://sprite/Dwarf.tscn")
+var _spr_Ninja := preload("res://sprite/Ninja.tscn")
+var _spr_NinjaButterfly := preload("res://sprite/NinjaButterfly.tscn")
+var _spr_NinjaShadow := preload("res://sprite/NinjaShadow.tscn")
 
 var _new_DungeonPrefab := Game_DungeonPrefab.new()
 var _respawn_position: Array = []
@@ -61,9 +64,17 @@ func _create_npc() -> void:
 	_new_ArrayHelper.rand_picker(_respawn_position, _respawn_position.size(),
 			_ref_RandomNumber)
 	for i in _respawn_position.size():
-		if i < Game_NinjaData.MAX_NPC:
-			_add_to_blueprint(_spr_Dwarf,
-					Game_MainGroupTag.ACTOR, Game_SubGroupTag.DWARF,
+		if i < Game_NinjaData.MAX_SHADOW:
+			_add_to_blueprint(_spr_NinjaShadow,
+					Game_MainGroupTag.ACTOR, Game_SubGroupTag.SHADOW_NINJA,
+					_respawn_position[i][0], _respawn_position[i][1])
+		elif i < Game_NinjaData.MAX_SHADOW + Game_NinjaData.MAX_BUTTERFLY:
+			_add_to_blueprint(_spr_NinjaButterfly,
+					Game_MainGroupTag.ACTOR, Game_SubGroupTag.BUTTERFLY_NINJA,
+					_respawn_position[i][0], _respawn_position[i][1])
+		elif i < Game_NinjaData.MAX_NPC:
+			_add_to_blueprint(_spr_Ninja,
+					Game_MainGroupTag.ACTOR, Game_SubGroupTag.NINJA,
 					_respawn_position[i][0], _respawn_position[i][1])
 		_add_to_blueprint(_spr_Floor,
 				Game_MainGroupTag.GROUND, Game_SubGroupTag.RESPAWN,
@@ -73,5 +84,6 @@ func _create_npc() -> void:
 
 func _create_pc() -> void:
 	_new_ArrayHelper.rand_picker(_pc_position, MAX_PC, _ref_RandomNumber)
-	_add_to_blueprint(_spr_PC, Game_MainGroupTag.ACTOR, Game_SubGroupTag.PC,
+	_add_to_blueprint(_spr_PCNinja,
+			Game_MainGroupTag.ACTOR, Game_SubGroupTag.PC,
 			_pc_position[0][0], _pc_position[0][1])
