@@ -6,14 +6,10 @@ func _init(parent_node: Node2D).(parent_node) -> void:
 
 
 func take_action() -> void:
-	print_text = ""
-
-	if _pc_is_close():
-		print_text = "Urist McRogueliker is scared!"
+	_reset_butterfly()
 
 
-func _pc_is_close() -> bool:
-	var delta_x: int = abs(_self_pos[0] - _pc_pos[0]) as int
-	var delta_y: int = abs(_self_pos[1] - _pc_pos[1]) as int
-
-	return delta_x + delta_y < 2
+func _reset_butterfly() -> void:
+	if _self.is_in_group(Game_SubGroupTag.BUTTERFLY_NINJA):
+		_ref_ObjectData.set_state(_self, Game_ObjectStateTag.DEFAULT)
+		_ref_SwitchSprite.switch_sprite(_self, Game_SpriteTypeTag.DEFAULT)

@@ -102,9 +102,7 @@ func is_trap() -> bool:
 # This leads to a potential and satisfying situation in which players find that
 # they beat the game in the last turn.
 func move() -> void:
-	_ref_DungeonBoard.move_sprite(Game_MainGroupTag.ACTOR,
-			_source_position[0], _source_position[1],
-			_target_position[0], _target_position[1])
+	_move_pc_sprite()
 	end_turn = true
 
 
@@ -268,3 +266,9 @@ func _set_sprite_memory(x: int, y: int, main_tag: String, _sub_tag: String) \
 		-> void:
 	var this_sprite: Sprite = _ref_DungeonBoard.get_sprite(main_tag, x, y)
 	_ref_ObjectData.set_bool(this_sprite, true)
+
+
+func _move_pc_sprite() -> void:
+	_ref_DungeonBoard.move_sprite(Game_MainGroupTag.ACTOR,
+			_source_position[0], _source_position[1],
+			_target_position[0], _target_position[1])

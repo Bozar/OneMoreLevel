@@ -67,3 +67,4 @@ func _respawn_npc(pc_x: int, pc_y: int) -> void:
 				return
 		_ref_CreateObject.create(new_ninja,
 				Game_MainGroupTag.ACTOR, new_sub_tag, i[0], i[1])
+		_ref_RemoveObject.remove_trap(i[0], i[1])
