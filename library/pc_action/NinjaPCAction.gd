@@ -1,7 +1,15 @@
 extends Game_PCActionTemplate
 
 
+var _is_time_stop: bool = false
+var _count_time_stop: int
+
+
 func _init(parent_node: Node2D).(parent_node) -> void:
+	pass
+
+
+func switch_sprite() -> void:
 	pass
 
 
@@ -27,6 +35,25 @@ func render_fov() -> void:
 							_new_ShadowCastFOV, "is_in_sight")
 
 
+func wait() -> void:
+	if _is_time_stop:
+		_switch_time_stop(false)
+	.wait()
+
+
 func _block_line_of_sight(x: int, y: int, _opt_arg: Array) -> bool:
 	return _ref_DungeonBoard.has_building(x, y) \
 			or _ref_DungeonBoard.has_actor(x, y)
+
+
+func _switch_time_stop(stop_time: bool) -> void:
+	var pc: Sprite = _ref_DungeonBoard.get_pc()
+
+	if stop_time:
+		_count_time_stop = Game_NinjaData.MAX_TIME_STOP
+		_ref_SwitchSprite.switch_sprite(pc,
+				_new_SpriteTypeTag.convert_digit_to_tag(_count_time_stop))
+		_is_time_stop = true
+	else:
+		_ref_SwitchSprite.switch_sprite(pc, Game_SpriteTypeTag.DEFAULT)
+		_is_time_stop = false
