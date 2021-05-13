@@ -5,6 +5,8 @@ var _spr_Treasure := preload("res://sprite/Treasure.tscn")
 
 var _is_time_stop: bool = false
 var _count_time_stop: int = Game_NinjaData.MAX_TIME_STOP
+var _pillar_sprite: Sprite
+var _pillar_position: Array
 
 
 func _init(parent_node: Node2D).(parent_node) -> void:
@@ -36,11 +38,16 @@ func render_fov() -> void:
 					_set_sprite_color(x, y, i, "",
 							_new_ShadowCastFOV, "is_in_sight")
 
+	if (_pillar_sprite != null) and _ref_ObjectData.verify_state(_pillar_sprite,
+			Game_ObjectStateTag.ACTIVE):
+		_ref_Palette.set_default_color(_pillar_sprite,
+				Game_MainGroupTag.BUILDING)
+
 
 func interact_with_trap() -> void:
+	move()
 	_ref_RemoveObject.remove(Game_MainGroupTag.TRAP,
 			_target_position[0], _target_position[1])
-	move()
 
 
 func attack() -> void:
@@ -61,6 +68,8 @@ func attack() -> void:
 
 
 func move() -> void:
+	var has_trap: bool = _ref_DungeonBoard.has_trap(
+			_target_position[0], _target_position[1])
 	var neighbor: Array = _new_CoordCalculator.get_neighbor(
 			_target_position[0], _target_position[1], 1)
 	var push_x: int
@@ -93,9 +102,11 @@ func move() -> void:
 			hit_npc = true
 
 	if _is_time_stop:
-		if not hit_npc:
+		if not (hit_npc or has_trap):
 			_count_time_stop -= 1
 		pause_turn = _count_time_stop > 0
+		if not pause_turn:
+			_try_activate_pillar()
 	else:
 		pause_turn = hit_npc
 
@@ -110,6 +121,7 @@ func move() -> void:
 func wait() -> void:
 	if _is_time_stop:
 		_switch_time_stop(false)
+		_try_activate_pillar()
 	.wait()
 
 
@@ -122,17 +134,23 @@ func _switch_time_stop(stop_time: bool) -> void:
 	var pc: Sprite = _ref_DungeonBoard.get_pc()
 
 	if stop_time:
+		_is_time_stop = true
+		_ref_ObjectData.set_hit_point(pc, Game_NinjaData.NPC_SIGHT)
 		_ref_SwitchSprite.switch_sprite(pc,
 				_new_SpriteTypeTag.convert_digit_to_tag(_count_time_stop))
-		_is_time_stop = true
 	else:
-		_count_time_stop = Game_NinjaData.MAX_TIME_STOP
-		_ref_SwitchSprite.switch_sprite(pc, Game_SpriteTypeTag.DEFAULT)
-		_is_time_stop = false
+		if _ref_DungeonBoard.get_npc().size() == 0:
+			_is_time_stop = true
+			_ref_EndGame.player_win()
+		else:
+			_is_time_stop = false
+			_count_time_stop = Game_NinjaData.MAX_TIME_STOP
+			_ref_SwitchSprite.switch_sprite(pc, Game_SpriteTypeTag.DEFAULT)
 
 
 func _try_hit_npc(hit_x: int, hit_y: int, push_x: int, push_y: int,
 		push_npc: bool) -> bool:
+	var pc: Sprite = _ref_DungeonBoard.get_pc()
 	var npc: Sprite = _ref_DungeonBoard.get_actor(hit_x, hit_y)
 	var trap_x: int
 	var trap_y: int
@@ -143,16 +161,18 @@ func _try_hit_npc(hit_x: int, hit_y: int, push_x: int, push_y: int,
 		return false
 	elif npc.is_in_group(Game_SubGroupTag.BUTTERFLY_NINJA) \
 			and _ref_ObjectData.verify_state(npc, Game_ObjectStateTag.DEFAULT):
-		if not _ref_DungeonBoard.has_building(push_x, push_y):
+		if not (_ref_DungeonBoard.has_building(push_x, push_y) \
+				or _ref_DungeonBoard.has_actor(push_x, push_y)):
 			_ref_DungeonBoard.move_sprite(Game_MainGroupTag.ACTOR, hit_x, hit_y,
 					push_x, push_y)
 			_ref_RemoveObject.remove_trap(push_x, push_y)
 		_ref_ObjectData.set_state(npc, Game_ObjectStateTag.PASSIVE)
 		_ref_SwitchSprite.switch_sprite(npc, Game_SpriteTypeTag.PASSIVE)
-		return true
+		return false
 
 	set_trap = not npc.is_in_group(Game_SubGroupTag.SHADOW_NINJA)
 	_ref_RemoveObject.remove_actor(hit_x, hit_y)
+	_ref_ObjectData.add_hit_point(pc, Game_NinjaData.ADD_NPC_SIGHT)
 	if not set_trap:
 		return true
 
@@ -175,3 +195,23 @@ func _try_hit_npc(hit_x: int, hit_y: int, push_x: int, push_y: int,
 					Game_MainGroupTag.TRAP, Game_SubGroupTag.TREASURE,
 					i[0], i[1])
 	return true
+
+
+func _try_activate_pillar() -> void:
+	var pc: Sprite = _ref_DungeonBoard.get_pc()
+	var pc_pos: Array = _new_ConvertCoord.vector_to_array(pc.position)
+
+	if _pillar_position.size() == 0:
+		_pillar_sprite = _ref_DungeonBoard.get_sprites_by_tag(
+				Game_SubGroupTag.PILLAR)[0]
+		_pillar_position = _new_ConvertCoord.vector_to_array(
+				_pillar_sprite.position)
+
+	if _ref_ObjectData.verify_state(_pillar_sprite, Game_ObjectStateTag.ACTIVE):
+		return
+
+	if _new_CoordCalculator.is_inside_range(pc_pos[0], pc_pos[1],
+			_pillar_position[0], _pillar_position[1], 1):
+		_ref_SwitchSprite.switch_sprite(_pillar_sprite,
+				Game_SpriteTypeTag.ACTIVE)
+		_ref_ObjectData.set_state(_pillar_sprite, Game_ObjectStateTag.ACTIVE)
