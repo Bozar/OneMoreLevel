@@ -4,7 +4,7 @@ extends Game_PCActionTemplate
 var _spr_Treasure := preload("res://sprite/Treasure.tscn")
 
 var _is_time_stop: bool = false
-var _count_time_stop: int = Game_NinjaData.MAX_TIME_STOP
+var _count_time_stop: int
 var _pillar_sprite: Sprite
 var _pillar_position: Array
 
@@ -95,9 +95,6 @@ func move() -> void:
 			push_x = i[0]
 			push_y = i[1] + (i[1] - _source_position[1])
 
-		if not _new_CoordCalculator.is_inside_dungeon(push_x, push_y):
-			push_x = i[0]
-			push_y = i[1]
 		if _try_hit_npc(i[0], i[1], push_x, push_y, true):
 			hit_npc = true
 
@@ -114,7 +111,15 @@ func move() -> void:
 		_source_position[0] = _target_position[0]
 		_source_position[1] = _target_position[1]
 		render_fov()
-	_switch_time_stop(pause_turn)
+		if _is_time_stop:
+			_update_counter()
+		else:
+			_switch_time_stop(true)
+	else:
+		_switch_time_stop(false)
+		if _ref_DungeonBoard.get_npc().size() == 0:
+			_ref_EndGame.player_win()
+			return
 	end_turn = not _is_time_stop
 
 
@@ -122,6 +127,9 @@ func wait() -> void:
 	if _is_time_stop:
 		_switch_time_stop(false)
 		_try_activate_pillar()
+		if _ref_DungeonBoard.get_npc().size() == 0:
+			_ref_EndGame.player_win()
+			return
 	.wait()
 
 
@@ -133,19 +141,21 @@ func _block_line_of_sight(x: int, y: int, _opt_arg: Array) -> bool:
 func _switch_time_stop(stop_time: bool) -> void:
 	var pc: Sprite = _ref_DungeonBoard.get_pc()
 
+	_is_time_stop = stop_time
 	if stop_time:
-		_is_time_stop = true
-		_ref_ObjectData.set_hit_point(pc, Game_NinjaData.NPC_SIGHT)
-		_ref_SwitchSprite.switch_sprite(pc,
-				_new_SpriteTypeTag.convert_digit_to_tag(_count_time_stop))
+		_ref_ObjectData.set_hit_point(pc, 0)
+		_count_time_stop = Game_NinjaData.MAX_TIME_STOP
+		_update_counter()
 	else:
-		if _ref_DungeonBoard.get_npc().size() == 0:
-			_is_time_stop = true
-			_ref_EndGame.player_win()
-		else:
-			_is_time_stop = false
-			_count_time_stop = Game_NinjaData.MAX_TIME_STOP
-			_ref_SwitchSprite.switch_sprite(pc, Game_SpriteTypeTag.DEFAULT)
+		_ref_SwitchSprite.switch_sprite(pc, Game_SpriteTypeTag.DEFAULT)
+
+
+func _update_counter() -> void:
+	var pc: Sprite = _ref_DungeonBoard.get_pc()
+	var sprite_type: String = _new_SpriteTypeTag.convert_digit_to_tag(
+			_count_time_stop)
+
+	_ref_SwitchSprite.switch_sprite(pc, sprite_type)
 
 
 func _try_hit_npc(hit_x: int, hit_y: int, push_x: int, push_y: int,
@@ -161,8 +171,7 @@ func _try_hit_npc(hit_x: int, hit_y: int, push_x: int, push_y: int,
 		return false
 	elif npc.is_in_group(Game_SubGroupTag.BUTTERFLY_NINJA) \
 			and _ref_ObjectData.verify_state(npc, Game_ObjectStateTag.DEFAULT):
-		if not (_ref_DungeonBoard.has_building(push_x, push_y) \
-				or _ref_DungeonBoard.has_actor(push_x, push_y)):
+		if _can_push_target(push_x, push_y):
 			_ref_DungeonBoard.move_sprite(Game_MainGroupTag.ACTOR, hit_x, hit_y,
 					push_x, push_y)
 			_ref_RemoveObject.remove_trap(push_x, push_y)
@@ -172,11 +181,11 @@ func _try_hit_npc(hit_x: int, hit_y: int, push_x: int, push_y: int,
 
 	set_trap = not npc.is_in_group(Game_SubGroupTag.SHADOW_NINJA)
 	_ref_RemoveObject.remove_actor(hit_x, hit_y)
-	_ref_ObjectData.add_hit_point(pc, Game_NinjaData.ADD_NPC_SIGHT)
+	_ref_ObjectData.add_hit_point(pc, 1)
 	if not set_trap:
 		return true
 
-	if push_npc and (not _ref_DungeonBoard.has_building(push_x, push_y)):
+	if push_npc and _can_push_target(push_x, push_y):
 		trap_x = push_x
 		trap_y = push_y
 	else:
@@ -195,6 +204,13 @@ func _try_hit_npc(hit_x: int, hit_y: int, push_x: int, push_y: int,
 					Game_MainGroupTag.TRAP, Game_SubGroupTag.TREASURE,
 					i[0], i[1])
 	return true
+
+
+func _can_push_target(x: int, y: int) -> bool:
+	if _new_CoordCalculator.is_inside_dungeon(x, y):
+		return not (_ref_DungeonBoard.has_building(x, y) \
+				or _ref_DungeonBoard.has_actor(x, y))
+	return false
 
 
 func _try_activate_pillar() -> void:
