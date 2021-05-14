@@ -48,7 +48,7 @@ func _is_checkmate() -> bool:
 	var y: int = _source_position[1]
 	var neighbor: Array = _new_CoordCalculator.get_neighbor(x, y, 1)
 	var actor: Sprite
-	var mirror: Array
+	var mirror: Game_CoordCalculator.MirrorCoord
 
 	if not _ref_DangerZone.is_in_danger(x, y):
 		return false
@@ -61,8 +61,8 @@ func _is_checkmate() -> bool:
 			if _ref_ObjectData.verify_state(actor, Game_ObjectStateTag.ACTIVE):
 				mirror = _new_CoordCalculator.get_mirror_image(
 						x, y, i[0], i[1])
-				if (mirror.size() >= 2) \
-						and (not _is_occupied(mirror[0], mirror[1])):
+				if mirror.coord_in_dungeon \
+						and (not _is_occupied(mirror.x, mirror.y)):
 					return false
 	return true
 

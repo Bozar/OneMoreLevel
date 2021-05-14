@@ -166,16 +166,19 @@ func _block_line_of_sight(x: int, y: int, _opt_arg: Array) -> bool:
 func _get_hit_position(hit_diagonally: bool) -> Array:
 	var shift_x: int = _target_position[0] - _source_position[0]
 	var shift_y: int = _target_position[1] - _source_position[1]
+	var mirror: Game_CoordCalculator.MirrorCoord
 
 	if hit_diagonally:
 		if shift_x * shift_y > 0:
-			return _new_CoordCalculator.get_mirror_image(
+			mirror = _new_CoordCalculator.get_mirror_image(
 					_source_position[0], _source_position[1],
-					_source_position[0], _target_position[1], true)
+					_source_position[0], _target_position[1])
+			return [mirror.x, mirror.y]
 		else:
-			return _new_CoordCalculator.get_mirror_image(
+			mirror = _new_CoordCalculator.get_mirror_image(
 					_source_position[0], _source_position[1],
-					_target_position[0], _source_position[1], true)
+					_target_position[0], _source_position[1])
+			return [mirror.x, mirror.y]
 	else:
 		if shift_y != 0:
 			shift_y = -shift_y

@@ -51,15 +51,17 @@ func interact_with_trap() -> void:
 
 
 func attack() -> void:
-	var push: Array = _new_CoordCalculator.get_mirror_image(
+	var mirror : = _new_CoordCalculator.get_mirror_image(
 			_source_position[0], _source_position[1],
 			_target_position[0], _target_position[1])
 	var __
 
-	if push.size() == 0:
-		push = _target_position
-	__ = _try_hit_npc(_target_position[0], _target_position[1],
-			push[0], push[1], false)
+	if mirror.coord_in_dungeon:
+		__ = _try_hit_npc(_target_position[0], _target_position[1],
+				mirror.x, mirror.y, false)
+	else:
+		__ = _try_hit_npc(_target_position[0], _target_position[1],
+				_target_position[0], _target_position[1], false)
 
 	if not _is_time_stop:
 		_switch_time_stop(true)

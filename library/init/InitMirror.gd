@@ -85,9 +85,9 @@ func _init_wall() -> void:
 
 
 func _create_reflection(x: int, y: int) -> void:
-	var mirror: Array = _new_CoordCalculator.get_mirror_image(x, y,
+	var mirror := _new_CoordCalculator.get_mirror_image(x, y,
 			Game_DungeonSize.CENTER_X, y)
-	_create_mirror(mirror[0], mirror[1])
+	_create_mirror(mirror.x, mirror.y)
 
 
 func _create_mirror(x: int, y: int) -> void:
@@ -99,7 +99,7 @@ func _create_mirror(x: int, y: int) -> void:
 func _create_pc() -> void:
 	var pc_x: int
 	var pc_y: int
-	var mirror: Array
+	var mirror: Game_CoordCalculator.MirrorCoord
 	var neighbor: Array
 
 	while true:
@@ -112,7 +112,7 @@ func _create_pc() -> void:
 			Game_DungeonSize.CENTER_X, pc_y)
 	neighbor = _new_CoordCalculator.get_neighbor(pc_x, pc_y,
 					Game_MirrorData.CRYSTAL_DISTANCE, true) \
-			+ _new_CoordCalculator.get_neighbor(mirror[0], mirror[1],
+			+ _new_CoordCalculator.get_neighbor(mirror.x, mirror.y,
 					Game_MirrorData.CRYSTAL_DISTANCE, true)
 
 	_add_to_blueprint(_spr_PC,
@@ -120,7 +120,7 @@ func _create_pc() -> void:
 			pc_x, pc_y)
 	_add_to_blueprint(_spr_PCMirrorImage,
 			Game_MainGroupTag.ACTOR, Game_SubGroupTag.PC_MIRROR_IMAGE,
-			mirror[0], mirror[1])
+			mirror.x, mirror.y)
 
 	for i in neighbor:
 		_occupy_position(i[0], i[1])

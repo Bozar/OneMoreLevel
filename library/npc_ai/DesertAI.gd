@@ -92,15 +92,15 @@ func _try_random_walk(id: int) -> bool:
 	var neighbor: Array = _new_CoordCalculator.get_neighbor(x, y, 1)
 	var candidate: Array = []
 	var neck: Array
-	var mirror: Array
+	var mirror: Game_CoordCalculator.MirrorCoord
 	var move_to: Array
 	var pc: Sprite = _ref_DungeonBoard.get_pc()
 
 	if _id_to_worm[id][1] != null:
 		neck = _new_ConvertCoord.vector_to_array(_id_to_worm[id][1].position)
 		mirror = _new_CoordCalculator.get_mirror_image(neck[0], neck[1], x, y)
-		if mirror.size() > 0:
-			neighbor.push_back(mirror)
+		if mirror.coord_in_dungeon:
+			neighbor.push_back([mirror.x, mirror.y])
 
 	for i in neighbor:
 		if _ref_DungeonBoard.has_actor(i[0], i[1]) \

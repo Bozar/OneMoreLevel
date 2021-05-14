@@ -1,6 +1,45 @@
 class_name Game_CoordCalculator
 
 
+class MirrorCoord:
+
+
+	var coord_in_dungeon: bool setget set_coord_in_dungeon, \
+			get_coord_in_dungeon
+	var x: int setget set_x, get_x
+	var y: int setget set_y, get_y
+
+
+	func _init(__coord_in_dungeon: bool, __x: int, __y: int) -> void:
+		coord_in_dungeon = __coord_in_dungeon
+		x = __x
+		y = __y
+
+
+	func get_coord_in_dungeon() -> bool:
+		return coord_in_dungeon
+
+
+	func set_coord_in_dungeon(__) -> void:
+		pass
+
+
+	func get_x() -> int:
+		return x
+
+
+	func set_x(__) -> void:
+		pass
+
+
+	func get_y() -> int:
+		return y
+
+
+	func set_y(__) -> void:
+		pass
+
+
 func get_range(x_source: int, y_source: int, x_target: int, y_target: int) \
 		-> int:
 	var delta_x: int = abs(x_source - x_target) as int
@@ -44,13 +83,11 @@ func get_block(x_top_left: int, y_top_left: int, width: int, height: int) \
 
 
 func get_mirror_image(source_x: int, source_y: int,
-		center_x: int, center_y: int, force_output: bool = false) -> Array:
-	var target_x: int = center_x * 2 - source_x
-	var target_y: int = center_y * 2 - source_y
+		center_x: int, center_y: int) -> MirrorCoord:
+	var x: int = center_x * 2 - source_x
+	var y: int = center_y * 2 - source_y
 
-	if force_output or is_inside_dungeon(target_x, target_y):
-		return [target_x, target_y]
-	return []
+	return MirrorCoord.new(is_inside_dungeon(x, y), x, y)
 
 
 func is_inside_dungeon(x: int, y: int) -> bool:

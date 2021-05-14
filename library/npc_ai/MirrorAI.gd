@@ -53,7 +53,7 @@ func _move() -> void:
 
 
 func _switch_pc_and_image() -> void:
-	var mirror: Array = _new_CoordCalculator.get_mirror_image(
+	var mirror := _new_CoordCalculator.get_mirror_image(
 			_pc_pos[0], _pc_pos[1], Game_DungeonSize.CENTER_X, _pc_pos[1])
 	var pc: Sprite = _ref_DungeonBoard.get_pc()
 
@@ -62,8 +62,7 @@ func _switch_pc_and_image() -> void:
 		_trap_pos = _pc_pos
 
 	_ref_DungeonBoard.swap_sprite(Game_MainGroupTag.ACTOR,
-			_pc_pos[0], _pc_pos[1],
-			mirror[0], mirror[1])
+			_pc_pos[0], _pc_pos[1], mirror.x, mirror.y)
 
 
 func _set_npc_state() -> void:

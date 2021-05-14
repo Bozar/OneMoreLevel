@@ -74,7 +74,8 @@ func move() -> void:
 func set_target_position(direction: String) -> void:
 	_wind_blow()
 	.set_target_position(direction)
-	_target_position = _try_move_over_border(_target_position)
+	_target_position = _try_move_over_border(
+			_target_position[0], _target_position[1])
 
 
 func _wind_blow() -> void:
@@ -87,7 +88,7 @@ func _wind_blow() -> void:
 		_source_position[1] + wind_direction[1]
 	]
 
-	new_position = _try_move_over_border(new_position)
+	new_position = _try_move_over_border(new_position[0], new_position[1])
 	if _ref_DungeonBoard.has_building(new_position[0], new_position[1]):
 		_bounce_off(_source_position[0], _source_position[1],
 				new_position[0], new_position[1])
@@ -98,10 +99,7 @@ func _wind_blow() -> void:
 	_source_position = _new_ConvertCoord.vector_to_array(pc.position)
 
 
-func _try_move_over_border(position: Array) -> Array:
-	var x: int = position[0]
-	var y: int = position[1]
-
+func _try_move_over_border(x: int, y: int) -> Array:
 	if TELEPORT_X.has(x):
 		x = TELEPORT_X[x]
 	if TELEPORT_Y.has(y):
@@ -125,9 +123,9 @@ func _reach_destination(x: int, y: int) -> bool:
 
 
 func _bounce_off(pc_x: int, pc_y: int, wall_x: int, wall_y: int) -> void:
-	var new_position: Array = _new_CoordCalculator.get_mirror_image(
-			wall_x, wall_y, pc_x, pc_y, true)
-	new_position = _try_move_over_border(new_position)
+	var mirror := _new_CoordCalculator.get_mirror_image(wall_x, wall_y,
+			pc_x, pc_y)
+	var new_position: Array = _try_move_over_border(mirror.x, mirror.y)
 
 	if not _ref_DungeonBoard.has_building(new_position[0], new_position[1]):
 		_ref_DungeonBoard.move_sprite(Game_MainGroupTag.ACTOR, pc_x, pc_y,

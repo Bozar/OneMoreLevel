@@ -75,8 +75,9 @@ func _is_checkmate() -> bool:
 
 
 func _get_mirror(x: int, y: int) -> Array:
-	return _new_CoordCalculator.get_mirror_image(x, y,
+	var mirror := _new_CoordCalculator.get_mirror_image(x, y,
 			Game_DungeonSize.CENTER_X, y)
+	return [mirror.x, mirror.y]
 
 
 func _target_is_occupied(main_group_tag: String) -> bool:
@@ -131,7 +132,7 @@ func _create_image_on_the_other_side(x: int, y: int) -> void:
 
 func _create_image_on_the_same_side(x: int, y: int) -> void:
 	var wall: Array = []
-	var mirror: Array
+	var mirror: Game_CoordCalculator.MirrorCoord
 	var actor: Sprite
 
 	# Cast a ray to the top.
@@ -146,29 +147,28 @@ func _create_image_on_the_same_side(x: int, y: int) -> void:
 	for i in wall:
 		# Continue if the image is outside the dungeon.
 		mirror = _new_CoordCalculator.get_mirror_image(x, y, i[0], i[1])
-		if mirror.size() == 0:
+		if not mirror.coord_in_dungeon:
 			continue
 
 		# Continue if there is a building blocks the image.
-		if _ref_DungeonBoard.has_building(mirror[0], mirror[1]):
+		if _ref_DungeonBoard.has_building(mirror.x, mirror.y):
 			continue
 		# Continue if there is an actor blocks the image.
-		elif _ref_DungeonBoard.has_actor(mirror[0], mirror[1]):
+		elif _ref_DungeonBoard.has_actor(mirror.x, mirror.y):
 			continue
 		# Continue if the phantom and its image are on different sides.
 		elif ((x - Game_DungeonSize.CENTER_X) \
-				* (mirror[0] - Game_DungeonSize.CENTER_X)) < 0:
+				* (mirror.x - Game_DungeonSize.CENTER_X)) < 0:
 			continue
 
 		# Create a new actor.
-		_ref_CreateObject.create(
-				_spr_Phantom,
+		_ref_CreateObject.create(_spr_Phantom,
 				Game_MainGroupTag.ACTOR, Game_SubGroupTag.PHANTOM,
-				mirror[0], mirror[1])
+				mirror.x, mirror.y)
 
 		# Switch the actor's sprite to active.
-		if _ref_DungeonBoard.has_trap(mirror[0], mirror[1]):
-			actor = _ref_DungeonBoard.get_actor(mirror[0], mirror[1])
+		if _ref_DungeonBoard.has_trap(mirror.x, mirror.y):
+			actor = _ref_DungeonBoard.get_actor(mirror.x, mirror.y)
 			_ref_SwitchSprite.switch_sprite(actor, Game_SpriteTypeTag.ACTIVE)
 
 
