@@ -202,16 +202,13 @@ func _try_hit_npc(hit_x: int, hit_y: int, push_x: int, push_y: int,
 		trap_y = hit_y
 
 	neighbor = _new_CoordCalculator.get_neighbor(trap_x, trap_y, 1, true)
+	_new_ArrayHelper.filter_element(neighbor, self, "_can_set_trap", [])
+	if neighbor.size() > Game_NinjaData.MAX_TRAP:
+		_new_ArrayHelper.rand_picker(neighbor, Game_NinjaData.MAX_TRAP,
+				_ref_RandomNumber)
 	for i in neighbor:
-		set_trap = true
-		for j in Game_MainGroupTag.ABOVE_GROUND_OBJECT:
-			if _ref_DungeonBoard.has_sprite(j, i[0], i[1]):
-				set_trap = false
-				break
-		if set_trap:
-			_ref_CreateObject.create(_spr_Treasure,
-					Game_MainGroupTag.TRAP, Game_SubGroupTag.TREASURE,
-					i[0], i[1])
+		_ref_CreateObject.create(_spr_Treasure,
+				Game_MainGroupTag.TRAP, Game_SubGroupTag.TREASURE, i[0], i[1])
 	return true
 
 
@@ -220,6 +217,16 @@ func _can_push_target(x: int, y: int) -> bool:
 		return not (_ref_DungeonBoard.has_building(x, y) \
 				or _ref_DungeonBoard.has_actor(x, y))
 	return false
+
+
+func _can_set_trap(source: Array, index: int, _opt_arg: Array) -> bool:
+	var x: int = source[index][0]
+	var y: int = source[index][1]
+
+	for i in Game_MainGroupTag.ABOVE_GROUND_OBJECT:
+		if _ref_DungeonBoard.has_sprite(i, x, y):
+			return false
+	return true
 
 
 func _try_activate_torii() -> void:

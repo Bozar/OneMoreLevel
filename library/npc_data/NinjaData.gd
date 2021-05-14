@@ -13,3 +13,4 @@ const NPC_SIGHT: int = 6
 const ADD_NPC_SIGHT: int = 2
 const ATTACK_RANGE: int = 1
 const MOVE_DISTANCE: int = 2
+const MAX_TRAP: int = 3
