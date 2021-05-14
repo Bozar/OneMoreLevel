@@ -20,7 +20,11 @@ func _init(parent_node: Node2D).(parent_node) -> void:
 
 
 func switch_sprite() -> void:
-	pass
+	if _torii_position.size() == 0:
+		_torii_sprite = _ref_DungeonBoard.get_sprites_by_tag(
+				Game_SubGroupTag.PILLAR)[0]
+		_torii_position = _new_ConvertCoord.vector_to_array(
+				_torii_sprite.position)
 
 
 func render_fov() -> void:
@@ -44,6 +48,7 @@ func render_fov() -> void:
 					_set_sprite_color(x, y, i, "",
 							_new_ShadowCastFOV, "is_in_sight")
 
+	_torii_sprite.visible = true
 	if _torii_is_active():
 		_ref_Palette.set_default_color(_torii_sprite,
 				Game_MainGroupTag.BUILDING)
@@ -203,9 +208,6 @@ func _try_hit_npc(hit_x: int, hit_y: int, push_x: int, push_y: int,
 
 	neighbor = _new_CoordCalculator.get_neighbor(trap_x, trap_y, 1, true)
 	_new_ArrayHelper.filter_element(neighbor, self, "_can_set_trap", [])
-	if neighbor.size() > Game_NinjaData.MAX_TRAP:
-		_new_ArrayHelper.rand_picker(neighbor, Game_NinjaData.MAX_TRAP,
-				_ref_RandomNumber)
 	for i in neighbor:
 		_ref_CreateObject.create(_spr_Treasure,
 				Game_MainGroupTag.TRAP, Game_SubGroupTag.TREASURE, i[0], i[1])
@@ -232,12 +234,6 @@ func _can_set_trap(source: Array, index: int, _opt_arg: Array) -> bool:
 func _try_activate_torii() -> void:
 	var pc: Sprite = _ref_DungeonBoard.get_pc()
 	var pc_pos: Array = _new_ConvertCoord.vector_to_array(pc.position)
-
-	if _torii_position.size() == 0:
-		_torii_sprite = _ref_DungeonBoard.get_sprites_by_tag(
-				Game_SubGroupTag.PILLAR)[0]
-		_torii_position = _new_ConvertCoord.vector_to_array(
-				_torii_sprite.position)
 
 	if _torii_is_active():
 		return
