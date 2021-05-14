@@ -10,7 +10,7 @@ const MAX_PC: int = 1
 const FLIP_PREFAB: int = 50
 
 var _spr_PCNinja := preload("res://sprite/PCNinja.tscn")
-var _spr_Portal := preload("res://sprite/Portal.tscn")
+var _spr_Torii := preload("res://sprite/Torii.tscn")
 var _spr_Ninja := preload("res://sprite/Ninja.tscn")
 var _spr_NinjaButterfly := preload("res://sprite/NinjaButterfly.tscn")
 var _spr_NinjaShadow := preload("res://sprite/NinjaShadow.tscn")
@@ -52,7 +52,7 @@ func _create_wall() -> void:
 							Game_SubGroupTag.WALL, x, y)
 				TORII_CHAR:
 					_occupy_position(x, y)
-					_add_to_blueprint(_spr_Portal, Game_MainGroupTag.BUILDING,
+					_add_to_blueprint(_spr_Torii, Game_MainGroupTag.BUILDING,
 							Game_SubGroupTag.PILLAR, x, y)
 				RESPAWN_CHAR:
 					_respawn_position.push_back([x, y])

@@ -5,12 +5,18 @@ var _spr_Treasure := preload("res://sprite/Treasure.tscn")
 
 var _is_time_stop: bool = false
 var _count_time_stop: int
-var _pillar_sprite: Sprite
-var _pillar_position: Array
+var _torii_sprite: Sprite
+var _torii_position: Array
 
 
 func _init(parent_node: Node2D).(parent_node) -> void:
 	pass
+
+
+func game_over(win: bool) -> void:
+	.game_over(win)
+	if win:
+		_update_counter()
 
 
 func switch_sprite() -> void:
@@ -38,9 +44,8 @@ func render_fov() -> void:
 					_set_sprite_color(x, y, i, "",
 							_new_ShadowCastFOV, "is_in_sight")
 
-	if (_pillar_sprite != null) and _ref_ObjectData.verify_state(_pillar_sprite,
-			Game_ObjectStateTag.ACTIVE):
-		_ref_Palette.set_default_color(_pillar_sprite,
+	if _torii_is_active():
+		_ref_Palette.set_default_color(_torii_sprite,
 				Game_MainGroupTag.BUILDING)
 
 
@@ -106,7 +111,7 @@ func move() -> void:
 			_count_time_stop -= 1
 		pause_turn = _count_time_stop > 0
 		if not pause_turn:
-			_try_activate_pillar()
+			_try_activate_torii()
 	else:
 		pause_turn = hit_npc
 
@@ -129,7 +134,7 @@ func move() -> void:
 func wait() -> void:
 	if _is_time_stop:
 		_switch_time_stop(false)
-		_try_activate_pillar()
+		_try_activate_torii()
 		if _ref_DungeonBoard.get_npc().size() == 0:
 			_ref_EndGame.player_win()
 			return
@@ -217,21 +222,26 @@ func _can_push_target(x: int, y: int) -> bool:
 	return false
 
 
-func _try_activate_pillar() -> void:
+func _try_activate_torii() -> void:
 	var pc: Sprite = _ref_DungeonBoard.get_pc()
 	var pc_pos: Array = _new_ConvertCoord.vector_to_array(pc.position)
 
-	if _pillar_position.size() == 0:
-		_pillar_sprite = _ref_DungeonBoard.get_sprites_by_tag(
+	if _torii_position.size() == 0:
+		_torii_sprite = _ref_DungeonBoard.get_sprites_by_tag(
 				Game_SubGroupTag.PILLAR)[0]
-		_pillar_position = _new_ConvertCoord.vector_to_array(
-				_pillar_sprite.position)
+		_torii_position = _new_ConvertCoord.vector_to_array(
+				_torii_sprite.position)
 
-	if _ref_ObjectData.verify_state(_pillar_sprite, Game_ObjectStateTag.ACTIVE):
+	if _torii_is_active():
 		return
 
 	if _new_CoordCalculator.is_inside_range(pc_pos[0], pc_pos[1],
-			_pillar_position[0], _pillar_position[1], 1):
-		_ref_SwitchSprite.switch_sprite(_pillar_sprite,
+			_torii_position[0], _torii_position[1], 1):
+		_ref_SwitchSprite.switch_sprite(_torii_sprite,
 				Game_SpriteTypeTag.ACTIVE)
-		_ref_ObjectData.set_state(_pillar_sprite, Game_ObjectStateTag.ACTIVE)
+		_ref_ObjectData.set_state(_torii_sprite, Game_ObjectStateTag.ACTIVE)
+
+
+func _torii_is_active() -> bool:
+	return (_torii_sprite != null) and _ref_ObjectData.verify_state(
+			_torii_sprite, Game_ObjectStateTag.ACTIVE)
