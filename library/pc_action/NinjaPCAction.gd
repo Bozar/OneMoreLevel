@@ -13,10 +13,10 @@ func _init(parent_node: Node2D).(parent_node) -> void:
 	pass
 
 
-func game_over(win: bool) -> void:
-	.game_over(win)
-	if win:
-		_update_counter()
+# func game_over(win: bool) -> void:
+# 	.game_over(win)
+# 	if win:
+# 		_update_counter()
 
 
 func switch_sprite() -> void:
