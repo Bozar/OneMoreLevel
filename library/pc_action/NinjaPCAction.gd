@@ -13,10 +13,11 @@ func _init(parent_node: Node2D).(parent_node) -> void:
 	pass
 
 
-# func game_over(win: bool) -> void:
-# 	.game_over(win)
-# 	if win:
-# 		_update_counter()
+func game_over(win: bool) -> void:
+	.game_over(win)
+	if win and _torii_is_active():
+		_ref_SwitchSprite.switch_sprite(_torii_sprite,
+				_new_SpriteTypeTag.convert_digit_to_tag(_count_time_stop))
 
 
 func switch_sprite() -> void:
