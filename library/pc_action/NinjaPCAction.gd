@@ -54,19 +54,20 @@ func attack() -> void:
 	var mirror : = _new_CoordCalculator.get_mirror_image(
 			_source_position[0], _source_position[1],
 			_target_position[0], _target_position[1])
-	var __
+	var pause_turn: bool
 
 	if mirror.coord_in_dungeon:
-		__ = _try_hit_npc(_target_position[0], _target_position[1],
+		pause_turn = _try_hit_npc(_target_position[0], _target_position[1],
 				mirror.x, mirror.y, false)
 	else:
-		__ = _try_hit_npc(_target_position[0], _target_position[1],
+		pause_turn = _try_hit_npc(_target_position[0], _target_position[1],
 				_target_position[0], _target_position[1], false)
 
-	if not _is_time_stop:
+	if pause_turn and (not _is_time_stop):
 		_switch_time_stop(true)
-	render_fov()
-	end_turn = false
+	if _is_time_stop:
+		render_fov()
+	end_turn = not _is_time_stop
 
 
 func move() -> void:
@@ -173,13 +174,14 @@ func _try_hit_npc(hit_x: int, hit_y: int, push_x: int, push_y: int,
 		return false
 	elif npc.is_in_group(Game_SubGroupTag.BUTTERFLY_NINJA) \
 			and _ref_ObjectData.verify_state(npc, Game_ObjectStateTag.DEFAULT):
+		_ref_ObjectData.set_state(npc, Game_ObjectStateTag.PASSIVE)
+		_ref_SwitchSprite.switch_sprite(npc, Game_SpriteTypeTag.PASSIVE)
 		if _can_push_target(push_x, push_y):
 			_ref_DungeonBoard.move_sprite(Game_MainGroupTag.ACTOR, hit_x, hit_y,
 					push_x, push_y)
 			_ref_RemoveObject.remove_trap(push_x, push_y)
-		_ref_ObjectData.set_state(npc, Game_ObjectStateTag.PASSIVE)
-		_ref_SwitchSprite.switch_sprite(npc, Game_SpriteTypeTag.PASSIVE)
-		return false
+			return false
+		return true
 
 	set_trap = not npc.is_in_group(Game_SubGroupTag.SHADOW_NINJA)
 	_ref_RemoveObject.remove_actor(hit_x, hit_y)
