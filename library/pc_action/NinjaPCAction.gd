@@ -176,9 +176,6 @@ func _try_hit_npc(hit_x: int, hit_y: int, push_x: int, push_y: int,
 		push_npc: bool) -> bool:
 	var pc: Sprite = _ref_DungeonBoard.get_pc()
 	var npc: Sprite = _ref_DungeonBoard.get_actor(hit_x, hit_y)
-	var trap_x: int
-	var trap_y: int
-	var neighbor: Array
 	var set_trap: bool
 
 	if npc == null:
@@ -197,21 +194,16 @@ func _try_hit_npc(hit_x: int, hit_y: int, push_x: int, push_y: int,
 	set_trap = not npc.is_in_group(Game_SubGroupTag.SHADOW_NINJA)
 	_ref_RemoveObject.remove_actor(hit_x, hit_y)
 	_ref_ObjectData.add_hit_point(pc, 1)
+
 	if not set_trap:
 		return true
-
-	if push_npc and _can_push_target(push_x, push_y):
-		trap_x = push_x
-		trap_y = push_y
-	else:
-		trap_x = hit_x
-		trap_y = hit_y
-
-	neighbor = _new_CoordCalculator.get_neighbor(trap_x, trap_y, 1, true)
-	_new_ArrayHelper.filter_element(neighbor, self, "_can_set_trap", [])
-	for i in neighbor:
+	_ref_CreateObject.create(_spr_Treasure,
+			Game_MainGroupTag.TRAP, Game_SubGroupTag.TREASURE, hit_x, hit_y)
+	if push_npc and _can_push_target(push_x, push_y) \
+			and (not _ref_DungeonBoard.has_trap(push_x, push_y)):
 		_ref_CreateObject.create(_spr_Treasure,
-				Game_MainGroupTag.TRAP, Game_SubGroupTag.TREASURE, i[0], i[1])
+				Game_MainGroupTag.TRAP, Game_SubGroupTag.TREASURE,
+				push_x, push_y)
 	return true
 
 
@@ -220,16 +212,6 @@ func _can_push_target(x: int, y: int) -> bool:
 		return not (_ref_DungeonBoard.has_building(x, y) \
 				or _ref_DungeonBoard.has_actor(x, y))
 	return false
-
-
-func _can_set_trap(source: Array, index: int, _opt_arg: Array) -> bool:
-	var x: int = source[index][0]
-	var y: int = source[index][1]
-
-	for i in Game_MainGroupTag.ABOVE_GROUND_OBJECT:
-		if _ref_DungeonBoard.has_sprite(i, x, y):
-			return false
-	return true
 
 
 func _try_activate_torii() -> void:
