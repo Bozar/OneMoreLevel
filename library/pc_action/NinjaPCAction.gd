@@ -1,7 +1,7 @@
 extends Game_PCActionTemplate
 
 
-var _spr_Treasure := preload("res://sprite/Treasure.tscn")
+var _spr_SoulFragment := preload("res://sprite/SoulFragment.tscn")
 
 var _is_time_stop: bool = false
 var _count_time_stop: int
@@ -177,10 +177,10 @@ func _try_hit_npc(hit_x: int, hit_y: int, push_x: int, push_y: int,
 		neighbor = [[hit_x, hit_y]]
 	for i in neighbor:
 		if _ref_DungeonBoard.has_actor(i[0], i[1]) \
-				or _ref_DungeonBoard.has_building(i[0], i[1]) \
-				or _ref_DungeonBoard.has_trap(i[0], i[1]):
+				or _ref_DungeonBoard.has_building(i[0], i[1]):
 			continue
-		_ref_CreateObject.create(_spr_Treasure,
+		_ref_RemoveObject.remove_trap(i[0], i[1])
+		_ref_CreateObject.create(_spr_SoulFragment,
 				Game_MainGroupTag.TRAP, Game_SubGroupTag.TREASURE, i[0], i[1])
 
 	return true
