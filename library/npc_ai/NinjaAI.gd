@@ -10,7 +10,8 @@ func take_action() -> void:
 	var pc_hp: int
 	var npc_sight: int = Game_NinjaData.NPC_SIGHT
 
-	_reset_butterfly()
+	_ref_ObjectData.set_state(_self, Game_ObjectStateTag.DEFAULT)
+	_ref_SwitchSprite.switch_sprite(_self, Game_SpriteTypeTag.DEFAULT)
 
 	if _new_CoordCalculator.is_inside_range(_self_pos[0], _self_pos[1],
 			_pc_pos[0], _pc_pos[1], Game_NinjaData.ATTACK_RANGE):
@@ -21,22 +22,4 @@ func take_action() -> void:
 		npc_sight += Game_NinjaData.ADD_NPC_SIGHT * pc_hp
 		if _new_CoordCalculator.is_inside_range(_self_pos[0], _self_pos[1],
 				_pc_pos[0], _pc_pos[1], npc_sight):
-			_approach_pc([_pc_pos], Game_NinjaData.MOVE_DISTANCE)
-			_ref_RemoveObject.remove(Game_MainGroupTag.TRAP,
-					_target_pos[0], _target_pos[1])
-			_shadow_syphon(_target_pos[0], _target_pos[1])
-
-
-func _reset_butterfly() -> void:
-	if _self.is_in_group(Game_SubGroupTag.BUTTERFLY_NINJA):
-		_ref_ObjectData.set_state(_self, Game_ObjectStateTag.DEFAULT)
-		_ref_SwitchSprite.switch_sprite(_self, Game_SpriteTypeTag.DEFAULT)
-
-
-func _shadow_syphon(center_x: int, center_y: int) -> void:
-	var neighbor: Array
-
-	if _self.is_in_group(Game_SubGroupTag.SHADOW_NINJA):
-		neighbor = _new_CoordCalculator.get_neighbor(center_x, center_y, 1)
-		for i in neighbor:
-			_ref_RemoveObject.remove_trap(i[0], i[1])
+			_approach_pc()

@@ -2,22 +2,13 @@ extends Game_WorldTemplate
 
 
 const PATH_TO_PREFABS: String = "ninja"
-const TORII_CHAR: String = "X"
-const RESPAWN_CHAR: String = "R"
-const PC_CHAR: String = "@"
 const MAX_PREFAB: int = 1
-const MAX_PC: int = 1
 const FLIP_PREFAB: int = 50
 
 var _spr_PCNinja := preload("res://sprite/PCNinja.tscn")
-var _spr_Torii := preload("res://sprite/Torii.tscn")
 var _spr_Ninja := preload("res://sprite/Ninja.tscn")
-var _spr_NinjaButterfly := preload("res://sprite/NinjaButterfly.tscn")
-var _spr_NinjaShadow := preload("res://sprite/NinjaShadow.tscn")
 
 var _new_DungeonPrefab := Game_DungeonPrefab.new()
-var _respawn_position: Array = []
-var _pc_position: Array = []
 
 
 func _init(parent_node: Node2D).(parent_node) -> void:
@@ -26,9 +17,8 @@ func _init(parent_node: Node2D).(parent_node) -> void:
 
 func get_blueprint() -> Array:
 	_create_wall()
-	_create_floor()
-	_create_npc()
-	_create_pc()
+	_init_floor()
+	_create_actor()
 
 	return _blueprint
 
@@ -50,46 +40,43 @@ func _create_wall() -> void:
 					_occupy_position(x, y)
 					_add_to_blueprint(_spr_Wall, Game_MainGroupTag.BUILDING,
 							Game_SubGroupTag.WALL, x, y)
-				TORII_CHAR:
-					_occupy_position(x, y)
-					_add_to_blueprint(_spr_Torii, Game_MainGroupTag.BUILDING,
-							Game_SubGroupTag.PILLAR, x, y)
-				RESPAWN_CHAR:
-					_respawn_position.push_back([x, y])
-				PC_CHAR:
-					_pc_position.push_back([x, y])
 
 
-func _create_floor() -> void:
-	for i in _respawn_position:
-		_add_to_blueprint(_spr_Floor,
-				Game_MainGroupTag.GROUND, Game_SubGroupTag.RESPAWN, i[0], i[1])
-		_occupy_position(i[0], i[1])
-	_init_floor()
+func _create_actor() -> void:
+	var x: int = INVALID_COORD
+	var y: int = INVALID_COORD
+	var npc_position: Array = []
 
+	while true:
+		x = _ref_RandomNumber.get_x_coord()
+		y = _ref_RandomNumber.get_y_coord()
+		if (not _new_CoordCalculator.is_inside_dungeon(x, y)) \
+				or _is_occupied(x, y):
+			continue
 
-func _create_npc() -> void:
-	var new_ninja: PackedScene
-	var new_sub_tag: String
+		npc_position = _new_CoordCalculator.get_neighbor(x, y,
+				Game_NinjaData.MAX_DISTANCE_TO_PC)
+		_new_ArrayHelper.filter_element(npc_position, self,
+				"_not_too_close_to_pc", [x, y])
+		if npc_position.size() > Game_NinjaData.MAX_NPC:
+			break
 
-	_new_ArrayHelper.rand_picker(_respawn_position, Game_NinjaData.MAX_NPC,
-			_ref_RandomNumber)
-	for i in _respawn_position.size():
-		if i < Game_NinjaData.MAX_SHADOW:
-			new_ninja = _spr_NinjaShadow
-			new_sub_tag = Game_SubGroupTag.SHADOW_NINJA
-		elif i < Game_NinjaData.MAX_SHADOW + Game_NinjaData.MAX_BUTTERFLY:
-			new_ninja = _spr_NinjaButterfly
-			new_sub_tag = Game_SubGroupTag.BUTTERFLY_NINJA
-		else:
-			new_ninja = _spr_Ninja
-			new_sub_tag = Game_SubGroupTag.NINJA
-		_add_to_blueprint(new_ninja, Game_MainGroupTag.ACTOR, new_sub_tag,
-				_respawn_position[i][0], _respawn_position[i][1])
-
-
-func _create_pc() -> void:
-	_new_ArrayHelper.rand_picker(_pc_position, MAX_PC, _ref_RandomNumber)
 	_add_to_blueprint(_spr_PCNinja,
-			Game_MainGroupTag.ACTOR, Game_SubGroupTag.PC,
-			_pc_position[0][0], _pc_position[0][1])
+			Game_MainGroupTag.ACTOR, Game_SubGroupTag.PC, x, y)
+
+	_new_ArrayHelper.rand_picker(npc_position, Game_NinjaData.MAX_NPC,
+			_ref_RandomNumber)
+	for i in npc_position:
+		_add_to_blueprint(_spr_Ninja, Game_MainGroupTag.ACTOR,
+				Game_SubGroupTag.NINJA, i[0], i[1])
+
+
+func _not_too_close_to_pc(source: Array, index: int, opt_arg: Array) -> bool:
+	var x: int = source[index][0]
+	var y: int = source[index][1]
+	var pc_x: int = opt_arg[0]
+	var pc_y: int = opt_arg[1]
+
+	return not (_is_occupied(x, y) \
+			or _new_CoordCalculator.is_inside_range(x, y, pc_x, pc_y,
+					Game_NinjaData.MIN_DISTANCE_TO_PC))

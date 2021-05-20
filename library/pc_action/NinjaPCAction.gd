@@ -5,30 +5,19 @@ var _spr_Treasure := preload("res://sprite/Treasure.tscn")
 
 var _is_time_stop: bool = false
 var _count_time_stop: int
-var _torii_sprite: Sprite
-var _torii_position: Array
 
 
 func _init(parent_node: Node2D).(parent_node) -> void:
 	pass
 
 
-# func game_over(win: bool) -> void:
-# 	.game_over(win)
-# 	if win and _torii_is_active():
-# 		_ref_SwitchSprite.switch_sprite(_torii_sprite,
-# 				_new_SpriteTypeTag.convert_digit_to_tag(_count_time_stop))
-
-
 func switch_sprite() -> void:
-	if _torii_position.size() == 0:
-		_torii_sprite = _ref_DungeonBoard.get_sprites_by_tag(
-				Game_SubGroupTag.PILLAR)[0]
-		_torii_position = _new_ConvertCoord.vector_to_array(
-				_torii_sprite.position)
+	pass
 
 
 func render_fov() -> void:
+	_show_or_hide_trap()
+
 	if _ref_GameSetting.get_show_full_map():
 		_render_without_fog_of_war()
 		return
@@ -49,16 +38,9 @@ func render_fov() -> void:
 					_set_sprite_color(x, y, i, "",
 							_new_ShadowCastFOV, "is_in_sight")
 
-	_torii_sprite.visible = true
-	if _torii_is_active():
-		_ref_Palette.set_default_color(_torii_sprite,
-				Game_MainGroupTag.BUILDING)
-
 
 func interact_with_trap() -> void:
 	move()
-	_ref_RemoveObject.remove(Game_MainGroupTag.TRAP,
-			_target_position[0], _target_position[1])
 
 
 func attack() -> void:
@@ -116,8 +98,6 @@ func move() -> void:
 		if not (hit_npc or has_trap):
 			_count_time_stop -= 1
 		pause_turn = _count_time_stop > 0
-		if not pause_turn:
-			_try_activate_torii()
 	else:
 		pause_turn = hit_npc
 
@@ -140,7 +120,6 @@ func move() -> void:
 func wait() -> void:
 	if _is_time_stop:
 		_switch_time_stop(false)
-		_try_activate_torii()
 		if _ref_DungeonBoard.get_npc().size() == 0:
 			_ref_EndGame.player_win()
 			return
@@ -176,34 +155,34 @@ func _try_hit_npc(hit_x: int, hit_y: int, push_x: int, push_y: int,
 		push_npc: bool) -> bool:
 	var pc: Sprite = _ref_DungeonBoard.get_pc()
 	var npc: Sprite = _ref_DungeonBoard.get_actor(hit_x, hit_y)
-	var set_trap: bool
+	var neighbor: Array
 
 	if npc == null:
 		return false
-	elif npc.is_in_group(Game_SubGroupTag.BUTTERFLY_NINJA) \
-			and _ref_ObjectData.verify_state(npc, Game_ObjectStateTag.DEFAULT):
+	elif _ref_ObjectData.verify_state(npc, Game_ObjectStateTag.DEFAULT):
 		_ref_ObjectData.set_state(npc, Game_ObjectStateTag.PASSIVE)
 		_ref_SwitchSprite.switch_sprite(npc, Game_SpriteTypeTag.PASSIVE)
 		if _can_push_target(push_x, push_y):
 			_ref_DungeonBoard.move_sprite(Game_MainGroupTag.ACTOR, hit_x, hit_y,
 					push_x, push_y)
-			_ref_RemoveObject.remove_trap(push_x, push_y)
 			return false
 		return true
 
-	set_trap = not npc.is_in_group(Game_SubGroupTag.SHADOW_NINJA)
 	_ref_RemoveObject.remove_actor(hit_x, hit_y)
 	_ref_ObjectData.add_hit_point(pc, 1)
 
-	if not set_trap:
-		return true
-	_ref_CreateObject.create(_spr_Treasure,
-			Game_MainGroupTag.TRAP, Game_SubGroupTag.TREASURE, hit_x, hit_y)
-	if push_npc and _can_push_target(push_x, push_y) \
-			and (not _ref_DungeonBoard.has_trap(push_x, push_y)):
+	if push_npc and _can_push_target(push_x, push_y):
+		neighbor = _new_CoordCalculator.get_neighbor(push_x, push_y, 1, true)
+	else:
+		neighbor = [[hit_x, hit_y]]
+	for i in neighbor:
+		if _ref_DungeonBoard.has_actor(i[0], i[1]) \
+				or _ref_DungeonBoard.has_building(i[0], i[1]) \
+				or _ref_DungeonBoard.has_trap(i[0], i[1]):
+			continue
 		_ref_CreateObject.create(_spr_Treasure,
-				Game_MainGroupTag.TRAP, Game_SubGroupTag.TREASURE,
-				push_x, push_y)
+				Game_MainGroupTag.TRAP, Game_SubGroupTag.TREASURE, i[0], i[1])
+
 	return true
 
 
@@ -214,20 +193,11 @@ func _can_push_target(x: int, y: int) -> bool:
 	return false
 
 
-func _try_activate_torii() -> void:
-	var pc: Sprite = _ref_DungeonBoard.get_pc()
-	var pc_pos: Array = _new_ConvertCoord.vector_to_array(pc.position)
+func _show_or_hide_trap() -> void:
+	var find_traps: Array = _ref_DungeonBoard.get_sprites_by_tag(
+			Game_MainGroupTag.TRAP)
+	var pos: Array
 
-	if _torii_is_active():
-		return
-
-	if _new_CoordCalculator.is_inside_range(pc_pos[0], pc_pos[1],
-			_torii_position[0], _torii_position[1], 1):
-		_ref_SwitchSprite.switch_sprite(_torii_sprite,
-				Game_SpriteTypeTag.ACTIVE)
-		_ref_ObjectData.set_state(_torii_sprite, Game_ObjectStateTag.ACTIVE)
-
-
-func _torii_is_active() -> bool:
-	return (_torii_sprite != null) and _ref_ObjectData.verify_state(
-			_torii_sprite, Game_ObjectStateTag.ACTIVE)
+	for i in find_traps:
+		pos = _new_ConvertCoord.vector_to_array(i.position)
+		i.visible = not _ref_DungeonBoard.has_actor(pos[0], pos[1])
