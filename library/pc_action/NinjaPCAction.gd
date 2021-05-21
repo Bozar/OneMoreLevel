@@ -133,11 +133,16 @@ func _block_line_of_sight(x: int, y: int, _opt_arg: Array) -> bool:
 
 func _switch_time_stop(stop_time: bool) -> void:
 	var pc: Sprite = _ref_DungeonBoard.get_pc()
+	var passed_turn: int
+	var subtract_time_stop: int
 
 	_is_time_stop = stop_time
 	if stop_time:
 		_ref_ObjectData.set_hit_point(pc, 0)
-		_count_time_stop = Game_NinjaData.MAX_TIME_STOP
+		passed_turn = Game_CountDown.MAX_TURN - _ref_CountDown.get_count(true)
+		subtract_time_stop = floor(passed_turn \
+				/ Game_NinjaData.TIME_STOP_DIVISOR) as int
+		_count_time_stop = Game_NinjaData.MAX_TIME_STOP - subtract_time_stop
 		_update_counter()
 	else:
 		_ref_SwitchSprite.switch_sprite(pc, Game_SpriteTypeTag.DEFAULT)
