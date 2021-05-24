@@ -53,7 +53,6 @@ func _create_wall() -> void:
 				Game_SubGroupTag.WALL, i[0], i[1])
 
 
-
 func _create_actor() -> void:
 	var x: int
 	var y: int
