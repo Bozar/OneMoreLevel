@@ -2,6 +2,7 @@ extends Game_WorldTemplate
 
 
 const PATH_TO_PREFABS: String = "ninja"
+const OPTIONAL_WALL_CHAR: String = "X"
 const MAX_PREFAB: int = 1
 const FLIP_PREFAB: int = 50
 
@@ -27,6 +28,7 @@ func _create_wall() -> void:
 	var file_list: Array = Game_FileIOHelper.get_file_list(
 			_new_DungeonPrefab.RESOURCE_PATH + PATH_TO_PREFABS)
 	var packed_prefab: Game_DungeonPrefab.PackedPrefab
+	var optional_walls: Array = []
 
 	_new_ArrayHelper.rand_picker(file_list, MAX_PREFAB, _ref_RandomNumber)
 	packed_prefab = _new_DungeonPrefab.get_prefab(file_list[0],
@@ -40,6 +42,16 @@ func _create_wall() -> void:
 					_occupy_position(x, y)
 					_add_to_blueprint(_spr_Wall, Game_MainGroupTag.BUILDING,
 							Game_SubGroupTag.WALL, x, y)
+				OPTIONAL_WALL_CHAR:
+					optional_walls.push_back([x, y])
+
+	_new_ArrayHelper.rand_picker(optional_walls,
+			floor(optional_walls.size() / 2.0) as int, _ref_RandomNumber)
+	for i in optional_walls:
+		_occupy_position(i[0], i[1])
+		_add_to_blueprint(_spr_Wall, Game_MainGroupTag.BUILDING,
+				Game_SubGroupTag.WALL, i[0], i[1])
+
 
 
 func _create_actor() -> void:
