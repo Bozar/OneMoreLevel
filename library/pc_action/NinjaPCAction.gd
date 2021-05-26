@@ -60,7 +60,7 @@ func attack() -> void:
 		_switch_time_stop(true)
 	if _is_time_stop:
 		render_fov()
-	end_turn = not _is_time_stop
+	_try_end_game()
 
 
 func move() -> void:
@@ -111,18 +111,13 @@ func move() -> void:
 			_switch_time_stop(true)
 	else:
 		_switch_time_stop(false)
-		if _ref_DungeonBoard.get_npc().size() == 0:
-			_ref_EndGame.player_win()
-			return
-	end_turn = not _is_time_stop
+
+	_try_end_game()
 
 
 func wait() -> void:
 	if _is_time_stop:
 		_switch_time_stop(false)
-		if _ref_DungeonBoard.get_npc().size() == 0:
-			_ref_EndGame.player_win()
-			return
 	.wait()
 
 
@@ -206,3 +201,13 @@ func _show_or_hide_trap() -> void:
 	for i in find_traps:
 		pos = _new_ConvertCoord.vector_to_array(i.position)
 		i.visible = not _ref_DungeonBoard.has_actor(pos[0], pos[1])
+
+
+func _try_end_game() -> void:
+	var pc: Sprite = _ref_DungeonBoard.get_pc()
+
+	if _ref_ObjectData.get_hit_point(pc) == Game_NinjaData.MAX_NPC:
+		end_turn = false
+		_ref_EndGame.player_win()
+	else:
+		end_turn = not _is_time_stop
