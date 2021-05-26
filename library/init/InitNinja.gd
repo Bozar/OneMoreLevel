@@ -31,6 +31,7 @@ func _create_wall() -> void:
 	var optional_walls: Array = []
 
 	_new_ArrayHelper.rand_picker(file_list, MAX_PREFAB, _ref_RandomNumber)
+	# print(file_list[0])
 	packed_prefab = _new_DungeonPrefab.get_prefab(file_list[0],
 			_ref_RandomNumber.get_percent_chance(FLIP_PREFAB),
 			_ref_RandomNumber.get_percent_chance(FLIP_PREFAB))
