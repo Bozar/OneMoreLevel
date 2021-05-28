@@ -15,6 +15,7 @@ func take_action() -> void:
 
 	if _new_CoordCalculator.is_inside_range(_self_pos[0], _self_pos[1],
 			_pc_pos[0], _pc_pos[1], Game_NinjaData.ATTACK_RANGE):
+		_ref_SwitchSprite.switch_sprite(_self, Game_SpriteTypeTag.ACTIVE)
 		_ref_EndGame.player_lose()
 	else:
 		pc = _ref_DungeonBoard.get_pc()
