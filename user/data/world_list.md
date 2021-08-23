@@ -3,6 +3,7 @@
 * balloon
 * demo
 * desert
+* factory
 * frog
 * hound
 * knight
