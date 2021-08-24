@@ -151,7 +151,6 @@ func _dup_create_princess(source: Array, index: int, _opt_arg: Array) -> int:
 	var x: int = source[index][0]
 	var y: int = source[index][1]
 
-	if _ref_DungeonBoard.has_sprite_with_sub_tag(
-			Game_MainGroupTag.GROUND, Game_SubGroupTag.SWAMP, x, y):
+	if _ref_DungeonBoard.has_sprite_with_sub_tag(Game_SubGroupTag.SWAMP, x, y):
 		return 2
 	return 1

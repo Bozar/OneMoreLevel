@@ -131,8 +131,7 @@ func _pc_is_near_harbor(x: int, y: int) -> bool:
 	var neighbor: Array = _new_CoordCalculator.get_neighbor(x, y, 1)
 
 	for i in neighbor:
-		if _ref_DungeonBoard.has_sprite_with_sub_tag(
-				Game_MainGroupTag.BUILDING, Game_SubGroupTag.HARBOR,
+		if _ref_DungeonBoard.has_sprite_with_sub_tag(Game_SubGroupTag.HARBOR,
 				i[0], i[1]):
 			return true
 	return false
