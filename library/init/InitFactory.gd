@@ -1,10 +1,12 @@
 extends Game_WorldTemplate
-# Initialize a simple map for testing.
 
 
-var _spr_Dwarf := preload("res://sprite/Dwarf.tscn")
+const PATH_TO_PREFABS := "factory"
+const DOOR_CHAR := "+"
+const FLIP_PREFAB := 50
+const MAX_PREFAB_ARG := 3
 
-var _dungeon: Dictionary = {}
+var _spr_Door := preload("res://sprite/Door.tscn")
 
 
 func _init(parent_node: Node2D).(parent_node) -> void:
@@ -12,40 +14,34 @@ func _init(parent_node: Node2D).(parent_node) -> void:
 
 
 func get_blueprint() -> Array:
-	_init_wall()
+	_create_wall()
 	_init_floor()
 	_init_pc()
-	_init_dwarf()
 
 	return _blueprint
 
 
-func _init_wall() -> void:
-	var shift: int = 2
-	var min_x: int = Game_DungeonSize.CENTER_X - shift
-	var max_x: int = Game_DungeonSize.CENTER_X + shift + 1
-	var min_y: int = Game_DungeonSize.CENTER_Y - shift
-	var max_y: int = Game_DungeonSize.CENTER_Y + shift + 1
+func _create_wall() -> void:
+	var file_list: Array = Game_FileIOHelper.get_file_list(
+			Game_DungeonPrefab.RESOURCE_PATH + PATH_TO_PREFABS)
+	var packed_prefab: Game_DungeonPrefab.PackedPrefab
+	var start_x := 5
+	var start_y := 5
+	var prefab_arg := []
 
-	for x in range(min_x, max_x):
-		for y in range(min_y, max_y):
-			_occupy_position(x, y)
-			_add_to_blueprint(_spr_Wall,
-					Game_MainGroupTag.BUILDING, Game_SubGroupTag.WALL, x, y)
+	for _i in range(0, MAX_PREFAB_ARG):
+		prefab_arg.push_back(_ref_RandomNumber.get_percent_chance(FLIP_PREFAB))
+	packed_prefab = Game_DungeonPrefab.get_prefab(file_list[0],
+			prefab_arg[0], prefab_arg[1], prefab_arg[2])
 
-
-func _init_dwarf() -> void:
-	var dwarf: int = _ref_RandomNumber.get_int(3, 6)
-	var x: int
-	var y: int
-
-	while dwarf > 0:
-		x = _ref_RandomNumber.get_x_coord()
-		y = _ref_RandomNumber.get_y_coord()
-		if _is_occupied(x, y):
-			continue
-
-		_occupy_position(x, y)
-		_add_to_blueprint(_spr_Dwarf,
-				Game_MainGroupTag.ACTOR, Game_SubGroupTag.DWARF, x, y)
-		dwarf -= 1
+	for x in range(0, packed_prefab.max_x):
+		for y in range(0, packed_prefab.max_y):
+			match packed_prefab.prefab[x][y]:
+				Game_DungeonPrefab.WALL_CHAR:
+					_occupy_position(x + start_x, y + start_y)
+					_add_to_blueprint(_spr_Wall, Game_MainGroupTag.BUILDING,
+							Game_SubGroupTag.WALL, x + start_x, y + start_y)
+				DOOR_CHAR:
+					_occupy_position(x + start_x, y + start_y)
+					_add_to_blueprint(_spr_Door, Game_MainGroupTag.BUILDING,
+							Game_SubGroupTag.DOOR, x + start_x, y + start_y)

@@ -49,3 +49,5 @@ const HOUND: String = "hound"
 const HOUND_BOSS: String = "hound_boss"
 
 const NINJA: String = "ninja"
+
+const DOOR: String = "door"

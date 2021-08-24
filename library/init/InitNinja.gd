@@ -9,8 +9,6 @@ const FLIP_PREFAB: int = 50
 var _spr_PCNinja := preload("res://sprite/PCNinja.tscn")
 var _spr_Ninja := preload("res://sprite/Ninja.tscn")
 
-var _new_DungeonPrefab := Game_DungeonPrefab.new()
-
 
 func _init(parent_node: Node2D).(parent_node) -> void:
 	pass
@@ -26,13 +24,13 @@ func get_blueprint() -> Array:
 
 func _create_wall() -> void:
 	var file_list: Array = Game_FileIOHelper.get_file_list(
-			_new_DungeonPrefab.RESOURCE_PATH + PATH_TO_PREFABS)
+			Game_DungeonPrefab.RESOURCE_PATH + PATH_TO_PREFABS)
 	var packed_prefab: Game_DungeonPrefab.PackedPrefab
 	var optional_walls: Array = []
 
 	_new_ArrayHelper.rand_picker(file_list, MAX_PREFAB, _ref_RandomNumber)
 	# print(file_list[0])
-	packed_prefab = _new_DungeonPrefab.get_prefab(file_list[0],
+	packed_prefab = Game_DungeonPrefab.get_prefab(file_list[0],
 			_ref_RandomNumber.get_percent_chance(FLIP_PREFAB),
 			_ref_RandomNumber.get_percent_chance(FLIP_PREFAB))
 

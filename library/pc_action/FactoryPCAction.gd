@@ -1,6 +1,9 @@
 extends Game_PCActionTemplate
 
 
+var find_doors := []
+
+
 func _init(parent_node: Node2D).(parent_node) -> void:
 	pass
 
@@ -8,6 +11,7 @@ func _init(parent_node: Node2D).(parent_node) -> void:
 func render_fov() -> void:
 	if _ref_GameSetting.get_show_full_map():
 		_render_without_fog_of_war()
+		_render_doors(true)
 		return
 
 	_new_ShadowCastFOV.set_field_of_view(
@@ -22,9 +26,30 @@ func render_fov() -> void:
 						i != Game_MainGroupTag.ACTOR,
 						_new_ShadowCastFOV, "is_in_sight")
 
+	_render_doors(false)
+
+
+func interact_with_building() -> void:
+	if _ref_DungeonBoard.has_sprite_with_sub_tag(Game_MainGroupTag.BUILDING,
+			Game_SubGroupTag.DOOR, _target_position[0], _target_position[1]):
+		move()
+
 
 func _block_line_of_sight(x: int, y: int, _opt_arg: Array) -> bool:
 	if _ref_DungeonBoard.has_building(x, y) \
 			or _ref_DungeonBoard.has_actor(x, y):
 		return true
 	return false
+
+
+func _render_doors(auto_reset: bool) -> void:
+	var pos: Array
+
+	if find_doors.size() == 0:
+		find_doors = _ref_DungeonBoard.get_sprites_by_tag(Game_SubGroupTag.DOOR)
+	for i in find_doors:
+		pos = _new_ConvertCoord.vector_to_array(i.position)
+		if _ref_DungeonBoard.has_actor(pos[0], pos[1]):
+			i.visible = false
+		elif auto_reset:
+			i.visible = true
