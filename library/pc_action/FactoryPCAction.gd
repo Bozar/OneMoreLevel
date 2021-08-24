@@ -35,13 +35,6 @@ func interact_with_building() -> void:
 		move()
 
 
-func _block_line_of_sight(x: int, y: int, _opt_arg: Array) -> bool:
-	if _ref_DungeonBoard.has_building(x, y) \
-			or _ref_DungeonBoard.has_actor(x, y):
-		return true
-	return false
-
-
 func _render_doors(auto_reset: bool) -> void:
 	var pos: Array
 

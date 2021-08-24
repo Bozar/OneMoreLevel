@@ -166,6 +166,10 @@ func _is_checkmate() -> bool:
 	return true
 
 
+func _block_line_of_sight(x: int, y: int, _opt_arg: Array) -> bool:
+	return _ref_DungeonBoard.has_building(x, y)
+
+
 func _block_ray(x: int, y: int, _opt_arg: Array) -> bool:
 	return _ref_DungeonBoard.has_building(x, y)
 

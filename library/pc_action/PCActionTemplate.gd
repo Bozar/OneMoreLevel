@@ -255,7 +255,8 @@ func _ground_is_visible(x: int, y: int) -> bool:
 
 
 func _block_line_of_sight(x: int, y: int, _opt_arg: Array) -> bool:
-	return _ref_DungeonBoard.has_building(x, y)
+	return _ref_DungeonBoard.has_building(x, y) \
+			or _ref_DungeonBoard.has_actor(x, y)
 
 
 func _get_sprite_memory(x: int, y: int, main_tag: String, _sub_tag: String) \

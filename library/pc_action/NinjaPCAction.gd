@@ -121,11 +121,6 @@ func wait() -> void:
 	.wait()
 
 
-func _block_line_of_sight(x: int, y: int, _opt_arg: Array) -> bool:
-	return _ref_DungeonBoard.has_building(x, y) \
-			or _ref_DungeonBoard.has_actor(x, y)
-
-
 func _switch_time_stop(stop_time: bool) -> void:
 	var pc: Sprite = _ref_DungeonBoard.get_pc()
 	var passed_turn: int

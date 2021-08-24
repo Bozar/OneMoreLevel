@@ -222,11 +222,6 @@ func _filter_create_image(source: Array, index: int, opt_arg: Array) -> bool:
 					Game_ObjectStateTag.PASSIVE)
 
 
-func _block_line_of_sight(x: int, y: int, _opt_arg: Array) -> bool:
-	return _ref_DungeonBoard.has_building(x, y) \
-			or _ref_DungeonBoard.has_actor(x, y)
-
-
 func _reset_sprite_color() -> void:
 	var set_this: Sprite
 	var pos: Array
