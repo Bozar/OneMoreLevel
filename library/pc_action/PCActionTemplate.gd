@@ -29,6 +29,8 @@ var _new_SpriteTypeTag := Game_SpriteTypeTag.new()
 var _source_position: Array
 var _target_position: Array
 var _input_direction: String
+# Set `_fov_render_range` if we use the default `_fov_render_range()`. Otherwise
+# there is no need to set it.
 var _fov_render_range: int = 5
 
 

@@ -30,13 +30,13 @@ func render_fov() -> void:
 	for x in range(Game_DungeonSize.MAX_X):
 		for y in range(Game_DungeonSize.MAX_Y):
 			for i in Game_MainGroupTag.DUNGEON_OBJECT:
-				if (i == Game_MainGroupTag.BUILDING) \
-						or (i == Game_MainGroupTag.GROUND):
-					_set_sprite_color_with_memory(x, y, i, "", true,
-							_new_ShadowCastFOV, "is_in_sight")
-				else:
-					_set_sprite_color(x, y, i, "",
-							_new_ShadowCastFOV, "is_in_sight")
+				match i:
+					Game_MainGroupTag.BUILDING, Game_MainGroupTag.GROUND:
+						_set_sprite_color_with_memory(x, y, i, "", true,
+								_new_ShadowCastFOV, "is_in_sight")
+					_:
+						_set_sprite_color(x, y, i, "",
+								_new_ShadowCastFOV, "is_in_sight")
 
 
 func interact_with_trap() -> void:
