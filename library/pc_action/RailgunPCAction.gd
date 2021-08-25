@@ -44,7 +44,7 @@ func render_fov() -> void:
 		_render_without_fog_of_war()
 		return
 
-	_new_CrossShapedFOV.set_t_shaped_sight(
+	Game_CrossShapedFOV.set_t_shaped_sight(
 			Game_DungeonSize.MAX_X, Game_DungeonSize.MAX_Y,
 			_source_position[0], _source_position[1],
 			_face_direction[0], _face_direction[1],
@@ -58,16 +58,16 @@ func render_fov() -> void:
 				match i:
 					Game_MainGroupTag.ACTOR:
 						_set_sprite_color_with_memory(x, y, i, "", false,
-								_new_CrossShapedFOV, "is_in_sight")
+								Game_CrossShapedFOV, "is_in_sight")
 					Game_MainGroupTag.TRAP:
 						_set_sprite_color(x, y, i, "",
-								_new_CrossShapedFOV, "is_in_sight")
+								Game_CrossShapedFOV, "is_in_sight")
 					_:
 						if _do_not_render_building(x, y):
 							pass
 						else:
 							_set_sprite_color_with_memory(x, y, i, "", true,
-									_new_CrossShapedFOV, "is_in_sight")
+									Game_CrossShapedFOV, "is_in_sight")
 
 
 func is_inside_dungeon() -> bool:

@@ -44,21 +44,22 @@ const COORD_WARNING: String = "Neither face_x nor face_y is zero."
 const T_SHAPED_BACK: int = 1
 const SYMMETRIC_X: int = 0
 const SYMMETRIC_Y: int = 1
-
-var _dungeon_width: int
-var _dungeon_height: int
-var _max_x: int
-var _max_y: int
-var _min_x: int
-var _min_y: int
-var _center_x: int
-var _center_y: int
-var _half_width: int
+const FOV_DATA := {
+	"dungeon_width": 0,
+	"dungeon_height": 0,
+	"max_x": 0,
+	"max_y": 0,
+	"min_x": 0,
+	"min_y": 0,
+	"center_x": 0,
+	"center_y": 0,
+	"half_width": 0,
+}
 
 
 # is_obstacle_func(x: int, y: int, opt_arg: Array) -> bool
 # Return true if a grid [x, y] is blocked.
-func set_rectangular_sight(dungeon_width: int, dungeon_height: int,
+static func set_rectangular_sight(dungeon_width: int, dungeon_height: int,
 		center_x: int, center_y: int,
 		face_x: int, face_y: int, half_width: int,
 		front_range: int, right_range: int, back_range: int, left_range: int,
@@ -68,17 +69,19 @@ func set_rectangular_sight(dungeon_width: int, dungeon_height: int,
 	var cast_ray_arg: Array
 
 	# Set initial data.
-	_dungeon_width = dungeon_width
-	_dungeon_height = dungeon_height
-	_center_x = center_x
-	_max_x = center_x
-	_min_x = center_x
+	FOV_DATA.dungeon_width = dungeon_width
+	FOV_DATA.dungeon_height = dungeon_height
 
-	_center_y = center_y
-	_max_y = center_y
-	_min_y = center_y
+	FOV_DATA.center_x = center_x
+	FOV_DATA.center_y = center_y
 
-	_half_width = half_width
+	FOV_DATA.max_x = center_x
+	FOV_DATA.max_y = center_y
+
+	FOV_DATA.min_x = center_x
+	FOV_DATA.min_y = center_y
+
+	FOV_DATA.half_width = half_width
 
 	face_x = _normalize_coord(face_x)
 	face_y = _normalize_coord(face_y)
@@ -107,7 +110,7 @@ func set_rectangular_sight(dungeon_width: int, dungeon_height: int,
 		_update_min_max(end_point[0], end_point[1])
 
 
-func set_t_shaped_sight(dungeon_width: int, dungeon_height: int,
+static func set_t_shaped_sight(dungeon_width: int, dungeon_height: int,
 		center_x: int, center_y: int,
 		face_x: int, face_y: int, half_width: int,
 		front_range: int, side_range: int,
@@ -118,7 +121,7 @@ func set_t_shaped_sight(dungeon_width: int, dungeon_height: int,
 			func_host, is_obstacle_func, opt_arg)
 
 
-func set_symmetric_sight(dungeon_width: int, dungeon_height: int,
+static func set_symmetric_sight(dungeon_width: int, dungeon_height: int,
 		center_x: int, center_y: int,
 		half_width: int, max_range: int,
 		func_host: Object, is_obstacle_func: String, opt_arg: Array) -> void:
@@ -128,16 +131,17 @@ func set_symmetric_sight(dungeon_width: int, dungeon_height: int,
 			func_host, is_obstacle_func, opt_arg)
 
 
-func is_in_sight(x: int, y: int) -> bool:
-	if (x < _min_x) or (x > _max_x) or (y < _min_y) or (y > _max_y):
+static func is_in_sight(x: int, y: int) -> bool:
+	if (x < FOV_DATA.min_x) or (x > FOV_DATA.max_x) \
+			or (y < FOV_DATA.min_y) or (y > FOV_DATA.max_y):
 		return false
-	elif (abs(x - _center_x) > _half_width) \
-			and (abs(y - _center_y) > _half_width):
+	elif (abs(x - FOV_DATA.center_x) > FOV_DATA.half_width) \
+			and (abs(y - FOV_DATA.center_y) > FOV_DATA.half_width):
 		return false
 	return true
 
 
-func _cast_ray(start_x: int, start_y: int, shift_x: int, shift_y: int,
+static func _cast_ray(start_x: int, start_y: int, shift_x: int, shift_y: int,
 		max_range: int, is_obstacle: FuncRef, opt_arg: Array) -> Array:
 	var x: int = start_x
 	var y: int = start_y
@@ -154,24 +158,24 @@ func _cast_ray(start_x: int, start_y: int, shift_x: int, shift_y: int,
 	return [x, y]
 
 
-func _update_min_max(x: int, y: int) -> void:
-	if x > _max_x:
-		_max_x = x
-	elif x < _min_x:
-		_min_x = x
+static func _update_min_max(x: int, y: int) -> void:
+	if x > FOV_DATA.max_x:
+		FOV_DATA.max_x = x
+	elif x < FOV_DATA.min_x:
+		FOV_DATA.min_x = x
 
-	if y > _max_y:
-		_max_y = y
-	elif y < _min_y:
-		_min_y = y
+	if y > FOV_DATA.max_y:
+		FOV_DATA.max_y = y
+	elif y < FOV_DATA.min_y:
+		FOV_DATA.min_y = y
 
 
-func _normalize_coord(coord: int) -> int:
+static func _normalize_coord(coord: int) -> int:
 	if (coord > 1) or (coord < -1):
 		coord = floor(coord / abs(coord)) as int
 	return coord
 
 
-func _is_inside_dungeon(x: int, y: int) -> bool:
-	return (x > -1) and (x < _dungeon_width) \
-			and (y > -1) and (y < _dungeon_height)
+static func _is_inside_dungeon(x: int, y: int) -> bool:
+	return (x > -1) and (x < FOV_DATA.dungeon_width) \
+			and (y > -1) and (y < FOV_DATA.dungeon_height)

@@ -20,7 +20,6 @@ var _ref_GameSetting: Game_GameSetting
 var _ref_Palette: Game_Palette
 
 var _new_ShadowCastFOV := Game_ShadowCastFOV.new()
-var _new_CrossShapedFOV := Game_CrossShapedFOV.new()
 var _new_SpriteTypeTag := Game_SpriteTypeTag.new()
 
 var _source_position: Array
