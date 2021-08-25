@@ -21,7 +21,6 @@ var _ref_Palette: Game_Palette
 
 var _new_CoordCalculator := Game_CoordCalculator.new()
 var _new_ConvertCoord := Game_ConvertCoord.new()
-var _new_ArrayHelper := Game_ArrayHelper.new()
 var _new_ShadowCastFOV := Game_ShadowCastFOV.new()
 var _new_CrossShapedFOV := Game_CrossShapedFOV.new()
 var _new_SpriteTypeTag := Game_SpriteTypeTag.new()

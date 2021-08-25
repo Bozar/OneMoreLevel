@@ -35,7 +35,7 @@ func _create_wall() -> void:
 
 	for _i in range(edit_prefab.size()):
 		edit_prefab.push_back(Game_DungeonPrefab.DO_NOT_EDIT)
-	_new_ArrayHelper.rand_picker(edit_prefab, MAX_PREFAB_ARG, _ref_RandomNumber)
+	Game_ArrayHelper.rand_picker(edit_prefab, MAX_PREFAB_ARG, _ref_RandomNumber)
 	packed_prefab = Game_DungeonPrefab.get_prefab(file_list[0], edit_prefab)
 
 	for x in range(0, packed_prefab.max_x):

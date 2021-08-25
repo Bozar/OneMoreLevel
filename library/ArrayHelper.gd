@@ -5,7 +5,7 @@ const RAND_WARNING: String = "rand_picker(): Rand is not of type Game_RandomNumb
 const ELEMENT_WARNING: String = "rand_picker(): Pick too many elements."
 
 
-func rand_picker(source_array: Array, num_of_element: int, rand) -> void:
+static func rand_picker(source_array: Array, num_of_element: int, rand) -> void:
 	var counter: int
 
 	if num_of_element > source_array.size():
@@ -22,7 +22,7 @@ func rand_picker(source_array: Array, num_of_element: int, rand) -> void:
 # filter_in_func(source_array: Array, current_index: int,
 #> optional_arg: Array) -> bool
 # Return true if we need an array element.
-func filter_element(source_array: Array, func_host: Object,
+static func filter_element(source_array: Array, func_host: Object,
 		filter_in_func: String, optional_arg: Array) -> void:
 	var filter_in := funcref(func_host, filter_in_func)
 	var counter: int = 0
@@ -37,7 +37,7 @@ func filter_element(source_array: Array, func_host: Object,
 # get_counter_func(source_array: Array, current_index: int,
 #> optional_arg: Array) -> int
 # Return how many times an element should appear in the new array.
-func duplicate_element(source_array: Array, func_host: Object,
+static func duplicate_element(source_array: Array, func_host: Object,
 		get_counter_func: String, optional_arg: Array) -> void:
 	var get_counter := funcref(func_host, get_counter_func)
 	var counter: int
@@ -50,7 +50,7 @@ func duplicate_element(source_array: Array, func_host: Object,
 	merge(source_array, tmp)
 
 
-func swap_element(source_array: Array,
+static func swap_element(source_array: Array,
 		left_index: int, right_index: int) -> void:
 	var tmp
 
@@ -59,7 +59,7 @@ func swap_element(source_array: Array,
 	source_array[right_index] = tmp
 
 
-func merge(source_array: Array, merge_into_left: Array) -> void:
+static func merge(source_array: Array, merge_into_left: Array) -> void:
 	var source_size: int = source_array.size()
 	var merge_size: int = merge_into_left.size()
 
@@ -68,12 +68,12 @@ func merge(source_array: Array, merge_into_left: Array) -> void:
 		source_array[i + source_size] = merge_into_left[i]
 
 
-func remove_by_index(source_array: Array, remove_index: int) -> void:
+static func remove_by_index(source_array: Array, remove_index: int) -> void:
 	swap_element(source_array, remove_index, source_array.size() - 1)
 	source_array.resize(source_array.size() - 1)
 
 
-func reverse_key_value_in_dict(source_dict: Dictionary,
+static func reverse_key_value_in_dict(source_dict: Dictionary,
 		reverse_dict: Dictionary) -> void:
 	for i in source_dict.keys():
 		reverse_dict[source_dict[i]] = i

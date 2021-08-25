@@ -20,7 +20,6 @@ var _ref_Palette: Game_Palette
 var _new_ConvertCoord := Game_ConvertCoord.new()
 var _new_CoordCalculator := Game_CoordCalculator.new()
 var _new_DijkstraPathFinding := Game_DijkstraPathFinding.new()
-var _new_ArrayHelper := Game_ArrayHelper.new()
 var _new_SpriteTypeTag := Game_SpriteTypeTag.new()
 
 var _self: Sprite
@@ -89,7 +88,7 @@ func _approach_pc(start_point: Array = [_pc_pos], one_step: int = 1,
 			self, "_is_passable_func", opt_passable_arg)
 
 	if destination.size() > 0:
-		_new_ArrayHelper.rand_picker(destination, 1, _ref_RandomNumber)
+		Game_ArrayHelper.rand_picker(destination, 1, _ref_RandomNumber)
 		_ref_DungeonBoard.move_sprite(Game_MainGroupTag.ACTOR,
 				_self_pos[0], _self_pos[1],
 				destination[0][0], destination[0][1])

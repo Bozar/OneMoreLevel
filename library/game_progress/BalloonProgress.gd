@@ -37,9 +37,9 @@ func _set_wind_direction() -> void:
 	for i in Game_ObjectStateTag.VALID_DIRECTION:
 		if i != Game_ObjectStateTag.OPPOSITE_DIRECTION[_wind_forecast[0]]:
 			candidate.push_back(i)
-	_new_ArrayHelper.duplicate_element(candidate, self, "_dup_set_wind",
+	Game_ArrayHelper.duplicate_element(candidate, self, "_dup_set_wind",
 			[_wind_forecast[0]])
-	_new_ArrayHelper.rand_picker(candidate, 1, _ref_RandomNumber)
+	Game_ArrayHelper.rand_picker(candidate, 1, _ref_RandomNumber)
 	_wind_forecast[1] = candidate[0]
 
 	_ref_ObjectData.set_state(pc, _wind_forecast[0])

@@ -62,7 +62,7 @@ func _init_wall() -> void:
 	block = _new_CoordCalculator.get_block(x, y, width, height)
 
 	# Cannot overlap existing blocks.
-	_new_ArrayHelper.filter_element(block, self, "_is_empty_space", [])
+	Game_ArrayHelper.filter_element(block, self, "_is_empty_space", [])
 	if block.size() == 0:
 		return
 	dup_block = block.duplicate()
@@ -70,7 +70,7 @@ func _init_wall() -> void:
 		_set_terrain_marker(i[0], i[1], PATH_MARKER)
 
 	# Shrink by 1 grid in four directions. Leave paths around the block.
-	_new_ArrayHelper.filter_element(block, self, "_is_building_site",
+	Game_ArrayHelper.filter_element(block, self, "_is_building_site",
 			[x, y, width, height])
 
 	# Reset markers to default if fail to build any walls.
@@ -81,7 +81,7 @@ func _init_wall() -> void:
 
 	# Dig a grid when necessary to generate a more zigzagging terrain.
 	if block.size() == MAX_BLOCK_COUNT:
-		_new_ArrayHelper.rand_picker(block, block.size() - 1, _ref_RandomNumber)
+		Game_ArrayHelper.rand_picker(block, block.size() - 1, _ref_RandomNumber)
 
 	# Add walls to blueprint. The first wall is replaced by a counter.
 	for i in block:

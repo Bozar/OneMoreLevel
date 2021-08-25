@@ -20,7 +20,6 @@ var _ref_Schedule: Game_Schedule
 
 var _new_WorldTag := Game_WorldTag.new()
 var _new_InitWorldData := Game_InitWorldData.new()
-var _new_ArrayHelper := Game_ArrayHelper.new()
 
 var _world_tag: String
 var _world_template: Game_WorldTemplate
@@ -55,16 +54,16 @@ func _get_world() -> Game_WorldTemplate:
 	var exclude_world: Array = _ref_GameSetting.get_exclude_world()
 
 	for i in [include_world, exclude_world]:
-		_new_ArrayHelper.filter_element(i, self, "_verify_world_tag", [])
+		Game_ArrayHelper.filter_element(i, self, "_verify_world_tag", [])
 	if include_world.size() > 0:
-		_new_ArrayHelper.rand_picker(include_world, 1, _ref_RandomNumber)
+		Game_ArrayHelper.rand_picker(include_world, 1, _ref_RandomNumber)
 		_world_tag = include_world[0]
 	else:
-		_new_ArrayHelper.filter_element(full_tag, self, "_filter_get_world",
+		Game_ArrayHelper.filter_element(full_tag, self, "_filter_get_world",
 				[exclude_world])
 		if full_tag.size() == 0:
 			full_tag = [Game_WorldTag.DEMO]
-		_new_ArrayHelper.rand_picker(full_tag, 1, _ref_RandomNumber)
+		Game_ArrayHelper.rand_picker(full_tag, 1, _ref_RandomNumber)
 		_world_tag = full_tag[0]
 	emit_signal("world_selected", _world_tag)
 

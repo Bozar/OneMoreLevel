@@ -39,7 +39,7 @@ func _init_wall() -> void:
 	var y: int
 	var neighbor: Array
 
-	_new_ArrayHelper.rand_picker(start_point, PICK_ROOM, _ref_RandomNumber)
+	Game_ArrayHelper.rand_picker(start_point, PICK_ROOM, _ref_RandomNumber)
 	for i in start_point:
 		x = i[0] + _ref_RandomNumber.get_int(MIN_SHIFT, MAX_SHIFT)
 		y = i[1] + _ref_RandomNumber.get_int(MIN_SHIFT, MAX_SHIFT)

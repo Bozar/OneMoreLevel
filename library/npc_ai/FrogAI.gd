@@ -47,7 +47,7 @@ func _grapple() -> void:
 	var pc_move: Array = _new_CoordCalculator.get_neighbor(
 			_pc_pos[0], _pc_pos[1], 1, true)
 
-	_new_ArrayHelper.filter_element(neighbor, self, "_filter_grapple",
+	Game_ArrayHelper.filter_element(neighbor, self, "_filter_grapple",
 			[pc_move])
 	_ref_SwitchSprite.switch_sprite(_self, Game_SpriteTypeTag.ACTIVE)
 	for i in neighbor:
@@ -62,13 +62,13 @@ func _random_walk() -> void:
 			x, y, _pc_pos[0], _pc_pos[1])
 	var neighbor: Array = _new_CoordCalculator.get_neighbor(x, y, 2, false)
 
-	_new_ArrayHelper.filter_element(neighbor, self, "_filter_rand_walk", [])
-	_new_ArrayHelper.duplicate_element(neighbor, self, "_dup_rand_walk",
+	Game_ArrayHelper.filter_element(neighbor, self, "_filter_rand_walk", [])
+	Game_ArrayHelper.duplicate_element(neighbor, self, "_dup_rand_walk",
 			[max_distance])
 	if neighbor.size() < 1:
 		return
 
-	_new_ArrayHelper.rand_picker(neighbor, 1, _ref_RandomNumber)
+	Game_ArrayHelper.rand_picker(neighbor, 1, _ref_RandomNumber)
 	x = neighbor[0][0]
 	y = neighbor[0][1]
 	_ref_DungeonBoard.move_sprite(Game_MainGroupTag.ACTOR,

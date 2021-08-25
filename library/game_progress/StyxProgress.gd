@@ -33,12 +33,12 @@ func _change_water_flow() -> void:
 	var y: int
 	var flow: Sprite
 
-	_new_ArrayHelper.filter_element(ground, self, "_filter_change_flow", [])
+	Game_ArrayHelper.filter_element(ground, self, "_filter_change_flow", [])
 	for i in ground:
 		if not _ref_ObjectData.verify_state(i, Game_ObjectStateTag.DEFAULT):
 			continue
 		valid_state = Game_ObjectStateTag.DIRECTION_TO_COORD.keys()
-		_new_ArrayHelper.rand_picker(valid_state, 1, _ref_RandomNumber)
+		Game_ArrayHelper.rand_picker(valid_state, 1, _ref_RandomNumber)
 		direction = valid_state[0]
 		_rotate_sprite(i, direction)
 

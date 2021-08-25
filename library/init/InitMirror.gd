@@ -75,7 +75,7 @@ func _init_wall() -> void:
 	for i in valid_x:
 		for j in valid_y:
 			valid_coord.push_back([i, j])
-	_new_ArrayHelper.rand_picker(valid_coord, max_mirror, _ref_RandomNumber)
+	Game_ArrayHelper.rand_picker(valid_coord, max_mirror, _ref_RandomNumber)
 
 	for i in valid_coord:
 		index = _ref_RandomNumber.get_int(0, candidate.size())

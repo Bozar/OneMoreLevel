@@ -33,7 +33,7 @@ func create_actor(actor: Sprite, sub_group: String, _x: int, _y: int) -> void:
 	if _all_counters.size() == 0:
 		_all_counters = _ref_DungeonBoard.get_sprites_by_tag(
 				Game_SubGroupTag.COUNTER)
-		_new_ArrayHelper.rand_picker(_all_counters, _all_counters.size(),
+		Game_ArrayHelper.rand_picker(_all_counters, _all_counters.size(),
 				_ref_RandomNumber)
 	_ref_SwitchSprite.switch_sprite(_all_counters[_boss_hit_point],
 			Game_SpriteTypeTag.PASSIVE)
@@ -83,7 +83,7 @@ func _add_or_remove_fog() -> void:
 			remove_index.push_back(i)
 
 	for i in remove_index:
-		_new_ArrayHelper.remove_by_index(_fog_source, i)
+		Game_ArrayHelper.remove_by_index(_fog_source, i)
 
 	if _all_grounds.size() == 0:
 		_all_grounds = _ref_DungeonBoard.get_sprites_by_tag(

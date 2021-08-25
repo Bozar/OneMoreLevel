@@ -128,7 +128,7 @@ func _hound_approach(self_is_in_fog: bool, pc_is_in_fog: bool) -> void:
 
 	start_point = _new_CoordCalculator.get_neighbor(_pc_pos[0], _pc_pos[1],
 			ONE_STEP_OUTSIDE_FOG)
-	_new_ArrayHelper.filter_element(start_point, self,
+	Game_ArrayHelper.filter_element(start_point, self,
 			"_verify_and_get_start_point", [pc_is_in_fog, alternative_start])
 	# PC is in fog and is surrounded by four walls.
 	if start_point.size() == 0:

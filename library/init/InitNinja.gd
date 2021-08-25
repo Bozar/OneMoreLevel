@@ -34,8 +34,8 @@ func _create_wall() -> void:
 
 	for _i in range(edit_prefab.size()):
 		edit_prefab.push_back(Game_DungeonPrefab.DO_NOT_EDIT)
-	_new_ArrayHelper.rand_picker(file_list, MAX_PREFAB, _ref_RandomNumber)
-	_new_ArrayHelper.rand_picker(edit_prefab, MAX_PREFAB_ARG, _ref_RandomNumber)
+	Game_ArrayHelper.rand_picker(file_list, MAX_PREFAB, _ref_RandomNumber)
+	Game_ArrayHelper.rand_picker(edit_prefab, MAX_PREFAB_ARG, _ref_RandomNumber)
 	# print(file_list[0])
 	packed_prefab = Game_DungeonPrefab.get_prefab(file_list[0], edit_prefab)
 
@@ -49,7 +49,7 @@ func _create_wall() -> void:
 				OPTIONAL_WALL_CHAR:
 					optional_walls.push_back([x, y])
 
-	_new_ArrayHelper.rand_picker(optional_walls,
+	Game_ArrayHelper.rand_picker(optional_walls,
 			floor(optional_walls.size() / 2.0) as int, _ref_RandomNumber)
 	for i in optional_walls:
 		_occupy_position(i[0], i[1])
@@ -65,7 +65,7 @@ func _create_actor() -> void:
 	actor_position = _new_CoordCalculator.get_neighbor(
 			Game_DungeonSize.CENTER_X, Game_DungeonSize.CENTER_Y,
 			Game_NinjaData.PC_SIGHT, true)
-	_new_ArrayHelper.rand_picker(actor_position, actor_position.size(),
+	Game_ArrayHelper.rand_picker(actor_position, actor_position.size(),
 			_ref_RandomNumber)
 	for i in actor_position:
 		if not _is_occupied(i[0], i[1]):
@@ -75,9 +75,9 @@ func _create_actor() -> void:
 
 	actor_position = _new_CoordCalculator.get_neighbor(x, y,
 			Game_NinjaData.MAX_DISTANCE_TO_PC)
-	_new_ArrayHelper.filter_element(actor_position, self,
+	Game_ArrayHelper.filter_element(actor_position, self,
 			"_not_too_close_to_pc", [x, y])
-	_new_ArrayHelper.rand_picker(actor_position, Game_NinjaData.MAX_NPC,
+	Game_ArrayHelper.rand_picker(actor_position, Game_NinjaData.MAX_NPC,
 			_ref_RandomNumber)
 
 	_add_to_blueprint(_spr_PCNinja, Game_MainGroupTag.ACTOR,

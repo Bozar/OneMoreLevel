@@ -119,12 +119,12 @@ func _create_image_on_the_other_side(x: int, y: int) -> void:
 
 	# There can be at most (5 - crystal) phantom images.
 	images = _ref_DungeonBoard.get_sprites_by_tag(Game_SubGroupTag.PHANTOM)
-	_new_ArrayHelper.filter_element(images, self, "_filter_create_image",
+	Game_ArrayHelper.filter_element(images, self, "_filter_create_image",
 			[actor])
 	remove = images.size() + 1 - (Game_MirrorData.MAX_PHANTOM \
 			- _ref_ObjectData.get_hit_point(pc))
 	if remove > 0:
-		_new_ArrayHelper.rand_picker(images, remove, _ref_RandomNumber)
+		Game_ArrayHelper.rand_picker(images, remove, _ref_RandomNumber)
 		for i in images:
 			position = _new_ConvertCoord.vector_to_array(i.position)
 			_ref_RemoveObject.remove_actor(position[0], position[1])

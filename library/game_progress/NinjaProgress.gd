@@ -23,9 +23,9 @@ func _respawn_npc(pc_x: int, pc_y: int) -> void:
 
 	neighbor = _new_CoordCalculator.get_neighbor(pc_x, pc_y,
 			Game_NinjaData.MAX_DISTANCE_TO_PC)
-	_new_ArrayHelper.filter_element(neighbor, self, "_not_too_close_to_pc",
+	Game_ArrayHelper.filter_element(neighbor, self, "_not_too_close_to_pc",
 			[pc_x, pc_y])
-	_new_ArrayHelper.rand_picker(neighbor, respawn_counter, _ref_RandomNumber)
+	Game_ArrayHelper.rand_picker(neighbor, respawn_counter, _ref_RandomNumber)
 
 	for i in neighbor:
 		_ref_CreateObject.create(_spr_Ninja,

@@ -16,7 +16,6 @@ var _ref_RandomNumber: Game_RandomNumber
 var _ref_DangerZone: Game_DangerZone
 
 var _new_CoordCalculator := Game_CoordCalculator.new()
-var _new_ArrayHelper := Game_ArrayHelper.new()
 
 # {0: [0, ...], 1: [0, ...], ...}
 var _dungeon_with_int: Dictionary = {}

@@ -2,7 +2,6 @@ class_name Game_DijkstraPathFinding
 
 
 var _new_CoordCalculator := Game_CoordCalculator.new()
-var _new_ArrayHelper := Game_ArrayHelper.new()
 
 
 # Find the next step.
@@ -18,7 +17,7 @@ func get_path(dungeon: Dictionary, start_x: int, start_y: int, one_step: int,
 	var y: int
 	var current_index: int = 0
 
-	_new_ArrayHelper.filter_element(neighbor, func_host, is_passable_func,
+	Game_ArrayHelper.filter_element(neighbor, func_host, is_passable_func,
 			opt_arg)
 
 	for i in neighbor.size():
@@ -27,10 +26,10 @@ func get_path(dungeon: Dictionary, start_x: int, start_y: int, one_step: int,
 		if _is_valid_distance(dungeon, x, y, Game_PathFindingData.OBSTACLE):
 			if dungeon[x][y] < min_distance:
 				min_distance = dungeon[x][y]
-				_new_ArrayHelper.swap_element(neighbor, 0, i)
+				Game_ArrayHelper.swap_element(neighbor, 0, i)
 				current_index = 1
 			elif dungeon[x][y] == min_distance:
-				_new_ArrayHelper.swap_element(neighbor, current_index, i)
+				Game_ArrayHelper.swap_element(neighbor, current_index, i)
 				current_index += 1
 
 	neighbor.resize(current_index)

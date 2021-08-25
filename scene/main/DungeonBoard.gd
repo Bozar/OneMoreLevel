@@ -4,7 +4,6 @@ class_name Game_DungeonBoard
 
 var _new_ConvertCoord := Game_ConvertCoord.new()
 var _new_CoordCalculator := Game_CoordCalculator.new()
-var _new_ArrayHelper := Game_ArrayHelper.new()
 
 # <main_group: String, <column: int, [sprite]>>
 var _sprite_dict: Dictionary
@@ -61,7 +60,7 @@ func get_pc() -> Sprite:
 
 func get_npc() -> Array:
 	var npc: Array = get_sprites_by_tag(Game_MainGroupTag.ACTOR)
-	_new_ArrayHelper.filter_element(npc, self, "_filter_get_npc", [])
+	Game_ArrayHelper.filter_element(npc, self, "_filter_get_npc", [])
 	return npc
 
 
@@ -98,7 +97,7 @@ func get_sprites_by_tag(group_tag: String) -> Array:
 	# 	sprites[counter] = verify
 	# 	counter += 1
 	# sprites.resize(counter)
-	_new_ArrayHelper.filter_element(sprites, self, "_filter_get_sprites_by_tag",
+	Game_ArrayHelper.filter_element(sprites, self, "_filter_get_sprites_by_tag",
 			[])
 	return sprites
 	# return get_tree().get_nodes_in_group(group_tag)
