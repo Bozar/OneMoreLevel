@@ -64,6 +64,7 @@ class MatrixSize:
 
 
 const RESOURCE_PATH := "res://resource/dungeon_prefab/"
+const DICT_VALUE_WARNING := "Dict value is neither a string or an array."
 const WALL_CHAR := "#"
 
 const DO_NOT_EDIT := 0
@@ -84,7 +85,7 @@ static func get_prefab(path_to_prefab: String, edit: Array) -> PackedPrefab:
 	var refresh_size := false
 
 	if read_file.parse_success and (read_file.output_line.size() > 0):
-		matrix_size = _get_matrix_size(read_file.output_line, true)
+		matrix_size = _get_matrix_size(read_file.output_line)
 		max_x = matrix_size.max_column
 		max_y = matrix_size.max_row
 
@@ -165,18 +166,18 @@ static func _rotate_right(dungeon: Dictionary, max_x: int, max_y: int) \
 	return new_dungeon
 
 
-static func _get_matrix_size(matrix_dict: Dictionary,
-		value_is_string: bool = false) -> MatrixSize:
-	var max_row: int = matrix_dict.size()
-	var max_column: int
+static func _get_matrix_size(matrix_dict: Dictionary) -> MatrixSize:
+	var max_row := matrix_dict.size()
+	var max_column := 0
 
-	if max_row < 1:
-		max_column = 0
-	elif value_is_string:
-		max_column = matrix_dict[0].length()
-	else:
-		max_column = matrix_dict[0].size()
-
+	if max_row > 0:
+		match typeof(matrix_dict[0]):
+			TYPE_STRING:
+				max_column = matrix_dict[0].length()
+			TYPE_ARRAY:
+				max_column = matrix_dict[0].size()
+			_:
+				push_warning(DICT_VALUE_WARNING)
 	return MatrixSize.new(max_row, max_column)
 
 

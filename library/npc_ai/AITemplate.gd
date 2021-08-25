@@ -17,7 +17,6 @@ var _ref_CreateObject : Game_CreateObject
 var _ref_Schedule: Game_Schedule
 var _ref_Palette: Game_Palette
 
-var _new_DijkstraPathFinding := Game_DijkstraPathFinding.new()
 var _new_SpriteTypeTag := Game_SpriteTypeTag.new()
 
 var _self: Sprite
@@ -79,9 +78,9 @@ func _approach_pc(start_point: Array = [_pc_pos], one_step: int = 1,
 		else:
 			push_warning(INVALID_START_POINT)
 			return
-	_dungeon = _new_DijkstraPathFinding.get_map(_dungeon, start_point)
+	_dungeon = Game_DijkstraPathFinding.get_map(_dungeon, start_point)
 
-	destination = _new_DijkstraPathFinding.get_path(_dungeon,
+	destination = Game_DijkstraPathFinding.get_path(_dungeon,
 			_self_pos[0], _self_pos[1], one_step,
 			self, "_is_passable_func", opt_passable_arg)
 
