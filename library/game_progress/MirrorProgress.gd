@@ -34,7 +34,7 @@ func _replenish_crystal() -> void:
 	var x: int
 	var y: int
 	var pc: Sprite = _ref_DungeonBoard.get_pc()
-	var pc_pos: Array = _new_ConvertCoord.vector_to_array(pc.position)
+	var pc_pos: Array = Game_ConvertCoord.vector_to_array(pc.position)
 	var mirror := _new_CoordCalculator.get_mirror_image(
 			pc_pos[0], pc_pos[1], Game_DungeonSize.CENTER_X, pc_pos[1])
 	var has_npc: int = 0

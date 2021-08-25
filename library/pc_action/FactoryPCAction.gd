@@ -41,7 +41,7 @@ func _render_doors(auto_reset: bool) -> void:
 	if find_doors.size() == 0:
 		find_doors = _ref_DungeonBoard.get_sprites_by_tag(Game_SubGroupTag.DOOR)
 	for i in find_doors:
-		pos = _new_ConvertCoord.vector_to_array(i.position)
+		pos = Game_ConvertCoord.vector_to_array(i.position)
 		if _ref_DungeonBoard.has_actor(pos[0], pos[1]):
 			i.visible = false
 		elif auto_reset:

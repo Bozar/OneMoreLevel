@@ -2,7 +2,6 @@ extends Node2D
 class_name Game_DungeonBoard
 
 
-var _new_ConvertCoord := Game_ConvertCoord.new()
 var _new_CoordCalculator := Game_CoordCalculator.new()
 
 # <main_group: String, <column: int, [sprite]>>
@@ -143,7 +142,7 @@ func move_sprite(main_group: String, source_x: int, source_y: int,
 
 	_sprite_dict[main_group][source_x][source_y] = null
 	_sprite_dict[main_group][target_x][target_y] = sprite
-	sprite.position = _new_ConvertCoord.index_to_vector(target_x, target_y)
+	sprite.position = Game_ConvertCoord.index_to_vector(target_x, target_y)
 
 	_try_move_arrow(sprite)
 
@@ -159,9 +158,9 @@ func swap_sprite(main_group: String, source_x: int, source_y: int,
 	_sprite_dict[main_group][source_x][source_y] = target_sprite
 	_sprite_dict[main_group][target_x][target_y] = source_sprite
 
-	source_sprite.position = _new_ConvertCoord.index_to_vector(
+	source_sprite.position = Game_ConvertCoord.index_to_vector(
 			target_x, target_y)
-	target_sprite.position = _new_ConvertCoord.index_to_vector(
+	target_sprite.position = Game_ConvertCoord.index_to_vector(
 			source_x, source_y)
 
 	_try_move_arrow(source_sprite)
@@ -182,7 +181,7 @@ func _on_CreateObject_sprite_created(new_sprite: Sprite,
 	# Save references to dungeon sprites.
 	for i in Game_MainGroupTag.DUNGEON_OBJECT:
 		if i == main_group:
-			pos = _new_ConvertCoord.vector_to_array(new_sprite.position)
+			pos = Game_ConvertCoord.vector_to_array(new_sprite.position)
 			_sprite_dict[i][pos[0]][pos[1]] = new_sprite
 			return
 

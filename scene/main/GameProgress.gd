@@ -14,7 +14,6 @@ var _ref_EndGame: Game_EndGame
 var _ref_Palette: Game_Palette
 
 var _new_InitWorldData := Game_InitWorldData.new()
-var _new_ConvertCoord := Game_ConvertCoord.new()
 
 var _progress: Game_ProgressTemplate
 var _game_over: bool = false
@@ -38,7 +37,7 @@ func _on_Schedule_turn_started(current_sprite: Sprite) -> void:
 	var _pc_pos: Array
 
 	if current_sprite.is_in_group(Game_SubGroupTag.PC):
-		_pc_pos = _new_ConvertCoord.vector_to_array(current_sprite.position)
+		_pc_pos = Game_ConvertCoord.vector_to_array(current_sprite.position)
 		_progress.renew_world(_pc_pos[0], _pc_pos[1])
 
 
@@ -49,7 +48,7 @@ func _on_Schedule_turn_ended(current_sprite: Sprite) -> void:
 	if _game_over:
 		return
 	if current_sprite.is_in_group(Game_SubGroupTag.PC):
-		_pc_pos = _new_ConvertCoord.vector_to_array(current_sprite.position)
+		_pc_pos = Game_ConvertCoord.vector_to_array(current_sprite.position)
 		_progress.end_world(_pc_pos[0], _pc_pos[1])
 
 

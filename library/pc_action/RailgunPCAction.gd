@@ -186,7 +186,7 @@ func _init_skull_pillar() -> void:
 	Game_ArrayHelper.rand_picker(building, building.size(), _ref_RandomNumber)
 
 	for i in building:
-		pos = _new_ConvertCoord.vector_to_array(i.position)
+		pos = Game_ConvertCoord.vector_to_array(i.position)
 		if _new_CoordCalculator.is_inside_range(pos[0], pos[1],
 				_source_position[0], _source_position[1],
 				Game_DungeonSize.CENTER_X):

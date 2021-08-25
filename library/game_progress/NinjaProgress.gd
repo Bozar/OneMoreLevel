@@ -51,7 +51,7 @@ func _try_remove_trap() -> void:
 
 	for i in find_traps:
 		if _ref_ObjectData.get_hit_point(i) == Game_NinjaData.MAX_SOUL_DURATION:
-			remove_position.push_back(_new_ConvertCoord.vector_to_array(
+			remove_position.push_back(Game_ConvertCoord.vector_to_array(
 					i.position))
 		elif _ref_ObjectData.get_hit_point(i) \
 				== Game_NinjaData.MAX_SOUL_DURATION - 1:

@@ -42,7 +42,7 @@ func _change_water_flow() -> void:
 		direction = valid_state[0]
 		_rotate_sprite(i, direction)
 
-		pos = _new_ConvertCoord.vector_to_array(i.position)
+		pos = Game_ConvertCoord.vector_to_array(i.position)
 		x = pos[0]
 		y = pos[1]
 		for _j in range(Game_StyxData.FLOW_LENGTH):

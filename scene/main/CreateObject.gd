@@ -7,7 +7,6 @@ signal sprite_created(new_sprite, main_group, sub_group, x, y)
 var _ref_Palette: Game_Palette
 
 var _new_ZIndex := Game_ZIndex.new()
-var _new_ConvertCoord := Game_ConvertCoord.new()
 
 
 func create_and_fetch(prefab: PackedScene,
@@ -18,7 +17,7 @@ func create_and_fetch(prefab: PackedScene,
 			main_group, sub_group)
 	var z_index: int = _new_ZIndex.get_z_index(main_group)
 
-	new_sprite.position = _new_ConvertCoord.index_to_vector(
+	new_sprite.position = Game_ConvertCoord.index_to_vector(
 			x, y, x_offset, y_offset)
 	new_sprite.add_to_group(main_group)
 	new_sprite.add_to_group(sub_group)

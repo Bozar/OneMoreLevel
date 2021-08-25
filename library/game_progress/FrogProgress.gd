@@ -107,7 +107,7 @@ func _submerge_land(submerge: int) -> void:
 
 	Game_ArrayHelper.rand_picker(land_sprite, submerge, _ref_RandomNumber)
 	for i in land_sprite:
-		land_pos = _new_ConvertCoord.vector_to_array(i.position)
+		land_pos = Game_ConvertCoord.vector_to_array(i.position)
 		x = land_pos[0]
 		y = land_pos[1]
 		_add_or_remove_ground(false, x, y)
@@ -120,7 +120,7 @@ func _remove_frog() -> void:
 	var pos: Array
 
 	for i in frog:
-		pos = _new_ConvertCoord.vector_to_array(i.position)
+		pos = Game_ConvertCoord.vector_to_array(i.position)
 		_ref_RemoveObject.remove_actor(pos[0], pos[1])
 
 

@@ -61,7 +61,7 @@ func remove_data(actor: Sprite) -> void:
 
 
 func _switch_sprite() -> void:
-	var pos: Array = _new_ConvertCoord.vector_to_array(_self.position)
+	var pos: Array = Game_ConvertCoord.vector_to_array(_self.position)
 	var ground: Sprite = _ref_DungeonBoard.get_ground(pos[0], pos[1])
 	var sprite_type: String
 
@@ -227,7 +227,7 @@ func _set_pc_hit_point(add_hit_point: int) -> void:
 
 func _boss_absorb_fog() -> void:
 	var hit_point: int = _ref_ObjectData.get_hit_point(_self)
-	var pos: Array = _new_ConvertCoord.vector_to_array(_self.position)
+	var pos: Array = Game_ConvertCoord.vector_to_array(_self.position)
 	var neighbor: Array = _new_CoordCalculator.get_neighbor(pos[0], pos[1],
 			hit_point, true)
 	var ground: Sprite

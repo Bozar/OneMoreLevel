@@ -96,7 +96,7 @@ func _wind_blow() -> void:
 		_ref_DungeonBoard.move_sprite(Game_MainGroupTag.ACTOR,
 				_source_position[0], _source_position[1],
 				new_position[0], new_position[1])
-	_source_position = _new_ConvertCoord.vector_to_array(pc.position)
+	_source_position = Game_ConvertCoord.vector_to_array(pc.position)
 
 
 func _try_move_over_border(x: int, y: int) -> Array:

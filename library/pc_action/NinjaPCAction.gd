@@ -194,7 +194,7 @@ func _show_or_hide_trap() -> void:
 	var pos: Array
 
 	for i in find_traps:
-		pos = _new_ConvertCoord.vector_to_array(i.position)
+		pos = Game_ConvertCoord.vector_to_array(i.position)
 		i.visible = not _ref_DungeonBoard.has_actor(pos[0], pos[1])
 
 

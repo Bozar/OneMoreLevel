@@ -17,7 +17,6 @@ var _ref_CreateObject : Game_CreateObject
 var _ref_Schedule: Game_Schedule
 var _ref_Palette: Game_Palette
 
-var _new_ConvertCoord := Game_ConvertCoord.new()
 var _new_CoordCalculator := Game_CoordCalculator.new()
 var _new_DijkstraPathFinding := Game_DijkstraPathFinding.new()
 var _new_SpriteTypeTag := Game_SpriteTypeTag.new()
@@ -66,8 +65,8 @@ func set_local_var(actor: Sprite) -> void:
 	var pc = _ref_DungeonBoard.get_pc()
 
 	_self = actor
-	_self_pos = _new_ConvertCoord.vector_to_array(_self.position)
-	_pc_pos = _new_ConvertCoord.vector_to_array(pc.position)
+	_self_pos = Game_ConvertCoord.vector_to_array(_self.position)
+	_pc_pos = Game_ConvertCoord.vector_to_array(pc.position)
 
 
 func _approach_pc(start_point: Array = [_pc_pos], one_step: int = 1,

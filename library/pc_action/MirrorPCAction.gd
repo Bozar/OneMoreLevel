@@ -65,7 +65,7 @@ func _is_checkmate() -> bool:
 			Game_SubGroupTag.PHANTOM)
 	var trap: Sprite = _ref_DungeonBoard.get_sprites_by_tag(
 			Game_SubGroupTag.CRYSTAL)[0]
-	var trap_x: int = _new_ConvertCoord.vector_to_array(trap.position)[0]
+	var trap_x: int = Game_ConvertCoord.vector_to_array(trap.position)[0]
 
 	for i in npc:
 		if _ref_ObjectData.verify_state(i, Game_ObjectStateTag.DEFAULT):
@@ -126,7 +126,7 @@ func _create_image_on_the_other_side(x: int, y: int) -> void:
 	if remove > 0:
 		Game_ArrayHelper.rand_picker(images, remove, _ref_RandomNumber)
 		for i in images:
-			position = _new_ConvertCoord.vector_to_array(i.position)
+			position = Game_ConvertCoord.vector_to_array(i.position)
 			_ref_RemoveObject.remove_actor(position[0], position[1])
 
 
@@ -231,7 +231,7 @@ func _reset_sprite_color() -> void:
 		_ref_Palette.set_default_color(set_this, Game_MainGroupTag.BUILDING)
 
 	for i in _ref_DungeonBoard.get_sprites_by_tag(Game_MainGroupTag.TRAP):
-		pos = _new_ConvertCoord.vector_to_array(i.position)
+		pos = Game_ConvertCoord.vector_to_array(i.position)
 		i.visible = not _ref_DungeonBoard.has_actor(pos[0], pos[1])
 		_ref_Palette.set_default_color(i, Game_MainGroupTag.TRAP)
 

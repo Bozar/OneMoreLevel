@@ -15,7 +15,7 @@ func _init(parent_node: Node2D).(parent_node) -> void:
 
 func switch_sprite() -> void:
 	var pc: Sprite = _ref_DungeonBoard.get_pc()
-	var pc_pos: Array = _new_ConvertCoord.vector_to_array(pc.position)
+	var pc_pos: Array = Game_ConvertCoord.vector_to_array(pc.position)
 	var ground: Sprite = _ref_DungeonBoard.get_ground(pc_pos[0], pc_pos[1])
 	var new_sprite_type: String
 
@@ -233,7 +233,7 @@ func _reset_input_state() -> void:
 
 func _restore_in_cage() -> void:
 	var pc: Sprite = _ref_DungeonBoard.get_pc()
-	var pos: Array = _new_ConvertCoord.vector_to_array(pc.position)
+	var pos: Array = Game_ConvertCoord.vector_to_array(pc.position)
 	var neighbor: Array = _new_CoordCalculator.get_neighbor(pos[0], pos[1], 1)
 	var is_surrounded: bool = true
 

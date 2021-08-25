@@ -20,7 +20,6 @@ var _ref_GameSetting: Game_GameSetting
 var _ref_Palette: Game_Palette
 
 var _new_CoordCalculator := Game_CoordCalculator.new()
-var _new_ConvertCoord := Game_ConvertCoord.new()
 var _new_ShadowCastFOV := Game_ShadowCastFOV.new()
 var _new_CrossShapedFOV := Game_CrossShapedFOV.new()
 var _new_SpriteTypeTag := Game_SpriteTypeTag.new()
@@ -130,7 +129,7 @@ func reset_state() -> void:
 
 func set_source_position() -> void:
 	var pc: Sprite = _ref_DungeonBoard.get_pc()
-	_source_position = _new_ConvertCoord.vector_to_array(pc.position)
+	_source_position = Game_ConvertCoord.vector_to_array(pc.position)
 
 
 func set_target_position(direction: String) -> void:
@@ -189,7 +188,7 @@ func _is_checkmate() -> bool:
 func _render_end_game(win: bool) -> void:
 	var pc: Sprite = _ref_DungeonBoard.get_pc()
 
-	_source_position = _new_ConvertCoord.vector_to_array(pc.position)
+	_source_position = Game_ConvertCoord.vector_to_array(pc.position)
 	render_fov()
 	if not win:
 		_ref_Palette.set_dark_color(pc, Game_MainGroupTag.ACTOR)

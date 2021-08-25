@@ -17,7 +17,6 @@ var _ref_GameSetting: Game_GameSetting
 var _ref_Palette: Game_Palette
 
 var _new_WorldTag := Game_WorldTag.new()
-var _new_ConvertCoord := Game_ConvertCoord.new()
 
 var _node_to_color: Dictionary
 
@@ -72,7 +71,7 @@ func _get_turn() -> String:
 
 func _get_warning() -> String:
 	var pc: Sprite = _ref_DungeonBoard.get_pc()
-	var pc_pos: Array = _new_ConvertCoord.vector_to_array(pc.position)
+	var pc_pos: Array = Game_ConvertCoord.vector_to_array(pc.position)
 
 	if _ref_DangerZone.is_in_danger(pc_pos[0], pc_pos[1]):
 		return Game_SidebarText.DANGER

@@ -14,7 +14,6 @@ var _ref_Palette: Game_Palette
 
 var _spr_Floor := preload("res://sprite/Floor.tscn")
 
-var _new_ConvertCoord := Game_ConvertCoord.new()
 var _new_CoordCalculator := Game_CoordCalculator.new()
 var _new_SpriteTypeTag := Game_SpriteTypeTag.new()
 
