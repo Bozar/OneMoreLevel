@@ -88,6 +88,12 @@ static func get_mirror_image(source_x: int, source_y: int,
 	return MirrorCoord.new(is_inside_dungeon(x, y), x, y)
 
 
-static func is_inside_dungeon(x: int, y: int) -> bool:
-	return (x > -1) and (x < Game_DungeonSize.MAX_X) \
-			and (y > -1) and (y < Game_DungeonSize.MAX_Y)
+static func is_inside_dungeon(x: int, y: int,
+		max_x: int = Game_DungeonSize.MAX_X,
+		max_y: int = Game_DungeonSize.MAX_Y) -> bool:
+	var min_xy := -1
+	return is_in_between(x, min_xy, max_x) and is_in_between(y, min_xy, max_y)
+
+
+static func is_in_between(x: int, min_x: int, max_x: int) -> bool:
+	return (x > min_x) and (x < max_x)

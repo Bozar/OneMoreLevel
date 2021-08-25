@@ -22,7 +22,7 @@ func render_fov() -> void:
 		_render_without_fog_of_war()
 		return
 
-	_new_ShadowCastFOV.set_field_of_view(
+	Game_ShadowCastFOV.set_field_of_view(
 			Game_DungeonSize.MAX_X, Game_DungeonSize.MAX_Y,
 			_source_position[0], _source_position[1], Game_NinjaData.PC_SIGHT,
 			self, "_block_line_of_sight", [])
@@ -33,10 +33,10 @@ func render_fov() -> void:
 				match i:
 					Game_MainGroupTag.BUILDING, Game_MainGroupTag.GROUND:
 						_set_sprite_color_with_memory(x, y, i, "", true,
-								_new_ShadowCastFOV, "is_in_sight")
+								Game_ShadowCastFOV, "is_in_sight")
 					_:
 						_set_sprite_color(x, y, i, "",
-								_new_ShadowCastFOV, "is_in_sight")
+								Game_ShadowCastFOV, "is_in_sight")
 
 
 func interact_with_trap() -> void:

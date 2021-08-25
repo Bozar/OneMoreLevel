@@ -19,7 +19,6 @@ var _ref_DangerZone: Game_DangerZone
 var _ref_GameSetting: Game_GameSetting
 var _ref_Palette: Game_Palette
 
-var _new_ShadowCastFOV := Game_ShadowCastFOV.new()
 var _new_SpriteTypeTag := Game_SpriteTypeTag.new()
 
 var _source_position: Array
@@ -144,7 +143,7 @@ func render_fov() -> void:
 		_render_without_fog_of_war()
 		return
 
-	_new_ShadowCastFOV.set_field_of_view(
+	Game_ShadowCastFOV.set_field_of_view(
 			Game_DungeonSize.MAX_X, Game_DungeonSize.MAX_Y,
 			_source_position[0], _source_position[1], _fov_render_range,
 			self, "_block_line_of_sight", [])
@@ -153,7 +152,7 @@ func render_fov() -> void:
 		for y in range(Game_DungeonSize.MAX_Y):
 			for i in Game_MainGroupTag.DUNGEON_OBJECT:
 				_set_sprite_color(x, y, i, "",
-						_new_ShadowCastFOV, "is_in_sight")
+						Game_ShadowCastFOV, "is_in_sight")
 
 
 func switch_sprite() -> void:

@@ -26,7 +26,7 @@ func render_fov() -> void:
 		_render_without_fog_of_war()
 		return
 
-	_new_ShadowCastFOV.set_field_of_view(
+	Game_ShadowCastFOV.set_field_of_view(
 			Game_DungeonSize.MAX_X, Game_DungeonSize.MAX_Y,
 			_source_position[0], _source_position[1], _fov_render_range,
 			self, "_block_line_of_sight", [])
@@ -36,7 +36,7 @@ func render_fov() -> void:
 			for i in Game_MainGroupTag.DUNGEON_OBJECT:
 				if i != Game_MainGroupTag.TRAP:
 					_set_sprite_color(x, y, i, "",
-							_new_ShadowCastFOV, "is_in_sight")
+							Game_ShadowCastFOV, "is_in_sight")
 
 
 func wait() -> void:
