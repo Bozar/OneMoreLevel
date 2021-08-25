@@ -27,12 +27,16 @@ func _create_wall() -> void:
 	var packed_prefab: Game_DungeonPrefab.PackedPrefab
 	var start_x := 5
 	var start_y := 5
-	var prefab_arg := []
+	var edit_prefab := [
+		Game_DungeonPrefab.HORIZONTAL_FLIP,
+		Game_DungeonPrefab.VERTICAL_FLIP,
+		Game_DungeonPrefab.ROTATE_RIGHT,
+	]
 
-	for _i in range(0, MAX_PREFAB_ARG):
-		prefab_arg.push_back(_ref_RandomNumber.get_percent_chance(FLIP_PREFAB))
-	packed_prefab = Game_DungeonPrefab.get_prefab(file_list[0],
-			prefab_arg[0], prefab_arg[1], prefab_arg[2])
+	for _i in range(edit_prefab.size()):
+		edit_prefab.push_back(Game_DungeonPrefab.DO_NOT_EDIT)
+	_new_ArrayHelper.rand_picker(edit_prefab, MAX_PREFAB_ARG, _ref_RandomNumber)
+	packed_prefab = Game_DungeonPrefab.get_prefab(file_list[0], edit_prefab)
 
 	for x in range(0, packed_prefab.max_x):
 		for y in range(0, packed_prefab.max_y):

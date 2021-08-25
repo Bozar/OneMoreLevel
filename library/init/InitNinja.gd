@@ -1,10 +1,10 @@
 extends Game_WorldTemplate
 
 
-const PATH_TO_PREFABS: String = "ninja"
-const OPTIONAL_WALL_CHAR: String = "X"
-const MAX_PREFAB: int = 1
-const FLIP_PREFAB: int = 50
+const PATH_TO_PREFABS := "ninja"
+const OPTIONAL_WALL_CHAR := "X"
+const MAX_PREFAB := 1
+const MAX_PREFAB_ARG := 2
 
 var _spr_PCNinja := preload("res://sprite/PCNinja.tscn")
 var _spr_Ninja := preload("res://sprite/Ninja.tscn")
@@ -25,14 +25,19 @@ func get_blueprint() -> Array:
 func _create_wall() -> void:
 	var file_list: Array = Game_FileIOHelper.get_file_list(
 			Game_DungeonPrefab.RESOURCE_PATH + PATH_TO_PREFABS)
+	var edit_prefab := [
+		Game_DungeonPrefab.HORIZONTAL_FLIP,
+		Game_DungeonPrefab.VERTICAL_FLIP,
+	]
 	var packed_prefab: Game_DungeonPrefab.PackedPrefab
-	var optional_walls: Array = []
+	var optional_walls := []
 
+	for _i in range(edit_prefab.size()):
+		edit_prefab.push_back(Game_DungeonPrefab.DO_NOT_EDIT)
 	_new_ArrayHelper.rand_picker(file_list, MAX_PREFAB, _ref_RandomNumber)
+	_new_ArrayHelper.rand_picker(edit_prefab, MAX_PREFAB_ARG, _ref_RandomNumber)
 	# print(file_list[0])
-	packed_prefab = Game_DungeonPrefab.get_prefab(file_list[0],
-			_ref_RandomNumber.get_percent_chance(FLIP_PREFAB),
-			_ref_RandomNumber.get_percent_chance(FLIP_PREFAB))
+	packed_prefab = Game_DungeonPrefab.get_prefab(file_list[0], edit_prefab)
 
 	for x in range(0, packed_prefab.max_x):
 		for y in range(0, packed_prefab.max_y):
