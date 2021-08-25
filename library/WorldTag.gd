@@ -30,15 +30,15 @@ const TAG_TO_NAME: Dictionary = {
 }
 
 
-func get_world_name(world_tag: String) -> String:
+static func get_world_name(world_tag: String) -> String:
 	if TAG_TO_NAME.has(world_tag):
 		return TAG_TO_NAME[world_tag]
 	return INVALID
 
 
-func get_full_world_tag() -> Array:
+static func get_full_world_tag() -> Array:
 	return TAG_TO_NAME.keys()
 
 
-func is_valid_world_tag(world_tag: String) -> bool:
+static func is_valid_world_tag(world_tag: String) -> bool:
 	return TAG_TO_NAME.has(world_tag)

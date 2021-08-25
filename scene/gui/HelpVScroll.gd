@@ -8,8 +8,6 @@ const DUNGEON: String = "HelpHBox/Dungeon"
 
 var _ref_Palette: Game_Palette
 
-var _new_InitWorldData := Game_InitWorldData.new()
-
 var _help_text: Array
 var _help_index: int
 
@@ -58,7 +56,7 @@ func switch_help_text(switch_to_next: bool) -> void:
 
 
 func _on_InitWorld_world_selected(new_world: String) -> void:
-	_help_text = _new_InitWorldData.get_help(new_world)
+	_help_text = Game_InitWorldData.get_help(new_world)
 	_reset_index()
 
 	get_node(DUNGEON).modulate = _ref_Palette.get_text_color(true)

@@ -16,8 +16,6 @@ var _ref_CountDown: Game_CountDown
 var _ref_CreateObject : Game_CreateObject
 var _ref_Palette: Game_Palette
 
-var _new_InitWorldData := Game_InitWorldData.new()
-
 var _world_tag: String
 var _ai: Game_AITemplate
 
@@ -42,7 +40,7 @@ func _on_CreateObject_sprite_created(_new_sprite: Sprite,
 	if sub_group != Game_SubGroupTag.PC:
 		return
 	# Refer: AITemplate.gd.
-	_ai = _new_InitWorldData.get_enemy_ai(_world_tag).new(self)
+	_ai = Game_InitWorldData.get_enemy_ai(_world_tag).new(self)
 
 
 func _on_RemoveObject_sprite_removed(remove_sprite: Sprite,

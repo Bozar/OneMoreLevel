@@ -18,9 +18,6 @@ var _ref_GameSetting : Game_GameSetting
 var _ref_DangerZone: Game_DangerZone
 var _ref_Schedule: Game_Schedule
 
-var _new_WorldTag := Game_WorldTag.new()
-var _new_InitWorldData := Game_InitWorldData.new()
-
 var _world_tag: String
 var _world_template: Game_WorldTemplate
 
@@ -49,7 +46,7 @@ func _on_GameSetting_setting_saved(save_data: Game_TransferData) -> void:
 
 
 func _get_world() -> Game_WorldTemplate:
-	var full_tag: Array = _new_WorldTag.get_full_world_tag()
+	var full_tag: Array = Game_WorldTag.get_full_world_tag()
 	var include_world: Array = _ref_GameSetting.get_include_world()
 	var exclude_world: Array = _ref_GameSetting.get_exclude_world()
 
@@ -67,7 +64,7 @@ func _get_world() -> Game_WorldTemplate:
 		_world_tag = full_tag[0]
 	emit_signal("world_selected", _world_tag)
 
-	return _new_InitWorldData.get_world_template(_world_tag).new(self)
+	return Game_InitWorldData.get_world_template(_world_tag).new(self)
 
 
 func _init_indicator(x: int, y: int) -> void:
@@ -96,6 +93,6 @@ func _filter_get_world(source: Array, index: int, opt_arg: Array) -> bool:
 func _verify_world_tag(source: Array, index: int, _opt_arg: Array) -> bool:
 	if source[index] is String:
 		source[index] = source[index].to_lower()
-		if _new_WorldTag.is_valid_world_tag(source[index]):
+		if Game_WorldTag.is_valid_world_tag(source[index]):
 			return true
 	return false

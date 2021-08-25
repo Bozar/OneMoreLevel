@@ -18,8 +18,6 @@ var _ref_CreateObject: Game_CreateObject
 var _ref_GameSetting: Game_GameSetting
 var _ref_Palette: Game_Palette
 
-var _new_InitWorldData := Game_InitWorldData.new()
-
 var _pc_action: Game_PCActionTemplate
 var _direction: String
 var _end_game: bool = false
@@ -71,7 +69,7 @@ func _unhandled_input(event: InputEvent) -> void:
 
 # Refer: PCActionTemplate.gd.
 func _on_InitWorld_world_selected(new_world: String) -> void:
-	_pc_action = _new_InitWorldData.get_pc_action(new_world).new(self)
+	_pc_action = Game_InitWorldData.get_pc_action(new_world).new(self)
 
 
 func _on_CreateObject_sprite_created(_new_sprite: Sprite,

@@ -16,8 +16,6 @@ var _ref_DungeonBoard: Game_DungeonBoard
 var _ref_GameSetting: Game_GameSetting
 var _ref_Palette: Game_Palette
 
-var _new_WorldTag := Game_WorldTag.new()
-
 var _node_to_color: Dictionary
 
 
@@ -35,7 +33,7 @@ func _on_InitWorld_world_selected(new_world: String) -> void:
 	get_node(TURN).text = _get_turn()
 	get_node(MESSAGE).text = ""
 
-	get_node(WORLD).text = _new_WorldTag.get_world_name(new_world)
+	get_node(WORLD).text = Game_WorldTag.get_world_name(new_world)
 	get_node(HELP).text = Game_SidebarText.HELP
 	get_node(VERSION).text = _get_version()
 	get_node(SEED).text = _get_seed()

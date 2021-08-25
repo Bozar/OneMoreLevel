@@ -13,14 +13,12 @@ var _ref_DangerZone: Game_DangerZone
 var _ref_EndGame: Game_EndGame
 var _ref_Palette: Game_Palette
 
-var _new_InitWorldData := Game_InitWorldData.new()
-
 var _progress: Game_ProgressTemplate
 var _game_over: bool = false
 
 
 func _on_InitWorld_world_selected(new_world: String) -> void:
-	_progress = _new_InitWorldData.get_progress(new_world).new(self)
+	_progress = Game_InitWorldData.get_progress(new_world).new(self)
 
 
 func _on_CreateObject_sprite_created(new_sprite: Sprite,

@@ -12,27 +12,25 @@ const HELP_PATH: String = "res://user/doc/%str%.md"
 const GENERAL_HELP: String = "res://user/doc/general.md"
 const KEY_BINDING_HELP: String = "res://user/doc/keybinding.md"
 
-var _new_WorldTag := Game_WorldTag.new()
 
-
-func get_world_template(world_tag: String) -> Game_WorldTemplate:
+static func get_world_template(world_tag: String) -> Game_WorldTemplate:
 	return _load_data(INIT_PATH, world_tag)
 
 
-func get_pc_action(world_tag: String) -> Game_PCActionTemplate:
+static func get_pc_action(world_tag: String) -> Game_PCActionTemplate:
 	return _load_data(ACTION_PATH, world_tag)
 
 
-func get_enemy_ai(world_tag: String) -> Game_AITemplate:
+static func get_enemy_ai(world_tag: String) -> Game_AITemplate:
 	return _load_data(AI_PATH, world_tag)
 
 
-func get_progress(world_tag: String) -> Game_ProgressTemplate:
+static func get_progress(world_tag: String) -> Game_ProgressTemplate:
 	return _load_data(PROGRESS_PATH, world_tag)
 
 
-func get_help(world_tag: String) -> Array:
-	var world_name: String = _new_WorldTag.get_world_name(world_tag).to_lower()
+static func get_help(world_tag: String) -> Array:
+	var world_name: String = Game_WorldTag.get_world_name(world_tag).to_lower()
 	var dungeon: String = HELP_PATH.replace(PLACEHOLDER, world_name)
 	var parse_file: Game_FileParser
 	var result: Array = []
@@ -46,8 +44,8 @@ func get_help(world_tag: String) -> Array:
 	return result
 
 
-func _load_data(file_path: String, world_tag: String):
-	var world_name: String = _new_WorldTag.get_world_name(world_tag)
+static func _load_data(file_path: String, world_tag: String):
+	var world_name: String = Game_WorldTag.get_world_name(world_tag)
 	var full_path: String = file_path.replace(PLACEHOLDER, world_name)
 
 	return load(full_path)
