@@ -91,19 +91,19 @@ func _get_position() -> Array:
 
 
 func _is_occupied(x: int, y: int) -> bool:
-	return (not _new_CoordCalculator.is_inside_dungeon(x, y)) \
+	return (not Game_CoordCalculator.is_inside_dungeon(x, y)) \
 		or _ref_DungeonBoard.has_actor(x, y) \
 		or _ref_DungeonBoard.has_building(x, y)
 
 
 func _is_close_to_pc(x: int, y: int) -> bool:
-	return _new_CoordCalculator.is_inside_range(x, y, _pc_x, _pc_y,
+	return Game_CoordCalculator.is_inside_range(x, y, _pc_x, _pc_y,
 			Game_KnightData.SIGHT)
 
 
 func _has_neighbor(x: int, y: int) -> bool:
 	var max_range: int = 2
-	var neighbor: Array = _new_CoordCalculator.get_neighbor(x, y, max_range)
+	var neighbor: Array = Game_CoordCalculator.get_neighbor(x, y, max_range)
 
 	for i in neighbor:
 		if _ref_DungeonBoard.has_actor(i[0], i[1]):
@@ -113,7 +113,7 @@ func _has_neighbor(x: int, y: int) -> bool:
 
 func _is_too_sparse(x: int, y: int) -> bool:
 	var actor: int = 0
-	var neighbor: Array = _new_CoordCalculator.get_neighbor(x, y,
+	var neighbor: Array = Game_CoordCalculator.get_neighbor(x, y,
 			Game_KnightData.SIGHT)
 
 	for i in neighbor:
@@ -123,7 +123,7 @@ func _is_too_sparse(x: int, y: int) -> bool:
 
 
 func _get_encirclement(x: int, y: int) -> Array:
-	var neighbor: Array = _new_CoordCalculator.get_neighbor(x, y,
+	var neighbor: Array = Game_CoordCalculator.get_neighbor(x, y,
 			Game_KnightData.ENCIRCLEMENT)
 	var candidate: Array = []
 

@@ -13,7 +13,7 @@ func take_action() -> void:
 	_ref_ObjectData.set_state(_self, Game_ObjectStateTag.DEFAULT)
 	_ref_SwitchSprite.switch_sprite(_self, Game_SpriteTypeTag.DEFAULT)
 
-	if _new_CoordCalculator.is_inside_range(_self_pos[0], _self_pos[1],
+	if Game_CoordCalculator.is_inside_range(_self_pos[0], _self_pos[1],
 			_pc_pos[0], _pc_pos[1], Game_NinjaData.ATTACK_RANGE):
 		_ref_SwitchSprite.switch_sprite(_self, Game_SpriteTypeTag.ACTIVE)
 		_ref_EndGame.player_lose()
@@ -21,6 +21,6 @@ func take_action() -> void:
 		pc = _ref_DungeonBoard.get_pc()
 		pc_hp = _ref_ObjectData.get_hit_point(pc)
 		npc_sight += Game_NinjaData.ADD_NPC_SIGHT * pc_hp
-		if _new_CoordCalculator.is_inside_range(_self_pos[0], _self_pos[1],
+		if Game_CoordCalculator.is_inside_range(_self_pos[0], _self_pos[1],
 				_pc_pos[0], _pc_pos[1], npc_sight):
 			_approach_pc()

@@ -43,7 +43,7 @@ func _init_wall() -> void:
 	for i in start_point:
 		x = i[0] + _ref_RandomNumber.get_int(MIN_SHIFT, MAX_SHIFT)
 		y = i[1] + _ref_RandomNumber.get_int(MIN_SHIFT, MAX_SHIFT)
-		neighbor = _new_CoordCalculator.get_neighbor(x, y, 1)
+		neighbor = Game_CoordCalculator.get_neighbor(x, y, 1)
 		for j in range(0, neighbor.size()):
 			if (counter_index == 0) and (j == 0):
 				continue
@@ -84,11 +84,11 @@ func _create_pc() -> void:
 		y = _ref_RandomNumber.get_y_coord()
 		if _is_occupied(x, y):
 			continue
-		neighbor = _new_CoordCalculator.get_neighbor(x, y, 1)
+		neighbor = Game_CoordCalculator.get_neighbor(x, y, 1)
 		for i in neighbor:
 			if _is_occupied(i[0], i[1]):
 				continue
-			neighbor = _new_CoordCalculator.get_neighbor(x, y,
+			neighbor = Game_CoordCalculator.get_neighbor(x, y,
 					Game_HoundData.PC_SIGHT, true)
 			for j in neighbor:
 				_occupy_position(j[0], j[1])

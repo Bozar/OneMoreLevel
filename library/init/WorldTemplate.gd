@@ -15,8 +15,6 @@ var _spr_PC := preload("res://sprite/PC.tscn")
 var _ref_RandomNumber: Game_RandomNumber
 var _ref_DangerZone: Game_DangerZone
 
-var _new_CoordCalculator := Game_CoordCalculator.new()
-
 # {0: [0, ...], 1: [0, ...], ...}
 var _dungeon_with_int: Dictionary = {}
 # [SpriteBlueprint, ...]
@@ -96,13 +94,13 @@ func _init_actor(min_distance: int, x: int, y: int, max_actor: int,
 	var neighbor: Array
 
 	while true:
-		if _new_CoordCalculator.is_inside_dungeon(x, y) \
+		if Game_CoordCalculator.is_inside_dungeon(x, y) \
 				and (not _is_occupied(x, y)):
 			break
 		x = _ref_RandomNumber.get_x_coord()
 		y = _ref_RandomNumber.get_y_coord()
 
-	neighbor = _new_CoordCalculator.get_neighbor(x, y, min_distance, true)
+	neighbor = Game_CoordCalculator.get_neighbor(x, y, min_distance, true)
 	for i in neighbor:
 		_occupy_position(i[0], i[1])
 	_add_to_blueprint(actor_scene, Game_MainGroupTag.ACTOR, sub_tag, x, y)

@@ -59,7 +59,7 @@ func _init_wall() -> void:
 	while width + height == MAX_BLOCK_SIZE * 2:
 		width = _ref_RandomNumber.get_int(MIN_BLOCK_SIZE, MAX_BLOCK_SIZE + 1)
 		height = _ref_RandomNumber.get_int(MIN_BLOCK_SIZE, MAX_BLOCK_SIZE + 1)
-	block = _new_CoordCalculator.get_block(x, y, width, height)
+	block = Game_CoordCalculator.get_block(x, y, width, height)
 
 	# Cannot overlap existing blocks.
 	Game_ArrayHelper.filter_element(block, self, "_is_empty_space", [])
@@ -129,7 +129,7 @@ func _fill_hole() -> void:
 					and (y != 0) and (y != Game_DungeonSize.MAX_Y - 1):
 				continue
 
-			neighbor = _new_CoordCalculator.get_neighbor(x, y, 1)
+			neighbor = Game_CoordCalculator.get_neighbor(x, y, 1)
 			fill_this = true
 			for i in neighbor:
 				if _get_terrain_marker(i[0], i[1]) != WALL_MARKER:
@@ -161,7 +161,7 @@ func _create_actor(scene: PackedScene, sub_tag: String, distance: int) -> void:
 		if _get_terrain_marker(x, y) != WALL_MARKER:
 			break
 
-	neighbor = _new_CoordCalculator.get_neighbor(x, y, distance, true)
+	neighbor = Game_CoordCalculator.get_neighbor(x, y, distance, true)
 	for i in neighbor:
 		_set_terrain_marker(i[0], i[1], WALL_MARKER)
 	_add_to_blueprint(scene, Game_MainGroupTag.ACTOR, sub_tag, x, y)

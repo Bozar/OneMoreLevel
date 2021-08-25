@@ -49,7 +49,7 @@ func _init_wall(count: int = 0) -> void:
 
 
 func _try_build_wall(x: int, y: int, is_treasure: bool) -> void:
-	if not _new_CoordCalculator.is_inside_dungeon(x, y):
+	if not Game_CoordCalculator.is_inside_dungeon(x, y):
 		return
 	if _is_occupied(x, y):
 		return

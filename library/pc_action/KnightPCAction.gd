@@ -46,7 +46,7 @@ func wait() -> void:
 func _is_checkmate() -> bool:
 	var x: int = _source_position[0]
 	var y: int = _source_position[1]
-	var neighbor: Array = _new_CoordCalculator.get_neighbor(x, y, 1)
+	var neighbor: Array = Game_CoordCalculator.get_neighbor(x, y, 1)
 	var actor: Sprite
 	var mirror: Game_CoordCalculator.MirrorCoord
 
@@ -59,7 +59,7 @@ func _is_checkmate() -> bool:
 		elif _ref_DungeonBoard.has_actor(i[0], i[1]):
 			actor = _ref_DungeonBoard.get_actor(i[0], i[1])
 			if _ref_ObjectData.verify_state(actor, Game_ObjectStateTag.ACTIVE):
-				mirror = _new_CoordCalculator.get_mirror_image(
+				mirror = Game_CoordCalculator.get_mirror_image(
 						x, y, i[0], i[1])
 				if mirror.coord_in_dungeon \
 						and (not _is_occupied(mirror.x, mirror.y)):
@@ -84,7 +84,7 @@ func _hit_boss(boss: Sprite) -> void:
 			teleport_x = _ref_RandomNumber.get_x_coord()
 			teleport_y = _ref_RandomNumber.get_y_coord()
 			is_occupied = _is_occupied(teleport_x, teleport_y)
-			is_too_close = _new_CoordCalculator.is_inside_range(
+			is_too_close = Game_CoordCalculator.is_inside_range(
 					teleport_x, teleport_y,
 					_source_position[0], _source_position[1],
 					Game_KnightData.ELITE_SIGHT)
@@ -98,7 +98,7 @@ func _hit_boss(boss: Sprite) -> void:
 
 
 func _roll() -> bool:
-	var neighbor: Array = _new_CoordCalculator.get_neighbor(
+	var neighbor: Array = Game_CoordCalculator.get_neighbor(
 			_target_position[0], _target_position[1], 1)
 	var roll_over: Array = [-1, -1]
 

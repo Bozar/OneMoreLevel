@@ -39,7 +39,7 @@ func render_fov() -> void:
 			if ground == null:
 				continue
 			ground.visible = true
-			distance = _new_CoordCalculator.get_range(x, y,
+			distance = Game_CoordCalculator.get_range(x, y,
 					_source_position[0], _source_position[1])
 			if distance > Game_StyxData.PC_MAX_SIGHT:
 				ground.visible = false
@@ -75,7 +75,7 @@ func move() -> void:
 	for i in Game_ObjectStateTag.DIRECTION_TO_COORD.keys():
 		x = _target_position[0]
 		y = _target_position[1]
-		while _new_CoordCalculator.is_inside_dungeon(x, y) \
+		while Game_CoordCalculator.is_inside_dungeon(x, y) \
 				and (_get_ground_direction(x, y) == STATE_TO_INT[i]):
 			x += Game_ObjectStateTag.DIRECTION_TO_COORD[i][0]
 			y += Game_ObjectStateTag.DIRECTION_TO_COORD[i][1]
@@ -128,7 +128,7 @@ func _switch_lighthouse_color() -> void:
 
 
 func _pc_is_near_harbor(x: int, y: int) -> bool:
-	var neighbor: Array = _new_CoordCalculator.get_neighbor(x, y, 1)
+	var neighbor: Array = Game_CoordCalculator.get_neighbor(x, y, 1)
 
 	for i in neighbor:
 		if _ref_DungeonBoard.has_sprite_with_sub_tag(Game_SubGroupTag.HARBOR,

@@ -21,7 +21,7 @@ func _respawn_npc(pc_x: int, pc_y: int) -> void:
 	if respawn_counter == 0:
 		return
 
-	neighbor = _new_CoordCalculator.get_neighbor(pc_x, pc_y,
+	neighbor = Game_CoordCalculator.get_neighbor(pc_x, pc_y,
 			Game_NinjaData.MAX_DISTANCE_TO_PC)
 	Game_ArrayHelper.filter_element(neighbor, self, "_not_too_close_to_pc",
 			[pc_x, pc_y])
@@ -40,7 +40,7 @@ func _not_too_close_to_pc(source: Array, index: int, opt_arg: Array) -> bool:
 
 	return not (_ref_DungeonBoard.has_building(x, y) \
 			or _ref_DungeonBoard.has_actor(x, y)
-			or _new_CoordCalculator.is_inside_range(x, y, pc_x, pc_y,
+			or Game_CoordCalculator.is_inside_range(x, y, pc_x, pc_y,
 					Game_NinjaData.MIN_DISTANCE_TO_PC))
 
 

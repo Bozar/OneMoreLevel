@@ -63,7 +63,7 @@ func _create_worm_head(retry: int) -> void:
 
 	x = _ref_RandomNumber.get_x_coord()
 	y = _ref_RandomNumber.get_y_coord()
-	neighbor = _new_CoordCalculator.get_neighbor(x, y,
+	neighbor = Game_CoordCalculator.get_neighbor(x, y,
 			Game_DesertData.WORM_DISTANCE, true)
 
 	for i in neighbor:

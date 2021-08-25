@@ -77,7 +77,7 @@ func _create_path(end_point: Array) -> int:
 		for _i in range(PATH_LENGTH):
 			x += multi_x * step
 			y += multi_y * step
-			if (not _new_CoordCalculator.is_inside_dungeon(x, y)) \
+			if (not Game_CoordCalculator.is_inside_dungeon(x, y)) \
 					or _is_occupied(x, y) or (_is_counter(x, y)):
 				break
 			else:
@@ -130,14 +130,14 @@ func _get_current_length(start_x: int, start_y: int, multi_x: int, multi_y: int,
 	var x: int = start_x
 	var y: int = start_y
 
-	while _new_CoordCalculator.is_inside_dungeon(x, y) and _is_occupied(x, y):
+	while Game_CoordCalculator.is_inside_dungeon(x, y) and _is_occupied(x, y):
 		counter += 1
 		x += multi_x * step
 		y += multi_y * step
 
 	x = start_x
 	y = start_y
-	while _new_CoordCalculator.is_inside_dungeon(x, y) and _is_occupied(x, y):
+	while Game_CoordCalculator.is_inside_dungeon(x, y) and _is_occupied(x, y):
 		counter += 1
 		x -= multi_x * step
 		y -= multi_y * step

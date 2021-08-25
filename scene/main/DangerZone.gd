@@ -2,8 +2,6 @@ extends Node2D
 class_name Game_DangerZone
 
 
-var _new_CoordCalculator := Game_CoordCalculator.new()
-
 # <x: int, <y: int, state: int>>
 var _coord_to_state: Dictionary = {}
 
@@ -16,13 +14,13 @@ func _ready() -> void:
 
 
 func is_in_danger(x: int, y: int) -> bool:
-	if not _new_CoordCalculator.is_inside_dungeon(x, y):
+	if not Game_CoordCalculator.is_inside_dungeon(x, y):
 		return true
 	return _coord_to_state[x][y] > 0
 
 
 func set_danger_zone(x: int, y: int, is_dangerous: bool) -> void:
-	if not _new_CoordCalculator.is_inside_dungeon(x, y):
+	if not Game_CoordCalculator.is_inside_dungeon(x, y):
 		return
 
 	if is_dangerous:

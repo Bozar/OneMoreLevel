@@ -17,7 +17,6 @@ var _ref_CreateObject : Game_CreateObject
 var _ref_Schedule: Game_Schedule
 var _ref_Palette: Game_Palette
 
-var _new_CoordCalculator := Game_CoordCalculator.new()
 var _new_DijkstraPathFinding := Game_DijkstraPathFinding.new()
 var _new_SpriteTypeTag := Game_SpriteTypeTag.new()
 

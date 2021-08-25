@@ -19,7 +19,6 @@ var _ref_DangerZone: Game_DangerZone
 var _ref_GameSetting: Game_GameSetting
 var _ref_Palette: Game_Palette
 
-var _new_CoordCalculator := Game_CoordCalculator.new()
 var _new_ShadowCastFOV := Game_ShadowCastFOV.new()
 var _new_CrossShapedFOV := Game_CrossShapedFOV.new()
 var _new_SpriteTypeTag := Game_SpriteTypeTag.new()
@@ -78,7 +77,7 @@ func is_inside_dungeon() -> bool:
 	var x: int = _target_position[0]
 	var y: int = _target_position[1]
 
-	return _new_CoordCalculator.is_inside_dungeon(x, y)
+	return Game_CoordCalculator.is_inside_dungeon(x, y)
 
 
 func is_npc() -> bool:
@@ -173,7 +172,7 @@ func game_over(win: bool) -> void:
 
 
 func _is_occupied(x: int, y: int) -> bool:
-	if not _new_CoordCalculator.is_inside_dungeon(x, y):
+	if not Game_CoordCalculator.is_inside_dungeon(x, y):
 		return true
 	for i in Game_MainGroupTag.ABOVE_GROUND_OBJECT:
 		if _ref_DungeonBoard.has_sprite(i, x, y):

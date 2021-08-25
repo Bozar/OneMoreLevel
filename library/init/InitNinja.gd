@@ -62,7 +62,7 @@ func _create_actor() -> void:
 	var y: int
 	var actor_position: Array
 
-	actor_position = _new_CoordCalculator.get_neighbor(
+	actor_position = Game_CoordCalculator.get_neighbor(
 			Game_DungeonSize.CENTER_X, Game_DungeonSize.CENTER_Y,
 			Game_NinjaData.PC_SIGHT, true)
 	Game_ArrayHelper.rand_picker(actor_position, actor_position.size(),
@@ -73,7 +73,7 @@ func _create_actor() -> void:
 			y = i[1]
 			break
 
-	actor_position = _new_CoordCalculator.get_neighbor(x, y,
+	actor_position = Game_CoordCalculator.get_neighbor(x, y,
 			Game_NinjaData.MAX_DISTANCE_TO_PC)
 	Game_ArrayHelper.filter_element(actor_position, self,
 			"_not_too_close_to_pc", [x, y])
@@ -95,5 +95,5 @@ func _not_too_close_to_pc(source: Array, index: int, opt_arg: Array) -> bool:
 	var pc_y: int = opt_arg[1]
 
 	return not (_is_occupied(x, y) \
-			or _new_CoordCalculator.is_inside_range(x, y, pc_x, pc_y,
+			or Game_CoordCalculator.is_inside_range(x, y, pc_x, pc_y,
 					Game_NinjaData.MIN_DISTANCE_TO_PC))

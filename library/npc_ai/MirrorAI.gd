@@ -19,7 +19,7 @@ func take_action() -> void:
 
 	_trap_pos = []
 	pc = _ref_DungeonBoard.get_pc()
-	distance = _new_CoordCalculator.get_range(_self_pos[0], _self_pos[1],
+	distance = Game_CoordCalculator.get_range(_self_pos[0], _self_pos[1],
 			_pc_pos[0], _pc_pos[1])
 
 	if distance > Game_MirrorData.PHANTOM_SIGHT:
@@ -53,7 +53,7 @@ func _move() -> void:
 
 
 func _switch_pc_and_image() -> void:
-	var mirror := _new_CoordCalculator.get_mirror_image(
+	var mirror := Game_CoordCalculator.get_mirror_image(
 			_pc_pos[0], _pc_pos[1], Game_DungeonSize.CENTER_X, _pc_pos[1])
 	var pc: Sprite = _ref_DungeonBoard.get_pc()
 

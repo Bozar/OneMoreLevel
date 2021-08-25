@@ -40,7 +40,7 @@ func _init_building() -> void:
 
 
 func _set_static_area(x: int, y: int, max_range: int) -> void:
-	var neighbor: Array = _new_CoordCalculator.get_neighbor(
+	var neighbor: Array = Game_CoordCalculator.get_neighbor(
 			x, y, max_range, true)
 
 	for i in neighbor:

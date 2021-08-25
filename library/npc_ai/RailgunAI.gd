@@ -22,7 +22,7 @@ func take_action() -> void:
 	elif _is_in_close_range():
 		_switch_mode(true)
 	elif _detect_pc():
-		# if _new_CoordCalculator.get_range(_self_pos[0], _self_pos[1],
+		# if Game_CoordCalculator.get_range(_self_pos[0], _self_pos[1],
 		# 		_pc_pos[0], _pc_pos[1]) > Game_RailgunData.NPC_SIGHT:
 		# 	_self.modulate = _ref_Palette.DEBUG
 		# 	print("gunshot")
@@ -84,7 +84,7 @@ func _is_in_close_range() -> bool:
 
 	if (self_x != pc_x) and (self_y != pc_y):
 		return false
-	elif not _new_CoordCalculator.is_inside_range(self_x, self_y, pc_x, pc_y,
+	elif not Game_CoordCalculator.is_inside_range(self_x, self_y, pc_x, pc_y,
 			Game_RailgunData.PC_SIDE_SIGHT):
 		return false
 
@@ -119,7 +119,7 @@ func _get_hit_point(shift_x: int, shift_y: int) -> int:
 
 
 func _block_ray(x: int, y: int) -> bool:
-	return (not _new_CoordCalculator.is_inside_dungeon(x, y)) \
+	return (not Game_CoordCalculator.is_inside_dungeon(x, y)) \
 			or _ref_DungeonBoard.has_building(x, y)
 
 
@@ -135,5 +135,5 @@ func _detect_pc() -> bool:
 		detect_distance = Game_RailgunData.NPC_EAR_SHOT
 	else:
 		detect_distance = Game_RailgunData.NPC_SIGHT
-	return _new_CoordCalculator.is_inside_range(_self_pos[0], _self_pos[1],
+	return Game_CoordCalculator.is_inside_range(_self_pos[0], _self_pos[1],
 			_pc_pos[0], _pc_pos[1], detect_distance)

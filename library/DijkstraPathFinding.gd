@@ -1,16 +1,13 @@
 class_name Game_DijkstraPathFinding
 
 
-var _new_CoordCalculator := Game_CoordCalculator.new()
-
-
 # Find the next step.
 # Call func_host.is_passable_func() to verify if a grid can be entered.
 # is_passable_func(source_array: Array, current_index: int,
 #> opt_arg: Array) -> bool
 func get_path(dungeon: Dictionary, start_x: int, start_y: int, one_step: int,
 		func_host: Object, is_passable_func: String, opt_arg: Array) -> Array:
-	var neighbor: Array = _new_CoordCalculator.get_neighbor(start_x, start_y,
+	var neighbor: Array = Game_CoordCalculator.get_neighbor(start_x, start_y,
 			one_step)
 	var min_distance: int = Game_PathFindingData.OBSTACLE
 	var x: int
@@ -42,7 +39,7 @@ func get_map(dungeon: Dictionary, end_point: Array) -> Dictionary:
 		return dungeon
 
 	var check: Array = end_point.pop_front()
-	var neighbor: Array = _new_CoordCalculator.get_neighbor(
+	var neighbor: Array = Game_CoordCalculator.get_neighbor(
 			check[0], check[1], 1)
 	var x: int
 	var y: int
@@ -57,7 +54,7 @@ func get_map(dungeon: Dictionary, end_point: Array) -> Dictionary:
 
 
 func _get_distance(dungeon: Dictionary, center_x: int, center_y: int) -> int:
-	var neighbor: Array = _new_CoordCalculator.get_neighbor(
+	var neighbor: Array = Game_CoordCalculator.get_neighbor(
 			center_x, center_y, 1)
 	var min_distance: int = Game_PathFindingData.OBSTACLE
 	var x: int

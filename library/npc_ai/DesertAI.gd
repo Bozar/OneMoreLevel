@@ -89,7 +89,7 @@ func _create_body(id: int, index: int, x: int, y: int) -> void:
 func _try_random_walk(id: int) -> bool:
 	var x: int = _self_pos[0]
 	var y: int = _self_pos[1]
-	var neighbor: Array = _new_CoordCalculator.get_neighbor(x, y, 1)
+	var neighbor: Array = Game_CoordCalculator.get_neighbor(x, y, 1)
 	var candidate: Array = []
 	var neck: Array
 	var mirror: Game_CoordCalculator.MirrorCoord
@@ -98,7 +98,7 @@ func _try_random_walk(id: int) -> bool:
 
 	if _id_to_worm[id][1] != null:
 		neck = Game_ConvertCoord.vector_to_array(_id_to_worm[id][1].position)
-		mirror = _new_CoordCalculator.get_mirror_image(neck[0], neck[1], x, y)
+		mirror = Game_CoordCalculator.get_mirror_image(neck[0], neck[1], x, y)
 		if mirror.coord_in_dungeon:
 			neighbor.push_back([mirror.x, mirror.y])
 
@@ -193,7 +193,7 @@ func _can_bury_worm(id: int) -> bool:
 
 func _set_danger_zone(head: Sprite, is_danger: bool) -> void:
 	var pos: Array = Game_ConvertCoord.vector_to_array(head.position)
-	var neighbor: Array = _new_CoordCalculator.get_neighbor(pos[0], pos[1], 1)
+	var neighbor: Array = Game_CoordCalculator.get_neighbor(pos[0], pos[1], 1)
 
 	for i in neighbor:
 		_ref_DangerZone.set_danger_zone(i[0], i[1], is_danger)

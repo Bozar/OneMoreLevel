@@ -35,7 +35,7 @@ func _replenish_crystal() -> void:
 	var y: int
 	var pc: Sprite = _ref_DungeonBoard.get_pc()
 	var pc_pos: Array = Game_ConvertCoord.vector_to_array(pc.position)
-	var mirror := _new_CoordCalculator.get_mirror_image(
+	var mirror := Game_CoordCalculator.get_mirror_image(
 			pc_pos[0], pc_pos[1], Game_DungeonSize.CENTER_X, pc_pos[1])
 	var has_npc: int = 0
 
@@ -45,10 +45,10 @@ func _replenish_crystal() -> void:
 		x = _ref_RandomNumber.get_x_coord()
 		y = _ref_RandomNumber.get_y_coord()
 
-		if _new_CoordCalculator.is_inside_range(x, y, pc_pos[0], pc_pos[1],
+		if Game_CoordCalculator.is_inside_range(x, y, pc_pos[0], pc_pos[1],
 				Game_MirrorData.CRYSTAL_DISTANCE):
 			continue
-		elif _new_CoordCalculator.is_inside_range(x, y, mirror.x, mirror.y,
+		elif Game_CoordCalculator.is_inside_range(x, y, mirror.x, mirror.y,
 				Game_MirrorData.CRYSTAL_DISTANCE):
 			continue
 		elif _ref_DungeonBoard.has_building(x, y):

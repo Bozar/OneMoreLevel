@@ -135,7 +135,7 @@ func _is_checkmate() -> bool:
 	if _move_diagonally:
 		return false
 
-	neighbor = _new_CoordCalculator.get_neighbor(
+	neighbor = Game_CoordCalculator.get_neighbor(
 			_source_position[0], _source_position[1], 1)
 	for i in neighbor:
 		if not _ref_DungeonBoard.has_building(i[0], i[1]):
@@ -170,12 +170,12 @@ func _get_hit_position(hit_diagonally: bool) -> Array:
 
 	if hit_diagonally:
 		if shift_x * shift_y > 0:
-			mirror = _new_CoordCalculator.get_mirror_image(
+			mirror = Game_CoordCalculator.get_mirror_image(
 					_source_position[0], _source_position[1],
 					_source_position[0], _target_position[1])
 			return [mirror.x, mirror.y]
 		else:
-			mirror = _new_CoordCalculator.get_mirror_image(
+			mirror = Game_CoordCalculator.get_mirror_image(
 					_source_position[0], _source_position[1],
 					_target_position[0], _source_position[1])
 			return [mirror.x, mirror.y]
@@ -188,7 +188,7 @@ func _get_hit_position(hit_diagonally: bool) -> Array:
 func _can_hit_target(x: int, y: int, hit_diagonally: bool) -> bool:
 	var actor: Sprite
 
-	if not (_new_CoordCalculator.is_inside_dungeon(x, y) \
+	if not (Game_CoordCalculator.is_inside_dungeon(x, y) \
 			and _ref_DungeonBoard.has_actor(x, y)):
 		return false
 
@@ -234,7 +234,7 @@ func _reset_input_state() -> void:
 func _restore_in_cage() -> void:
 	var pc: Sprite = _ref_DungeonBoard.get_pc()
 	var pos: Array = Game_ConvertCoord.vector_to_array(pc.position)
-	var neighbor: Array = _new_CoordCalculator.get_neighbor(pos[0], pos[1], 1)
+	var neighbor: Array = Game_CoordCalculator.get_neighbor(pos[0], pos[1], 1)
 	var is_surrounded: bool = true
 
 	for i in neighbor:

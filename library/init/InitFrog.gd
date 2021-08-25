@@ -57,7 +57,7 @@ func _init_path() -> int:
 		_occupy_position(x, y)
 		current_length += 1
 
-		neighbor = _new_CoordCalculator.get_neighbor(x, y, 1)
+		neighbor = Game_CoordCalculator.get_neighbor(x, y, 1)
 		counter = 0
 		for j in range(neighbor.size()):
 			if _is_occupied(neighbor[j][0], neighbor[j][1]):

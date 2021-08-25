@@ -85,7 +85,7 @@ func _init_wall() -> void:
 
 
 func _create_reflection(x: int, y: int) -> void:
-	var mirror := _new_CoordCalculator.get_mirror_image(x, y,
+	var mirror := Game_CoordCalculator.get_mirror_image(x, y,
 			Game_DungeonSize.CENTER_X, y)
 	_create_mirror(mirror.x, mirror.y)
 
@@ -108,11 +108,11 @@ func _create_pc() -> void:
 		if not _is_occupied(pc_x, pc_y):
 			break
 
-	mirror = _new_CoordCalculator.get_mirror_image(pc_x, pc_y,
+	mirror = Game_CoordCalculator.get_mirror_image(pc_x, pc_y,
 			Game_DungeonSize.CENTER_X, pc_y)
-	neighbor = _new_CoordCalculator.get_neighbor(pc_x, pc_y,
+	neighbor = Game_CoordCalculator.get_neighbor(pc_x, pc_y,
 					Game_MirrorData.CRYSTAL_DISTANCE, true) \
-			+ _new_CoordCalculator.get_neighbor(mirror.x, mirror.y,
+			+ Game_CoordCalculator.get_neighbor(mirror.x, mirror.y,
 					Game_MirrorData.CRYSTAL_DISTANCE, true)
 
 	_add_to_blueprint(_spr_PC,
@@ -165,7 +165,7 @@ func _init_phantom() -> void:
 
 
 func _create_phantom(x: int, y: int) -> void:
-	var neighbor: Array = _new_CoordCalculator.get_neighbor(x, y,
+	var neighbor: Array = Game_CoordCalculator.get_neighbor(x, y,
 			Game_MirrorData.PHANTOM_SIGHT, true)
 
 	_add_to_blueprint(_spr_Phantom,

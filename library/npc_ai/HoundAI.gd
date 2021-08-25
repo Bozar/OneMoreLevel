@@ -81,7 +81,7 @@ func _boss_countdown() -> bool:
 	var hit_point: int
 
 	if _boss_duration == INIT_DURATION:
-		boss_to_pc = _new_CoordCalculator.get_range(_self_pos[0], _self_pos[1],
+		boss_to_pc = Game_CoordCalculator.get_range(_self_pos[0], _self_pos[1],
 				_pc_pos[0], _pc_pos[1])
 		_boss_duration = boss_to_pc + Game_HoundData.BOSS_DURATION
 
@@ -105,10 +105,10 @@ func _can_hit_pc(self_is_in_fog: bool, pc_is_in_fog: bool) -> bool:
 	if self_is_in_fog != pc_is_in_fog:
 		return false
 	elif self_is_in_fog:
-		return _new_CoordCalculator.is_inside_range(_self_pos[0], _self_pos[1],
+		return Game_CoordCalculator.is_inside_range(_self_pos[0], _self_pos[1],
 				_pc_pos[0], _pc_pos[1], ONE_STEP_IN_FOG)
 	else:
-		return _new_CoordCalculator.is_inside_range(_self_pos[0], _self_pos[1],
+		return Game_CoordCalculator.is_inside_range(_self_pos[0], _self_pos[1],
 				_pc_pos[0], _pc_pos[1], ONE_STEP_OUTSIDE_FOG) \
 						and (_self_pos[0] != _pc_pos[0]) \
 						and (_self_pos[1] != _pc_pos[1])
@@ -117,7 +117,7 @@ func _can_hit_pc(self_is_in_fog: bool, pc_is_in_fog: bool) -> bool:
 func _can_see_pc(is_boss: bool) -> bool:
 	if is_boss:
 		return true
-	return _new_CoordCalculator.is_inside_range(_self_pos[0], _self_pos[1],
+	return Game_CoordCalculator.is_inside_range(_self_pos[0], _self_pos[1],
 			_pc_pos[0], _pc_pos[1], Game_HoundData.HOUND_SIGHT)
 
 
@@ -126,7 +126,7 @@ func _hound_approach(self_is_in_fog: bool, pc_is_in_fog: bool) -> void:
 	var alternative_start: Array = []
 	var one_step: int
 
-	start_point = _new_CoordCalculator.get_neighbor(_pc_pos[0], _pc_pos[1],
+	start_point = Game_CoordCalculator.get_neighbor(_pc_pos[0], _pc_pos[1],
 			ONE_STEP_OUTSIDE_FOG)
 	Game_ArrayHelper.filter_element(start_point, self,
 			"_verify_and_get_start_point", [pc_is_in_fog, alternative_start])
@@ -151,10 +151,10 @@ func _is_passable_func(source_array: Array, current_index: int,
 	if _ref_DungeonBoard.has_actor(x, y):
 		return false
 	elif self_is_in_fog:
-		return _new_CoordCalculator.is_inside_range(x, y,
+		return Game_CoordCalculator.is_inside_range(x, y,
 				_self_pos[0], _self_pos[1], 1)
 	else:
-		if _new_CoordCalculator.is_inside_range(x, y,
+		if Game_CoordCalculator.is_inside_range(x, y,
 				_self_pos[0], _self_pos[1], 1):
 			return true
 		return (x != _self_pos[0]) and (y != _self_pos[1])
@@ -170,12 +170,12 @@ func _verify_and_get_start_point(source: Array, index: int, opt_arg: Array) \
 	if _ref_DungeonBoard.has_building(x, y):
 		return false
 
-	if _new_CoordCalculator.is_inside_range(x, y, _pc_pos[0], _pc_pos[1], 1) \
+	if Game_CoordCalculator.is_inside_range(x, y, _pc_pos[0], _pc_pos[1], 1) \
 			or ((x != _pc_pos[0]) and (y != _pc_pos[1])):
 		alternative_start.push_back([x, y])
 
 	if pc_is_in_fog:
-		return _new_CoordCalculator.is_inside_range(x, y,
+		return Game_CoordCalculator.is_inside_range(x, y,
 				_pc_pos[0], _pc_pos[1], 1)
 	else:
 		return (x != _pc_pos[0]) and (y != _pc_pos[1])
@@ -199,10 +199,10 @@ func _set_pc_hit_point(add_hit_point: int) -> void:
 				continue
 			elif _ref_DungeonBoard.has_actor(x, y):
 				continue
-			elif _new_CoordCalculator.is_inside_range(x, y,
+			elif Game_CoordCalculator.is_inside_range(x, y,
 					_pc_pos[0], _pc_pos[1], Game_HoundData.MIN_BOSS_DISTANCE):
 				continue
-			elif not _new_CoordCalculator.is_inside_range(x, y,
+			elif not Game_CoordCalculator.is_inside_range(x, y,
 					_pc_pos[0], _pc_pos[1], Game_HoundData.MAX_BOSS_DISTANCE):
 				continue
 			else:
@@ -228,7 +228,7 @@ func _set_pc_hit_point(add_hit_point: int) -> void:
 func _boss_absorb_fog() -> void:
 	var hit_point: int = _ref_ObjectData.get_hit_point(_self)
 	var pos: Array = Game_ConvertCoord.vector_to_array(_self.position)
-	var neighbor: Array = _new_CoordCalculator.get_neighbor(pos[0], pos[1],
+	var neighbor: Array = Game_CoordCalculator.get_neighbor(pos[0], pos[1],
 			hit_point, true)
 	var ground: Sprite
 

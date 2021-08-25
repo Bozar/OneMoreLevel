@@ -35,16 +35,16 @@ func _can_grapple() -> bool:
 
 	if _ref_ObjectData.verify_state(pc, Game_ObjectStateTag.PASSIVE):
 		return false
-	elif _new_CoordCalculator.is_inside_range(self_x, self_y, pc_x, pc_y,
+	elif Game_CoordCalculator.is_inside_range(self_x, self_y, pc_x, pc_y,
 			Game_FrogData.ATTACK_RANGE):
 		return _path_is_clear()
 	return false
 
 
 func _grapple() -> void:
-	var neighbor: Array = _new_CoordCalculator.get_neighbor(
+	var neighbor: Array = Game_CoordCalculator.get_neighbor(
 			_self_pos[0], _self_pos[1], Game_FrogData.ATTACK_RANGE)
-	var pc_move: Array = _new_CoordCalculator.get_neighbor(
+	var pc_move: Array = Game_CoordCalculator.get_neighbor(
 			_pc_pos[0], _pc_pos[1], 1, true)
 
 	Game_ArrayHelper.filter_element(neighbor, self, "_filter_grapple",
@@ -58,9 +58,9 @@ func _grapple() -> void:
 func _random_walk() -> void:
 	var x: int = _self_pos[0]
 	var y: int = _self_pos[1]
-	var max_distance: int = _new_CoordCalculator.get_range(
+	var max_distance: int = Game_CoordCalculator.get_range(
 			x, y, _pc_pos[0], _pc_pos[1])
-	var neighbor: Array = _new_CoordCalculator.get_neighbor(x, y, 2, false)
+	var neighbor: Array = Game_CoordCalculator.get_neighbor(x, y, 2, false)
 
 	Game_ArrayHelper.filter_element(neighbor, self, "_filter_rand_walk", [])
 	Game_ArrayHelper.duplicate_element(neighbor, self, "_dup_rand_walk",
@@ -97,7 +97,7 @@ func _path_is_clear() -> bool:
 		for _j in range(Game_FrogData.ATTACK_RANGE):
 			x += i[0]
 			y += i[1]
-			if not _new_CoordCalculator.is_inside_dungeon(x, y):
+			if not Game_CoordCalculator.is_inside_dungeon(x, y):
 				break
 			if _ref_DungeonBoard.has_sprite_with_sub_tag(Game_SubGroupTag.PC,
 					x, y):
@@ -141,12 +141,12 @@ func _dup_rand_walk(source: Array, index: int, opt_arg: Array) -> int:
 			else 0
 
 	# If a frog is not too far away from PC, it favors swamp grids.
-	if _new_CoordCalculator.is_inside_range(self_x, self_y, pc_x, pc_y,
+	if Game_CoordCalculator.is_inside_range(self_x, self_y, pc_x, pc_y,
 			Game_FrogData.MID_DISTANCE):
 		repeat += swamp
 	# If a frog is far away from PC, it favors grids that are closer to PC,
 	# especially when the grid is swamp.
-	elif _new_CoordCalculator.is_inside_range(sor_x, sor_y, pc_x, pc_y,
+	elif Game_CoordCalculator.is_inside_range(sor_x, sor_y, pc_x, pc_y,
 			max_distance):
 		repeat += 1
 		repeat += swamp

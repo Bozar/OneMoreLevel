@@ -44,7 +44,7 @@ func interact_with_trap() -> void:
 
 
 func attack() -> void:
-	var mirror : = _new_CoordCalculator.get_mirror_image(
+	var mirror : = Game_CoordCalculator.get_mirror_image(
 			_source_position[0], _source_position[1],
 			_target_position[0], _target_position[1])
 	var pause_turn: bool
@@ -66,7 +66,7 @@ func attack() -> void:
 func move() -> void:
 	var has_trap: bool = _ref_DungeonBoard.has_trap(
 			_target_position[0], _target_position[1])
-	var neighbor: Array = _new_CoordCalculator.get_neighbor(
+	var neighbor: Array = Game_CoordCalculator.get_neighbor(
 			_target_position[0], _target_position[1], 1)
 	var push_x: int
 	var push_y: int
@@ -167,7 +167,7 @@ func _try_hit_npc(hit_x: int, hit_y: int, push_x: int, push_y: int,
 	_ref_ObjectData.add_hit_point(pc, 1)
 
 	if push_npc and _can_push_target(push_x, push_y):
-		neighbor = _new_CoordCalculator.get_neighbor(push_x, push_y, 1, true)
+		neighbor = Game_CoordCalculator.get_neighbor(push_x, push_y, 1, true)
 	else:
 		neighbor = [[hit_x, hit_y]]
 	for i in neighbor:
@@ -182,7 +182,7 @@ func _try_hit_npc(hit_x: int, hit_y: int, push_x: int, push_y: int,
 
 
 func _can_push_target(x: int, y: int) -> bool:
-	if _new_CoordCalculator.is_inside_dungeon(x, y):
+	if Game_CoordCalculator.is_inside_dungeon(x, y):
 		return not (_ref_DungeonBoard.has_building(x, y) \
 				or _ref_DungeonBoard.has_actor(x, y))
 	return false

@@ -100,7 +100,7 @@ func attack() -> void:
 	_ref_ObjectData.add_hit_point(pc, Game_RailgunData.GUN_SHOT_HP)
 	_switch_mode(false, pc)
 
-	while _new_CoordCalculator.is_inside_dungeon(x, y) \
+	while Game_CoordCalculator.is_inside_dungeon(x, y) \
 			and (not _ref_DungeonBoard.has_building(x, y)):
 		if not _ref_DungeonBoard.has_actor(x, y):
 			x += _face_direction[0]
@@ -114,7 +114,7 @@ func attack() -> void:
 		_kill_count -= Game_RailgunData.ONE_KILL
 		if _ammo == 0:
 			_kill_count -= Game_RailgunData.ONE_KILL
-		if _new_CoordCalculator.is_inside_range(
+		if Game_CoordCalculator.is_inside_range(
 				_source_position[0], _source_position[1], x, y,
 				Game_RailgunData.CLOSE_RANGE):
 			_kill_count -= Game_RailgunData.ONE_KILL
@@ -157,7 +157,7 @@ func _is_checkmate() -> bool:
 	if _ammo > 0:
 		return false
 
-	neighbor = _new_CoordCalculator.get_neighbor(
+	neighbor = Game_CoordCalculator.get_neighbor(
 			_source_position[0], _source_position[1], 1)
 	for i in neighbor:
 		if not (_ref_DungeonBoard.has_building(i[0], i[1]) \
@@ -187,12 +187,12 @@ func _init_skull_pillar() -> void:
 
 	for i in building:
 		pos = Game_ConvertCoord.vector_to_array(i.position)
-		if _new_CoordCalculator.is_inside_range(pos[0], pos[1],
+		if Game_CoordCalculator.is_inside_range(pos[0], pos[1],
 				_source_position[0], _source_position[1],
 				Game_DungeonSize.CENTER_X):
 			continue
 
-		neighbor = _new_CoordCalculator.get_neighbor(pos[0], pos[1], 1, false)
+		neighbor = Game_CoordCalculator.get_neighbor(pos[0], pos[1], 1, false)
 		for j in neighbor:
 			if _ref_DungeonBoard.has_ground(j[0], j[1]):
 				_ref_RemoveObject.remove_building(pos[0], pos[1])
@@ -254,7 +254,7 @@ func _try_find_pillar() -> void:
 
 	if _has_found_pillar:
 		return
-	_has_found_pillar = _new_CoordCalculator.is_inside_range(
+	_has_found_pillar = Game_CoordCalculator.is_inside_range(
 			_target_position[0], _target_position[1],
 			_plillar_position[0], _plillar_position[1],
 			Game_RailgunData.TOUCH_PILLAR)

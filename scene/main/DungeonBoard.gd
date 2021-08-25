@@ -2,8 +2,6 @@ extends Node2D
 class_name Game_DungeonBoard
 
 
-var _new_CoordCalculator := Game_CoordCalculator.new()
-
 # <main_group: String, <column: int, [sprite]>>
 var _sprite_dict: Dictionary
 var _pc: Sprite
@@ -20,7 +18,7 @@ func _ready() -> void:
 
 
 func has_sprite(main_group: String, x: int, y: int) -> bool:
-	if not _new_CoordCalculator.is_inside_dungeon(x, y):
+	if not Game_CoordCalculator.is_inside_dungeon(x, y):
 		return false
 	if not _sprite_dict.has(main_group):
 		return false

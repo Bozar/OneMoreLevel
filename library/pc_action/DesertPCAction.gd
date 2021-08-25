@@ -74,7 +74,7 @@ func _is_checkmate() -> bool:
 	var x: int = _source_position[0]
 	var y: int = _source_position[1]
 
-	var neighbor: Array = _new_CoordCalculator.get_neighbor(x, y, 1)
+	var neighbor: Array = Game_CoordCalculator.get_neighbor(x, y, 1)
 	var count_neighbor: int = MAX_NEIGHBOR - neighbor.size()
 
 	var actor: Sprite
