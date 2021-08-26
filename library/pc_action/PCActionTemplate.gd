@@ -19,8 +19,6 @@ var _ref_DangerZone: Game_DangerZone
 var _ref_GameSetting: Game_GameSetting
 var _ref_Palette: Game_Palette
 
-var _new_SpriteTypeTag := Game_SpriteTypeTag.new()
-
 var _source_position: Array
 var _target_position: Array
 var _input_direction: String

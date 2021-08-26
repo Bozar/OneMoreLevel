@@ -30,15 +30,12 @@ const SEVEN: String = "seven"
 const EIGHT: String = "eight"
 const NINE: String = "nine"
 
-
-# Helper functions.
-
 const ORDERED_SPRITE_TYPE: Array = [
     ZERO, ONE, TWO, THREE, FOUR, FIVE, SIX, SEVEN, EIGHT, NINE,
 ]
 
 
-func convert_digit_to_tag(digit: int) -> String:
+static func convert_digit_to_tag(digit: int) -> String:
     if (digit > -1) and (digit < ORDERED_SPRITE_TYPE.size()):
         return ORDERED_SPRITE_TYPE[digit]
     return ZERO

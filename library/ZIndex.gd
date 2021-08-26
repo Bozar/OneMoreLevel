@@ -11,7 +11,7 @@ const MAIN_GROUP_TO_Z_INDEX: Dictionary = {
 }
 
 
-func get_z_index(main_tag: String) -> int:
+static func get_z_index(main_tag: String) -> int:
 	if not MAIN_GROUP_TO_Z_INDEX.has(main_tag):
 		main_tag = Game_MainGroupTag.INVALID
 	return MAIN_GROUP_TO_Z_INDEX[main_tag]

@@ -131,7 +131,7 @@ func _refresh_counter() -> void:
 	if _wave_counter < 0:
 		return
 	_ref_SwitchSprite.switch_sprite(_counter_sprite,
-			_new_SpriteTypeTag.convert_digit_to_tag(_wave_counter + 1))
+			Game_SpriteTypeTag.convert_digit_to_tag(_wave_counter + 1))
 
 
 func _filter_create_frog(source: Array, index: int, opt_arg: Array) -> bool:

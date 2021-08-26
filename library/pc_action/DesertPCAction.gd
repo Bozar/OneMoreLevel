@@ -104,7 +104,7 @@ func _switch_to_number(is_number: bool) -> void:
 	var type_tag: String
 
 	if is_number:
-		type_tag = _new_SpriteTypeTag.convert_digit_to_tag(
+		type_tag = Game_SpriteTypeTag.convert_digit_to_tag(
 				_ref_ObjectData.get_hit_point(pc))
 	elif _ref_DangerZone.is_in_danger(_source_position[0], _source_position[1]):
 		type_tag = Game_SpriteTypeTag.ACTIVE

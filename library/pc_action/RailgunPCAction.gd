@@ -226,7 +226,7 @@ func _render_counter(kill: int) -> void:
 		kill = max(kill, 0) as int
 
 	for i in range(counter.size()):
-		sprite_type = _new_SpriteTypeTag.convert_digit_to_tag(counter[i])
+		sprite_type = Game_SpriteTypeTag.convert_digit_to_tag(counter[i])
 		_ref_SwitchSprite.switch_sprite(_counter_sprite[i], sprite_type)
 
 
@@ -236,7 +236,7 @@ func _switch_mode(aim_mode: bool, pc: Sprite) -> void:
 
 	if aim_mode:
 		new_state = Game_ObjectStateTag.ACTIVE
-		new_sprite = _new_SpriteTypeTag.convert_digit_to_tag(_ammo)
+		new_sprite = Game_SpriteTypeTag.convert_digit_to_tag(_ammo)
 	else:
 		new_state = Game_ObjectStateTag.DEFAULT
 		new_sprite = Game_SpriteTypeTag.DEFAULT

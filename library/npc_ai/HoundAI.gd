@@ -217,7 +217,7 @@ func _set_pc_hit_point(add_hit_point: int) -> void:
 	pc_hit_point = min(pc_hit_point, Game_HoundData.MAX_PC_HIT_POINT) as int
 
 	_ref_ObjectData.set_hit_point(pc, pc_hit_point)
-	new_sprite_type = _new_SpriteTypeTag.convert_digit_to_tag(
+	new_sprite_type = Game_SpriteTypeTag.convert_digit_to_tag(
 			Game_HoundData.MAX_PC_HIT_POINT - pc_hit_point)
 	_ref_SwitchSprite.switch_sprite(phantom, new_sprite_type)
 	if pc_hit_point == Game_HoundData.MAX_PC_HIT_POINT:

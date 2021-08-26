@@ -14,8 +14,6 @@ var _ref_Palette: Game_Palette
 
 var _spr_Floor := preload("res://sprite/Floor.tscn")
 
-var _new_SpriteTypeTag := Game_SpriteTypeTag.new()
-
 
 # Refer: GameProgress.gd.
 func _init(parent_node: Node2D) -> void:

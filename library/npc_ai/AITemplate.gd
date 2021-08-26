@@ -17,8 +17,6 @@ var _ref_CreateObject : Game_CreateObject
 var _ref_Schedule: Game_Schedule
 var _ref_Palette: Game_Palette
 
-var _new_SpriteTypeTag := Game_SpriteTypeTag.new()
-
 var _self: Sprite
 var _pc_pos: Array
 var _self_pos: Array

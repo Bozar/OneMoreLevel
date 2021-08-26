@@ -140,7 +140,7 @@ func _switch_time_stop(stop_time: bool) -> void:
 
 func _update_counter() -> void:
 	var pc: Sprite = _ref_DungeonBoard.get_pc()
-	var sprite_type: String = _new_SpriteTypeTag.convert_digit_to_tag(
+	var sprite_type: String = Game_SpriteTypeTag.convert_digit_to_tag(
 			_count_time_stop)
 
 	_ref_SwitchSprite.switch_sprite(pc, sprite_type)
