@@ -1,21 +1,21 @@
 class_name Game_WorldTag
 
 
-const INVALID: String = "INVALID"
-const DEMO: String = "demo"
+const INVALID := "INVALID"
+const DEMO := "demo"
 
-const KNIGHT: String = "knight"
-const DESERT: String = "desert"
-const STYX: String = "styx"
-const MIRROR: String = "mirror"
-const BALLOON: String = "balloon"
-const FROG: String = "frog"
-const RAILGUN: String = "railgun"
-const HOUND: String = "hound"
-const NINJA: String = "ninja"
-const FACTORY: String = "factory"
+const KNIGHT := "knight"
+const DESERT := "desert"
+const STYX := "styx"
+const MIRROR := "mirror"
+const BALLOON := "balloon"
+const FROG := "frog"
+const RAILGUN := "railgun"
+const HOUND := "hound"
+const NINJA := "ninja"
+const FACTORY := "factory"
 
-const TAG_TO_NAME: Dictionary = {
+const TAG_TO_NAME := {
 	DEMO: "Demo",
 	KNIGHT: "Knight",
 	DESERT: "Desert",

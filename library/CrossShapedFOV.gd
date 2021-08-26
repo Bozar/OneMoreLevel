@@ -40,10 +40,10 @@ class_name Game_CrossShapedFOV
 # rectangle. Then we verify if it is close enough to an axis.
 #
 
-const COORD_WARNING: String = "Neither face_x nor face_y is zero."
-const T_SHAPED_BACK: int = 1
-const SYMMETRIC_X: int = 0
-const SYMMETRIC_Y: int = 1
+const COORD_WARNING := "Neither face_x nor face_y is zero."
+const T_SHAPED_BACK := 1
+const SYMMETRIC_X := 0
+const SYMMETRIC_Y := 1
 
 const _FOV_DATA := {
 	"dungeon_width": 0,

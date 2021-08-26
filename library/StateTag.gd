@@ -1,32 +1,32 @@
 class_name Game_StateTag
 
 
-const DEFAULT: String = "default"
-const ACTIVE: String = "active"
-const PASSIVE: String = "passive"
+const DEFAULT := "default"
+const ACTIVE := "active"
+const PASSIVE := "passive"
 
-const UP: String = "up"
-const DOWN: String = "down"
-const LEFT: String = "left"
-const RIGHT: String = "right"
+const UP := "up"
+const DOWN := "down"
+const LEFT := "left"
+const RIGHT := "right"
 
-const DIRECTION_TO_COORD: Dictionary = {
+const DIRECTION_TO_COORD := {
 	UP: [0, -1],
 	DOWN: [0, 1],
 	LEFT: [-1, 0],
 	RIGHT: [1, 0],
 }
 
-const VALID_DIRECTION: Array = [UP, DOWN, LEFT, RIGHT]
+const VALID_DIRECTION := [UP, DOWN, LEFT, RIGHT]
 
-const OPPOSITE_DIRECTION: Dictionary = {
+const OPPOSITE_DIRECTION := {
 	UP: DOWN,
 	DOWN: UP,
 	LEFT: RIGHT,
 	RIGHT: LEFT,
 }
 
-const STATE_TO_SPRITE: Dictionary = {
+const STATE_TO_SPRITE := {
 	UP: Game_SpriteTypeTag.UP,
 	DOWN: Game_SpriteTypeTag.DOWN,
 	LEFT: Game_SpriteTypeTag.LEFT,

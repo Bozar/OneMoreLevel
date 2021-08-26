@@ -2,10 +2,10 @@ extends Node2D
 class_name Game_ObjectData
 
 
-const OBJECT_STATE: String = "ObjectState"
-const BOOL_STATE: String = "BoolState"
-const SPRITE_TYPE: String = "SpriteType"
-const HIT_POINT: String = "HitPoint"
+const OBJECT_STATE := "ObjectState"
+const BOOL_STATE := "BoolState"
+const SPRITE_TYPE := "SpriteType"
+const HIT_POINT := "HitPoint"
 
 
 func _on_RemoveObject_sprite_removed(remove_sprite: Sprite,

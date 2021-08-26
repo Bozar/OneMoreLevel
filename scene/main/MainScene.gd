@@ -1,28 +1,28 @@
 extends Game_RootNodeTemplate
 
 
-const INIT_WORLD: String = "InitWorld"
-const PLAYER_INPUT: String = "PlayerInput"
-const HELP_INPUT: String = "HelpInput"
-const ENEMY_AI: String = "EnemyAI"
-const SCHEDULE: String = "Schedule"
-const DUNGEON: String = "DungeonBoard"
-const CREATE_OBJECT: String = "CreateObject"
-const REMOVE_OBJECT: String = "RemoveObject"
-const RANDOM: String = "RandomNumber"
-const OBJECT_DATA: String = "ObjectData"
-const SWITCH_SPRITE: String = "SwitchSprite"
-const SWITCH_SCREEN: String = "SwitchScreen"
-const DANGER_ZONE: String = "DangerZone"
-const END_GAME: String = "EndGame"
-const COUNT_DOWN: String = "CountDown"
-const GAME_PROGRESS: String = "GameProgress"
-const GAME_SETTING: String = "GameSetting"
-const PALETTE: String = "Palette"
-const SIDEBAR_GUI: String = "MainGUI/SidebarVBox"
-const HELP_GUI: String = "HelpGUI/HelpVScroll"
+const INIT_WORLD := "InitWorld"
+const PLAYER_INPUT := "PlayerInput"
+const HELP_INPUT := "HelpInput"
+const ENEMY_AI := "EnemyAI"
+const SCHEDULE := "Schedule"
+const DUNGEON := "DungeonBoard"
+const CREATE_OBJECT := "CreateObject"
+const REMOVE_OBJECT := "RemoveObject"
+const RANDOM := "RandomNumber"
+const OBJECT_DATA := "ObjectData"
+const SWITCH_SPRITE := "SwitchSprite"
+const SWITCH_SCREEN := "SwitchScreen"
+const DANGER_ZONE := "DangerZone"
+const END_GAME := "EndGame"
+const COUNT_DOWN := "CountDown"
+const GAME_PROGRESS := "GameProgress"
+const GAME_SETTING := "GameSetting"
+const PALETTE := "Palette"
+const SIDEBAR_GUI := "MainGUI/SidebarVBox"
+const HELP_GUI := "HelpGUI/HelpVScroll"
 
-const SIGNAL_BIND: Array = [
+const SIGNAL_BIND := [
 	[
 		"sprite_created", "_on_CreateObject_sprite_created",
 		CREATE_OBJECT,
@@ -76,7 +76,7 @@ const SIGNAL_BIND: Array = [
 	# ],
 ]
 
-const NODE_REF: Array = [
+const NODE_REF := [
 	[
 		"_ref_DungeonBoard",
 		DUNGEON,

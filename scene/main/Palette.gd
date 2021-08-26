@@ -2,42 +2,42 @@ extends Node2D
 class_name Game_Palette
 
 
-const BACKGROUND: String = "background"
-const INDICATOR: String = "indicator"
+const BACKGROUND := "background"
+const INDICATOR := "indicator"
 
-const GROUND: String = "ground"
-const TRAP: String = "trap"
-const BUILDING: String = "building"
-const ACTOR: String = "actor"
-const GUI_TEXT: String = "gui_text"
+const GROUND := "ground"
+const TRAP := "trap"
+const BUILDING := "building"
+const ACTOR := "actor"
+const GUI_TEXT := "gui_text"
 
-const DARK_GROUND: String = "dark_ground"
-const DARK_TRAP: String = "dark_trap"
-const DARK_BUILDING: String = "dark_building"
-const DARK_ACTOR: String = "dark_actor"
-const DARK_GUI_TEXT: String = "dark_gui_text"
+const DARK_GROUND := "dark_ground"
+const DARK_TRAP := "dark_trap"
+const DARK_BUILDING := "dark_building"
+const DARK_ACTOR := "dark_actor"
+const DARK_GUI_TEXT := "dark_gui_text"
 
-const COLOR_VALUE: String = "color_value"
+const COLOR_VALUE := "color_value"
 
-const HTML_COLOR_REGEX: String = "^#{0,1}([0-9A-Fa-f]{3}){1,2}$"
+const HTML_COLOR_REGEX := "^#{0,1}([0-9A-Fa-f]{3}){1,2}$"
 
 # https://coolors.co/f8f9fa-e9ecef-dee2e6-ced4da-adb5bd-6c757d-495057-343a40-212529
-const BLACK: String = "#212529"
-const GREY: String = "#6C757D"
-const DARK_GREY: String = "#343A40"
-const WHITE: String = "#ADB5BD"
+const BLACK := "#212529"
+const GREY := "#6C757D"
+const DARK_GREY := "#343A40"
+const WHITE := "#ADB5BD"
 
 # https://coolors.co/d8f3dc-b7e4c7-95d5b2-74c69d-52b788-40916c-2d6a4f-1b4332-081c15
-const GREEN: String = "#52B788"
-const DARK_GREEN: String = "#2D6A4F"
+const GREEN := "#52B788"
+const DARK_GREEN := "#2D6A4F"
 
 # https://coolors.co/f8b945-dc8a14-b9690b-854e19-a03401
-const ORANGE: String = "#F8B945"
-const DARK_ORANGE: String = "#854E19"
+const ORANGE := "#F8B945"
+const DARK_ORANGE := "#854E19"
 
-const DEBUG: String = "#FE4A49"
+const DEBUG := "#FE4A49"
 
-const DEFAULT_TAG_TO_COLOR: Dictionary = {
+const DEFAULT_TAG_TO_COLOR := {
 	BACKGROUND: BLACK,
 	INDICATOR: GREY,
 
@@ -69,13 +69,13 @@ const DEFAULT_TAG_TO_COLOR: Dictionary = {
 	# DARK_GUI_TEXT: GREY,
 }
 
-const SUB_TAG_TO_COLOR: Dictionary = {
+const SUB_TAG_TO_COLOR := {
 	Game_SubTag.PC_MIRROR_IMAGE: DARK_ACTOR,
 }
 
 var _ref_GameSetting: Game_GameSetting
 
-var _tag_to_color: Dictionary = {}
+var _tag_to_color := {}
 
 
 func get_default_color(main_tag: String, sub_tag: String = "") -> String:

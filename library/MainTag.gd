@@ -1,13 +1,13 @@
 class_name Game_MainTag
 
 
-const INVALID: String = "invalid"
+const INVALID := "invalid"
 
-const GROUND: String = "ground"
-const TRAP: String = "trap"
-const BUILDING: String = "building"
-const ACTOR: String = "actor"
-const INDICATOR: String = "indicator"
+const GROUND := "ground"
+const TRAP := "trap"
+const BUILDING := "building"
+const ACTOR := "actor"
+const INDICATOR := "indicator"
 
-const DUNGEON_OBJECT: Array = [GROUND, TRAP, BUILDING, ACTOR]
-const ABOVE_GROUND_OBJECT: Array = [TRAP, BUILDING, ACTOR]
+const DUNGEON_OBJECT := [GROUND, TRAP, BUILDING, ACTOR]
+const ABOVE_GROUND_OBJECT := [TRAP, BUILDING, ACTOR]

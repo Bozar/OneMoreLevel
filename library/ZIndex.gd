@@ -1,7 +1,7 @@
 class_name Game_ZIndex
 
 
-const MAIN_TAG_TO_Z_INDEX: Dictionary = {
+const MAIN_TAG_TO_Z_INDEX := {
 	Game_MainTag.INVALID: -100,
 	Game_MainTag.GROUND: 0,
 	Game_MainTag.TRAP: 1,

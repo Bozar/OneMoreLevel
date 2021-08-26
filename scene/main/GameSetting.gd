@@ -5,22 +5,22 @@ class_name Game_GameSetting
 signal setting_loaded()
 signal setting_saved(save_data)
 
-const WIZARD: String = "wizard_mode"
-const SEED: String = "rng_seed"
-const INCLUDE_WORLD: String = "include_world"
-const EXCLUDE_WORLD: String = "exclude_world"
-const SHOW_FULL_MAP: String = "show_full_map"
-const PALETTE: String = "palette"
+const WIZARD := "wizard_mode"
+const SEED := "rng_seed"
+const INCLUDE_WORLD := "include_world"
+const EXCLUDE_WORLD := "exclude_world"
+const SHOW_FULL_MAP := "show_full_map"
+const PALETTE := "palette"
 
-const SETTING_EXE_PATH: String = "data/setting.json"
-const SETTING_RES_PATH: String = "res://bin/setting.json"
+const SETTING_EXE_PATH := "data/setting.json"
+const SETTING_RES_PATH := "res://bin/setting.json"
 
-const PALETTE_EXE_PATH: String = "data/"
-const PALETTE_RES_PATH: String = "res://bin/"
-const JSON_EXTENSION: String = ".json"
+const PALETTE_EXE_PATH := "data/"
+const PALETTE_RES_PATH := "res://bin/"
+const JSON_EXTENSION := ".json"
 
-const TRANSFER_SCENE: String = "res://scene/transfer_data/TransferData.tscn"
-const TRANSFER_NODE: String = "/root/TransferData"
+const TRANSFER_SCENE := "res://scene/transfer_data/TransferData.tscn"
+const TRANSFER_NODE := "/root/TransferData"
 
 var _wizard_mode: bool
 var _rng_seed: int

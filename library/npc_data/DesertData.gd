@@ -1,25 +1,25 @@
 class_name Game_DesertData
 
 
-const MAX_LENGTH: int = 20
-const MIN_LENGTH: int = 10
-const SPICE_START: int = 2
-const SPICE_END: int = 5
+const MAX_LENGTH := 20
+const MIN_LENGTH := 10
+const SPICE_START := 2
+const SPICE_END := 5
 
-const CREATE_SPICE: int = 10
-const BONUS_CREATE_SPICE: int = 10
-const CREATE_QUALITY_SPICE: int = 20
+const CREATE_SPICE := 10
+const BONUS_CREATE_SPICE := 10
+const CREATE_QUALITY_SPICE := 20
 
-const HP_TURN: int = 1
-const HP_WAIT: int = 5
-const HP_SPICE: int = 10
-const HP_BURY: int = 35
+const HP_TURN := 1
+const HP_WAIT := 5
+const HP_SPICE := 10
+const HP_BURY := 35
 
-const MAX_SPICE: int = 3
-const MAX_WORM: int = 2
-const MAX_COOLDOWN: int = 3
-const MIN_COOLDOWN: int = 0
-const WORM_DISTANCE: int = 5
+const MAX_SPICE := 3
+const MAX_WORM := 2
+const MAX_COOLDOWN := 3
+const MIN_COOLDOWN := 0
+const WORM_DISTANCE := 5
 
-const RESTORE_TURN: int = 6
-const RENDER_RANGE: int = 8
+const RESTORE_TURN := 6
+const RENDER_RANGE := 8

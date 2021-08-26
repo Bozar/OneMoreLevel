@@ -1,11 +1,11 @@
 class_name Game_BalloonData
 
 
-const WIND_DURATION: int = 2
-const RENDER_RANGE: int = 3
+const WIND_DURATION := 2
+const RENDER_RANGE := 3
 
-const MAX_TRAP: int = 5
-const MAX_REMAINING_TRAP: int = 2
-const MAX_WALL: int = 20
+const MAX_TRAP := 5
+const MAX_REMAINING_TRAP := 2
+const MAX_WALL := 20
 
-const RESTORE_TURN: int = 4
+const RESTORE_TURN := 4

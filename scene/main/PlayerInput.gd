@@ -2,7 +2,7 @@ extends Game_InputTemplate
 class_name Game_PlayerInput
 
 
-const RELOAD_GAME: String = "ReloadGame"
+const RELOAD_GAME := "ReloadGame"
 
 var _ref_Schedule: Game_Schedule
 var _ref_DungeonBoard: Game_DungeonBoard

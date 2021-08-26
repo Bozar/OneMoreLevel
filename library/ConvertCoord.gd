@@ -1,10 +1,10 @@
 class_name Game_ConvertCoord
 
 
-const START_X: int = 50
-const START_Y: int = 54
-const STEP_X: int = 26
-const STEP_Y: int = 34
+const START_X := 50
+const START_Y := 54
+const STEP_X := 26
+const STEP_Y := 34
 
 
 static func vector_to_array(vector_coord: Vector2) -> Array:

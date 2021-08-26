@@ -1,36 +1,36 @@
 class_name Game_SpriteTypeTag
 
 
-const DEFAULT: String = "default"
-const DEFAULT_1: String = "default_1"
-const DEFAULT_2: String = "default_2"
-const DEFAULT_3: String = "default_3"
+const DEFAULT := "default"
+const DEFAULT_1 := "default_1"
+const DEFAULT_2 := "default_2"
+const DEFAULT_3 := "default_3"
 
-const ACTIVE: String = "active"
-const ACTIVE_1: String = "active_1"
-const ACTIVE_2: String = "active_2"
-const ACTIVE_3: String = "active_3"
-const ACTIVE_4: String = "active_4"
-const PASSIVE: String = "passive"
-const PASSIVE_1: String = "passive_1"
+const ACTIVE := "active"
+const ACTIVE_1 := "active_1"
+const ACTIVE_2 := "active_2"
+const ACTIVE_3 := "active_3"
+const ACTIVE_4 := "active_4"
+const PASSIVE := "passive"
+const PASSIVE_1 := "passive_1"
 
-const UP: String = "up"
-const DOWN: String = "down"
-const LEFT: String = "left"
-const RIGHT: String = "right"
+const UP := "up"
+const DOWN := "down"
+const LEFT := "left"
+const RIGHT := "right"
 
-const ZERO: String = "zero"
-const ONE: String = "one"
-const TWO: String = "two"
-const THREE: String = "three"
-const FOUR: String = "four"
-const FIVE: String = "five"
-const SIX: String = "six"
-const SEVEN: String = "seven"
-const EIGHT: String = "eight"
-const NINE: String = "nine"
+const ZERO := "zero"
+const ONE := "one"
+const TWO := "two"
+const THREE := "three"
+const FOUR := "four"
+const FIVE := "five"
+const SIX := "six"
+const SEVEN := "seven"
+const EIGHT := "eight"
+const NINE := "nine"
 
-const ORDERED_SPRITE_TYPE: Array = [
+const ORDERED_SPRITE_TYPE := [
     ZERO, ONE, TWO, THREE, FOUR, FIVE, SIX, SEVEN, EIGHT, NINE,
 ]
 

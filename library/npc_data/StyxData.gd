@@ -1,11 +1,11 @@
 class_name Game_StyxData
 
 
-const PC_SIGHT: int = 2
-const PC_MAX_SIGHT: int = 3
-const LIGHTHOUSE: int = 2
-const HARBOR: int = 1
+const PC_SIGHT := 2
+const PC_MAX_SIGHT := 3
+const LIGHTHOUSE := 2
+const HARBOR := 1
 
-const FLOW_LENGTH: int = 2
-const EXTRA_TURN_COUNTER: int = 1
-const EXTRA_TURN: int = 1
+const FLOW_LENGTH := 2
+const EXTRA_TURN_COUNTER := 1
+const EXTRA_TURN := 1

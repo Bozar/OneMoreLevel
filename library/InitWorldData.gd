@@ -1,16 +1,16 @@
 class_name Game_InitWorldData
 
 
-const PLACEHOLDER: String = "%str%"
+const PLACEHOLDER := "%str%"
 
-const INIT_PATH: String = "res://library/init/Init%str%.gd"
-const ACTION_PATH: String = "res://library/pc_action/%str%PCAction.gd"
-const AI_PATH: String = "res://library/npc_ai/%str%AI.gd"
-const PROGRESS_PATH: String = "res://library/game_progress/%str%Progress.gd"
-const HELP_PATH: String = "res://user/doc/%str%.md"
+const INIT_PATH := "res://library/init/Init%str%.gd"
+const ACTION_PATH := "res://library/pc_action/%str%PCAction.gd"
+const AI_PATH := "res://library/npc_ai/%str%AI.gd"
+const PROGRESS_PATH := "res://library/game_progress/%str%Progress.gd"
+const HELP_PATH := "res://user/doc/%str%.md"
 
-const GENERAL_HELP: String = "res://user/doc/general.md"
-const KEY_BINDING_HELP: String = "res://user/doc/keybinding.md"
+const GENERAL_HELP := "res://user/doc/general.md"
+const KEY_BINDING_HELP := "res://user/doc/keybinding.md"
 
 
 static func get_world_template(world_tag: String) -> Game_WorldTemplate:

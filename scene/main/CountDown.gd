@@ -2,10 +2,10 @@ extends Node2D
 class_name Game_CountDown
 
 
-const MAX_TURN: int = 24
-const MIN_TURN: int = 1
-const ONE_TURN: int = 1
-const ZERO_TURN: int = 0
+const MAX_TURN := 24
+const MIN_TURN := 1
+const ONE_TURN := 1
+const ZERO_TURN := 0
 
 var _ref_EndGame: Game_EndGame
 

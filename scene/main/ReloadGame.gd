@@ -2,7 +2,7 @@ extends Node2D
 class_name Game_ReloadGame
 
 
-const PATH_TO_MAIN: String = "res://scene/main/MainScene.tscn"
+const PATH_TO_MAIN := "res://scene/main/MainScene.tscn"
 
 
 func reload() -> void:
