@@ -44,7 +44,7 @@ func end_world(pc_x: int, pc_y: int) -> void:
 func remove_actor(actor: Sprite, _x: int, _y: int) -> void:
 	var pc: Sprite
 
-	if actor.is_in_group(Game_SubGroupTag.FROG):
+	if actor.is_in_group(Game_SubTag.FROG):
 		_kill_counter += 1
 		if _kill_counter == Game_FrogData.HALF_FROG:
 			_kill_counter = 0
@@ -52,7 +52,7 @@ func remove_actor(actor: Sprite, _x: int, _y: int) -> void:
 					or (_wave_counter == 3):
 				_wave_counter += 1
 				_start_next_wave = true
-	elif actor.is_in_group(Game_SubGroupTag.FROG_PRINCESS):
+	elif actor.is_in_group(Game_SubTag.FROG_PRINCESS):
 		if _wave_counter == 1:
 			_wave_counter += 1
 			_start_next_wave = true
@@ -79,8 +79,7 @@ func _create_frog(pc_x: int, pc_y: int) -> void:
 
 	for i in neighbor:
 		_ref_CreateObject.create(_spr_Frog,
-				Game_MainGroupTag.ACTOR, Game_SubGroupTag.FROG,
-				i[0], i[1])
+				Game_MainTag.ACTOR, Game_SubTag.FROG, i[0], i[1])
 
 
 func _create_princess(pc_x: int, pc_y: int) -> void:
@@ -94,13 +93,13 @@ func _create_princess(pc_x: int, pc_y: int) -> void:
 	Game_ArrayHelper.rand_picker(neighbor, 1, _ref_RandomNumber)
 
 	_ref_CreateObject.create(_spr_FrogPrincess,
-			Game_MainGroupTag.ACTOR, Game_SubGroupTag.FROG_PRINCESS,
+			Game_MainTag.ACTOR, Game_SubTag.FROG_PRINCESS,
 			neighbor[0][0], neighbor[0][1])
 
 
 func _submerge_land(submerge: int) -> void:
 	var land_sprite: Array = _ref_DungeonBoard.get_sprites_by_tag(
-			Game_SubGroupTag.LAND)
+			Game_SubTag.LAND)
 	var land_pos: Array
 	var x: int
 	var y: int
@@ -111,12 +110,11 @@ func _submerge_land(submerge: int) -> void:
 		x = land_pos[0]
 		y = land_pos[1]
 		_add_or_remove_ground(false, x, y)
-		_add_or_remove_ground(true, x, y, _spr_Floor, Game_SubGroupTag.SWAMP)
+		_add_or_remove_ground(true, x, y, _spr_Floor, Game_SubTag.SWAMP)
 
 
 func _remove_frog() -> void:
-	var frog: Array = _ref_DungeonBoard.get_sprites_by_tag(
-			Game_SubGroupTag.FROG)
+	var frog: Array = _ref_DungeonBoard.get_sprites_by_tag(Game_SubTag.FROG)
 	var pos: Array
 
 	for i in frog:
@@ -127,7 +125,7 @@ func _remove_frog() -> void:
 func _refresh_counter() -> void:
 	if _counter_sprite == null:
 		_counter_sprite = _ref_DungeonBoard.get_sprites_by_tag(
-				Game_SubGroupTag.COUNTER)[0]
+				Game_SubTag.COUNTER)[0]
 	if _wave_counter < 0:
 		return
 	_ref_SwitchSprite.switch_sprite(_counter_sprite,
@@ -151,6 +149,6 @@ func _dup_create_princess(source: Array, index: int, _opt_arg: Array) -> int:
 	var x: int = source[index][0]
 	var y: int = source[index][1]
 
-	if _ref_DungeonBoard.has_sprite_with_sub_tag(Game_SubGroupTag.SWAMP, x, y):
+	if _ref_DungeonBoard.has_sprite_with_sub_tag(Game_SubTag.SWAMP, x, y):
 		return 2
 	return 1

@@ -20,7 +20,7 @@ func get_blueprint() -> Array:
 			_spr_PCRailgun)
 	_init_actor(Game_RailgunData.NPC_GAP, INVALID_COORD, INVALID_COORD,
 			Game_RailgunData.MAX_NPC,
-			_spr_Devil, Game_SubGroupTag.DEVIL)
+			_spr_Devil, Game_SubTag.DEVIL)
 
 	return _blueprint
 
@@ -108,7 +108,7 @@ func _is_counter(x: int, y: int) -> bool:
 
 func _add_wall_blueprint() -> void:
 	var new_sprite: PackedScene
-	var new_sub_group: String
+	var new_sub_tag: String
 
 	for i in range(0, Game_DungeonSize.MAX_X):
 		for j in range(0, Game_DungeonSize.MAX_Y):
@@ -116,12 +116,12 @@ func _add_wall_blueprint() -> void:
 			if _is_occupied(i, j):
 				if _is_counter(i, j):
 					new_sprite = _spr_Counter
-					new_sub_group = Game_SubGroupTag.COUNTER
+					new_sub_tag = Game_SubTag.COUNTER
 				else:
 					new_sprite = _spr_Wall
-					new_sub_group = Game_SubGroupTag.WALL
+					new_sub_tag = Game_SubTag.WALL
 				_add_to_blueprint(new_sprite,
-						Game_MainGroupTag.BUILDING, new_sub_group, i, j)
+						Game_MainTag.BUILDING, new_sub_tag, i, j)
 
 
 func _get_current_length(start_x: int, start_y: int, multi_x: int, multi_y: int,

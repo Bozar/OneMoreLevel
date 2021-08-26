@@ -14,7 +14,7 @@ func take_action() -> void:
 
 	if _ref_ObjectData.verify_state(_self, Game_ObjectStateTag.PASSIVE):
 		return
-	elif _self.is_in_group(Game_SubGroupTag.PC_MIRROR_IMAGE):
+	elif _self.is_in_group(Game_SubTag.PC_MIRROR_IMAGE):
 		return
 
 	_trap_pos = []
@@ -61,7 +61,7 @@ func _switch_pc_and_image() -> void:
 		_ref_SwitchSprite.switch_sprite(pc, Game_SpriteTypeTag.DEFAULT)
 		_trap_pos = _pc_pos
 
-	_ref_DungeonBoard.swap_sprite(Game_MainGroupTag.ACTOR,
+	_ref_DungeonBoard.swap_sprite(Game_MainTag.ACTOR,
 			_pc_pos[0], _pc_pos[1], mirror.x, mirror.y)
 
 
@@ -70,7 +70,7 @@ func _set_npc_state() -> void:
 	var npc_pos: Array
 
 	for i in npc:
-		if i.is_in_group(Game_SubGroupTag.PC_MIRROR_IMAGE):
+		if i.is_in_group(Game_SubTag.PC_MIRROR_IMAGE):
 			continue
 		elif _ref_ObjectData.verify_state(i, Game_ObjectStateTag.DEFAULT):
 			_ref_ObjectData.set_state(i, Game_ObjectStateTag.PASSIVE)

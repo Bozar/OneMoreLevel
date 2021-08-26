@@ -70,10 +70,9 @@ func _get_terrain_marker(x: int, y: int) -> int:
 	return _dungeon_with_int[x][y]
 
 
-func _add_to_blueprint(scene: PackedScene,
-		main_group: String, sub_group: String, x: int, y: int) -> void:
-	_blueprint.push_back(_sprite_blueprint.new(scene, main_group, sub_group,
-			x, y))
+func _add_to_blueprint(scene: PackedScene, main_tag: String, sub_tag: String,
+		x: int, y: int) -> void:
+	_blueprint.push_back(_sprite_blueprint.new(scene, main_tag, sub_tag, x, y))
 
 
 func _init_floor(floor_sprite: PackedScene = _spr_Floor) -> void:
@@ -82,7 +81,7 @@ func _init_floor(floor_sprite: PackedScene = _spr_Floor) -> void:
 			if _is_occupied(x, y):
 				continue
 			_add_to_blueprint(floor_sprite,
-					Game_MainGroupTag.GROUND, Game_SubGroupTag.FLOOR, x, y)
+					Game_MainTag.GROUND, Game_SubTag.FLOOR, x, y)
 
 
 func _init_actor(min_distance: int, x: int, y: int, max_actor: int,
@@ -103,7 +102,7 @@ func _init_actor(min_distance: int, x: int, y: int, max_actor: int,
 	neighbor = Game_CoordCalculator.get_neighbor(x, y, min_distance, true)
 	for i in neighbor:
 		_occupy_position(i[0], i[1])
-	_add_to_blueprint(actor_scene, Game_MainGroupTag.ACTOR, sub_tag, x, y)
+	_add_to_blueprint(actor_scene, Game_MainTag.ACTOR, sub_tag, x, y)
 
 	_init_actor(min_distance, x, y, max_actor, actor_scene, sub_tag)
 
@@ -111,4 +110,4 @@ func _init_actor(min_distance: int, x: int, y: int, max_actor: int,
 func _init_pc(min_distance: int = 0,
 		x: int = INVALID_COORD, y: int = INVALID_COORD,
 		pc_scene: PackedScene = _spr_PC) -> void:
-	_init_actor(min_distance, x, y, 1, pc_scene, Game_SubGroupTag.PC)
+	_init_actor(min_distance, x, y, 1, pc_scene, Game_SubTag.PC)

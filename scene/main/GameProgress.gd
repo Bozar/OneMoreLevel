@@ -22,19 +22,19 @@ func _on_InitWorld_world_selected(new_world: String) -> void:
 
 
 func _on_CreateObject_sprite_created(new_sprite: Sprite,
-		main_group: String, sub_group: String, x: int, y: int) -> void:
-	if main_group == Game_MainGroupTag.ACTOR:
-		_progress.create_actor(new_sprite, sub_group, x, y)
-	elif main_group == Game_MainGroupTag.BUILDING:
-		_progress.create_building(new_sprite, sub_group, x, y)
-	elif main_group == Game_MainGroupTag.TRAP:
-		_progress.create_trap(new_sprite, sub_group, x, y)
+		main_tag: String, sub_tag: String, x: int, y: int) -> void:
+	if main_tag == Game_MainTag.ACTOR:
+		_progress.create_actor(new_sprite, sub_tag, x, y)
+	elif main_tag == Game_MainTag.BUILDING:
+		_progress.create_building(new_sprite, sub_tag, x, y)
+	elif main_tag == Game_MainTag.TRAP:
+		_progress.create_trap(new_sprite, sub_tag, x, y)
 
 
 func _on_Schedule_turn_started(current_sprite: Sprite) -> void:
 	var _pc_pos: Array
 
-	if current_sprite.is_in_group(Game_SubGroupTag.PC):
+	if current_sprite.is_in_group(Game_SubTag.PC):
 		_pc_pos = Game_ConvertCoord.vector_to_array(current_sprite.position)
 		_progress.renew_world(_pc_pos[0], _pc_pos[1])
 
@@ -45,18 +45,18 @@ func _on_Schedule_turn_ended(current_sprite: Sprite) -> void:
 	# Do not change world (like adding new NPCs) when the game is over.
 	if _game_over:
 		return
-	if current_sprite.is_in_group(Game_SubGroupTag.PC):
+	if current_sprite.is_in_group(Game_SubTag.PC):
 		_pc_pos = Game_ConvertCoord.vector_to_array(current_sprite.position)
 		_progress.end_world(_pc_pos[0], _pc_pos[1])
 
 
 func _on_RemoveObject_sprite_removed(remove_sprite: Sprite,
-		main_group: String, x: int, y: int) -> void:
-	if main_group == Game_MainGroupTag.ACTOR:
+		main_tag: String, x: int, y: int) -> void:
+	if main_tag == Game_MainTag.ACTOR:
 		_progress.remove_actor(remove_sprite, x, y)
-	elif main_group == Game_MainGroupTag.BUILDING:
+	elif main_tag == Game_MainTag.BUILDING:
 		_progress.remove_building(remove_sprite, x, y)
-	elif main_group == Game_MainGroupTag.TRAP:
+	elif main_tag == Game_MainTag.TRAP:
 		_progress.remove_trap(remove_sprite, x, y)
 
 

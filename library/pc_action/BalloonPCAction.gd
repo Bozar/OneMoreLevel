@@ -33,8 +33,8 @@ func render_fov() -> void:
 
 	for x in range(Game_DungeonSize.MAX_X):
 		for y in range(Game_DungeonSize.MAX_Y):
-			for i in Game_MainGroupTag.DUNGEON_OBJECT:
-				if i != Game_MainGroupTag.TRAP:
+			for i in Game_MainTag.DUNGEON_OBJECT:
+				if i != Game_MainTag.TRAP:
 					_set_sprite_color(x, y, i, "",
 							Game_ShadowCastFOV, "is_in_sight")
 
@@ -57,7 +57,7 @@ func interact_with_building() -> void:
 func interact_with_trap() -> void:
 	var add_count: bool
 
-	_ref_DungeonBoard.move_sprite(Game_MainGroupTag.ACTOR,
+	_ref_DungeonBoard.move_sprite(Game_MainTag.ACTOR,
 			_source_position[0], _source_position[1],
 			_target_position[0], _target_position[1])
 	add_count = _reach_destination(_target_position[0], _target_position[1])
@@ -65,7 +65,7 @@ func interact_with_trap() -> void:
 
 
 func move() -> void:
-	_ref_DungeonBoard.move_sprite(Game_MainGroupTag.ACTOR,
+	_ref_DungeonBoard.move_sprite(Game_MainTag.ACTOR,
 			_source_position[0], _source_position[1],
 			_target_position[0], _target_position[1])
 	_end_turn_or_game(false)
@@ -93,7 +93,7 @@ func _wind_blow() -> void:
 		_bounce_off(_source_position[0], _source_position[1],
 				new_position[0], new_position[1])
 	else:
-		_ref_DungeonBoard.move_sprite(Game_MainGroupTag.ACTOR,
+		_ref_DungeonBoard.move_sprite(Game_MainTag.ACTOR,
 				_source_position[0], _source_position[1],
 				new_position[0], new_position[1])
 	_source_position = Game_ConvertCoord.vector_to_array(pc.position)
@@ -128,12 +128,12 @@ func _bounce_off(pc_x: int, pc_y: int, wall_x: int, wall_y: int) -> void:
 	var new_position: Array = _try_move_over_border(mirror.x, mirror.y)
 
 	if not _ref_DungeonBoard.has_building(new_position[0], new_position[1]):
-		_ref_DungeonBoard.move_sprite(Game_MainGroupTag.ACTOR, pc_x, pc_y,
+		_ref_DungeonBoard.move_sprite(Game_MainTag.ACTOR, pc_x, pc_y,
 				new_position[0], new_position[1])
 
 
 func _reactive_beacon() -> void:
-	for i in _ref_DungeonBoard.get_sprites_by_tag(Game_SubGroupTag.TREASURE):
+	for i in _ref_DungeonBoard.get_sprites_by_tag(Game_SubTag.TREASURE):
 		if _ref_ObjectData.verify_state(i, Game_ObjectStateTag.PASSIVE):
 			_set_beacon_state(i, Game_ObjectStateTag.ACTIVE)
 
@@ -142,10 +142,10 @@ func _set_beacon_state(beacon: Sprite, state: String) -> void:
 	match state:
 		Game_ObjectStateTag.ACTIVE:
 			_ref_ObjectData.set_state(beacon, state)
-			_ref_Palette.set_default_color(beacon, Game_MainGroupTag.TRAP)
+			_ref_Palette.set_default_color(beacon, Game_MainTag.TRAP)
 		Game_ObjectStateTag.PASSIVE:
 			_ref_ObjectData.set_state(beacon, state)
-			_ref_Palette.set_dark_color(beacon, Game_MainGroupTag.TRAP)
+			_ref_Palette.set_dark_color(beacon, Game_MainTag.TRAP)
 
 
 func _end_turn_or_game(add_count: bool) -> void:

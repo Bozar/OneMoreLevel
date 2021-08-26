@@ -70,7 +70,7 @@ const DEFAULT_TAG_TO_COLOR: Dictionary = {
 }
 
 const SUB_TAG_TO_COLOR: Dictionary = {
-	Game_SubGroupTag.PC_MIRROR_IMAGE: DARK_ACTOR,
+	Game_SubTag.PC_MIRROR_IMAGE: DARK_ACTOR,
 }
 
 var _ref_GameSetting: Game_GameSetting
@@ -83,15 +83,15 @@ func get_default_color(main_tag: String, sub_tag: String = "") -> String:
 		return _tag_to_color[SUB_TAG_TO_COLOR[sub_tag]]
 	else:
 		match main_tag:
-			Game_MainGroupTag.GROUND:
+			Game_MainTag.GROUND:
 				return _tag_to_color[GROUND]
-			Game_MainGroupTag.TRAP:
+			Game_MainTag.TRAP:
 				return _tag_to_color[TRAP]
-			Game_MainGroupTag.BUILDING:
+			Game_MainTag.BUILDING:
 				return _tag_to_color[BUILDING]
-			Game_MainGroupTag.ACTOR:
+			Game_MainTag.ACTOR:
 				return _tag_to_color[ACTOR]
-			Game_MainGroupTag.INDICATOR:
+			Game_MainTag.INDICATOR:
 				return _tag_to_color[INDICATOR]
 			_:
 				return DEBUG
@@ -102,13 +102,13 @@ func get_dark_color(main_tag: String, sub_tag: String = "") -> String:
 		return _tag_to_color[SUB_TAG_TO_COLOR[sub_tag]]
 	else:
 		match main_tag:
-			Game_MainGroupTag.GROUND:
+			Game_MainTag.GROUND:
 				return _tag_to_color[DARK_GROUND]
-			Game_MainGroupTag.TRAP:
+			Game_MainTag.TRAP:
 				return _tag_to_color[DARK_TRAP]
-			Game_MainGroupTag.BUILDING:
+			Game_MainTag.BUILDING:
 				return _tag_to_color[DARK_BUILDING]
-			Game_MainGroupTag.ACTOR:
+			Game_MainTag.ACTOR:
 				return _tag_to_color[DARK_ACTOR]
 			_:
 				return DEBUG

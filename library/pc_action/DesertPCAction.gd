@@ -34,7 +34,7 @@ func attack() -> void:
 			worm, Game_ObjectStateTag.ACTIVE)
 	var pc: Sprite = _ref_DungeonBoard.get_pc()
 
-	if (not worm.is_in_group(Game_SubGroupTag.WORM_SPICE)) \
+	if (not worm.is_in_group(Game_SubTag.WORM_SPICE)) \
 			or _ref_ObjectData.verify_state(worm, Game_ObjectStateTag.PASSIVE):
 		end_turn = false
 		return
@@ -88,9 +88,9 @@ func _is_checkmate() -> bool:
 		if actor == null:
 			continue
 
-		is_head = actor.is_in_group(Game_SubGroupTag.WORM_HEAD)
-		is_body = actor.is_in_group(Game_SubGroupTag.WORM_BODY)
-		is_spice = actor.is_in_group(Game_SubGroupTag.WORM_SPICE)
+		is_head = actor.is_in_group(Game_SubTag.WORM_HEAD)
+		is_body = actor.is_in_group(Game_SubTag.WORM_BODY)
+		is_spice = actor.is_in_group(Game_SubTag.WORM_SPICE)
 		is_passive = _ref_ObjectData.verify_state(actor,
 				Game_ObjectStateTag.PASSIVE)
 		if is_head or is_body or (is_spice and is_passive):
@@ -114,7 +114,7 @@ func _switch_to_number(is_number: bool) -> void:
 
 
 func _block_line_of_sight(x: int, y: int, _opt_arg: Array) -> bool:
-	for i in Game_MainGroupTag.ABOVE_GROUND_OBJECT:
+	for i in Game_MainTag.ABOVE_GROUND_OBJECT:
 		if _ref_DungeonBoard.has_sprite(i, x, y):
 			return true
 	return false

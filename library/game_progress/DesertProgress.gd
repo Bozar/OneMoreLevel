@@ -20,7 +20,7 @@ func end_world(_pc_x: int, _pc_y: int) -> void:
 
 
 func remove_actor(actor: Sprite, _x: int, _y: int) -> void:
-	if not actor.is_in_group(Game_SubGroupTag.WORM_HEAD):
+	if not actor.is_in_group(Game_SubTag.WORM_HEAD):
 		return
 
 	for i in range(_respawn_counter.size()):
@@ -38,12 +38,12 @@ func remove_trap(_trap: Sprite, x: int, y: int) -> void:
 	_add_or_remove_ground(true, x, y)
 
 
-func create_building(_building: Sprite, _sub_group: String,
+func create_building(_building: Sprite, _sub_tag: String,
 		x: int, y: int) -> void:
 	_add_or_remove_ground(false, x, y)
 
 
-func create_trap(_trap: Sprite, _sub_group: String, x: int, y: int) -> void:
+func create_trap(_trap: Sprite, _sub_tag: String, x: int, y: int) -> void:
 	_add_or_remove_ground(false, x, y)
 
 
@@ -77,8 +77,8 @@ func _create_worm_head(retry: int) -> void:
 
 	_ref_RemoveObject.remove_building(x, y)
 	_ref_RemoveObject.remove_trap(x, y)
-	_ref_CreateObject.create(_spr_WormHead, Game_MainGroupTag.ACTOR,
-			Game_SubGroupTag.WORM_HEAD, x, y)
+	_ref_CreateObject.create(_spr_WormHead, Game_MainTag.ACTOR,
+			Game_SubTag.WORM_HEAD, x, y)
 
 
 func _has_building_or_trap(x: int, y: int) -> bool:

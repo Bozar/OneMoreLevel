@@ -1,4 +1,4 @@
-class_name Game_SubGroupTag
+class_name Game_SubTag
 
 
 const INVALID: String = "invalid"

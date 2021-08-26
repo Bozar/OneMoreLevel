@@ -18,7 +18,7 @@ func get_blueprint() -> Array:
 	_init_floor()
 	_init_actor(Game_DesertData.WORM_DISTANCE, INVALID_COORD, INVALID_COORD,
 			Game_DesertData.MAX_WORM,
-			_spr_WormHead, Game_SubGroupTag.WORM_HEAD)
+			_spr_WormHead, Game_SubTag.WORM_HEAD)
 	_init_pc(0, INVALID_COORD, INVALID_COORD, _spr_PCDesert)
 
 	return _blueprint
@@ -57,7 +57,7 @@ func _try_build_wall(x: int, y: int, is_treasure: bool) -> void:
 	_occupy_position(x, y)
 	if is_treasure:
 		_add_to_blueprint(_spr_Treasure,
-				Game_MainGroupTag.TRAP, Game_SubGroupTag.TREASURE, x, y)
+				Game_MainTag.TRAP, Game_SubTag.TREASURE, x, y)
 	else:
 		_add_to_blueprint(_spr_Wall,
-				Game_MainGroupTag.BUILDING, Game_SubGroupTag.WALL, x, y)
+				Game_MainTag.BUILDING, Game_SubTag.WALL, x, y)

@@ -44,8 +44,8 @@ func _create_wall() -> void:
 			match packed_prefab.prefab[x][y]:
 				Game_DungeonPrefab.WALL_CHAR:
 					_occupy_position(x, y)
-					_add_to_blueprint(_spr_Wall, Game_MainGroupTag.BUILDING,
-							Game_SubGroupTag.WALL, x, y)
+					_add_to_blueprint(_spr_Wall, Game_MainTag.BUILDING,
+							Game_SubTag.WALL, x, y)
 				OPTIONAL_WALL_CHAR:
 					optional_walls.push_back([x, y])
 
@@ -53,8 +53,8 @@ func _create_wall() -> void:
 			floor(optional_walls.size() / 2.0) as int, _ref_RandomNumber)
 	for i in optional_walls:
 		_occupy_position(i[0], i[1])
-		_add_to_blueprint(_spr_Wall, Game_MainGroupTag.BUILDING,
-				Game_SubGroupTag.WALL, i[0], i[1])
+		_add_to_blueprint(_spr_Wall, Game_MainTag.BUILDING,
+				Game_SubTag.WALL, i[0], i[1])
 
 
 func _create_actor() -> void:
@@ -80,12 +80,11 @@ func _create_actor() -> void:
 	Game_ArrayHelper.rand_picker(actor_position, Game_NinjaData.MAX_NPC,
 			_ref_RandomNumber)
 
-	_add_to_blueprint(_spr_PCNinja, Game_MainGroupTag.ACTOR,
-			Game_SubGroupTag.PC, x, y)
+	_add_to_blueprint(_spr_PCNinja, Game_MainTag.ACTOR, Game_SubTag.PC, x, y)
 
 	for i in actor_position:
-		_add_to_blueprint(_spr_Ninja, Game_MainGroupTag.ACTOR,
-				Game_SubGroupTag.NINJA, i[0], i[1])
+		_add_to_blueprint(_spr_Ninja, Game_MainTag.ACTOR, Game_SubTag.NINJA,
+				i[0], i[1])
 
 
 func _not_too_close_to_pc(source: Array, index: int, opt_arg: Array) -> bool:

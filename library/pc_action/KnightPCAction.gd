@@ -21,7 +21,7 @@ func attack() -> void:
 				_source_position[0], _source_position[1]):
 			end_turn = false
 			return
-		if npc.is_in_group(Game_SubGroupTag.KNIGHT_BOSS):
+		if npc.is_in_group(Game_SubTag.KNIGHT_BOSS):
 			_hit_boss(npc)
 		else:
 			_hit_knight()
@@ -89,7 +89,7 @@ func _hit_boss(boss: Sprite) -> void:
 					_source_position[0], _source_position[1],
 					Game_KnightData.ELITE_SIGHT)
 
-		_ref_DungeonBoard.move_sprite(Game_MainGroupTag.ACTOR,
+		_ref_DungeonBoard.move_sprite(Game_MainTag.ACTOR,
 				_target_position[0], _target_position[1],
 				teleport_x, teleport_y)
 	else:
@@ -112,7 +112,7 @@ func _roll() -> bool:
 	if _is_occupied(roll_over[0], roll_over[1]):
 		return false
 
-	_ref_DungeonBoard.move_sprite(Game_MainGroupTag.ACTOR,
+	_ref_DungeonBoard.move_sprite(Game_MainTag.ACTOR,
 			_source_position[0], _source_position[1],
 			roll_over[0], roll_over[1])
 	return true

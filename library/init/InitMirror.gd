@@ -32,19 +32,18 @@ func _init_middle_border() -> void:
 		Game_MirrorData.CENTER_Y_5,
 	]
 	var new_sprite: PackedScene
-	var sub_group_tag: String
+	var sub_tag: String
 
 	for i in range(Game_DungeonSize.MAX_Y):
 		if i in crystal_base:
 			new_sprite = _spr_CrystalBase
-			sub_group_tag = Game_SubGroupTag.CRYSTAL_BASE
+			sub_tag = Game_SubTag.CRYSTAL_BASE
 		else:
 			new_sprite = _spr_Wall
-			sub_group_tag = Game_SubGroupTag.WALL
+			sub_tag = Game_SubTag.WALL
 
 		_add_to_blueprint(new_sprite,
-				Game_MainGroupTag.BUILDING, sub_group_tag,
-				Game_DungeonSize.CENTER_X, i)
+				Game_MainTag.BUILDING, sub_tag, Game_DungeonSize.CENTER_X, i)
 		_occupy_position(Game_DungeonSize.CENTER_X, i)
 
 
@@ -91,8 +90,7 @@ func _create_reflection(x: int, y: int) -> void:
 
 
 func _create_mirror(x: int, y: int) -> void:
-	_add_to_blueprint(_spr_Wall,
-			Game_MainGroupTag.BUILDING, Game_SubGroupTag.WALL, x, y)
+	_add_to_blueprint(_spr_Wall, Game_MainTag.BUILDING, Game_SubTag.WALL, x, y)
 	_occupy_position(x, y)
 
 
@@ -116,11 +114,9 @@ func _create_pc() -> void:
 					Game_MirrorData.CRYSTAL_DISTANCE, true)
 
 	_add_to_blueprint(_spr_PC,
-			Game_MainGroupTag.ACTOR, Game_SubGroupTag.PC,
-			pc_x, pc_y)
+			Game_MainTag.ACTOR, Game_SubTag.PC, pc_x, pc_y)
 	_add_to_blueprint(_spr_PCMirrorImage,
-			Game_MainGroupTag.ACTOR, Game_SubGroupTag.PC_MIRROR_IMAGE,
-			mirror.x, mirror.y)
+			Game_MainTag.ACTOR, Game_SubTag.PC_MIRROR_IMAGE, mirror.x, mirror.y)
 
 	for i in neighbor:
 		_occupy_position(i[0], i[1])
@@ -138,8 +134,7 @@ func _init_crystal() -> void:
 		break
 
 	_add_to_blueprint(_spr_Crystal,
-			Game_MainGroupTag.TRAP, Game_SubGroupTag.CRYSTAL,
-			x, y)
+			Game_MainTag.TRAP, Game_SubTag.CRYSTAL, x, y)
 	_occupy_position(x, y)
 	_ref_DangerZone.set_danger_zone(x, y, true)
 
@@ -169,6 +164,6 @@ func _create_phantom(x: int, y: int) -> void:
 			Game_MirrorData.PHANTOM_SIGHT, true)
 
 	_add_to_blueprint(_spr_Phantom,
-			Game_MainGroupTag.ACTOR, Game_SubGroupTag.PHANTOM, x, y)
+			Game_MainTag.ACTOR, Game_SubTag.PHANTOM, x, y)
 	for i in neighbor:
 		_occupy_position(i[0], i[1])

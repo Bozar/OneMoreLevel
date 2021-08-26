@@ -29,7 +29,7 @@ func _respawn_npc(pc_x: int, pc_y: int) -> void:
 
 	for i in neighbor:
 		_ref_CreateObject.create(_spr_Ninja,
-				Game_MainGroupTag.ACTOR, Game_SubGroupTag.NINJA, i[0], i[1])
+				Game_MainTag.ACTOR, Game_SubTag.NINJA, i[0], i[1])
 
 
 func _not_too_close_to_pc(source: Array, index: int, opt_arg: Array) -> bool:
@@ -46,7 +46,7 @@ func _not_too_close_to_pc(source: Array, index: int, opt_arg: Array) -> bool:
 
 func _try_remove_trap() -> void:
 	var find_traps: Array = _ref_DungeonBoard.get_sprites_by_tag(
-			Game_MainGroupTag.TRAP)
+			Game_MainTag.TRAP)
 	var remove_position: Array = []
 
 	for i in find_traps:

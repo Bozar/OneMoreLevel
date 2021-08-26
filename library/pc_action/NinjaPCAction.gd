@@ -29,9 +29,9 @@ func render_fov() -> void:
 
 	for x in range(Game_DungeonSize.MAX_X):
 		for y in range(Game_DungeonSize.MAX_Y):
-			for i in Game_MainGroupTag.DUNGEON_OBJECT:
+			for i in Game_MainTag.DUNGEON_OBJECT:
 				match i:
-					Game_MainGroupTag.BUILDING, Game_MainGroupTag.GROUND:
+					Game_MainTag.BUILDING, Game_MainTag.GROUND:
 						_set_sprite_color_with_memory(x, y, i, "", true,
 								Game_ShadowCastFOV, "is_in_sight")
 					_:
@@ -158,7 +158,7 @@ func _try_hit_npc(hit_x: int, hit_y: int, push_x: int, push_y: int,
 		_ref_ObjectData.set_state(npc, Game_ObjectStateTag.PASSIVE)
 		_ref_SwitchSprite.switch_sprite(npc, Game_SpriteTypeTag.PASSIVE)
 		if _can_push_target(push_x, push_y):
-			_ref_DungeonBoard.move_sprite(Game_MainGroupTag.ACTOR, hit_x, hit_y,
+			_ref_DungeonBoard.move_sprite(Game_MainTag.ACTOR, hit_x, hit_y,
 					push_x, push_y)
 			return false
 		return true
@@ -176,7 +176,7 @@ func _try_hit_npc(hit_x: int, hit_y: int, push_x: int, push_y: int,
 			continue
 		_ref_RemoveObject.remove_trap(i[0], i[1])
 		_ref_CreateObject.create(_spr_SoulFragment,
-				Game_MainGroupTag.TRAP, Game_SubGroupTag.TREASURE, i[0], i[1])
+				Game_MainTag.TRAP, Game_SubTag.TREASURE, i[0], i[1])
 
 	return true
 
@@ -190,7 +190,7 @@ func _can_push_target(x: int, y: int) -> bool:
 
 func _show_or_hide_trap() -> void:
 	var find_traps: Array = _ref_DungeonBoard.get_sprites_by_tag(
-			Game_MainGroupTag.TRAP)
+			Game_MainTag.TRAP)
 	var pos: Array
 
 	for i in find_traps:

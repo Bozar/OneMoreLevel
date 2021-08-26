@@ -56,5 +56,5 @@ func _respawn_npc(pc_x: int, pc_y: int) -> void:
 	if is_valid_coord:
 		_ref_RemoveObject.remove_trap(x, y)
 		_ref_CreateObject.create(_spr_Devil,
-				Game_MainGroupTag.ACTOR, Game_SubGroupTag.DEVIL, x, y)
+				Game_MainTag.ACTOR, Game_SubTag.DEVIL, x, y)
 		_alive_npc += 1

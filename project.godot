@@ -180,9 +180,9 @@ _global_script_classes=[ {
 "path": "res://library/npc_data/KnightData.gd"
 }, {
 "base": "Reference",
-"class": "Game_MainGroupTag",
+"class": "Game_MainTag",
 "language": "GDScript",
-"path": "res://library/MainGroupTag.gd"
+"path": "res://library/MainTag.gd"
 }, {
 "base": "Reference",
 "class": "Game_MirrorData",
@@ -305,9 +305,9 @@ _global_script_classes=[ {
 "path": "res://library/npc_data/StyxData.gd"
 }, {
 "base": "Reference",
-"class": "Game_SubGroupTag",
+"class": "Game_SubTag",
 "language": "GDScript",
-"path": "res://library/SubGroupTag.gd"
+"path": "res://library/SubTag.gd"
 }, {
 "base": "Node2D",
 "class": "Game_SwitchScreen",
@@ -374,7 +374,7 @@ _global_script_class_icons={
 "Game_InputTag": "",
 "Game_InputTemplate": "",
 "Game_KnightData": "",
-"Game_MainGroupTag": "",
+"Game_MainTag": "",
 "Game_MirrorData": "",
 "Game_NinjaData": "",
 "Game_ObjectData": "",
@@ -399,7 +399,7 @@ _global_script_class_icons={
 "Game_SpriteType": "",
 "Game_SpriteTypeTag": "",
 "Game_StyxData": "",
-"Game_SubGroupTag": "",
+"Game_SubTag": "",
 "Game_SwitchScreen": "",
 "Game_SwitchSprite": "",
 "Game_TransferData": "",

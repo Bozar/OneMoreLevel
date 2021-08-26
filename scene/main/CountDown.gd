@@ -27,13 +27,13 @@ func subtract_count(subtract: int) -> void:
 
 
 func _on_Schedule_turn_started(current_sprite: Sprite) -> void:
-	if not current_sprite.is_in_group(Game_SubGroupTag.PC):
+	if not current_sprite.is_in_group(Game_SubTag.PC):
 		return
 	_current_count = _fix_overflow()
 
 
 func _on_Schedule_turn_ended(current_sprite: Sprite) -> void:
-	if current_sprite.is_in_group(Game_SubGroupTag.PC):
+	if current_sprite.is_in_group(Game_SubTag.PC):
 		subtract_count(ONE_TURN)
 	if _current_count < MIN_TURN:
 		_current_count = _fix_overflow()

@@ -44,9 +44,9 @@ func render_fov() -> void:
 			if distance > Game_StyxData.PC_MAX_SIGHT:
 				ground.visible = false
 			elif distance > Game_StyxData.PC_SIGHT:
-				_ref_Palette.set_dark_color(ground, Game_MainGroupTag.GROUND)
+				_ref_Palette.set_dark_color(ground, Game_MainTag.GROUND)
 			elif distance > 0:
-				_ref_Palette.set_default_color(ground, Game_MainGroupTag.GROUND)
+				_ref_Palette.set_default_color(ground, Game_MainTag.GROUND)
 			else:
 				ground.visible = false
 
@@ -83,7 +83,7 @@ func move() -> void:
 			x -= Game_ObjectStateTag.DIRECTION_TO_COORD[i][0]
 			y -= Game_ObjectStateTag.DIRECTION_TO_COORD[i][1]
 			break
-	_ref_DungeonBoard.move_sprite(Game_MainGroupTag.ACTOR,
+	_ref_DungeonBoard.move_sprite(Game_MainTag.ACTOR,
 			_source_position[0], _source_position[1], x, y)
 
 	if _pc_is_near_harbor(x, y):
@@ -122,16 +122,16 @@ func _switch_lighthouse_color() -> void:
 			Game_DungeonSize.CENTER_X, Game_DungeonSize.CENTER_Y)
 
 	if _extra_turn_counter == Game_StyxData.EXTRA_TURN_COUNTER:
-		_ref_Palette.set_dark_color(lighthouse, Game_MainGroupTag.BUILDING)
+		_ref_Palette.set_dark_color(lighthouse, Game_MainTag.BUILDING)
 	else:
-		_ref_Palette.set_default_color(lighthouse, Game_MainGroupTag.BUILDING)
+		_ref_Palette.set_default_color(lighthouse, Game_MainTag.BUILDING)
 
 
 func _pc_is_near_harbor(x: int, y: int) -> bool:
 	var neighbor: Array = Game_CoordCalculator.get_neighbor(x, y, 1)
 
 	for i in neighbor:
-		if _ref_DungeonBoard.has_sprite_with_sub_tag(Game_SubGroupTag.HARBOR,
+		if _ref_DungeonBoard.has_sprite_with_sub_tag(Game_SubTag.HARBOR,
 				i[0], i[1]):
 			return true
 	return false

@@ -31,7 +31,7 @@ func _init_wall() -> void:
 		for y in range(min_y, max_y):
 			_occupy_position(x, y)
 			_add_to_blueprint(_spr_Wall,
-					Game_MainGroupTag.BUILDING, Game_SubGroupTag.WALL, x, y)
+					Game_MainTag.BUILDING, Game_SubTag.WALL, x, y)
 
 
 func _init_dwarf() -> void:
@@ -47,5 +47,5 @@ func _init_dwarf() -> void:
 
 		_occupy_position(x, y)
 		_add_to_blueprint(_spr_Dwarf,
-				Game_MainGroupTag.ACTOR, Game_SubGroupTag.DWARF, x, y)
+				Game_MainTag.ACTOR, Game_SubTag.DWARF, x, y)
 		dwarf -= 1

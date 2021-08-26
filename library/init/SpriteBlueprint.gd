@@ -2,19 +2,19 @@ class_name Game_SpriteBlueprint
 
 
 var scene: PackedScene setget set_scene, get_scene
-var main_group: String setget set_main_group, get_main_group
-var sub_group: String setget set_sub_group, get_sub_group
+var main_tag: String setget set_main_tag, get_main_tag
+var sub_tag: String setget set_sub_tag, get_sub_tag
 var x: int setget set_x, get_x
 var y: int setget set_y, get_y
 
 
-func _init(set_scene: PackedScene, set_main: String, set_sub: String,
-		set_x: int, set_y: int) -> void:
-	scene = set_scene
-	main_group = set_main
-	sub_group = set_sub
-	x = set_x
-	y = set_y
+func _init(_scene: PackedScene, _main_tag: String, _sub_tag: String,
+		_x: int, _y: int) -> void:
+	scene = _scene
+	main_tag = _main_tag
+	sub_tag = _sub_tag
+	x = _x
+	y = _y
 
 
 func get_scene() -> PackedScene:
@@ -25,19 +25,19 @@ func set_scene(_scene: PackedScene) -> void:
 	return
 
 
-func get_main_group() -> String:
-	return main_group
+func get_main_tag() -> String:
+	return main_tag
 
 
-func set_main_group(_main_group: String) -> void:
+func set_main_tag(_main_tag: String) -> void:
 	return
 
 
-func get_sub_group() -> String:
-	return sub_group
+func get_sub_tag() -> String:
+	return sub_tag
 
 
-func set_sub_group(_sub_group: String) -> void:
+func set_sub_tag(_sub_tag: String) -> void:
 	return
 
 

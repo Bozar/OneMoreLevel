@@ -25,7 +25,7 @@ func renew_world(_pc_x: int, _pc_y: int) -> void:
 
 func _change_water_flow() -> void:
 	var ground: Array = _ref_DungeonBoard.get_sprites_by_tag(
-			Game_MainGroupTag.GROUND)
+			Game_MainTag.GROUND)
 	var valid_state: Array
 	var direction: String
 	var pos: Array

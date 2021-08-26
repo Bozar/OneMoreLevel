@@ -25,9 +25,9 @@ func get_blueprint() -> Array:
 	_init_floor(_spr_FloorHound)
 	_create_pc()
 	_init_actor(Game_HoundData.MIN_HOUND_GAP, INVALID_COORD, INVALID_COORD,
-			Game_HoundData.MAX_HOUND, _spr_Hound, Game_SubGroupTag.HOUND)
+			Game_HoundData.MAX_HOUND, _spr_Hound, Game_SubTag.HOUND)
 	# _init_actor(1, INVALID_COORD, INVALID_COORD,
-	# 		1, _spr_HoundBoss, Game_SubGroupTag.HOUND_BOSS)
+	# 		1, _spr_HoundBoss, Game_SubTag.HOUND_BOSS)
 
 	return _blueprint
 
@@ -52,12 +52,10 @@ func _init_wall() -> void:
 			_occupy_position(x, y)
 			if counter_index == 0:
 				_add_to_blueprint(_spr_WallHound,
-						Game_MainGroupTag.BUILDING, Game_SubGroupTag.COUNTER,
-						x, y)
+						Game_MainTag.BUILDING, Game_SubTag.COUNTER, x, y)
 			else:
 				_add_to_blueprint(_spr_Wall,
-						Game_MainGroupTag.BUILDING, Game_SubGroupTag.WALL,
-						x, y)
+						Game_MainTag.BUILDING, Game_SubTag.WALL, x, y)
 		counter_index -= 1
 
 
@@ -93,5 +91,5 @@ func _create_pc() -> void:
 			for j in neighbor:
 				_occupy_position(j[0], j[1])
 			_add_to_blueprint(_spr_PCHound,
-					Game_MainGroupTag.ACTOR, Game_SubGroupTag.PC, x, y)
+					Game_MainTag.ACTOR, Game_SubTag.PC, x, y)
 			return

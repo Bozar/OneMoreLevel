@@ -24,15 +24,15 @@ func end_world(pc_x: int, pc_y: int) -> void:
 	_add_or_remove_fog()
 
 
-func create_actor(actor: Sprite, sub_group: String, _x: int, _y: int) -> void:
-	if sub_group != Game_SubGroupTag.HOUND_BOSS:
+func create_actor(actor: Sprite, sub_tag: String, _x: int, _y: int) -> void:
+	if sub_tag != Game_SubTag.HOUND_BOSS:
 		return
 
 	_ref_ObjectData.set_hit_point(actor, _boss_hit_point)
 
 	if _all_counters.size() == 0:
 		_all_counters = _ref_DungeonBoard.get_sprites_by_tag(
-				Game_SubGroupTag.COUNTER)
+				Game_SubTag.COUNTER)
 		Game_ArrayHelper.rand_picker(_all_counters, _all_counters.size(),
 				_ref_RandomNumber)
 	_ref_SwitchSprite.switch_sprite(_all_counters[_boss_hit_point],
@@ -40,12 +40,12 @@ func create_actor(actor: Sprite, sub_group: String, _x: int, _y: int) -> void:
 
 
 func remove_actor(actor: Sprite, x: int, y: int) -> void:
-	if actor.is_in_group(Game_SubGroupTag.HOUND):
+	if actor.is_in_group(Game_SubTag.HOUND):
 		_fog_source.push_back([x, y, Game_HoundData.MIN_FOG_SIZE])
 		_current_hound -= 1
 		if _current_hound <= Game_HoundData.START_RESPAWN:
 			_minion_trigger = true
-	elif actor.is_in_group(Game_SubGroupTag.HOUND_BOSS):
+	elif actor.is_in_group(Game_SubTag.HOUND_BOSS):
 		_boss_trigger = true
 		# The boss is hit by PC.
 		# HoundPCAction._try_set_and_get_boss_hit_point().
@@ -86,8 +86,7 @@ func _add_or_remove_fog() -> void:
 		Game_ArrayHelper.remove_by_index(_fog_source, i)
 
 	if _all_grounds.size() == 0:
-		_all_grounds = _ref_DungeonBoard.get_sprites_by_tag(
-				Game_MainGroupTag.GROUND)
+		_all_grounds = _ref_DungeonBoard.get_sprites_by_tag(Game_MainTag.GROUND)
 	for i in _all_grounds:
 		if _ref_ObjectData.get_hit_point(i) > 0:
 			_ref_ObjectData.subtract_hit_point(i, 1)
@@ -124,7 +123,7 @@ func _respawn_minion(pc_x: int, pc_y: int) -> void:
 	_respawn_actor(pc_x, pc_y,
 			Game_HoundData.MIN_MINION_DISTANCE,
 			Game_HoundData.MAX_MINION_DISTANCE,
-			_spr_Hound, Game_SubGroupTag.HOUND)
+			_spr_Hound, Game_SubTag.HOUND)
 
 
 func _respawn_boss(pc_x: int, pc_y: int) -> void:
@@ -135,7 +134,7 @@ func _respawn_boss(pc_x: int, pc_y: int) -> void:
 	_respawn_actor(pc_x, pc_y,
 			Game_HoundData.MIN_BOSS_DISTANCE,
 			Game_HoundData.MAX_BOSS_DISTANCE,
-			_spr_HoundBoss, Game_SubGroupTag.HOUND_BOSS)
+			_spr_HoundBoss, Game_SubTag.HOUND_BOSS)
 
 
 func _respawn_actor(pc_x: int, pc_y: int, min_distance: int, max_distance: int,
@@ -168,4 +167,4 @@ func _respawn_actor(pc_x: int, pc_y: int, min_distance: int, max_distance: int,
 					break
 		if not next_loop:
 			break
-	_ref_CreateObject.create(new_sprite, Game_MainGroupTag.ACTOR, sub_tag, x, y)
+	_ref_CreateObject.create(new_sprite, Game_MainTag.ACTOR, sub_tag, x, y)

@@ -148,7 +148,7 @@ func render_fov() -> void:
 
 	for x in range(Game_DungeonSize.MAX_X):
 		for y in range(Game_DungeonSize.MAX_Y):
-			for i in Game_MainGroupTag.DUNGEON_OBJECT:
+			for i in Game_MainTag.DUNGEON_OBJECT:
 				_set_sprite_color(x, y, i, "",
 						Game_ShadowCastFOV, "is_in_sight")
 
@@ -170,7 +170,7 @@ func game_over(win: bool) -> void:
 func _is_occupied(x: int, y: int) -> bool:
 	if not Game_CoordCalculator.is_inside_dungeon(x, y):
 		return true
-	for i in Game_MainGroupTag.ABOVE_GROUND_OBJECT:
+	for i in Game_MainTag.ABOVE_GROUND_OBJECT:
 		if _ref_DungeonBoard.has_sprite(i, x, y):
 			return true
 	return false
@@ -186,7 +186,7 @@ func _render_end_game(win: bool) -> void:
 	_source_position = Game_ConvertCoord.vector_to_array(pc.position)
 	render_fov()
 	if not win:
-		_ref_Palette.set_dark_color(pc, Game_MainGroupTag.ACTOR)
+		_ref_Palette.set_dark_color(pc, Game_MainTag.ACTOR)
 
 
 func _render_without_fog_of_war() -> void:
@@ -198,7 +198,7 @@ func _render_without_fog_of_war() -> void:
 			if ground == null:
 				continue
 			ground.visible = _ground_is_visible(x, y)
-			_ref_Palette.set_dark_color(ground, Game_MainGroupTag.GROUND)
+			_ref_Palette.set_dark_color(ground, Game_MainTag.GROUND)
 
 
 # is_in_sight_func(x: int, y: int) -> bool
@@ -209,7 +209,7 @@ func _set_sprite_color(x: int, y: int, main_tag: String, sub_tag: String,
 
 	if set_this == null:
 		return
-	if main_tag == Game_MainGroupTag.GROUND:
+	if main_tag == Game_MainTag.GROUND:
 		set_this.visible = _ground_is_visible(x, y)
 	if is_in_sight.call_func(x, y):
 		_ref_Palette.set_default_color(set_this, main_tag, sub_tag)
@@ -228,7 +228,7 @@ func _set_sprite_color_with_memory(x: int, y: int, main_tag: String,
 		return
 	set_this.visible = true
 	if is_in_sight.call_func(x, y):
-		if main_tag == Game_MainGroupTag.GROUND:
+		if main_tag == Game_MainTag.GROUND:
 			set_this.visible = _ground_is_visible(x, y)
 		if remember_sprite:
 			_set_sprite_memory(x, y, main_tag, sub_tag)
@@ -241,7 +241,7 @@ func _set_sprite_color_with_memory(x: int, y: int, main_tag: String,
 
 
 func _ground_is_visible(x: int, y: int) -> bool:
-	for i in Game_MainGroupTag.ABOVE_GROUND_OBJECT:
+	for i in Game_MainTag.ABOVE_GROUND_OBJECT:
 		if _ref_DungeonBoard.has_sprite(i, x, y):
 			return false
 	return true
@@ -265,6 +265,6 @@ func _set_sprite_memory(x: int, y: int, main_tag: String, _sub_tag: String) \
 
 
 func _move_pc_sprite() -> void:
-	_ref_DungeonBoard.move_sprite(Game_MainGroupTag.ACTOR,
+	_ref_DungeonBoard.move_sprite(Game_MainTag.ACTOR,
 			_source_position[0], _source_position[1],
 			_target_position[0], _target_position[1])

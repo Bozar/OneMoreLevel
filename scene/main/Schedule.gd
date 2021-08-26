@@ -43,16 +43,16 @@ func init_schedule() -> void:
 
 
 func _on_CreateObject_sprite_created(new_sprite: Sprite,
-		main_group: String, sub_group: String, _x: int, _y: int) -> void:
-	if main_group == Game_MainGroupTag.ACTOR:
-		if sub_group == Game_SubGroupTag.PC:
+		main_tag: String, sub_tag: String, _x: int, _y: int) -> void:
+	if main_tag == Game_MainTag.ACTOR:
+		if sub_tag == Game_SubTag.PC:
 			_actors[0] = new_sprite
 		else:
 			_actors.append(new_sprite)
 
 
 func _on_RemoveObject_sprite_removed(remove_sprite: Sprite,
-		_main_group: String, _x: int, _y: int) -> void:
+		_main_tag: String, _x: int, _y: int) -> void:
 	var current_sprite: Sprite
 
 	if remove_sprite == _get_current():

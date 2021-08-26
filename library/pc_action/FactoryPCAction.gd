@@ -21,16 +21,16 @@ func render_fov() -> void:
 
 	for x in range(Game_DungeonSize.MAX_X):
 		for y in range(Game_DungeonSize.MAX_Y):
-			for i in Game_MainGroupTag.DUNGEON_OBJECT:
+			for i in Game_MainTag.DUNGEON_OBJECT:
 				_set_sprite_color_with_memory(x, y, i, "",
-						i != Game_MainGroupTag.ACTOR,
+						i != Game_MainTag.ACTOR,
 						Game_ShadowCastFOV, "is_in_sight")
 
 	_render_doors(false)
 
 
 func interact_with_building() -> void:
-	if _ref_DungeonBoard.has_sprite_with_sub_tag(Game_SubGroupTag.DOOR,
+	if _ref_DungeonBoard.has_sprite_with_sub_tag(Game_SubTag.DOOR,
 			_target_position[0], _target_position[1]):
 		move()
 
@@ -39,7 +39,7 @@ func _render_doors(auto_reset: bool) -> void:
 	var pos: Array
 
 	if find_doors.size() == 0:
-		find_doors = _ref_DungeonBoard.get_sprites_by_tag(Game_SubGroupTag.DOOR)
+		find_doors = _ref_DungeonBoard.get_sprites_by_tag(Game_SubTag.DOOR)
 	for i in find_doors:
 		pos = Game_ConvertCoord.vector_to_array(i.position)
 		if _ref_DungeonBoard.has_actor(pos[0], pos[1]):

@@ -50,16 +50,16 @@ func remove_trap(_trap: Sprite, _x: int, _y: int) -> void:
 	pass
 
 
-func create_actor(_actor: Sprite, _sub_group: String, _x: int, _y: int) -> void:
+func create_actor(_actor: Sprite, _sub_tag: String, _x: int, _y: int) -> void:
 	pass
 
 
-func create_building(_building: Sprite, _sub_group: String,
-		_x: int, _y: int) -> void:
+func create_building(_building: Sprite, _sub_tag: String, _x: int, _y: int) \
+		-> void:
 	pass
 
 
-func create_trap(_trap: Sprite, _sub_group: String, _x: int, _y: int) -> void:
+func create_trap(_trap: Sprite, _sub_tag: String, _x: int, _y: int) -> void:
 	pass
 
 
@@ -69,9 +69,8 @@ func game_over(_win: bool) -> void:
 
 func _add_or_remove_ground(add_ground: bool, x: int, y: int,
 		new_sprite: PackedScene = _spr_Floor,
-		sub_tag: String = Game_SubGroupTag.FLOOR) -> void:
+		sub_tag: String = Game_SubTag.FLOOR) -> void:
 	if add_ground:
-		_ref_CreateObject.create(new_sprite, Game_MainGroupTag.GROUND, sub_tag,
-				x, y)
+		_ref_CreateObject.create(new_sprite, Game_MainTag.GROUND, sub_tag, x, y)
 	else:
 		_ref_RemoveObject.remove_ground(x, y)

@@ -29,10 +29,10 @@ func end_world(pc_x: int, pc_y: int) -> void:
 
 	if _spawn_captain:
 		for _i in range(Game_KnightData.MAX_CAPTAIN - 1):
-			_spawn_npc(_spr_KnightCaptain, Game_SubGroupTag.KNIGHT_CAPTAIN)
+			_spawn_npc(_spr_KnightCaptain, Game_SubTag.KNIGHT_CAPTAIN)
 		_spawn_captain = false
 	elif _spawn_boss:
-		_spawn_npc(_spr_KnightBoss, Game_SubGroupTag.KNIGHT_BOSS)
+		_spawn_npc(_spr_KnightBoss, Game_SubTag.KNIGHT_BOSS)
 		_spawn_boss = false
 
 	if _ref_DungeonBoard.count_npc() > Game_KnightData.START_RESPAWN:
@@ -44,16 +44,16 @@ func end_world(pc_x: int, pc_y: int) -> void:
 		if encirclement.size() > 0:
 			spawn_nearby = encirclement[_ref_RandomNumber.get_int(
 					0, encirclement.size())]
-			_ref_CreateObject.create(_spr_Knight, Game_MainGroupTag.ACTOR,
-					Game_SubGroupTag.KNIGHT, spawn_nearby[0], spawn_nearby[1])
+			_ref_CreateObject.create(_spr_Knight, Game_MainTag.ACTOR,
+					Game_SubTag.KNIGHT, spawn_nearby[0], spawn_nearby[1])
 			spawn -= 1
 
 	for _i in range(spawn):
-		_spawn_npc(_spr_Knight, Game_SubGroupTag.KNIGHT)
+		_spawn_npc(_spr_Knight, Game_SubTag.KNIGHT)
 
 
 func remove_actor(actor: Sprite, _x: int, _y: int) -> void:
-	if not actor.is_in_group(Game_SubGroupTag.KNIGHT_CAPTAIN):
+	if not actor.is_in_group(Game_SubTag.KNIGHT_CAPTAIN):
 		return
 
 	_dead_captain += 1
@@ -65,8 +65,7 @@ func remove_actor(actor: Sprite, _x: int, _y: int) -> void:
 		_spawn_boss = true
 
 	if _counter == null:
-		_counter = _ref_DungeonBoard.get_sprites_by_tag(
-				Game_SubGroupTag.COUNTER)[0]
+		_counter = _ref_DungeonBoard.get_sprites_by_tag(Game_SubTag.COUNTER)[0]
 	_ref_SwitchSprite.switch_sprite(_counter, _switch_number[_dead_captain - 1])
 
 
@@ -79,8 +78,7 @@ func _spawn_npc(scene: PackedScene, sub_tag: String) -> void:
 		position = _get_position()
 		x = position[0]
 		y = position[1]
-
-	_ref_CreateObject.create(scene, Game_MainGroupTag.ACTOR, sub_tag, x, y)
+	_ref_CreateObject.create(scene, Game_MainTag.ACTOR, sub_tag, x, y)
 
 
 func _get_position() -> Array:

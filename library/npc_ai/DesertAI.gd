@@ -19,7 +19,7 @@ func _init(parent_node: Node2D).(parent_node) -> void:
 
 
 func take_action() -> void:
-	if not _self.is_in_group(Game_SubGroupTag.WORM_HEAD):
+	if not _self.is_in_group(Game_SubTag.WORM_HEAD):
 		return
 
 	var id: int = _self.get_instance_id()
@@ -61,20 +61,19 @@ func _create_body(id: int, index: int, x: int, y: int) -> void:
 
 	# Create tail.
 	if index == worm_length - 1:
-		_ref_CreateObject.create(
-				_spr_WormTail,
-				Game_MainGroupTag.ACTOR, Game_SubGroupTag.WORM_BODY, x, y)
+		_ref_CreateObject.create(_spr_WormTail,
+				Game_MainTag.ACTOR, Game_SubTag.WORM_BODY, x, y)
 	# Create spice.
 	elif (index >= Game_DesertData.SPICE_START) \
 			and (index < Game_DesertData.SPICE_END):
 		is_active = (not _id_to_has_active_spice[id]) \
 				and _ref_RandomNumber.get_percent_chance(_quality_spice_chance)
 		_ref_CreateObject.create(_spr_WormSpice,
-				Game_MainGroupTag.ACTOR, Game_SubGroupTag.WORM_SPICE, x, y)
+				Game_MainTag.ACTOR, Game_SubTag.WORM_SPICE, x, y)
 	# Create body.
 	else:
 		_ref_CreateObject.create(_spr_WormBody,
-				Game_MainGroupTag.ACTOR, Game_SubGroupTag.WORM_BODY, x, y)
+				Game_MainTag.ACTOR, Game_SubTag.WORM_BODY, x, y)
 
 	worm_body = _ref_DungeonBoard.get_actor(x, y)
 	_id_to_worm[id][index] = worm_body
@@ -122,7 +121,7 @@ func _try_random_walk(id: int) -> bool:
 	_ref_RemoveObject.remove_trap(move_to[0], move_to[1])
 
 	_set_danger_zone(_self, false)
-	_ref_DungeonBoard.move_sprite(Game_MainGroupTag.ACTOR,
+	_ref_DungeonBoard.move_sprite(Game_MainTag.ACTOR,
 			_self_pos[0], _self_pos[1],
 			move_to[0], move_to[1])
 	_set_danger_zone(_self, true)
@@ -144,7 +143,7 @@ func _move_body(id: int) -> void:
 			return
 
 		save_position = Game_ConvertCoord.vector_to_array(worm[i].position)
-		_ref_DungeonBoard.move_sprite(Game_MainGroupTag.ACTOR,
+		_ref_DungeonBoard.move_sprite(Game_MainTag.ACTOR,
 				save_position[0], save_position[1],
 				current_position[0], current_position[1])
 		current_position = save_position
@@ -168,11 +167,11 @@ func _bury_worm(id: int) -> void:
 		_ref_RemoveObject.remove_actor(pos[0], pos[1])
 		if _ref_RandomNumber.get_percent_chance(create_spice):
 			_ref_CreateObject.create(_spr_Treasure,
-					Game_MainGroupTag.TRAP, Game_SubGroupTag.TREASURE,
+					Game_MainTag.TRAP, Game_SubTag.TREASURE,
 					pos[0], pos[1])
 		else:
 			_ref_CreateObject.create(_spr_Wall,
-					Game_MainGroupTag.BUILDING, Game_SubGroupTag.WALL,
+					Game_MainTag.BUILDING, Game_SubTag.WALL,
 					pos[0], pos[1])
 
 	_clear_worm_data(id)
@@ -204,7 +203,7 @@ func _is_passive_spice(spice: Sprite) -> bool:
 
 
 func _has_spice(body: Sprite) -> bool:
-	return body.is_in_group(Game_SubGroupTag.WORM_SPICE)
+	return body.is_in_group(Game_SubTag.WORM_SPICE)
 
 
 func _clear_worm_data(id: int) -> void:

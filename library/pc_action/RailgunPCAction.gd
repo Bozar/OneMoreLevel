@@ -54,12 +54,12 @@ func render_fov() -> void:
 
 	for x in range(Game_DungeonSize.MAX_X):
 		for y in range(Game_DungeonSize.MAX_Y):
-			for i in Game_MainGroupTag.DUNGEON_OBJECT:
+			for i in Game_MainTag.DUNGEON_OBJECT:
 				match i:
-					Game_MainGroupTag.ACTOR:
+					Game_MainTag.ACTOR:
 						_set_sprite_color_with_memory(x, y, i, "", false,
 								Game_CrossShapedFOV, "is_in_sight")
-					Game_MainGroupTag.TRAP:
+					Game_MainTag.TRAP:
 						_set_sprite_color(x, y, i, "",
 								Game_CrossShapedFOV, "is_in_sight")
 					_:
@@ -109,7 +109,7 @@ func attack() -> void:
 
 		_ref_RemoveObject.remove_actor(x, y)
 		_ref_CreateObject.create(_spr_Treasure,
-				Game_MainGroupTag.TRAP, Game_SubGroupTag.TREASURE, x, y)
+				Game_MainTag.TRAP, Game_SubTag.TREASURE, x, y)
 
 		_kill_count -= Game_RailgunData.ONE_KILL
 		if _ammo == 0:
@@ -182,7 +182,7 @@ func _init_skull_pillar() -> void:
 	if _plillar_position.size() > 0:
 		return
 
-	building = _ref_DungeonBoard.get_sprites_by_tag(Game_SubGroupTag.WALL)
+	building = _ref_DungeonBoard.get_sprites_by_tag(Game_SubTag.WALL)
 	Game_ArrayHelper.rand_picker(building, building.size(), _ref_RandomNumber)
 
 	for i in building:
@@ -197,7 +197,7 @@ func _init_skull_pillar() -> void:
 			if _ref_DungeonBoard.has_ground(j[0], j[1]):
 				_ref_RemoveObject.remove_building(pos[0], pos[1])
 				_ref_CreateObject.create(_spr_Portal,
-						Game_MainGroupTag.BUILDING, Game_SubGroupTag.PILLAR,
+						Game_MainTag.BUILDING, Game_SubTag.PILLAR,
 						pos[0], pos[1])
 				_plillar_position = pos
 				return
@@ -210,7 +210,7 @@ func _init_counter() -> void:
 			_counter_sprite.push_back(_ref_DungeonBoard.get_building(
 					x, Game_DungeonSize.MAX_Y - 1))
 			_ref_Palette.set_dark_color(_counter_sprite.back(),
-					Game_MainGroupTag.BUILDING)
+					Game_MainTag.BUILDING)
 
 
 func _render_counter(kill: int) -> void:
@@ -276,8 +276,8 @@ func _do_not_render_building(x: int, y: int) -> bool:
 
 	if building == null:
 		return false
-	if building.is_in_group(Game_SubGroupTag.PILLAR):
+	if building.is_in_group(Game_SubTag.PILLAR):
 		return _has_found_pillar
-	elif building.is_in_group(Game_SubGroupTag.COUNTER):
+	elif building.is_in_group(Game_SubTag.COUNTER):
 		return true
 	return false

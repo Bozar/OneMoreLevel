@@ -43,9 +43,9 @@ func _create_wall() -> void:
 			match packed_prefab.prefab[x][y]:
 				Game_DungeonPrefab.WALL_CHAR:
 					_occupy_position(x + start_x, y + start_y)
-					_add_to_blueprint(_spr_Wall, Game_MainGroupTag.BUILDING,
-							Game_SubGroupTag.WALL, x + start_x, y + start_y)
+					_add_to_blueprint(_spr_Wall, Game_MainTag.BUILDING,
+							Game_SubTag.WALL, x + start_x, y + start_y)
 				DOOR_CHAR:
 					_occupy_position(x + start_x, y + start_y)
-					_add_to_blueprint(_spr_Door, Game_MainGroupTag.BUILDING,
-							Game_SubGroupTag.DOOR, x + start_x, y + start_y)
+					_add_to_blueprint(_spr_Door, Game_MainTag.BUILDING,
+							Game_SubTag.DOOR, x + start_x, y + start_y)

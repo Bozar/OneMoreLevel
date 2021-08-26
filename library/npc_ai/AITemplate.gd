@@ -84,7 +84,7 @@ func _approach_pc(start_point: Array = [_pc_pos], one_step: int = 1,
 
 	if destination.size() > 0:
 		Game_ArrayHelper.rand_picker(destination, 1, _ref_RandomNumber)
-		_ref_DungeonBoard.move_sprite(Game_MainGroupTag.ACTOR,
+		_ref_DungeonBoard.move_sprite(Game_MainTag.ACTOR,
 				_self_pos[0], _self_pos[1],
 				destination[0][0], destination[0][1])
 		_target_pos = destination[0]

@@ -21,7 +21,7 @@ var _ai: Game_AITemplate
 
 
 func _on_Schedule_turn_started(current_sprite: Sprite) -> void:
-	if current_sprite.is_in_group(Game_SubGroupTag.PC):
+	if current_sprite.is_in_group(Game_SubTag.PC):
 		return
 
 	_ai.set_local_var(current_sprite)
@@ -36,13 +36,13 @@ func _on_InitWorld_world_selected(new_world: String) -> void:
 
 
 func _on_CreateObject_sprite_created(_new_sprite: Sprite,
-		_main_group: String, sub_group: String, _x: int, _y: int) -> void:
-	if sub_group != Game_SubGroupTag.PC:
+		_main_tag: String, sub_tag: String, _x: int, _y: int) -> void:
+	if sub_tag != Game_SubTag.PC:
 		return
 	# Refer: AITemplate.gd.
 	_ai = Game_InitWorldData.get_enemy_ai(_world_tag).new(self)
 
 
 func _on_RemoveObject_sprite_removed(remove_sprite: Sprite,
-		_main_group: String, _x: int, _y: int) -> void:
+		_main_tag: String, _x: int, _y: int) -> void:
 	_ai.remove_data(remove_sprite)

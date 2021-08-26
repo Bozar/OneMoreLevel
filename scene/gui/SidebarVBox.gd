@@ -40,7 +40,7 @@ func _on_InitWorld_world_selected(new_world: String) -> void:
 
 
 func _on_Schedule_turn_started(current_sprite: Sprite) -> void:
-	if not current_sprite.is_in_group(Game_SubGroupTag.PC):
+	if not current_sprite.is_in_group(Game_SubTag.PC):
 		return
 	get_node(TURN).text = _get_turn()
 	get_node(MESSAGE).text = _get_warning()

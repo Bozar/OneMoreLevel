@@ -34,10 +34,9 @@ func init_world() -> void:
 
 	# sb: SpriteBlueprint
 	for sb in _world_template.get_blueprint():
-		if _is_pc(sb.sub_group):
+		if _is_pc(sb.sub_tag):
 			_init_indicator(sb.x, sb.y)
-		_ref_CreateObject.create(
-				sb.scene, sb.main_group, sb.sub_group, sb.x, sb.y)
+		_ref_CreateObject.create(sb.scene, sb.main_tag, sb.sub_tag, sb.x, sb.y)
 	_ref_Schedule.init_schedule()
 
 
@@ -69,20 +68,20 @@ func _get_world() -> Game_WorldTemplate:
 
 func _init_indicator(x: int, y: int) -> void:
 	_ref_CreateObject.create(_spr_TriangleRight,
-			Game_MainGroupTag.INDICATOR, Game_SubGroupTag.ARROW_RIGHT,
+			Game_MainTag.INDICATOR, Game_SubTag.ARROW_RIGHT,
 			0, y, -Game_DungeonSize.ARROW_MARGIN)
 
 	_ref_CreateObject.create(_spr_TriangleDown,
-			Game_MainGroupTag.INDICATOR, Game_SubGroupTag.ARROW_DOWN,
+			Game_MainTag.INDICATOR, Game_SubTag.ARROW_DOWN,
 			x, 0, 0, -Game_DungeonSize.ARROW_MARGIN)
 
 	_ref_CreateObject.create(_spr_TriangleUp,
-			Game_MainGroupTag.INDICATOR, Game_SubGroupTag.ARROW_UP,
+			Game_MainTag.INDICATOR, Game_SubTag.ARROW_UP,
 			x, Game_DungeonSize.MAX_Y - 1, 0, Game_DungeonSize.ARROW_MARGIN)
 
 
 func _is_pc(group_name: String) -> bool:
-	return group_name == Game_SubGroupTag.PC
+	return group_name == Game_SubTag.PC
 
 
 func _filter_get_world(source: Array, index: int, opt_arg: Array) -> bool:
