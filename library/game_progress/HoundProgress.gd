@@ -100,13 +100,13 @@ func _set_ground_state(ground: Sprite, is_active: bool) -> void:
 	var new_sprite_type: String
 
 	if is_active:
-		_ref_ObjectData.set_state(ground, Game_ObjectStateTag.ACTIVE)
+		_ref_ObjectData.set_state(ground, Game_StateTag.ACTIVE)
 		if _ref_ObjectData.get_hit_point(ground) == 0:
 			new_sprite_type = Game_SpriteTypeTag.ACTIVE_1
 		else:
 			new_sprite_type = Game_SpriteTypeTag.ACTIVE
 	else:
-		_ref_ObjectData.set_state(ground, Game_ObjectStateTag.DEFAULT)
+		_ref_ObjectData.set_state(ground, Game_StateTag.DEFAULT)
 		new_sprite_type = Game_SpriteTypeTag.DEFAULT
 	_ref_SwitchSprite.switch_sprite(ground, new_sprite_type)
 

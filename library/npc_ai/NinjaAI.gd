@@ -10,7 +10,7 @@ func take_action() -> void:
 	var pc_hp: int
 	var npc_sight: int = Game_NinjaData.NPC_SIGHT
 
-	_ref_ObjectData.set_state(_self, Game_ObjectStateTag.DEFAULT)
+	_ref_ObjectData.set_state(_self, Game_StateTag.DEFAULT)
 	_ref_SwitchSprite.switch_sprite(_self, Game_SpriteTypeTag.DEFAULT)
 
 	if Game_CoordCalculator.is_inside_range(_self_pos[0], _self_pos[1],

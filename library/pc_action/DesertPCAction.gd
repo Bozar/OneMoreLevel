@@ -30,16 +30,16 @@ func wait() -> void:
 func attack() -> void:
 	var worm: Sprite = _ref_DungeonBoard.get_actor(
 			_target_position[0], _target_position[1])
-	var is_active_spice: bool = _ref_ObjectData.verify_state(
-			worm, Game_ObjectStateTag.ACTIVE)
+	var is_active_spice: bool = _ref_ObjectData.verify_state(worm,
+			Game_StateTag.ACTIVE)
 	var pc: Sprite = _ref_DungeonBoard.get_pc()
 
 	if (not worm.is_in_group(Game_SubTag.WORM_SPICE)) \
-			or _ref_ObjectData.verify_state(worm, Game_ObjectStateTag.PASSIVE):
+			or _ref_ObjectData.verify_state(worm, Game_StateTag.PASSIVE):
 		end_turn = false
 		return
 
-	_ref_ObjectData.set_state(worm, Game_ObjectStateTag.PASSIVE)
+	_ref_ObjectData.set_state(worm, Game_StateTag.PASSIVE)
 	_ref_SwitchSprite.switch_sprite(worm, Game_SpriteTypeTag.PASSIVE)
 
 	if is_active_spice:
@@ -91,8 +91,7 @@ func _is_checkmate() -> bool:
 		is_head = actor.is_in_group(Game_SubTag.WORM_HEAD)
 		is_body = actor.is_in_group(Game_SubTag.WORM_BODY)
 		is_spice = actor.is_in_group(Game_SubTag.WORM_SPICE)
-		is_passive = _ref_ObjectData.verify_state(actor,
-				Game_ObjectStateTag.PASSIVE)
+		is_passive = _ref_ObjectData.verify_state(actor, Game_StateTag.PASSIVE)
 		if is_head or is_body or (is_spice and is_passive):
 			count_neighbor += 1
 

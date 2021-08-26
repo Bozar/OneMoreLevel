@@ -67,7 +67,7 @@ func _is_checkmate() -> bool:
 	var trap_x: int = Game_ConvertCoord.vector_to_array(trap.position)[0]
 
 	for i in npc:
-		if _ref_ObjectData.verify_state(i, Game_ObjectStateTag.DEFAULT):
+		if _ref_ObjectData.verify_state(i, Game_StateTag.DEFAULT):
 			return false
 	return (_source_position[0] - Game_DungeonSize.CENTER_X) \
 			* (trap_x - Game_DungeonSize.CENTER_X) > 0
@@ -110,7 +110,7 @@ func _create_image_on_the_other_side(x: int, y: int) -> void:
 	# Move the phantom to the other side. State: passive. Color: grey.
 	_ref_DungeonBoard.move_sprite(Game_MainTag.ACTOR,
 			x, y, mirror[0], mirror[1])
-	_ref_ObjectData.set_state(actor, Game_ObjectStateTag.PASSIVE)
+	_ref_ObjectData.set_state(actor, Game_StateTag.PASSIVE)
 
 	# On the other side: Remove a trap.
 	_ref_RemoveObject.remove_trap(mirror[0], mirror[1])
@@ -217,7 +217,7 @@ func _filter_create_image(source: Array, index: int, opt_arg: Array) -> bool:
 
 	return (source[index] != actor) \
 			and _ref_ObjectData.verify_state(source[index],
-					Game_ObjectStateTag.PASSIVE)
+					Game_StateTag.PASSIVE)
 
 
 func _reset_sprite_color() -> void:

@@ -205,11 +205,6 @@ _global_script_classes=[ {
 "path": "res://scene/main/ObjectState.gd"
 }, {
 "base": "Reference",
-"class": "Game_ObjectStateTag",
-"language": "GDScript",
-"path": "res://library/ObjectStateTag.gd"
-}, {
-"base": "Reference",
 "class": "Game_PCActionTemplate",
 "language": "GDScript",
 "path": "res://library/pc_action/PCActionTemplate.gd"
@@ -300,6 +295,11 @@ _global_script_classes=[ {
 "path": "res://library/SpriteTypeTag.gd"
 }, {
 "base": "Reference",
+"class": "Game_StateTag",
+"language": "GDScript",
+"path": "res://library/StateTag.gd"
+}, {
+"base": "Reference",
 "class": "Game_StyxData",
 "language": "GDScript",
 "path": "res://library/npc_data/StyxData.gd"
@@ -379,7 +379,6 @@ _global_script_class_icons={
 "Game_NinjaData": "",
 "Game_ObjectData": "",
 "Game_ObjectState": "",
-"Game_ObjectStateTag": "",
 "Game_PCActionTemplate": "",
 "Game_Palette": "",
 "Game_PathFindingData": "",
@@ -398,6 +397,7 @@ _global_script_class_icons={
 "Game_SpriteBlueprint": "",
 "Game_SpriteType": "",
 "Game_SpriteTypeTag": "",
+"Game_StateTag": "",
 "Game_StyxData": "",
 "Game_SubTag": "",
 "Game_SwitchScreen": "",

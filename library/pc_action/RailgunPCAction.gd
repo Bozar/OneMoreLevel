@@ -235,10 +235,10 @@ func _switch_mode(aim_mode: bool, pc: Sprite) -> void:
 	var new_sprite: String
 
 	if aim_mode:
-		new_state = Game_ObjectStateTag.ACTIVE
+		new_state = Game_StateTag.ACTIVE
 		new_sprite = Game_SpriteTypeTag.convert_digit_to_tag(_ammo)
 	else:
-		new_state = Game_ObjectStateTag.DEFAULT
+		new_state = Game_StateTag.DEFAULT
 		new_sprite = Game_SpriteTypeTag.DEFAULT
 
 	_ref_ObjectData.set_state(pc, new_state)
@@ -246,7 +246,7 @@ func _switch_mode(aim_mode: bool, pc: Sprite) -> void:
 
 
 func _is_aim_mode(pc: Sprite) -> bool:
-	return _ref_ObjectData.verify_state(pc, Game_ObjectStateTag.ACTIVE)
+	return _ref_ObjectData.verify_state(pc, Game_StateTag.ACTIVE)
 
 
 func _try_find_pillar() -> void:

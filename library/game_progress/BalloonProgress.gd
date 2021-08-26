@@ -29,13 +29,13 @@ func _set_wind_direction() -> void:
 
 	if _wind_forecast[0] == null:
 		index = _ref_RandomNumber.get_int(0,
-				Game_ObjectStateTag.VALID_DIRECTION.size())
-		_wind_forecast[0] = Game_ObjectStateTag.VALID_DIRECTION[index]
+				Game_StateTag.VALID_DIRECTION.size())
+		_wind_forecast[0] = Game_StateTag.VALID_DIRECTION[index]
 	else:
 		_wind_forecast[0] = _wind_forecast[1]
 
-	for i in Game_ObjectStateTag.VALID_DIRECTION:
-		if i != Game_ObjectStateTag.OPPOSITE_DIRECTION[_wind_forecast[0]]:
+	for i in Game_StateTag.VALID_DIRECTION:
+		if i != Game_StateTag.OPPOSITE_DIRECTION[_wind_forecast[0]]:
 			candidate.push_back(i)
 	Game_ArrayHelper.duplicate_element(candidate, self, "_dup_set_wind",
 			[_wind_forecast[0]])
@@ -44,7 +44,7 @@ func _set_wind_direction() -> void:
 
 	_ref_ObjectData.set_state(pc, _wind_forecast[0])
 	_ref_SwitchSprite.switch_sprite(pc,
-			Game_ObjectStateTag.STATE_TO_SPRITE[_wind_forecast[0]])
+			Game_StateTag.STATE_TO_SPRITE[_wind_forecast[0]])
 
 	for x in range(0, 2):
 		ground = _ref_DungeonBoard.get_ground(x, 0)

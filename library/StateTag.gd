@@ -1,4 +1,4 @@
-class_name Game_ObjectStateTag
+class_name Game_StateTag
 
 
 const DEFAULT: String = "default"

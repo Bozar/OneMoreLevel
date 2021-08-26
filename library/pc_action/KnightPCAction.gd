@@ -12,11 +12,11 @@ func attack() -> void:
 	var npc: Sprite = _ref_DungeonBoard.get_actor(
 			_target_position[0], _target_position[1])
 
-	if _ref_ObjectData.verify_state(npc, Game_ObjectStateTag.DEFAULT):
+	if _ref_ObjectData.verify_state(npc, Game_StateTag.DEFAULT):
 		end_turn = false
-	elif _ref_ObjectData.verify_state(npc, Game_ObjectStateTag.ACTIVE):
+	elif _ref_ObjectData.verify_state(npc, Game_StateTag.ACTIVE):
 		end_turn = _roll()
-	elif _ref_ObjectData.verify_state(npc, Game_ObjectStateTag.PASSIVE):
+	elif _ref_ObjectData.verify_state(npc, Game_StateTag.PASSIVE):
 		if _ref_DangerZone.is_in_danger(
 				_source_position[0], _source_position[1]):
 			end_turn = false
@@ -58,7 +58,7 @@ func _is_checkmate() -> bool:
 			return false
 		elif _ref_DungeonBoard.has_actor(i[0], i[1]):
 			actor = _ref_DungeonBoard.get_actor(i[0], i[1])
-			if _ref_ObjectData.verify_state(actor, Game_ObjectStateTag.ACTIVE):
+			if _ref_ObjectData.verify_state(actor, Game_StateTag.ACTIVE):
 				mirror = Game_CoordCalculator.get_mirror_image(
 						x, y, i[0], i[1])
 				if mirror.coord_in_dungeon \

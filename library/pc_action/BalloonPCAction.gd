@@ -81,7 +81,7 @@ func set_target_position(direction: String) -> void:
 func _wind_blow() -> void:
 	var pc: Sprite = _ref_DungeonBoard.get_actor(
 			_source_position[0], _source_position[1])
-	var wind_direction: Array = Game_ObjectStateTag.DIRECTION_TO_COORD[ \
+	var wind_direction: Array = Game_StateTag.DIRECTION_TO_COORD[ \
 			_ref_ObjectData.get_state(pc)]
 	var new_position: Array = [
 		_source_position[0] + wind_direction[0],
@@ -111,14 +111,14 @@ func _reach_destination(x: int, y: int) -> bool:
 	var beacon: Sprite = _ref_DungeonBoard.get_trap(x, y)
 	var add_count: bool = false
 
-	if _ref_ObjectData.verify_state(beacon, Game_ObjectStateTag.DEFAULT):
+	if _ref_ObjectData.verify_state(beacon, Game_StateTag.DEFAULT):
 		_count_beacon -= 1
 		_ref_SwitchSprite.switch_sprite(beacon, Game_SpriteTypeTag.PASSIVE)
 
-	if not _ref_ObjectData.verify_state(beacon, Game_ObjectStateTag.PASSIVE):
+	if not _ref_ObjectData.verify_state(beacon, Game_StateTag.PASSIVE):
 		add_count = true
 		_reactive_beacon()
-		_set_beacon_state(beacon, Game_ObjectStateTag.PASSIVE)
+		_set_beacon_state(beacon, Game_StateTag.PASSIVE)
 	return add_count
 
 
@@ -134,16 +134,16 @@ func _bounce_off(pc_x: int, pc_y: int, wall_x: int, wall_y: int) -> void:
 
 func _reactive_beacon() -> void:
 	for i in _ref_DungeonBoard.get_sprites_by_tag(Game_SubTag.TREASURE):
-		if _ref_ObjectData.verify_state(i, Game_ObjectStateTag.PASSIVE):
-			_set_beacon_state(i, Game_ObjectStateTag.ACTIVE)
+		if _ref_ObjectData.verify_state(i, Game_StateTag.PASSIVE):
+			_set_beacon_state(i, Game_StateTag.ACTIVE)
 
 
 func _set_beacon_state(beacon: Sprite, state: String) -> void:
 	match state:
-		Game_ObjectStateTag.ACTIVE:
+		Game_StateTag.ACTIVE:
 			_ref_ObjectData.set_state(beacon, state)
 			_ref_Palette.set_default_color(beacon, Game_MainTag.TRAP)
-		Game_ObjectStateTag.PASSIVE:
+		Game_StateTag.PASSIVE:
 			_ref_ObjectData.set_state(beacon, state)
 			_ref_Palette.set_dark_color(beacon, Game_MainTag.TRAP)
 

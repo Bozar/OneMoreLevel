@@ -62,12 +62,12 @@ func attack() -> void:
 
 
 func wait() -> void:
-	_set_pc_state(Game_ObjectStateTag.PASSIVE)
+	_set_pc_state(Game_StateTag.PASSIVE)
 	.wait()
 
 
 func reset_state() -> void:
-	_set_pc_state(Game_ObjectStateTag.DEFAULT)
+	_set_pc_state(Game_StateTag.DEFAULT)
 	.reset_state()
 
 

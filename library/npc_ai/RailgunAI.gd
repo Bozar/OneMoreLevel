@@ -16,7 +16,7 @@ func _init(parent_node: Node2D).(parent_node) -> void:
 
 
 func take_action() -> void:
-	if _ref_ObjectData.verify_state(_self, Game_ObjectStateTag.ACTIVE):
+	if _ref_ObjectData.verify_state(_self, Game_StateTag.ACTIVE):
 		_switch_mode(false)
 		_attack()
 	elif _is_in_close_range():
@@ -35,10 +35,10 @@ func _switch_mode(aim_mode: bool) -> void:
 	var new_sprite: String
 
 	if aim_mode:
-		new_state = Game_ObjectStateTag.ACTIVE
+		new_state = Game_StateTag.ACTIVE
 		new_sprite = Game_SpriteTypeTag.ACTIVE
 	else:
-		new_state = Game_ObjectStateTag.DEFAULT
+		new_state = Game_StateTag.DEFAULT
 		new_sprite = Game_SpriteTypeTag.DEFAULT
 
 	_ref_ObjectData.set_state(_self, new_state)

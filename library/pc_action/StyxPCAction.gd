@@ -3,14 +3,14 @@ extends Game_PCActionTemplate
 
 const INVALID_DIRECTION: int = 0
 
-const STATE_TO_INT: Dictionary = {
-	Game_ObjectStateTag.UP: 1,
-	Game_ObjectStateTag.DOWN: -1,
-	Game_ObjectStateTag.LEFT: 2,
-	Game_ObjectStateTag.RIGHT: -2,
-	Game_ObjectStateTag.DEFAULT: INVALID_DIRECTION,
+const _STATE_TO_INT: Dictionary = {
+	Game_StateTag.UP: 1,
+	Game_StateTag.DOWN: -1,
+	Game_StateTag.LEFT: 2,
+	Game_StateTag.RIGHT: -2,
+	Game_StateTag.DEFAULT: INVALID_DIRECTION,
 }
-const INPUT_TO_INT: Dictionary = {
+const _INPUT_TO_INT: Dictionary = {
 	Game_InputTag.MOVE_UP: 1,
 	Game_InputTag.MOVE_DOWN: -1,
 	Game_InputTag.MOVE_LEFT: 2,
@@ -54,7 +54,7 @@ func render_fov() -> void:
 func wait() -> void:
 	var pc: Sprite = _ref_DungeonBoard.get_pc()
 
-	_ref_ObjectData.set_state(pc, Game_ObjectStateTag.ACTIVE)
+	_ref_ObjectData.set_state(pc, Game_StateTag.ACTIVE)
 	_extra_turn_counter = 0
 	_switch_lighthouse_color()
 
@@ -64,7 +64,7 @@ func wait() -> void:
 func move() -> void:
 	var x: int
 	var y: int
-	var source_direction: int = INPUT_TO_INT[_input_direction]
+	var source_direction: int = _INPUT_TO_INT[_input_direction]
 	var target_direction: int = _get_ground_direction(
 			_target_position[0], _target_position[1])
 
@@ -72,16 +72,16 @@ func move() -> void:
 		end_turn = false
 		return
 
-	for i in Game_ObjectStateTag.DIRECTION_TO_COORD.keys():
+	for i in Game_StateTag.DIRECTION_TO_COORD.keys():
 		x = _target_position[0]
 		y = _target_position[1]
 		while Game_CoordCalculator.is_inside_dungeon(x, y) \
-				and (_get_ground_direction(x, y) == STATE_TO_INT[i]):
-			x += Game_ObjectStateTag.DIRECTION_TO_COORD[i][0]
-			y += Game_ObjectStateTag.DIRECTION_TO_COORD[i][1]
+				and (_get_ground_direction(x, y) == _STATE_TO_INT[i]):
+			x += Game_StateTag.DIRECTION_TO_COORD[i][0]
+			y += Game_StateTag.DIRECTION_TO_COORD[i][1]
 		if (x != _target_position[0]) or (y != _target_position[1]):
-			x -= Game_ObjectStateTag.DIRECTION_TO_COORD[i][0]
-			y -= Game_ObjectStateTag.DIRECTION_TO_COORD[i][1]
+			x -= Game_StateTag.DIRECTION_TO_COORD[i][0]
+			y -= Game_StateTag.DIRECTION_TO_COORD[i][1]
 			break
 	_ref_DungeonBoard.move_sprite(Game_MainTag.ACTOR,
 			_source_position[0], _source_position[1], x, y)
@@ -106,7 +106,7 @@ func _get_ground_direction(x: int, y: int) -> int:
 
 	if ground == null:
 		return INVALID_DIRECTION
-	return STATE_TO_INT[_ref_ObjectData.get_state(ground)]
+	return _STATE_TO_INT[_ref_ObjectData.get_state(ground)]
 
 
 func _try_reduce_extra_turn() -> void:

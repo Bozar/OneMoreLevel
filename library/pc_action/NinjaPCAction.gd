@@ -154,8 +154,8 @@ func _try_hit_npc(hit_x: int, hit_y: int, push_x: int, push_y: int,
 
 	if npc == null:
 		return false
-	elif _ref_ObjectData.verify_state(npc, Game_ObjectStateTag.DEFAULT):
-		_ref_ObjectData.set_state(npc, Game_ObjectStateTag.PASSIVE)
+	elif _ref_ObjectData.verify_state(npc, Game_StateTag.DEFAULT):
+		_ref_ObjectData.set_state(npc, Game_StateTag.PASSIVE)
 		_ref_SwitchSprite.switch_sprite(npc, Game_SpriteTypeTag.PASSIVE)
 		if _can_push_target(push_x, push_y):
 			_ref_DungeonBoard.move_sprite(Game_MainTag.ACTOR, hit_x, hit_y,

@@ -255,4 +255,4 @@ func _try_hit_phantom(x: int, y: int) -> void:
 
 func _ground_is_active(x: int, y: int) -> bool:
 	var ground: Sprite = _ref_DungeonBoard.get_ground(x, y)
-	return _ref_ObjectData.verify_state(ground, Game_ObjectStateTag.ACTIVE)
+	return _ref_ObjectData.verify_state(ground, Game_StateTag.ACTIVE)
