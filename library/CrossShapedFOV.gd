@@ -44,7 +44,8 @@ const COORD_WARNING: String = "Neither face_x nor face_y is zero."
 const T_SHAPED_BACK: int = 1
 const SYMMETRIC_X: int = 0
 const SYMMETRIC_Y: int = 1
-const FOV_DATA := {
+
+const _FOV_DATA := {
 	"dungeon_width": 0,
 	"dungeon_height": 0,
 	"max_x": 0,
@@ -69,19 +70,19 @@ static func set_rectangular_sight(dungeon_width: int, dungeon_height: int,
 	var cast_ray_arg: Array
 
 	# Set initial data.
-	FOV_DATA.dungeon_width = dungeon_width
-	FOV_DATA.dungeon_height = dungeon_height
+	_FOV_DATA.dungeon_width = dungeon_width
+	_FOV_DATA.dungeon_height = dungeon_height
 
-	FOV_DATA.center_x = center_x
-	FOV_DATA.center_y = center_y
+	_FOV_DATA.center_x = center_x
+	_FOV_DATA.center_y = center_y
 
-	FOV_DATA.max_x = center_x
-	FOV_DATA.max_y = center_y
+	_FOV_DATA.max_x = center_x
+	_FOV_DATA.max_y = center_y
 
-	FOV_DATA.min_x = center_x
-	FOV_DATA.min_y = center_y
+	_FOV_DATA.min_x = center_x
+	_FOV_DATA.min_y = center_y
 
-	FOV_DATA.half_width = half_width
+	_FOV_DATA.half_width = half_width
 
 	face_x = _normalize_coord(face_x)
 	face_y = _normalize_coord(face_y)
@@ -132,11 +133,11 @@ static func set_symmetric_sight(dungeon_width: int, dungeon_height: int,
 
 
 static func is_in_sight(x: int, y: int) -> bool:
-	if (x < FOV_DATA.min_x) or (x > FOV_DATA.max_x) \
-			or (y < FOV_DATA.min_y) or (y > FOV_DATA.max_y):
+	if _is_outside_range(x, _FOV_DATA.min_x, _FOV_DATA.max_x) \
+			or _is_outside_range(y, _FOV_DATA.min_y, _FOV_DATA.max_y):
 		return false
-	elif (abs(x - FOV_DATA.center_x) > FOV_DATA.half_width) \
-			and (abs(y - FOV_DATA.center_y) > FOV_DATA.half_width):
+	elif _is_outside_half_width(x, _FOV_DATA.center_x) \
+			and _is_outside_half_width(y, _FOV_DATA.center_y):
 		return false
 	return true
 
@@ -159,15 +160,15 @@ static func _cast_ray(start_x: int, start_y: int, shift_x: int, shift_y: int,
 
 
 static func _update_min_max(x: int, y: int) -> void:
-	if x > FOV_DATA.max_x:
-		FOV_DATA.max_x = x
-	elif x < FOV_DATA.min_x:
-		FOV_DATA.min_x = x
+	if x > _FOV_DATA.max_x:
+		_FOV_DATA.max_x = x
+	elif x < _FOV_DATA.min_x:
+		_FOV_DATA.min_x = x
 
-	if y > FOV_DATA.max_y:
-		FOV_DATA.max_y = y
-	elif y < FOV_DATA.min_y:
-		FOV_DATA.min_y = y
+	if y > _FOV_DATA.max_y:
+		_FOV_DATA.max_y = y
+	elif y < _FOV_DATA.min_y:
+		_FOV_DATA.min_y = y
 
 
 static func _normalize_coord(coord: int) -> int:
@@ -177,5 +178,13 @@ static func _normalize_coord(coord: int) -> int:
 
 
 static func _is_inside_dungeon(x: int, y: int) -> bool:
-	return (x > -1) and (x < FOV_DATA.dungeon_width) \
-			and (y > -1) and (y < FOV_DATA.dungeon_height)
+	return (x > -1) and (x < _FOV_DATA.dungeon_width) \
+			and (y > -1) and (y < _FOV_DATA.dungeon_height)
+
+
+static func _is_outside_range(x: int, min_x: int, max_x: int) -> bool:
+	return (x < min_x) or (x > max_x)
+
+
+static func _is_outside_half_width(x: int, center_x: int) -> bool:
+	return abs(x - center_x) > _FOV_DATA.half_width
