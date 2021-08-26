@@ -4,9 +4,9 @@ class_name Game_WorldTemplate
 # The child should also implement _init() to pass arguments.
 
 
-const INVALID_COORD: int = -1
-const DEFAULT_MARKER: int = 0
-const OCCUPIED_MARKER: int = 1
+const INVALID_COORD := -1
+const DEFAULT_MARKER := 0
+const OCCUPIED_MARKER := 1
 
 var _spr_Floor := preload("res://sprite/Floor.tscn")
 var _spr_Wall := preload("res://sprite/Wall.tscn")
@@ -16,10 +16,9 @@ var _ref_RandomNumber: Game_RandomNumber
 var _ref_DangerZone: Game_DangerZone
 
 # {0: [0, ...], 1: [0, ...], ...}
-var _dungeon_with_int: Dictionary = {}
+var _dungeon_board := {}
 # [SpriteBlueprint, ...]
-var _blueprint: Array = []
-var _sprite_blueprint := Game_SpriteBlueprint
+var _blueprint := []
 
 
 func _init(parent_node: Node2D) -> void:
@@ -41,38 +40,39 @@ func get_blueprint() -> Array:
 
 func _init_dungeon_board() -> void:
 	for i in range(Game_DungeonSize.MAX_X):
-		_dungeon_with_int[i] = []
-		_dungeon_with_int[i].resize(Game_DungeonSize.MAX_Y)
+		_dungeon_board[i] = []
+		_dungeon_board[i].resize(Game_DungeonSize.MAX_Y)
 		for j in range(Game_DungeonSize.MAX_Y):
-			_dungeon_with_int[i][j] = DEFAULT_MARKER
+			_dungeon_board[i][j] = DEFAULT_MARKER
 
 
 func _occupy_position(x: int, y: int) -> void:
-	_dungeon_with_int[x][y] = OCCUPIED_MARKER
+	_dungeon_board[x][y] = OCCUPIED_MARKER
 
 
 func _reverse_occupy(x: int, y: int) -> void:
 	var new_marker: int = DEFAULT_MARKER \
-			if _dungeon_with_int[x][y] == OCCUPIED_MARKER \
+			if _dungeon_board[x][y] == OCCUPIED_MARKER \
 			else OCCUPIED_MARKER
-	_dungeon_with_int[x][y] = new_marker
+	_dungeon_board[x][y] = new_marker
 
 
 func _is_occupied(x: int, y: int) -> bool:
-	return _dungeon_with_int[x][y] == OCCUPIED_MARKER
+	return _dungeon_board[x][y] == OCCUPIED_MARKER
 
 
 func _set_terrain_marker(x: int, y: int, marker: int) -> void:
-	_dungeon_with_int[x][y] = marker
+	_dungeon_board[x][y] = marker
 
 
 func _get_terrain_marker(x: int, y: int) -> int:
-	return _dungeon_with_int[x][y]
+	return _dungeon_board[x][y]
 
 
 func _add_to_blueprint(scene: PackedScene, main_tag: String, sub_tag: String,
 		x: int, y: int) -> void:
-	_blueprint.push_back(_sprite_blueprint.new(scene, main_tag, sub_tag, x, y))
+	_blueprint.push_back(Game_SpriteBlueprint.new(scene, main_tag, sub_tag,
+			x, y))
 
 
 func _init_floor(floor_sprite: PackedScene = _spr_Floor) -> void:
