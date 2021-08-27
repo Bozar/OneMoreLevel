@@ -1,14 +1,29 @@
 extends Game_WorldTemplate
 
 
-const PATH_TO_PREFABS := "factory"
-const DOOR_CHAR := "+"
+const PATH_TO_PREFABS := Game_DungeonPrefab.RESOURCE_PATH + "factory/"
+const PATH_TO_START_POINT:= "start_point/"
 
-const MAX_PREFAB_ARG := 3
+const DOOR_CHAR := "+"
+const CLOCK_CHAR := "-"
+
+const EDIT_PREFAB_ARG := [
+		Game_DungeonPrefab.HORIZONTAL_FLIP,
+		Game_DungeonPrefab.VERTICAL_FLIP,
+		Game_DungeonPrefab.ROTATE_RIGHT,
+		Game_DungeonPrefab.DO_NOT_EDIT,
+		Game_DungeonPrefab.DO_NOT_EDIT,
+		Game_DungeonPrefab.DO_NOT_EDIT,
+	]
+const MAX_EDIT_ARG := 3
 const MAX_RETRY_BUILD_FROM_PREFAB := 9
 
-
 var _spr_Door := preload("res://sprite/Door.tscn")
+var _spr_FactoryClock := preload("res://sprite/FactoryClock.tscn")
+var _spr_Counter := preload("res://sprite/Counter.tscn")
+
+var _pc_x: int
+var _pc_y: int
 
 
 func _init(parent_node: Node2D).(parent_node) -> void:
@@ -16,39 +31,50 @@ func _init(parent_node: Node2D).(parent_node) -> void:
 
 
 func get_blueprint() -> Array:
+	_create_start_point()
 	_create_wall()
 	_init_floor()
-	_init_pc()
+	_init_pc(0, _pc_x, _pc_y, _spr_Counter)
 
 	return _blueprint
 
 
-func _create_wall() -> void:
-	var file_list: Array = Game_FileIOHelper.get_file_list(
-			Game_DungeonPrefab.RESOURCE_PATH + PATH_TO_PREFABS)
+func _create_start_point() -> void:
+	var file_list: Array = Game_FileIOHelper.get_file_list(PATH_TO_PREFABS
+			+ PATH_TO_START_POINT)
+	var max_prefab := 1
 	var packed_prefab: Game_DungeonPrefab.PackedPrefab
-	var edit_prefab := [
-		Game_DungeonPrefab.HORIZONTAL_FLIP,
-		Game_DungeonPrefab.VERTICAL_FLIP,
-		Game_DungeonPrefab.ROTATE_RIGHT,
-	]
-	var x: int
-	var y: int
+	var build_result: Array
 
-	for _i in range(edit_prefab.size()):
-		edit_prefab.push_back(Game_DungeonPrefab.DO_NOT_EDIT)
-	Game_ArrayHelper.rand_picker(edit_prefab, MAX_PREFAB_ARG, _ref_RandomNumber)
-	packed_prefab = Game_DungeonPrefab.get_prefab(file_list[0], edit_prefab)
+	Game_ArrayHelper.rand_picker(file_list, max_prefab, _ref_RandomNumber)
+	packed_prefab = _edit_prefab(file_list[0])
+	while true:
+		build_result = _build_from_prefab(packed_prefab)
+		if build_result[0]:
+			# PC is in the center of the room.
+			_pc_x = build_result[1] + 1
+			_pc_y = build_result[2] + 1
+		return
 
-	x = _get_max_coord(packed_prefab, true)
-	y = _get_max_coord(packed_prefab, false)
-	print(_build_from_prefab(packed_prefab,
-			_ref_RandomNumber.get_int(0, x), _ref_RandomNumber.get_int(0, y)))
+
+func _create_wall() -> void:
+	var file_list: Array = Game_FileIOHelper.get_file_list(PATH_TO_PREFABS)
+	var packed_prefab: Game_DungeonPrefab.PackedPrefab
+
+	packed_prefab = _edit_prefab(file_list[0])
+	print(_build_from_prefab(packed_prefab))
+
+
+func _edit_prefab(path_to_prefab: String) -> Game_DungeonPrefab.PackedPrefab:
+	var edit_arg := EDIT_PREFAB_ARG.duplicate(true)
+	Game_ArrayHelper.rand_picker(edit_arg, MAX_EDIT_ARG, _ref_RandomNumber)
+	return Game_DungeonPrefab.get_prefab(path_to_prefab, edit_arg)
 
 
 func _build_from_prefab(packed_prefab: Game_DungeonPrefab.PackedPrefab,
-		start_x: int, start_y: int, wall: Array = [], door: Array = [],
-		retry: int = 0) -> bool:
+		start_x: int = INVALID_COORD, start_y: int = INVALID_COORD,
+		wall: Array = [], door: Array = [], clock: Array = [],
+		retry: int = 0) -> Array:
 	var is_outside: bool
 	var is_occupied: bool
 	var is_invalid_x: bool
@@ -58,7 +84,12 @@ func _build_from_prefab(packed_prefab: Game_DungeonPrefab.PackedPrefab,
 	var tmp_y: int
 
 	if retry > MAX_RETRY_BUILD_FROM_PREFAB:
-		return false
+		return [false]
+
+	if start_x == INVALID_COORD:
+		start_x = _get_coord(packed_prefab, true)
+	if start_y == INVALID_COORD:
+		start_y = _get_coord(packed_prefab, false)
 
 	# Expand packed_prefab by 1 grid in four directions. Make sure that:
 	# 1. There are no occupied grids inside the packed_prefab.
@@ -74,12 +105,10 @@ func _build_from_prefab(packed_prefab: Game_DungeonPrefab.PackedPrefab,
 					y, start_y - 1, start_y + packed_prefab.max_y)
 
 			if is_occupied or (is_invalid_x and is_invalid_y):
-				tmp_x = _get_max_coord(packed_prefab, true)
-				tmp_y = _get_max_coord(packed_prefab, false)
-				return _build_from_prefab(packed_prefab,
-						_ref_RandomNumber.get_int(0, tmp_x),
-						_ref_RandomNumber.get_int(0, tmp_y),
-						wall, door, retry + 1)
+				tmp_x = _get_coord(packed_prefab, true)
+				tmp_y = _get_coord(packed_prefab, false)
+				return _build_from_prefab(packed_prefab, tmp_x, tmp_y,
+						wall, door, clock, retry + 1)
 
 	# Parse packed_prefab.prefab, which is a dictionary, only once.
 	if wall.size() == 0:
@@ -90,6 +119,8 @@ func _build_from_prefab(packed_prefab: Game_DungeonPrefab.PackedPrefab,
 						wall.push_back([x, y])
 					DOOR_CHAR:
 						door.push_back([x, y])
+					CLOCK_CHAR:
+						clock.push_back([x, y])
 
 	# There must be a least one door that is not blocked by a dungeon edge.
 	for i in door:
@@ -98,22 +129,23 @@ func _build_from_prefab(packed_prefab: Game_DungeonPrefab.PackedPrefab,
 		if _is_on_border(tmp_x, true) or _is_on_border(tmp_y, false):
 			blocked_door += 1
 	if blocked_door == door.size():
-		tmp_x = _get_max_coord(packed_prefab, true)
-		tmp_y = _get_max_coord(packed_prefab, false)
-		return _build_from_prefab(packed_prefab,
-				_ref_RandomNumber.get_int(0, tmp_x),
-				_ref_RandomNumber.get_int(0, tmp_y),
-				wall, door, retry + 1)
+		tmp_x = _get_coord(packed_prefab, true)
+		tmp_y = _get_coord(packed_prefab, false)
+		return _build_from_prefab(packed_prefab, tmp_x, tmp_y,
+				wall, door, clock, retry + 1)
 
-	for i in wall:
-		tmp_x = i[0] + start_x
-		tmp_y = i[1] + start_y
-		_build_building(tmp_x, tmp_y, _spr_Wall, Game_SubTag.WALL)
-	for i in door:
-		tmp_x = i[0] + start_x
-		tmp_y = i[1] + start_y
-		_build_building(tmp_x, tmp_y, _spr_Door, Game_SubTag.DOOR)
-	return true
+	# wall = [[x_0, y_0], [x_1, y_1], ...]
+	for i in [
+		[wall, _spr_Wall, Game_SubTag.WALL],
+		[door, _spr_Door, Game_SubTag.DOOR],
+		[clock, _spr_FactoryClock, Game_SubTag.ARROW],
+	]:
+		# j = [x, y]
+		for j in i[0]:
+			tmp_x = j[0] + start_x
+			tmp_y = j[1] + start_y
+			_build_building(tmp_x, tmp_y, i[1], i[2])
+	return [true, start_x, start_y]
 
 
 func _build_building(x: int, y: int, new_sprite: PackedScene, sub_tag: String) \
@@ -122,11 +154,12 @@ func _build_building(x: int, y: int, new_sprite: PackedScene, sub_tag: String) \
 	_add_to_blueprint(new_sprite, Game_MainTag.BUILDING, sub_tag, x, y)
 
 
-func _get_max_coord(packed_prefab: Game_DungeonPrefab.PackedPrefab,
+func _get_coord(packed_prefab: Game_DungeonPrefab.PackedPrefab,
 		is_x: bool) -> int:
-	if is_x:
-		return Game_DungeonSize.MAX_X - packed_prefab.max_x
-	return  Game_DungeonSize.MAX_Y - packed_prefab.max_y
+	var max_coord: int = Game_DungeonSize.MAX_X - packed_prefab.max_x if is_x \
+			else Game_DungeonSize.MAX_Y - packed_prefab.max_y
+
+	return _ref_RandomNumber.get_int(0, max_coord)
 
 
 func _is_on_border(coord: int, is_x: int) -> bool:

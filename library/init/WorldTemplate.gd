@@ -4,7 +4,7 @@ class_name Game_WorldTemplate
 # The child should also implement _init() to pass arguments.
 
 
-const INVALID_COORD := -1
+const INVALID_COORD := -99
 const DEFAULT_MARKER := 0
 const OCCUPIED_MARKER := 1
 
