@@ -1,8 +1,10 @@
 extends Game_WorldTemplate
 
 
-const PATH_TO_PREFABS := Game_DungeonPrefab.RESOURCE_PATH + "factory/"
-const PATH_TO_START_POINT:= "start_point/"
+const PATH_TO_FACTORY := Game_DungeonPrefab.RESOURCE_PATH + "factory/"
+const PATH_TO_START_POINT := "start_point/"
+const PATH_TO_BIG_ROOM := "big_room/"
+const PATH_TO_SMALL_ROOM := "small_room/"
 
 const DOOR_CHAR := "+"
 const CLOCK_CHAR := "-"
@@ -16,7 +18,13 @@ const EDIT_PREFAB_ARG := [
 	Game_DungeonPrefab.DO_NOT_EDIT,
 ]
 const MAX_EDIT_ARG := 3
+
+const MAX_RETRY_CREATE_ROOM := 100
 const MAX_RETRY_BUILD_FROM_PREFAB := 9
+
+const MAX_START_POINT := 1
+const MAX_BIG_ROOM := 3
+const MAX_SMALL_ROOM := 12
 
 var _spr_Door := preload("res://sprite/Door.tscn")
 var _spr_FactoryClock := preload("res://sprite/FactoryClock.tscn")
@@ -31,8 +39,9 @@ func _init(parent_node: Node2D).(parent_node) -> void:
 
 
 func get_blueprint() -> Array:
+	_create_room(PATH_TO_BIG_ROOM, MAX_BIG_ROOM)
 	_create_start_point()
-	_create_wall()
+	_create_room(PATH_TO_SMALL_ROOM, MAX_SMALL_ROOM)
 	_init_floor()
 	_init_pc(0, _pc_x, _pc_y, _spr_Counter)
 
@@ -40,13 +49,12 @@ func get_blueprint() -> Array:
 
 
 func _create_start_point() -> void:
-	var file_list: Array = Game_FileIOHelper.get_file_list(PATH_TO_PREFABS
+	var file_list: Array = Game_FileIOHelper.get_file_list(PATH_TO_FACTORY
 			+ PATH_TO_START_POINT)
-	var max_prefab := 1
 	var packed_prefab: Game_DungeonPrefab.PackedPrefab
 	var build_result: Array
 
-	Game_ArrayHelper.rand_picker(file_list, max_prefab, _ref_RandomNumber)
+	Game_ArrayHelper.rand_picker(file_list, MAX_START_POINT, _ref_RandomNumber)
 	packed_prefab = _edit_prefab(file_list[0])
 	while true:
 		build_result = _build_from_prefab(packed_prefab)
@@ -54,15 +62,30 @@ func _create_start_point() -> void:
 			# PC is in the center of the room.
 			_pc_x = build_result[1] + 1
 			_pc_y = build_result[2] + 1
-		return
+			break
 
 
-func _create_wall() -> void:
-	var file_list: Array = Game_FileIOHelper.get_file_list(PATH_TO_PREFABS)
+func _create_room(path_to_prefab: String, max_room: int) -> void:
+	var file_list: Array = Game_FileIOHelper.get_file_list(PATH_TO_FACTORY
+			+ path_to_prefab)
+	var file_index := 0
 	var packed_prefab: Game_DungeonPrefab.PackedPrefab
+	var build_result: Array
+	var count_room := 0
 
-	packed_prefab = _edit_prefab(file_list[0])
-	print(_build_from_prefab(packed_prefab))
+	Game_ArrayHelper.shuffle(file_list, _ref_RandomNumber)
+	for _i in range(0, MAX_RETRY_CREATE_ROOM):
+		if file_index > file_list.size() - 1:
+			Game_ArrayHelper.shuffle(file_list, _ref_RandomNumber)
+			file_index = 0
+		packed_prefab = _edit_prefab(file_list[file_index])
+		file_index += 1
+
+		build_result = _build_from_prefab(packed_prefab)
+		if build_result[0]:
+			count_room += 1
+		if count_room >= max_room:
+			break
 
 
 func _edit_prefab(path_to_prefab: String) -> Game_DungeonPrefab.PackedPrefab:
@@ -123,16 +146,18 @@ func _build_from_prefab(packed_prefab: Game_DungeonPrefab.PackedPrefab,
 						clock.push_back([x, y])
 
 	# There must be a least one door that is not blocked by a dungeon edge.
-	for i in door:
-		tmp_x = i[0] + start_x
-		tmp_y = i[1] + start_y
-		if _is_on_border(tmp_x, true) or _is_on_border(tmp_y, false):
-			blocked_door += 1
-	if blocked_door == door.size():
-		tmp_x = _get_coord(packed_prefab, true)
-		tmp_y = _get_coord(packed_prefab, false)
-		return _build_from_prefab(packed_prefab, tmp_x, tmp_y,
-				wall, door, clock, retry + 1)
+	# This does not apply to a wall: `# + #`.
+	if (packed_prefab.max_x > 1) and (packed_prefab.max_y > 1):
+		for i in door:
+			tmp_x = i[0] + start_x
+			tmp_y = i[1] + start_y
+			if _is_on_border(tmp_x, true) or _is_on_border(tmp_y, false):
+				blocked_door += 1
+		if blocked_door == door.size():
+			tmp_x = _get_coord(packed_prefab, true)
+			tmp_y = _get_coord(packed_prefab, false)
+			return _build_from_prefab(packed_prefab, tmp_x, tmp_y,
+					wall, door, clock, retry + 1)
 
 	# wall = [[x_0, y_0], [x_1, y_1], ...]
 	for i in [
