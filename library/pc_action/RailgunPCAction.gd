@@ -183,7 +183,7 @@ func _init_skull_pillar() -> void:
 		return
 
 	building = _ref_DungeonBoard.get_sprites_by_tag(Game_SubTag.WALL)
-	Game_ArrayHelper.rand_picker(building, building.size(), _ref_RandomNumber)
+	Game_ArrayHelper.shuffle(building, _ref_RandomNumber)
 
 	for i in building:
 		pos = Game_ConvertCoord.vector_to_array(i.position)

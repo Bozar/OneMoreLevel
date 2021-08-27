@@ -65,8 +65,7 @@ func _create_actor() -> void:
 	actor_position = Game_CoordCalculator.get_neighbor(
 			Game_DungeonSize.CENTER_X, Game_DungeonSize.CENTER_Y,
 			Game_NinjaData.PC_SIGHT, true)
-	Game_ArrayHelper.rand_picker(actor_position, actor_position.size(),
-			_ref_RandomNumber)
+	Game_ArrayHelper.shuffle(actor_position, _ref_RandomNumber)
 	for i in actor_position:
 		if not _is_occupied(i[0], i[1]):
 			x = i[0]

@@ -8,13 +8,13 @@ const DOOR_CHAR := "+"
 const CLOCK_CHAR := "-"
 
 const EDIT_PREFAB_ARG := [
-		Game_DungeonPrefab.HORIZONTAL_FLIP,
-		Game_DungeonPrefab.VERTICAL_FLIP,
-		Game_DungeonPrefab.ROTATE_RIGHT,
-		Game_DungeonPrefab.DO_NOT_EDIT,
-		Game_DungeonPrefab.DO_NOT_EDIT,
-		Game_DungeonPrefab.DO_NOT_EDIT,
-	]
+	Game_DungeonPrefab.HORIZONTAL_FLIP,
+	Game_DungeonPrefab.VERTICAL_FLIP,
+	Game_DungeonPrefab.ROTATE_RIGHT,
+	Game_DungeonPrefab.DO_NOT_EDIT,
+	Game_DungeonPrefab.DO_NOT_EDIT,
+	Game_DungeonPrefab.DO_NOT_EDIT,
+]
 const MAX_EDIT_ARG := 3
 const MAX_RETRY_BUILD_FROM_PREFAB := 9
 

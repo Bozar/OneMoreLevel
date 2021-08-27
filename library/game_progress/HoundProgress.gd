@@ -33,8 +33,7 @@ func create_actor(actor: Sprite, sub_tag: String, _x: int, _y: int) -> void:
 	if _all_counters.size() == 0:
 		_all_counters = _ref_DungeonBoard.get_sprites_by_tag(
 				Game_SubTag.COUNTER)
-		Game_ArrayHelper.rand_picker(_all_counters, _all_counters.size(),
-				_ref_RandomNumber)
+		Game_ArrayHelper.shuffle(_all_counters, _ref_RandomNumber)
 	_ref_SwitchSprite.switch_sprite(_all_counters[_boss_hit_point],
 			Game_SpriteTypeTag.PASSIVE)
 
