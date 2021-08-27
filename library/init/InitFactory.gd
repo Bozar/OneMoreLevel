@@ -26,7 +26,18 @@ const MAX_RETRY_BUILD_FROM_PREFAB := 9
 const MAX_START_POINT := 1
 const MAX_BIG_ROOM := 3
 const MAX_SMALL_ROOM := 12
-const MAX_GAP := 5
+# Define x coordinate for the first big room.
+# [min_x (inclusive), max_x (exclusive)]
+const FIRST_BIG_ROOM := [
+	# 0: Contact with the left dungeon edge.
+	# 5: There are 4 grids on the left side of the first big room, which leaves
+	# space for a 3x3 small room.
+	[0, 5],
+	# All big rooms are 7x7.
+	# -11: Leave space for a 3x3 room on the right side.
+	# -6: Contact with the right dungeon edge.
+	[Game_DungeonSize.MAX_X - 11, Game_DungeonSize.MAX_X - 6],
+]
 
 var _spr_Door := preload("res://sprite/Door.tscn")
 var _spr_FactoryClock := preload("res://sprite/FactoryClock.tscn")
@@ -73,6 +84,7 @@ func _create_room(path_to_prefab: String, max_room: int) -> void:
 	var file_index := 0
 	var packed_prefab: Game_DungeonPrefab.PackedPrefab
 	var build_result: Array
+	var first_big_x: int
 	var count_room := 0
 
 	Game_ArrayHelper.shuffle(file_list, _ref_RandomNumber)
@@ -83,11 +95,13 @@ func _create_room(path_to_prefab: String, max_room: int) -> void:
 		packed_prefab = _edit_prefab(file_list[file_index])
 		file_index += 1
 
-		# Put the first big room close to the left dungeon edge, so that it is
-		# more likely to generate another big room.
+		# Put the first big room close to the left or right dungeon edge, so
+		# that it is more likely to generate another big room.
 		if (i == 0) and (path_to_prefab == PATH_TO_BIG_ROOM):
-			build_result = _build_from_prefab(packed_prefab,
-					_ref_RandomNumber.get_int(0, MAX_GAP))
+			Game_ArrayHelper.shuffle(FIRST_BIG_ROOM, _ref_RandomNumber)
+			first_big_x = _ref_RandomNumber.get_int(FIRST_BIG_ROOM[0][0],
+					FIRST_BIG_ROOM[0][1])
+			build_result = _build_from_prefab(packed_prefab, first_big_x)
 		else:
 			build_result = _build_from_prefab(packed_prefab)
 		if build_result[0]:
