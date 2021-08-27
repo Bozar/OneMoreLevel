@@ -26,6 +26,7 @@ const MAX_RETRY_BUILD_FROM_PREFAB := 9
 const MAX_START_POINT := 1
 const MAX_BIG_ROOM := 3
 const MAX_SMALL_ROOM := 12
+const MAX_GAP := 5
 
 var _spr_Door := preload("res://sprite/Door.tscn")
 var _spr_FactoryClock := preload("res://sprite/FactoryClock.tscn")
@@ -75,14 +76,20 @@ func _create_room(path_to_prefab: String, max_room: int) -> void:
 	var count_room := 0
 
 	Game_ArrayHelper.shuffle(file_list, _ref_RandomNumber)
-	for _i in range(0, MAX_RETRY_CREATE_ROOM):
+	for i in range(0, MAX_RETRY_CREATE_ROOM):
 		if file_index > file_list.size() - 1:
 			Game_ArrayHelper.shuffle(file_list, _ref_RandomNumber)
 			file_index = 0
 		packed_prefab = _edit_prefab(file_list[file_index])
 		file_index += 1
 
-		build_result = _build_from_prefab(packed_prefab)
+		# Put the first big room close to the left dungeon edge, so that it is
+		# more likely to generate another big room.
+		if (i == 0) and (path_to_prefab == PATH_TO_BIG_ROOM):
+			build_result = _build_from_prefab(packed_prefab,
+					_ref_RandomNumber.get_int(0, MAX_GAP))
+		else:
+			build_result = _build_from_prefab(packed_prefab)
 		if build_result[0]:
 			count_room += 1
 		if count_room >= max_room:
