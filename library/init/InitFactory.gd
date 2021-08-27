@@ -7,6 +7,7 @@ const PATH_TO_BIG_ROOM := "big_room/"
 const PATH_TO_SMALL_ROOM := "small_room/"
 
 const DOOR_CHAR := "+"
+const INNER_DOOR_CHAR := "="
 const CLOCK_CHAR := "-"
 
 const EDIT_PREFAB_ARG := [
@@ -96,8 +97,8 @@ func _edit_prefab(path_to_prefab: String) -> Game_DungeonPrefab.PackedPrefab:
 
 func _build_from_prefab(packed_prefab: Game_DungeonPrefab.PackedPrefab,
 		start_x: int = INVALID_COORD, start_y: int = INVALID_COORD,
-		wall: Array = [], door: Array = [], clock: Array = [],
-		retry: int = 0) -> Array:
+		wall := [], door := [], inner_door := [], clock := [], retry := 0) \
+		-> Array:
 	var is_outside: bool
 	var is_occupied: bool
 	var is_invalid_x: bool
@@ -131,7 +132,7 @@ func _build_from_prefab(packed_prefab: Game_DungeonPrefab.PackedPrefab,
 				tmp_x = _get_coord(packed_prefab, true)
 				tmp_y = _get_coord(packed_prefab, false)
 				return _build_from_prefab(packed_prefab, tmp_x, tmp_y,
-						wall, door, clock, retry + 1)
+						wall, door, inner_door, clock, retry + 1)
 
 	# Parse packed_prefab.prefab, which is a dictionary, only once.
 	if wall.size() == 0:
@@ -142,6 +143,8 @@ func _build_from_prefab(packed_prefab: Game_DungeonPrefab.PackedPrefab,
 						wall.push_back([x, y])
 					DOOR_CHAR:
 						door.push_back([x, y])
+					INNER_DOOR_CHAR:
+						inner_door.push_back([x, y])
 					CLOCK_CHAR:
 						clock.push_back([x, y])
 
@@ -157,12 +160,13 @@ func _build_from_prefab(packed_prefab: Game_DungeonPrefab.PackedPrefab,
 			tmp_x = _get_coord(packed_prefab, true)
 			tmp_y = _get_coord(packed_prefab, false)
 			return _build_from_prefab(packed_prefab, tmp_x, tmp_y,
-					wall, door, clock, retry + 1)
+					wall, door, inner_door, clock, retry + 1)
 
 	# wall = [[x_0, y_0], [x_1, y_1], ...]
 	for i in [
 		[wall, _spr_Wall, Game_SubTag.WALL],
 		[door, _spr_Door, Game_SubTag.DOOR],
+		[inner_door, _spr_Door, Game_SubTag.DOOR],
 		[clock, _spr_FactoryClock, Game_SubTag.ARROW],
 	]:
 		# j = [x, y]
