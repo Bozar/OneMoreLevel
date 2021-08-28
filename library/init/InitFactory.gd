@@ -84,7 +84,8 @@ func _create_room(path_to_prefab: String, max_room: int) -> void:
 	var file_index := 0
 	var packed_prefab: Game_DungeonPrefab.PackedPrefab
 	var build_result: Array
-	var first_big_x: int
+	var first_index: int
+	var first_x: int
 	var count_room := 0
 
 	Game_ArrayHelper.shuffle(file_list, _ref_RandomNumber)
@@ -98,10 +99,17 @@ func _create_room(path_to_prefab: String, max_room: int) -> void:
 		# Put the first big room close to the left or right dungeon edge, so
 		# that it is more likely to generate another big room.
 		if (i == 0) and (path_to_prefab == PATH_TO_BIG_ROOM):
-			Game_ArrayHelper.shuffle(FIRST_BIG_ROOM, _ref_RandomNumber)
-			first_big_x = _ref_RandomNumber.get_int(FIRST_BIG_ROOM[0][0],
-					FIRST_BIG_ROOM[0][1])
-			build_result = _build_from_prefab(packed_prefab, first_big_x)
+			first_index = _ref_RandomNumber.get_int(0, FIRST_BIG_ROOM.size())
+			first_x = _ref_RandomNumber.get_int(FIRST_BIG_ROOM[first_index][0],
+					FIRST_BIG_ROOM[first_index][1])
+			# NOTE: If I call shuffle() on a constant array, the same rng seed
+			# may output inconsistent values. I don't know why but the code
+			# below does not work.
+			#
+			# Game_ArrayHelper.shuffle(FIRST_BIG_ROOM, _ref_RandomNumber)
+			# first_x = _ref_RandomNumber.get_int(FIRST_BIG_ROOM[0][0],
+			# 		FIRST_BIG_ROOM[0][1])
+			build_result = _build_from_prefab(packed_prefab, first_x)
 		else:
 			build_result = _build_from_prefab(packed_prefab)
 		if build_result[0]:
