@@ -7,8 +7,8 @@ const PATH_TO_BIG_ROOM := "big_room/"
 const PATH_TO_SMALL_ROOM := "small_room/"
 
 const DOOR_CHAR := "+"
-const INNER_DOOR_CHAR := "="
 const CLOCK_CHAR := "-"
+const INNER_DOOR_CHAR := "="
 
 const EDIT_PREFAB_ARG := [
 	Game_DungeonPrefab.HORIZONTAL_FLIP,
@@ -42,9 +42,11 @@ const FIRST_BIG_ROOM := [
 var _spr_Door := preload("res://sprite/Door.tscn")
 var _spr_FactoryClock := preload("res://sprite/FactoryClock.tscn")
 var _spr_Counter := preload("res://sprite/Counter.tscn")
+var _spr_FloorFactory := preload("res://sprite/FloorFactory.tscn")
 
 var _pc_x: int
 var _pc_y: int
+var _inner_floor := []
 
 
 func _init(parent_node: Node2D).(parent_node) -> void:
@@ -56,6 +58,10 @@ func get_blueprint() -> Array:
 	_create_start_point()
 	_create_room(PATH_TO_SMALL_ROOM, MAX_SMALL_ROOM)
 	_init_floor()
+	# Floors in a room are marked as occupied so as not to be replaced by
+	# regular floors. Now we need to unmask them in order to place actors.
+	for i in _inner_floor:
+		_reverse_occupy(i[0], i[1])
 	_init_pc(0, _pc_x, _pc_y, _spr_Counter)
 
 	return _blueprint
@@ -126,8 +132,7 @@ func _edit_prefab(path_to_prefab: String) -> Game_DungeonPrefab.PackedPrefab:
 
 func _build_from_prefab(packed_prefab: Game_DungeonPrefab.PackedPrefab,
 		start_x: int = INVALID_COORD, start_y: int = INVALID_COORD,
-		wall := [], door := [], inner_door := [], clock := [], retry := 0) \
-		-> Array:
+		parsed := {}, retry := 0) -> Array:
 	var is_outside: bool
 	var is_occupied: bool
 	var is_invalid_x: bool
@@ -160,49 +165,63 @@ func _build_from_prefab(packed_prefab: Game_DungeonPrefab.PackedPrefab,
 			if is_occupied or (is_invalid_x and is_invalid_y):
 				tmp_x = _get_coord(packed_prefab, true)
 				tmp_y = _get_coord(packed_prefab, false)
-				return _build_from_prefab(packed_prefab, tmp_x, tmp_y,
-						wall, door, inner_door, clock, retry + 1)
+				return _build_from_prefab(packed_prefab, tmp_x, tmp_y, parsed,
+						retry + 1)
 
-	# Parse packed_prefab.prefab, which is a dictionary, only once.
-	if wall.size() == 0:
+	# Parse packed_prefab.parsed, which is a dictionary, only once.
+	if parsed.size() == 0:
+		parsed[Game_DungeonPrefab.WALL_CHAR] = []
+		parsed[DOOR_CHAR] = []
+		parsed[INNER_DOOR_CHAR] = []
+		parsed[CLOCK_CHAR] = []
+		parsed[Game_DungeonPrefab.FLOOR_CHAR] = []
+
 		for x in range(0, packed_prefab.max_x):
 			for y in range(0, packed_prefab.max_y):
 				match packed_prefab.prefab[x][y]:
 					Game_DungeonPrefab.WALL_CHAR:
-						wall.push_back([x, y])
+						parsed[Game_DungeonPrefab.WALL_CHAR].push_back([x, y])
 					DOOR_CHAR:
-						door.push_back([x, y])
+						parsed[DOOR_CHAR].push_back([x, y])
 					INNER_DOOR_CHAR:
-						inner_door.push_back([x, y])
+						parsed[INNER_DOOR_CHAR].push_back([x, y])
 					CLOCK_CHAR:
-						clock.push_back([x, y])
+						parsed[CLOCK_CHAR].push_back([x, y])
+					Game_DungeonPrefab.FLOOR_CHAR:
+						parsed[Game_DungeonPrefab.FLOOR_CHAR].push_back([x, y])
 
 	# There must be a least one door that is not blocked by a dungeon edge.
 	# This does not apply to a wall: `# + #`.
 	if (packed_prefab.max_x > 1) and (packed_prefab.max_y > 1):
-		for i in door:
+		for i in parsed[DOOR_CHAR]:
 			tmp_x = i[0] + start_x
 			tmp_y = i[1] + start_y
 			if _is_on_border(tmp_x, true) or _is_on_border(tmp_y, false):
 				blocked_door += 1
-		if blocked_door == door.size():
+		if blocked_door == parsed[DOOR_CHAR].size():
 			tmp_x = _get_coord(packed_prefab, true)
 			tmp_y = _get_coord(packed_prefab, false)
-			return _build_from_prefab(packed_prefab, tmp_x, tmp_y,
-					wall, door, inner_door, clock, retry + 1)
+			return _build_from_prefab(packed_prefab, tmp_x, tmp_y, parsed,
+					retry + 1)
 
-	# wall = [[x_0, y_0], [x_1, y_1], ...]
 	for i in [
-		[wall, _spr_Wall, Game_SubTag.WALL],
-		[door, _spr_Door, Game_SubTag.DOOR],
-		[inner_door, _spr_Door, Game_SubTag.DOOR],
-		[clock, _spr_FactoryClock, Game_SubTag.ARROW],
+		[Game_DungeonPrefab.WALL_CHAR, _spr_Wall, Game_SubTag.WALL],
+		[DOOR_CHAR, _spr_Door, Game_SubTag.DOOR],
+		[INNER_DOOR_CHAR, _spr_Door, Game_SubTag.DOOR],
+		[CLOCK_CHAR, _spr_FactoryClock, Game_SubTag.ARROW],
 	]:
 		# j = [x, y]
-		for j in i[0]:
+		for j in parsed[i[0]]:
 			tmp_x = j[0] + start_x
 			tmp_y = j[1] + start_y
 			_build_building(tmp_x, tmp_y, i[1], i[2])
+	for i in parsed[Game_DungeonPrefab.FLOOR_CHAR]:
+		tmp_x = i[0] + start_x
+		tmp_y = i[1] + start_y
+		_add_to_blueprint(_spr_FloorFactory, Game_MainTag.GROUND,
+				Game_SubTag.FLOOR, tmp_x, tmp_y)
+		_occupy_position(tmp_x, tmp_y)
+		_inner_floor.push_back([tmp_x, tmp_y])
 	return [true, start_x, start_y]
 
 

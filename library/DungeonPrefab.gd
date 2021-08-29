@@ -66,6 +66,7 @@ class MatrixSize:
 const RESOURCE_PATH := "res://resource/dungeon_prefab/"
 const DICT_VALUE_WARNING := "Dict value is neither a string or an array."
 const WALL_CHAR := "#"
+const FLOOR_CHAR := "."
 
 const DO_NOT_EDIT := 0
 const HORIZONTAL_FLIP := 1
