@@ -120,8 +120,13 @@ func _create_room(path_to_prefab: String, max_room: int) -> void:
 			build_result = _build_from_prefab(packed_prefab)
 		if build_result[0]:
 			count_room += 1
+			# Debug output.
+			if path_to_prefab == PATH_TO_BIG_ROOM:
+				print(file_list[file_index - 1])
 		if count_room >= max_room:
 			break
+	# Debug output.
+	# print(count_room)
 
 
 func _edit_prefab(path_to_prefab: String) -> Game_DungeonPrefab.PackedPrefab:
