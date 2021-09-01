@@ -69,6 +69,10 @@ func _get_terrain_marker(x: int, y: int) -> int:
 	return _dungeon_board[x][y]
 
 
+func _is_terrain_marker(x: int, y: int, marker: int) -> bool:
+	return _dungeon_board[x][y] == marker
+
+
 func _add_to_blueprint(scene: PackedScene, main_tag: String, sub_tag: String,
 		x: int, y: int) -> void:
 	_blueprint.push_back(Game_SpriteBlueprint.new(scene, main_tag, sub_tag,

@@ -39,14 +39,17 @@ const FIRST_BIG_ROOM := [
 	[Game_DungeonSize.MAX_X - 11, Game_DungeonSize.MAX_X - 6],
 ]
 
+const MARKER_TREASURE:= 2
+const MARKER_RARE_TREASURE := 3
+const GAP_TREASURE := 2
+const GAP_RARE_TREASURE := 10
+
 var _spr_Door := preload("res://sprite/Door.tscn")
 var _spr_FactoryClock := preload("res://sprite/FactoryClock.tscn")
 var _spr_Counter := preload("res://sprite/Counter.tscn")
 var _spr_FloorFactory := preload("res://sprite/FloorFactory.tscn")
-
-var _pc_x: int
-var _pc_y: int
-var _inner_floor := []
+var _spr_Treasure := preload("res://sprite/Treasure.tscn")
+var _spr_RareTreasure := preload("res://sprite/RareTreasure.tscn")
 
 
 func _init(parent_node: Node2D).(parent_node) -> void:
@@ -54,20 +57,36 @@ func _init(parent_node: Node2D).(parent_node) -> void:
 
 
 func get_blueprint() -> Array:
-	_create_room(PATH_TO_BIG_ROOM, MAX_BIG_ROOM)
-	_create_start_point()
-	_create_room(PATH_TO_SMALL_ROOM, MAX_SMALL_ROOM)
+	var pos := []
+	var pc := []
+	var __
+
+	_create_room(PATH_TO_BIG_ROOM, MAX_BIG_ROOM, pos)
+	pc = _create_start_point(pos)
+	_create_room(PATH_TO_SMALL_ROOM, MAX_SMALL_ROOM, pos)
 	_init_floor()
+
 	# Floors in a room are marked as occupied so as not to be replaced by
 	# regular floors. Now we need to unmask them in order to place actors.
-	for i in _inner_floor:
+	for i in pos:
 		_reverse_occupy(i[0], i[1])
-	_init_pc(0, _pc_x, _pc_y, _spr_Counter)
+	_init_pc(0, pc[0], pc[1], _spr_Counter)
+
+	# The first rare treasure should be far away from PC. Others can be close to
+	# PC, but not too close to each other.
+	pos.resize(0)
+	for i in range(0, Game_FactoryData.MAX_RARE_TREASURE):
+		pos.push_back(_create_treasure(Game_SubTag.RARE_TREASURE, i == 0,
+				pc[0], pc[1]))
+	# Common treasure can be close to rare treasure.
+	_reset_rare_treasure_gap(pos)
+	for _i in range(0, Game_FactoryData.MAX_TREASURE):
+		__ = _create_treasure(Game_SubTag.TREASURE, false, pc[0], pc[1])
 
 	return _blueprint
 
 
-func _create_start_point() -> void:
+func _create_start_point(inner_floor: Array) -> Array:
 	var file_list: Array = Game_FileIOHelper.get_file_list(PATH_TO_FACTORY
 			+ PATH_TO_START_POINT)
 	var packed_prefab: Game_DungeonPrefab.PackedPrefab
@@ -76,15 +95,15 @@ func _create_start_point() -> void:
 	Game_ArrayHelper.rand_picker(file_list, MAX_START_POINT, _ref_RandomNumber)
 	packed_prefab = _edit_prefab(file_list[0])
 	while true:
-		build_result = _build_from_prefab(packed_prefab)
+		build_result = _build_from_prefab(packed_prefab, inner_floor)
 		if build_result[0]:
-			# PC is in the center of the room.
-			_pc_x = build_result[1] + 1
-			_pc_y = build_result[2] + 1
 			break
+	# PC is in the center of the room.
+	return ([build_result[1] + 1, build_result[2] + 1])
 
 
-func _create_room(path_to_prefab: String, max_room: int) -> void:
+func _create_room(path_to_prefab: String, max_room: int, inner_floor: Array) \
+		-> void:
 	var file_list: Array = Game_FileIOHelper.get_file_list(PATH_TO_FACTORY
 			+ path_to_prefab)
 	var file_index := 0
@@ -115,9 +134,10 @@ func _create_room(path_to_prefab: String, max_room: int) -> void:
 			# Game_ArrayHelper.shuffle(FIRST_BIG_ROOM, _ref_RandomNumber)
 			# first_x = _ref_RandomNumber.get_int(FIRST_BIG_ROOM[0][0],
 			# 		FIRST_BIG_ROOM[0][1])
-			build_result = _build_from_prefab(packed_prefab, first_x)
+			build_result = _build_from_prefab(packed_prefab, inner_floor,
+					first_x)
 		else:
-			build_result = _build_from_prefab(packed_prefab)
+			build_result = _build_from_prefab(packed_prefab, inner_floor)
 		if build_result[0]:
 			count_room += 1
 			# Debug output.
@@ -136,8 +156,8 @@ func _edit_prefab(path_to_prefab: String) -> Game_DungeonPrefab.PackedPrefab:
 
 
 func _build_from_prefab(packed_prefab: Game_DungeonPrefab.PackedPrefab,
-		start_x: int = INVALID_COORD, start_y: int = INVALID_COORD,
-		parsed := {}, retry := 0) -> Array:
+		inner_floor: Array, start_x: int = INVALID_COORD,
+		start_y: int = INVALID_COORD, parsed := {}, retry := 0) -> Array:
 	var is_outside: bool
 	var is_occupied: bool
 	var is_invalid_x: bool
@@ -170,8 +190,8 @@ func _build_from_prefab(packed_prefab: Game_DungeonPrefab.PackedPrefab,
 			if is_occupied or (is_invalid_x and is_invalid_y):
 				tmp_x = _get_coord(packed_prefab, true)
 				tmp_y = _get_coord(packed_prefab, false)
-				return _build_from_prefab(packed_prefab, tmp_x, tmp_y, parsed,
-						retry + 1)
+				return _build_from_prefab(packed_prefab, inner_floor,
+						tmp_x, tmp_y, parsed, retry + 1)
 
 	# Parse packed_prefab.parsed, which is a dictionary, only once.
 	if parsed.size() == 0:
@@ -206,8 +226,8 @@ func _build_from_prefab(packed_prefab: Game_DungeonPrefab.PackedPrefab,
 		if blocked_door == parsed[DOOR_CHAR].size():
 			tmp_x = _get_coord(packed_prefab, true)
 			tmp_y = _get_coord(packed_prefab, false)
-			return _build_from_prefab(packed_prefab, tmp_x, tmp_y, parsed,
-					retry + 1)
+			return _build_from_prefab(packed_prefab, inner_floor, tmp_x, tmp_y,
+					parsed, retry + 1)
 
 	for i in [
 		[Game_DungeonPrefab.WALL_CHAR, _spr_Wall, Game_SubTag.WALL],
@@ -226,7 +246,7 @@ func _build_from_prefab(packed_prefab: Game_DungeonPrefab.PackedPrefab,
 		_add_to_blueprint(_spr_FloorFactory, Game_MainTag.GROUND,
 				Game_SubTag.FLOOR, tmp_x, tmp_y)
 		_occupy_position(tmp_x, tmp_y)
-		_inner_floor.push_back([tmp_x, tmp_y])
+		inner_floor.push_back([tmp_x, tmp_y])
 	return [true, start_x, start_y]
 
 
@@ -250,3 +270,51 @@ func _is_on_border(coord: int, is_x: int) -> bool:
 	elif is_x:
 		return coord == Game_DungeonSize.MAX_X - 1
 	return coord == Game_DungeonSize.MAX_Y - 1
+
+
+func _create_treasure(sub_tag: String, is_first_rare_treasure: bool,
+		pc_x: int, pc_y: int) -> Array:
+	var x: int
+	var y: int
+	var marker: int
+	var new_sprite: PackedScene
+	var gap: int
+	var pc_gap: int = Game_DungeonSize.MAX_Y if is_first_rare_treasure \
+			else GAP_TREASURE
+
+	match sub_tag:
+		Game_SubTag.TREASURE:
+			marker = MARKER_TREASURE
+			new_sprite = _spr_Treasure
+			gap = GAP_TREASURE
+		Game_SubTag.RARE_TREASURE:
+			marker = MARKER_RARE_TREASURE
+			new_sprite = _spr_RareTreasure
+			gap = GAP_RARE_TREASURE
+		_:
+			return []
+
+	while true:
+		x = _ref_RandomNumber.get_x_coord()
+		y = _ref_RandomNumber.get_y_coord()
+		if Game_CoordCalculator.is_inside_range(x, y, pc_x, pc_y, pc_gap) \
+				or _is_occupied(x, y) \
+				or _is_terrain_marker(x, y, marker):
+			continue
+		break
+
+	_add_to_blueprint(new_sprite, Game_MainTag.TRAP, sub_tag, x, y)
+	for i in Game_CoordCalculator.get_neighbor(x, y, gap, true):
+		if _is_occupied(i[0], i[1]):
+			continue
+		_set_terrain_marker(i[0], i[1], marker)
+	return [x, y]
+
+
+func _reset_rare_treasure_gap(coord: Array) -> void:
+	for i in coord:
+		for j in Game_CoordCalculator.get_neighbor(i[0], i[1], GAP_TREASURE,
+				true):
+			if _is_occupied(j[0], j[1]):
+				continue
+			_set_terrain_marker(j[0], j[1], MARKER_TREASURE)

@@ -35,6 +35,10 @@ func interact_with_building() -> void:
 		move()
 
 
+func interact_with_trap() -> void:
+	move()
+
+
 func _render_doors(auto_reset: bool) -> void:
 	var pos: Array
 
