@@ -104,6 +104,10 @@ func move() -> void:
 		.move()
 
 
+func attack() -> void:
+	end_turn = false
+
+
 func _init_sprites() -> void:
 	_find_clock = _ref_DungeonBoard.get_sprites_by_tag(Game_SubTag.ARROW)[0]
 	_find_doors = _ref_DungeonBoard.get_sprites_by_tag(Game_SubTag.DOOR)

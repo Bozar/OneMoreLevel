@@ -52,3 +52,4 @@ const HOUND_BOSS := "hound_boss"
 const NINJA := "ninja"
 
 const DOOR := "door"
+const SCP_173 := "scp_173"

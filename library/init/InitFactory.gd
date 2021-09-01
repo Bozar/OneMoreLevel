@@ -47,6 +47,7 @@ const GAP_RARE_TREASURE := 10
 var _spr_Door := preload("res://sprite/Door.tscn")
 var _spr_FactoryClock := preload("res://sprite/FactoryClock.tscn")
 var _spr_Counter := preload("res://sprite/Counter.tscn")
+var _spr_SCP_173 := preload("res://sprite/SCP_173.tscn")
 var _spr_FloorFactory := preload("res://sprite/FloorFactory.tscn")
 var _spr_Treasure := preload("res://sprite/Treasure.tscn")
 var _spr_RareTreasure := preload("res://sprite/RareTreasure.tscn")
@@ -65,12 +66,10 @@ func get_blueprint() -> Array:
 	pc = _create_start_point(pos)
 	_create_room(PATH_TO_SMALL_ROOM, MAX_SMALL_ROOM, pos)
 	_init_floor()
-
 	# Floors in a room are marked as occupied so as not to be replaced by
 	# regular floors. Now we need to unmask them in order to place actors.
 	for i in pos:
 		_reverse_occupy(i[0], i[1])
-	_init_pc(0, pc[0], pc[1], _spr_Counter)
 
 	# The first rare treasure should be far away from PC. Others can be close to
 	# PC, but not too close to each other.
@@ -82,6 +81,10 @@ func get_blueprint() -> Array:
 	_reset_rare_treasure_gap(pos)
 	for _i in range(0, Game_FactoryData.MAX_TREASURE):
 		__ = _create_treasure(Game_SubTag.TREASURE, false, pc[0], pc[1])
+
+	_init_pc(Game_FactoryData.PC_SIGHT, pc[0], pc[1], _spr_Counter)
+	_init_actor(Game_FactoryData.SCP_GAP, INVALID_COORD, INVALID_COORD,
+			Game_FactoryData.MAX_SCP, _spr_SCP_173, Game_SubTag.SCP_173)
 
 	return _blueprint
 
@@ -141,8 +144,8 @@ func _create_room(path_to_prefab: String, max_room: int, inner_floor: Array) \
 		if build_result[0]:
 			count_room += 1
 			# Debug output.
-			if path_to_prefab == PATH_TO_BIG_ROOM:
-				print(file_list[file_index - 1])
+			# if path_to_prefab == PATH_TO_BIG_ROOM:
+			# 	print(file_list[file_index - 1])
 		if count_room >= max_room:
 			break
 	# Debug output.
@@ -304,10 +307,13 @@ func _create_treasure(sub_tag: String, is_first_rare_treasure: bool,
 		break
 
 	_add_to_blueprint(new_sprite, Game_MainTag.TRAP, sub_tag, x, y)
-	for i in Game_CoordCalculator.get_neighbor(x, y, gap, true):
+	for i in Game_CoordCalculator.get_neighbor(x, y, gap):
 		if _is_occupied(i[0], i[1]):
 			continue
 		_set_terrain_marker(i[0], i[1], marker)
+	# Occupy trap grids so that NPCs cannot stand on them and show a default
+	# sprite when game starts.
+	_occupy_position(x, y)
 	return [x, y]
 
 
