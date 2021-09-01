@@ -8,8 +8,8 @@ const SPRITE_TYPE := "SpriteType"
 const HIT_POINT := "HitPoint"
 
 
-func _on_RemoveObject_sprite_removed(remove_sprite: Sprite,
-		_main_tag: String, _x: int, _y: int) -> void:
+func _on_RemoveObject_sprite_removed(remove_sprite: Sprite, _main_tag: String,
+		_x: int, _y: int) -> void:
 	var child_node: Array = get_children()
 	for i in child_node:
 		i.remove_data(_get_id(remove_sprite))

@@ -86,8 +86,7 @@ func is_building() -> bool:
 
 
 func is_trap() -> bool:
-	return _ref_DungeonBoard.has_trap(
-			_target_position[0], _target_position[1])
+	return _ref_DungeonBoard.has_trap(_target_position[0], _target_position[1])
 
 # 1. An action, (move or attack, for example) might call
 # EndGame.player_[win|lose]() implicitly. Therefore we need to decide whether
