@@ -284,6 +284,7 @@ func _create_treasure(sub_tag: String, is_first_rare_treasure: bool,
 	var gap: int
 	var pc_gap: int = Game_DungeonSize.MAX_Y if is_first_rare_treasure \
 			else GAP_TREASURE
+	var retry := 0
 
 	match sub_tag:
 		Game_SubTag.TREASURE:
@@ -298,6 +299,10 @@ func _create_treasure(sub_tag: String, is_first_rare_treasure: bool,
 			return []
 
 	while true:
+		if retry > MAX_WHILE_TRUE_RETRY:
+			print("Factory: Too many retries.")
+			return []
+		retry += 1
 		x = _ref_RandomNumber.get_x_coord()
 		y = _ref_RandomNumber.get_y_coord()
 		if Game_CoordCalculator.is_inside_range(x, y, pc_x, pc_y, pc_gap) \

@@ -98,10 +98,14 @@ func _init_dungeon() -> void:
 
 	for x in range(Game_DungeonSize.MAX_X):
 		for y in range(Game_DungeonSize.MAX_Y):
-			if _ref_DungeonBoard.has_building(x, y):
+			if _is_obstacle(x, y):
 				_dungeon[x][y] = Game_PathFindingData.OBSTACLE
 			else:
 				_dungeon[x][y] = Game_PathFindingData.UNKNOWN
+
+
+func _is_obstacle(x: int, y: int) -> bool:
+	return _ref_DungeonBoard.has_building(x, y)
 
 
 func _is_passable_func(source_array: Array, current_index: int,

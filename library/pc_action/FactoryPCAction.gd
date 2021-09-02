@@ -11,6 +11,7 @@ const CLOCK_TYPE := [
 var _is_first_render := true
 var _find_clock: Sprite
 var _find_doors := []
+var _find_npcs := []
 var _find_traps := {}
 var _treasure := 0
 var _rare_treasure := 0
@@ -18,6 +19,11 @@ var _rare_treasure := 0
 
 func _init(parent_node: Node2D).(parent_node) -> void:
 	pass
+
+
+func reset_state() -> void:
+	_ref_ObjectData.set_state(_ref_DungeonBoard.get_pc(), Game_StateTag.DEFAULT)
+	.reset_state()
 
 
 func switch_sprite() -> void:
@@ -28,20 +34,30 @@ func switch_sprite() -> void:
 
 
 func render_fov() -> void:
+	var show_full_map: bool = _ref_GameSetting.get_show_full_map()
+	var pos: Array
+
 	if _is_first_render:
 		_init_sprites()
 		_is_first_render = false
 
-	if _ref_GameSetting.get_show_full_map():
+	if show_full_map:
 		_render_without_fog_of_war()
 		_show_or_hide_sprite(_find_doors, true)
 		_show_or_hide_sprite(_find_traps.values(), true)
-		return
 
 	Game_ShadowCastFOV.set_field_of_view(
 			Game_DungeonSize.MAX_X, Game_DungeonSize.MAX_Y,
 			_source_position[0], _source_position[1], _fov_render_range,
 			self, "_block_line_of_sight", [])
+
+	for i in _find_npcs:
+		pos = Game_ConvertCoord.vector_to_array(i.position)
+		if Game_ShadowCastFOV.is_in_sight(pos[0], pos[1]):
+			_ref_ObjectData.set_state(i, Game_StateTag.ACTIVE)
+
+	if show_full_map:
+		return
 
 	for x in range(Game_DungeonSize.MAX_X):
 		for y in range(Game_DungeonSize.MAX_Y):
@@ -52,6 +68,7 @@ func render_fov() -> void:
 
 	_show_or_hide_sprite(_find_doors, false)
 	_show_or_hide_sprite(_find_traps.values(), false)
+	_ref_Palette.set_default_color(_find_clock, Game_MainTag.BUILDING)
 
 
 func interact_with_building() -> void:
@@ -91,9 +108,13 @@ func interact_with_trap() -> void:
 
 
 func wait() -> void:
+	var pc: Sprite = _ref_DungeonBoard.get_pc()
+
 	if _treasure > 0:
 		_treasure -= 1
 		_ref_CountDown.add_count(Game_FactoryData.RESTORE_TREASURE)
+	if _is_cornered():
+		_ref_ObjectData.set_state(pc, Game_StateTag.PASSIVE)
 	.wait()
 
 
@@ -110,7 +131,10 @@ func attack() -> void:
 
 func _init_sprites() -> void:
 	_find_clock = _ref_DungeonBoard.get_sprites_by_tag(Game_SubTag.ARROW)[0]
+
 	_find_doors = _ref_DungeonBoard.get_sprites_by_tag(Game_SubTag.DOOR)
+	_find_npcs = _ref_DungeonBoard.get_sprites_by_tag(Game_SubTag.SCP_173)
+
 	for i in _ref_DungeonBoard.get_sprites_by_tag(Game_MainTag.TRAP):
 		_find_traps[i.get_instance_id()] = i
 
@@ -121,10 +145,27 @@ func _show_or_hide_sprite(sprites: Array, auto_reset: bool) -> void:
 	for i in sprites:
 		pos = Game_ConvertCoord.vector_to_array(i.position)
 		if _ref_DungeonBoard.has_actor(pos[0], pos[1]):
-			i.visible = false
+			if auto_reset or Game_ShadowCastFOV.is_in_sight(pos[0], pos[1]):
+				i.visible = false
 		elif auto_reset:
 			i.visible = true
 
 
 func _is_dying() -> bool:
 	return (_ref_CountDown.get_count(false) < 2) and (_treasure > 0)
+
+
+func _is_cornered() -> bool:
+	var building: Sprite
+
+	for i in Game_CoordCalculator.get_neighbor(
+			_source_position[0], _source_position[1], 1):
+		if _ref_DungeonBoard.has_actor(i[0], i[1]):
+			continue
+		else:
+			building = _ref_DungeonBoard.get_building(i[0], i[1])
+			if (building == null) or building.is_in_group(Game_SubTag.DOOR):
+				return false
+			continue
+		return false
+	return true

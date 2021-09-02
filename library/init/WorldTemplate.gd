@@ -8,6 +8,8 @@ const INVALID_COORD := -99
 const DEFAULT_MARKER := 0
 const OCCUPIED_MARKER := 1
 
+const MAX_WHILE_TRUE_RETRY := 1000
+
 var _spr_Floor := preload("res://sprite/Floor.tscn")
 var _spr_Wall := preload("res://sprite/Wall.tscn")
 var _spr_PC := preload("res://sprite/PC.tscn")
@@ -95,8 +97,13 @@ func _init_actor(min_distance: int, x: int, y: int, max_actor: int,
 	max_actor -= 1
 
 	var neighbor: Array
+	var retry := 0
 
 	while true:
+		if retry > MAX_WHILE_TRUE_RETRY:
+			print("_init_actor(): Too many retries.")
+			return
+		retry += 1
 		if Game_CoordCalculator.is_inside_dungeon(x, y) \
 				and (not _is_occupied(x, y)):
 			break
