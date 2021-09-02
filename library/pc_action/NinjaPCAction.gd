@@ -32,11 +32,11 @@ func render_fov() -> void:
 			for i in Game_MainTag.DUNGEON_OBJECT:
 				match i:
 					Game_MainTag.BUILDING, Game_MainTag.GROUND:
-						_set_sprite_color_with_memory(x, y, i, "", true,
+						_set_sprite_color_with_memory(x, y, i, true,
 								Game_ShadowCastFOV, "is_in_sight")
 					_:
-						_set_sprite_color(x, y, i, "",
-								Game_ShadowCastFOV, "is_in_sight")
+						_set_sprite_color(x, y, i, Game_ShadowCastFOV,
+								"is_in_sight")
 
 
 func interact_with_trap() -> void:

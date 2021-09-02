@@ -9,6 +9,12 @@ const MAIN_TAG_TO_Z_INDEX := {
 	Game_MainTag.ACTOR: 3,
 	Game_MainTag.INDICATOR: 4,
 }
+const LAYERED_MAIN_TAG := [
+	Game_MainTag.GROUND,
+	Game_MainTag.TRAP,
+	Game_MainTag.BUILDING,
+	Game_MainTag.ACTOR,
+]
 
 
 static func get_z_index(main_tag: String) -> int:

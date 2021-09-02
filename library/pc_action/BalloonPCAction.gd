@@ -35,8 +35,8 @@ func render_fov() -> void:
 		for y in range(Game_DungeonSize.MAX_Y):
 			for i in Game_MainTag.DUNGEON_OBJECT:
 				if i != Game_MainTag.TRAP:
-					_set_sprite_color(x, y, i, "",
-							Game_ShadowCastFOV, "is_in_sight")
+					_set_sprite_color(x, y, i, Game_ShadowCastFOV,
+							"is_in_sight")
 
 
 func wait() -> void:

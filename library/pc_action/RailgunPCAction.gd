@@ -57,16 +57,16 @@ func render_fov() -> void:
 			for i in Game_MainTag.DUNGEON_OBJECT:
 				match i:
 					Game_MainTag.ACTOR:
-						_set_sprite_color_with_memory(x, y, i, "", false,
+						_set_sprite_color_with_memory(x, y, i, false,
 								Game_CrossShapedFOV, "is_in_sight")
 					Game_MainTag.TRAP:
-						_set_sprite_color(x, y, i, "",
-								Game_CrossShapedFOV, "is_in_sight")
+						_set_sprite_color(x, y, i, Game_CrossShapedFOV,
+								"is_in_sight")
 					_:
 						if _do_not_render_building(x, y):
 							pass
 						else:
-							_set_sprite_color_with_memory(x, y, i, "", true,
+							_set_sprite_color_with_memory(x, y, i, true,
 									Game_CrossShapedFOV, "is_in_sight")
 
 

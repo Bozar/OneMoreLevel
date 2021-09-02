@@ -10,9 +10,7 @@ const CLOCK_TYPE := [
 
 var _is_first_render := true
 var _find_clock: Sprite
-var _find_doors := []
 var _find_npcs := []
-var _find_traps := {}
 var _treasure := 0
 var _rare_treasure := 0
 
@@ -43,8 +41,6 @@ func render_fov() -> void:
 
 	if show_full_map:
 		_render_without_fog_of_war()
-		_show_or_hide_sprite(_find_doors, true)
-		_show_or_hide_sprite(_find_traps.values(), true)
 
 	Game_ShadowCastFOV.set_field_of_view(
 			Game_DungeonSize.MAX_X, Game_DungeonSize.MAX_Y,
@@ -62,12 +58,8 @@ func render_fov() -> void:
 	for x in range(Game_DungeonSize.MAX_X):
 		for y in range(Game_DungeonSize.MAX_Y):
 			for i in Game_MainTag.DUNGEON_OBJECT:
-				_set_sprite_color_with_memory(x, y, i, "",
-						i != Game_MainTag.ACTOR,
+				_set_sprite_color_with_memory(x, y, i, i != Game_MainTag.ACTOR,
 						Game_ShadowCastFOV, "is_in_sight")
-
-	_show_or_hide_sprite(_find_doors, false)
-	_show_or_hide_sprite(_find_traps.values(), false)
 	_ref_Palette.set_default_color(_find_clock, Game_MainTag.BUILDING)
 
 
@@ -96,7 +88,6 @@ func interact_with_trap() -> void:
 		_treasure += 1
 		_treasure = min(_treasure, Game_FactoryData.MAX_TREASURE_SLOT) as int
 
-	__ = _find_traps.erase(trap.get_instance_id())
 	_ref_RemoveObject.remove_trap(_target_position[0], _target_position[1])
 	._move_pc_sprite()
 
@@ -131,12 +122,7 @@ func attack() -> void:
 
 func _init_sprites() -> void:
 	_find_clock = _ref_DungeonBoard.get_sprites_by_tag(Game_SubTag.ARROW)[0]
-
-	_find_doors = _ref_DungeonBoard.get_sprites_by_tag(Game_SubTag.DOOR)
 	_find_npcs = _ref_DungeonBoard.get_sprites_by_tag(Game_SubTag.SCP_173)
-
-	for i in _ref_DungeonBoard.get_sprites_by_tag(Game_MainTag.TRAP):
-		_find_traps[i.get_instance_id()] = i
 
 
 func _show_or_hide_sprite(sprites: Array, auto_reset: bool) -> void:
