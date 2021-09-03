@@ -56,8 +56,6 @@ func _try_build_wall(x: int, y: int, is_treasure: bool) -> void:
 
 	_occupy_position(x, y)
 	if is_treasure:
-		_add_to_blueprint(_spr_Treasure,
-				Game_MainTag.TRAP, Game_SubTag.TREASURE, x, y)
+		_add_trap_to_blueprint(_spr_Treasure, Game_SubTag.TREASURE, x, y)
 	else:
-		_add_to_blueprint(_spr_Wall,
-				Game_MainTag.BUILDING, Game_SubTag.WALL, x, y)
+		_add_building_to_blueprint(_spr_Wall, Game_SubTag.WALL, x, y)

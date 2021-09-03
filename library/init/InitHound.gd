@@ -51,11 +51,10 @@ func _init_wall() -> void:
 			y = neighbor[j][1]
 			_occupy_position(x, y)
 			if counter_index == 0:
-				_add_to_blueprint(_spr_WallHound,
-						Game_MainTag.BUILDING, Game_SubTag.COUNTER, x, y)
+				_add_building_to_blueprint(_spr_WallHound, Game_SubTag.COUNTER,
+						x, y)
 			else:
-				_add_to_blueprint(_spr_Wall,
-						Game_MainTag.BUILDING, Game_SubTag.WALL, x, y)
+				_add_building_to_blueprint(_spr_Wall, Game_SubTag.WALL, x, y)
 		counter_index -= 1
 
 
@@ -90,6 +89,5 @@ func _create_pc() -> void:
 					Game_HoundData.PC_SIGHT, true)
 			for j in neighbor:
 				_occupy_position(j[0], j[1])
-			_add_to_blueprint(_spr_PCHound,
-					Game_MainTag.ACTOR, Game_SubTag.PC, x, y)
+			_add_actor_to_blueprint(_spr_PCHound, Game_SubTag.PC, x, y)
 			return

@@ -30,14 +30,12 @@ func _init_swamp() -> void:
 		for j in range(Game_DungeonSize.MAX_Y):
 			if (i == Game_DungeonSize.MAX_X - 1) \
 					and (j == Game_DungeonSize.MAX_Y - 1):
-				_add_to_blueprint(_spr_Counter, Game_MainTag.GROUND,
-						Game_SubTag.COUNTER, i, j)
+				_add_ground_to_blueprint(_spr_Counter, Game_SubTag.COUNTER,
+						i, j)
 			elif _is_occupied(i, j):
-				_add_to_blueprint(_spr_Wall, Game_MainTag.GROUND,
-						Game_SubTag.LAND, i, j)
+				_add_ground_to_blueprint(_spr_Wall, Game_SubTag.LAND, i, j)
 			else:
-				_add_to_blueprint(_spr_Floor, Game_MainTag.GROUND,
-						Game_SubTag.SWAMP, i, j)
+				_add_ground_to_blueprint(_spr_Floor, Game_SubTag.SWAMP, i, j)
 
 
 func _init_path() -> int:

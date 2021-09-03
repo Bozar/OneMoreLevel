@@ -120,8 +120,7 @@ func _add_wall_blueprint() -> void:
 				else:
 					new_sprite = _spr_Wall
 					new_sub_tag = Game_SubTag.WALL
-				_add_to_blueprint(new_sprite,
-						Game_MainTag.BUILDING, new_sub_tag, i, j)
+				_add_building_to_blueprint(new_sprite, new_sub_tag, i, j)
 
 
 func _get_current_length(start_x: int, start_y: int, multi_x: int, multi_y: int,

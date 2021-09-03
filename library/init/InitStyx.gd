@@ -27,20 +27,18 @@ func _init_building() -> void:
 		[Game_DungeonSize.MAX_X - 2, Game_DungeonSize.MAX_Y - 2],
 	]
 
-	_add_to_blueprint(_spr_Lighthouse,
-			Game_MainTag.BUILDING, Game_SubTag.LIGHTHOUSE,
+	_add_building_to_blueprint(_spr_Lighthouse, Game_SubTag.LIGHTHOUSE,
 			lighthouse_x, lighthouse_y)
 	_set_static_area(lighthouse_x, lighthouse_y, Game_StyxData.LIGHTHOUSE)
 
 	for i in harbor:
-		_add_to_blueprint(_spr_Harbor,
-				Game_MainTag.BUILDING, Game_SubTag.HARBOR, i[0], i[1])
+		_add_building_to_blueprint(_spr_Harbor, Game_SubTag.HARBOR, i[0], i[1])
 		_set_static_area(i[0], i[1], Game_StyxData.HARBOR)
 
 
 func _set_static_area(x: int, y: int, max_range: int) -> void:
-	var neighbor: Array = Game_CoordCalculator.get_neighbor(
-			x, y, max_range, true)
+	var neighbor: Array = Game_CoordCalculator.get_neighbor(x, y, max_range,
+			true)
 
 	for i in neighbor:
 		_occupy_position(i[0], i[1])
@@ -51,5 +49,4 @@ func _init_river() -> void:
 		for j in range(Game_DungeonSize.MAX_Y):
 			if _is_occupied(i, j):
 				continue
-			_add_to_blueprint(_spr_Arrow,
-					Game_MainTag.GROUND, Game_SubTag.ARROW, i, j)
+			_add_ground_to_blueprint(_spr_Arrow, Game_SubTag.ARROW, i, j)

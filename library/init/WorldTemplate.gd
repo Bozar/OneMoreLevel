@@ -81,6 +81,26 @@ func _add_to_blueprint(scene: PackedScene, main_tag: String, sub_tag: String,
 			x, y))
 
 
+func _add_ground_to_blueprint(scene: PackedScene, sub_tag: String,
+		x: int, y: int) -> void:
+	_add_to_blueprint(scene, Game_MainTag.GROUND, sub_tag, x, y)
+
+
+func _add_trap_to_blueprint(scene: PackedScene, sub_tag: String,
+		x: int, y: int) -> void:
+	_add_to_blueprint(scene, Game_MainTag.TRAP, sub_tag, x, y)
+
+
+func _add_building_to_blueprint(scene: PackedScene, sub_tag: String,
+		x: int, y: int) -> void:
+	_add_to_blueprint(scene, Game_MainTag.BUILDING, sub_tag, x, y)
+
+
+func _add_actor_to_blueprint(scene: PackedScene, sub_tag: String,
+		x: int, y: int) -> void:
+	_add_to_blueprint(scene, Game_MainTag.ACTOR, sub_tag, x, y)
+
+
 func _init_floor(floor_sprite: PackedScene = _spr_Floor) -> void:
 	for x in range(Game_DungeonSize.MAX_X):
 		for y in range(Game_DungeonSize.MAX_Y):

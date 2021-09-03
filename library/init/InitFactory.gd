@@ -246,8 +246,8 @@ func _build_from_prefab(packed_prefab: Game_DungeonPrefab.PackedPrefab,
 	for i in parsed[Game_DungeonPrefab.FLOOR_CHAR]:
 		tmp_x = i[0] + start_x
 		tmp_y = i[1] + start_y
-		_add_to_blueprint(_spr_FloorFactory, Game_MainTag.GROUND,
-				Game_SubTag.FLOOR, tmp_x, tmp_y)
+		_add_ground_to_blueprint(_spr_FloorFactory, Game_SubTag.FLOOR,
+				tmp_x, tmp_y)
 		_occupy_position(tmp_x, tmp_y)
 		inner_floor.push_back([tmp_x, tmp_y])
 	return [true, start_x, start_y]
@@ -256,7 +256,7 @@ func _build_from_prefab(packed_prefab: Game_DungeonPrefab.PackedPrefab,
 func _build_building(x: int, y: int, new_sprite: PackedScene, sub_tag: String) \
 		-> void:
 	_occupy_position(x, y)
-	_add_to_blueprint(new_sprite, Game_MainTag.BUILDING, sub_tag, x, y)
+	_add_building_to_blueprint(new_sprite, sub_tag, x, y)
 
 
 func _get_coord(packed_prefab: Game_DungeonPrefab.PackedPrefab,
@@ -311,7 +311,7 @@ func _create_treasure(sub_tag: String, is_first_rare_treasure: bool,
 			continue
 		break
 
-	_add_to_blueprint(new_sprite, Game_MainTag.TRAP, sub_tag, x, y)
+	_add_trap_to_blueprint(new_sprite, sub_tag, x, y)
 	for i in Game_CoordCalculator.get_neighbor(x, y, gap):
 		if _is_occupied(i[0], i[1]):
 			continue

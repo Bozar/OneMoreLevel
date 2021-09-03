@@ -93,8 +93,7 @@ func _init_wall() -> void:
 			new_sub_tag = Game_SubTag.COUNTER
 			_has_counter = true
 		_set_terrain_marker(i[0], i[1], WALL_MARKER)
-		_add_to_blueprint(new_sprite,
-				Game_MainTag.BUILDING, new_sub_tag, i[0], i[1])
+		_add_building_to_blueprint(new_sprite, new_sub_tag, i[0], i[1])
 
 
 func _is_empty_space(coord: Array, index: int, _opt_arg: Array) -> bool:
@@ -137,8 +136,7 @@ func _fill_hole() -> void:
 					break
 			if fill_this:
 				_set_terrain_marker(x, y, WALL_MARKER)
-				_add_to_blueprint(_spr_Wall,
-						Game_MainTag.BUILDING, Game_SubTag.WALL, x, y)
+				_add_building_to_blueprint(_spr_Wall, Game_SubTag.WALL, x, y)
 
 
 func _create_floor():
@@ -146,8 +144,7 @@ func _create_floor():
 		for y in range(Game_DungeonSize.MAX_Y):
 			if _get_terrain_marker(x, y) == WALL_MARKER:
 				continue
-			_add_to_blueprint(_spr_Floor,
-					Game_MainTag.GROUND, Game_SubTag.FLOOR, x, y)
+			_add_ground_to_blueprint(_spr_Floor, Game_SubTag.FLOOR, x, y)
 
 
 func _create_actor(scene: PackedScene, sub_tag: String, distance: int) -> void:
@@ -164,4 +161,4 @@ func _create_actor(scene: PackedScene, sub_tag: String, distance: int) -> void:
 	neighbor = Game_CoordCalculator.get_neighbor(x, y, distance, true)
 	for i in neighbor:
 		_set_terrain_marker(i[0], i[1], WALL_MARKER)
-	_add_to_blueprint(scene, Game_MainTag.ACTOR, sub_tag, x, y)
+	_add_actor_to_blueprint(scene, sub_tag, x, y)
