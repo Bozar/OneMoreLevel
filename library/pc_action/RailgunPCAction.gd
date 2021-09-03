@@ -8,6 +8,8 @@ const RAY_DIRECTION := [
 	[1, 0],
 	[-1, 0],
 ]
+const HORIZONTAL := 0
+const VERTICAL := 1
 
 var _spr_Treasure := preload("res://sprite/Treasure.tscn")
 var _spr_Portal := preload("res://sprite/Portal.tscn")
@@ -162,18 +164,9 @@ func _pc_restore() -> void:
 
 
 func _is_checkmate() -> bool:
-	var neighbor: Array
-
 	if _ammo > 0:
 		return false
-
-	neighbor = Game_CoordCalculator.get_neighbor(
-			_source_position[0], _source_position[1], 1)
-	for i in neighbor:
-		if not (_ref_DungeonBoard.has_building(i[0], i[1]) \
-						or _ref_DungeonBoard.has_actor(i[0], i[1])):
-			return false
-	return true
+	return not (_is_passable(HORIZONTAL) or _is_passable(VERTICAL))
 
 
 func _block_line_of_sight(x: int, y: int, _opt_arg: Array) -> bool:
@@ -293,8 +286,10 @@ func _is_under_attack() -> bool:
 	var x: int
 	var y: int
 	var npc: Sprite
-	var is_horizontal := false
-	var is_vertical := false
+	var horizontal_move: bool = (_source_position[1] == _target_position[1])
+	var vertical_move: bool = (_source_position[0] == _target_position[0])
+	var horizontal_attack := false
+	var vertical_attack := false
 
 	for i in RAY_DIRECTION:
 		x = _source_position[0]
@@ -310,16 +305,43 @@ func _is_under_attack() -> bool:
 					continue
 				elif _ref_ObjectData.verify_state(npc, Game_StateTag.ACTIVE):
 					if x == _source_position[0]:
-						is_horizontal = true
+						vertical_attack = true
 					elif y == _source_position[1]:
-						is_vertical = true
+						horizontal_attack = true
 				break
 
-	if _ammo < 1:
-		if is_horizontal and is_vertical:
+	if (_ammo < 1) and horizontal_attack and vertical_attack:
+		return false
+	elif horizontal_move and horizontal_attack:
+		if _ammo < 1:
+			return _is_passable(VERTICAL)
+		return true
+	elif vertical_move and vertical_attack:
+		if _ammo < 1:
+			return _is_passable(HORIZONTAL)
+		return true
+	return false
+
+
+func _is_passable(direction: int) -> bool:
+	var x: int
+	var y: int
+	var shift_coord: Array
+
+	match direction:
+		HORIZONTAL:
+			shift_coord = [RAY_DIRECTION[2], RAY_DIRECTION[3]]
+		VERTICAL:
+			shift_coord = [RAY_DIRECTION[0], RAY_DIRECTION[1]]
+		_:
 			return false
-	if _source_position[0] == _target_position[0]:
-		return is_horizontal
-	elif _source_position[1] == _target_position[1]:
-		return is_vertical
+
+	for i in shift_coord:
+		x = _source_position[0] + i[0]
+		y = _source_position[1] + i[1]
+		if (not Game_CoordCalculator.is_inside_dungeon(x, y)) \
+				or _ref_DungeonBoard.has_building(x, y) \
+				or _ref_DungeonBoard.has_actor(x, y):
+			continue
+		return true
 	return false

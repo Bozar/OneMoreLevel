@@ -20,7 +20,6 @@ var _ref_Palette: Game_Palette
 var _self: Sprite
 var _pc_pos: Array
 var _self_pos: Array
-var _target_pos: Array
 var _dungeon: Dictionary
 
 
@@ -79,10 +78,8 @@ func _approach_pc(start_point := [_pc_pos], step_length := 1, step_count := 1,
 	_dungeon = Game_DijkstraPathFinding.get_map(_dungeon, start_point)
 
 	for i in range(0, step_count):
-		if i > 0:
-			_self_pos = Game_ConvertCoord.vector_to_array(_self.position)
-			if _stop_move():
-				break
+		if (i > 0) and _stop_move():
+			break
 		destination = Game_DijkstraPathFinding.get_path(_dungeon,
 				_self_pos[0], _self_pos[1], step_length,
 				self, "_is_passable_func", opt_passable_arg)
@@ -92,7 +89,7 @@ func _approach_pc(start_point := [_pc_pos], step_length := 1, step_count := 1,
 			_ref_DungeonBoard.move_sprite(Game_MainTag.ACTOR,
 					_self_pos[0], _self_pos[1],
 					destination[0][0], destination[0][1])
-			_target_pos = destination[0]
+			_self_pos = destination[0]
 
 
 func _init_dungeon() -> void:

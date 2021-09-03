@@ -12,7 +12,7 @@ Press Space to switch between move mode and aim mode. This action costs no turns
 
 In move mode, you are an "at" symbol (@). Press arrow keys to move around. You cannot enter a grid that is occupied by a wall (#) or a devil (d). Moving 1 step costs 1 turn. When you move over and pick up a survial kit (?), you restore 6 turns and 1 charge of ammo. You have at most 24 turns and 5 charges.
 
-You cannot move to or away from a devil in a straight line if: (1) The devil is in your sight. (2) It can kill you the next turn (more details below). (3) You can move aside or shoot back.
+You cannot move to or away from a devil in a straight line if: (1) The devil is in your sight and is about to attack (more details below). (2) There are no other devils in between you two. (3) You can move aside or shoot back.
 
 In aim mode, your symbol is a number that shows your remaining ammo. Press arrow keys to shoot in a direction. Beware that the game does not prevent you from attacking a wall. You cannot shoot without ammo. You do not move when shooting. The action itself costs 1 turn and 1 charge.
 

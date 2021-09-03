@@ -27,7 +27,7 @@ func take_action() -> void:
 		# 	_self.modulate = _ref_Palette.DEBUG
 		# 	print("gunshot")
 		_approach_pc()
-		_ref_RemoveObject.remove_trap(_target_pos[0], _target_pos[1])
+		_ref_RemoveObject.remove_trap(_self_pos[0], _self_pos[1])
 
 
 func _switch_mode(aim_mode: bool) -> void:
