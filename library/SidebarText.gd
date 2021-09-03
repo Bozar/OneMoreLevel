@@ -6,7 +6,6 @@ const VERSION := "{0}0.4.0"
 
 const TURN := "Turn: {0}"
 
-const DANGER := "DANGER!"
 const WIN := "You win.\n[ Space ]"
 const LOSE := "You lose.\n[ Space ]"
 

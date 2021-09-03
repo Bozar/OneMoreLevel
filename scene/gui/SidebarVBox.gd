@@ -10,7 +10,6 @@ const VERSION: String = "Lower/Version"
 const SEED: String = "Lower/Seed"
 
 var _ref_RandomNumber: Game_RandomNumber
-var _ref_DangerZone: Game_DangerZone
 var _ref_CountDown: Game_CountDown
 var _ref_DungeonBoard: Game_DungeonBoard
 var _ref_GameSetting: Game_GameSetting
@@ -43,7 +42,6 @@ func _on_Schedule_turn_started(current_sprite: Sprite) -> void:
 	if not current_sprite.is_in_group(Game_SubTag.PC):
 		return
 	get_node(TURN).text = _get_turn()
-	get_node(MESSAGE).text = _get_warning()
 
 
 func _on_EndGame_game_over(win: bool) -> void:
@@ -67,15 +65,6 @@ func _get_turn() -> String:
 	return Game_SidebarText.TURN.format([_ref_CountDown.get_count(true)])
 
 
-func _get_warning() -> String:
-	var pc: Sprite = _ref_DungeonBoard.get_pc()
-	var pc_pos: Array = Game_ConvertCoord.vector_to_array(pc.position)
-
-	if _ref_DangerZone.is_in_danger(pc_pos[0], pc_pos[1]):
-		return Game_SidebarText.DANGER
-	return  ""
-
-
 func _get_seed() -> String:
 	var _rng_seed: String = String(_ref_RandomNumber.rng_seed)
 	var _head: String = _rng_seed.substr(0, 3)
@@ -86,8 +75,10 @@ func _get_seed() -> String:
 
 
 func _get_version() -> String:
+	var version: String = Game_SidebarText.VERSION
+
 	if _ref_GameSetting.get_json_parse_error():
-		return Game_SidebarText.VERSION.format([Game_SidebarText.PARSE_ERROR])
+		return version.format([Game_SidebarText.PARSE_ERROR])
 	elif _ref_GameSetting.get_wizard_mode():
-		return Game_SidebarText.VERSION.format([Game_SidebarText.WIZARD])
-	return Game_SidebarText.VERSION.format([""])
+		return version.format([Game_SidebarText.WIZARD])
+	return version.format([""])
