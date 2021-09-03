@@ -1,7 +1,13 @@
 extends Game_PCActionTemplate
 
 
-const HALF_SIGHT_WIDTH: int = 1
+const HALF_SIGHT_WIDTH := 1
+const RAY_DIRECTION := [
+	[0, 1],
+	[0, -1],
+	[1, 0],
+	[-1, 0],
+]
 
 var _spr_Treasure := preload("res://sprite/Treasure.tscn")
 var _spr_Portal := preload("res://sprite/Portal.tscn")
@@ -128,12 +134,16 @@ func attack() -> void:
 
 
 func move() -> void:
-	if _ref_DungeonBoard.has_actor(_target_position[0], _target_position[1]):
+	if _is_under_attack():
+		return
+	elif _ref_DungeonBoard.has_actor(_target_position[0], _target_position[1]):
 		return
 	_pc_move()
 
 
 func interact_with_trap() -> void:
+	if _is_under_attack():
+		return
 	_ref_RemoveObject.remove_trap(_target_position[0], _target_position[1])
 	_pc_restore()
 	_pc_move()
@@ -167,10 +177,6 @@ func _is_checkmate() -> bool:
 
 
 func _block_line_of_sight(x: int, y: int, _opt_arg: Array) -> bool:
-	return _ref_DungeonBoard.has_building(x, y)
-
-
-func _block_ray(x: int, y: int, _opt_arg: Array) -> bool:
 	return _ref_DungeonBoard.has_building(x, y)
 
 
@@ -280,4 +286,40 @@ func _do_not_render_building(x: int, y: int) -> bool:
 		return _has_found_pillar
 	elif building.is_in_group(Game_SubTag.COUNTER):
 		return true
+	return false
+
+
+func _is_under_attack() -> bool:
+	var x: int
+	var y: int
+	var npc: Sprite
+	var is_horizontal := false
+	var is_vertical := false
+
+	for i in RAY_DIRECTION:
+		x = _source_position[0]
+		y = _source_position[1]
+		while true:
+			x += i[0]
+			y += i[1]
+			if not Game_CrossShapedFOV.is_in_sight(x, y):
+				break
+			else:
+				npc = _ref_DungeonBoard.get_sprite(Game_MainTag.ACTOR, x, y)
+				if npc == null:
+					continue
+				elif _ref_ObjectData.verify_state(npc, Game_StateTag.ACTIVE):
+					if x == _source_position[0]:
+						is_horizontal = true
+					elif y == _source_position[1]:
+						is_vertical = true
+				break
+
+	if _ammo < 1:
+		if is_horizontal and is_vertical:
+			return false
+	if _source_position[0] == _target_position[0]:
+		return is_horizontal
+	elif _source_position[1] == _target_position[1]:
+		return is_vertical
 	return false
