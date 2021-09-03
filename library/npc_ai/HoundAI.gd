@@ -139,7 +139,7 @@ func _hound_approach(self_is_in_fog: bool, pc_is_in_fog: bool) -> void:
 	else:
 		one_step = ONE_STEP_OUTSIDE_FOG
 
-	_approach_pc(start_point, one_step, [self_is_in_fog])
+	_approach_pc(start_point, one_step, 1, [self_is_in_fog])
 
 
 func _is_passable_func(source_array: Array, current_index: int,

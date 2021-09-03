@@ -6,10 +6,10 @@ class_name Game_DijkstraPathFinding
 # is_passable_func(source_array: Array, current_index: int,
 #> opt_arg: Array) -> bool
 static func get_path(dungeon: Dictionary, start_x: int, start_y: int,
-		one_step: int, func_host: Object, is_passable_func: String,
+		step_length: int, func_host: Object, is_passable_func: String,
 		opt_arg: Array) -> Array:
 	var neighbor: Array = Game_CoordCalculator.get_neighbor(start_x, start_y,
-			one_step)
+			step_length)
 	var min_distance: int = Game_PathFindingData.OBSTACLE
 	var x: int
 	var y: int

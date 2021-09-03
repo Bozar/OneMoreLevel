@@ -65,8 +65,8 @@ func set_local_var(actor: Sprite) -> void:
 	_pc_pos = Game_ConvertCoord.vector_to_array(pc.position)
 
 
-func _approach_pc(start_point: Array = [_pc_pos], one_step: int = 1,
-		opt_passable_arg: Array = []) -> void:
+func _approach_pc(start_point := [_pc_pos], step_length := 1, step_count := 1,
+		opt_passable_arg := []) -> void:
 	var destination: Array
 
 	_init_dungeon()
@@ -78,16 +78,21 @@ func _approach_pc(start_point: Array = [_pc_pos], one_step: int = 1,
 			return
 	_dungeon = Game_DijkstraPathFinding.get_map(_dungeon, start_point)
 
-	destination = Game_DijkstraPathFinding.get_path(_dungeon,
-			_self_pos[0], _self_pos[1], one_step,
-			self, "_is_passable_func", opt_passable_arg)
+	for i in range(0, step_count):
+		if i > 0:
+			_self_pos = Game_ConvertCoord.vector_to_array(_self.position)
+			if _stop_move():
+				break
+		destination = Game_DijkstraPathFinding.get_path(_dungeon,
+				_self_pos[0], _self_pos[1], step_length,
+				self, "_is_passable_func", opt_passable_arg)
 
-	if destination.size() > 0:
-		Game_ArrayHelper.rand_picker(destination, 1, _ref_RandomNumber)
-		_ref_DungeonBoard.move_sprite(Game_MainTag.ACTOR,
-				_self_pos[0], _self_pos[1],
-				destination[0][0], destination[0][1])
-		_target_pos = destination[0]
+		if destination.size() > 0:
+			Game_ArrayHelper.rand_picker(destination, 1, _ref_RandomNumber)
+			_ref_DungeonBoard.move_sprite(Game_MainTag.ACTOR,
+					_self_pos[0], _self_pos[1],
+					destination[0][0], destination[0][1])
+			_target_pos = destination[0]
 
 
 func _init_dungeon() -> void:
@@ -113,3 +118,7 @@ func _is_passable_func(source_array: Array, current_index: int,
 	var x: int = source_array[current_index][0]
 	var y: int = source_array[current_index][1]
 	return not _ref_DungeonBoard.has_actor(x, y)
+
+
+func _stop_move() -> bool:
+	return false
