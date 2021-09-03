@@ -33,5 +33,49 @@ func create(prefab: PackedScene, main_tag: String, sub_tag: String,
 			x_offset, y_offset)
 
 
+func create_ground(prefab: PackedScene, sub_tag: String, x: int, y: int,
+		x_offset: int = 0, y_offset: int = 0) -> void:
+	create(prefab, Game_MainTag.GROUND, sub_tag, x, y, x_offset, y_offset)
+
+
+func create_trap(prefab: PackedScene, sub_tag: String, x: int, y: int,
+		x_offset: int = 0, y_offset: int = 0) -> void:
+	create(prefab, Game_MainTag.TRAP, sub_tag, x, y, x_offset, y_offset)
+
+
+func create_building(prefab: PackedScene, sub_tag: String, x: int, y: int,
+		x_offset: int = 0, y_offset: int = 0) -> void:
+	create(prefab, Game_MainTag.BUILDING, sub_tag, x, y, x_offset, y_offset)
+
+
+func create_actor(prefab: PackedScene, sub_tag: String, x: int, y: int,
+		x_offset: int = 0, y_offset: int = 0) -> void:
+	create(prefab, Game_MainTag.ACTOR, sub_tag, x, y, x_offset, y_offset)
+
+
+func create_and_fetch_ground(prefab: PackedScene, sub_tag: String,
+		x: int, y: int, x_offset: int = 0, y_offset: int = 0) -> Sprite:
+	return create_and_fetch(prefab, Game_MainTag.GROUND, sub_tag, x, y,
+			x_offset, y_offset)
+
+
+func create_and_fetch_trap(prefab: PackedScene, sub_tag: String, x: int, y: int,
+		x_offset: int = 0, y_offset: int = 0) -> Sprite:
+	return create_and_fetch(prefab, Game_MainTag.TRAP, sub_tag, x, y,
+			x_offset, y_offset)
+
+
+func create_and_fetch_building(prefab: PackedScene, sub_tag: String,
+		x: int, y: int, x_offset: int = 0, y_offset: int = 0) -> Sprite:
+	return create_and_fetch(prefab, Game_MainTag.BUILDING, sub_tag, x, y,
+			x_offset, y_offset)
+
+
+func create_and_fetch_actor(prefab: PackedScene, sub_tag: String,
+		x: int, y: int, x_offset: int = 0, y_offset: int = 0) -> Sprite:
+	return create_and_fetch(prefab, Game_MainTag.ACTOR, sub_tag, x, y,
+			x_offset, y_offset)
+
+
 func _on_SwitchScreen_screen_switched(screen_tag: String) -> void:
 	visible = (screen_tag == Game_ScreenTag.MAIN)

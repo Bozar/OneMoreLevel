@@ -71,6 +71,6 @@ func _add_or_remove_ground(add_ground: bool, x: int, y: int,
 		new_sprite: PackedScene = _spr_Floor,
 		sub_tag: String = Game_SubTag.FLOOR) -> void:
 	if add_ground:
-		_ref_CreateObject.create(new_sprite, Game_MainTag.GROUND, sub_tag, x, y)
+		_ref_CreateObject.create_ground(new_sprite, sub_tag, x, y)
 	else:
 		_ref_RemoveObject.remove_ground(x, y)

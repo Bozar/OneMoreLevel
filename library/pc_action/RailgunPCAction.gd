@@ -116,8 +116,7 @@ func attack() -> void:
 			continue
 
 		_ref_RemoveObject.remove_actor(x, y)
-		_ref_CreateObject.create(_spr_Treasure,
-				Game_MainTag.TRAP, Game_SubTag.TREASURE, x, y)
+		_ref_CreateObject.create_trap(_spr_Treasure, Game_SubTag.TREASURE, x, y)
 
 		_kill_count -= Game_RailgunData.ONE_KILL
 		if _ammo == 0:
@@ -195,9 +194,8 @@ func _init_skull_pillar() -> void:
 		for j in neighbor:
 			if _ref_DungeonBoard.has_ground(j[0], j[1]):
 				_ref_RemoveObject.remove_building(pos[0], pos[1])
-				_ref_CreateObject.create(_spr_Portal,
-						Game_MainTag.BUILDING, Game_SubTag.PILLAR,
-						pos[0], pos[1])
+				_ref_CreateObject.create_building(_spr_Portal,
+						Game_SubTag.PILLAR, pos[0], pos[1])
 				_plillar_position = pos
 				return
 

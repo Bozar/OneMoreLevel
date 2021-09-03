@@ -28,8 +28,8 @@ func _respawn_npc(pc_x: int, pc_y: int) -> void:
 	Game_ArrayHelper.rand_picker(neighbor, respawn_counter, _ref_RandomNumber)
 
 	for i in neighbor:
-		_ref_CreateObject.create(_spr_Ninja,
-				Game_MainTag.ACTOR, Game_SubTag.NINJA, i[0], i[1])
+		_ref_CreateObject.create_actor(_spr_Ninja, Game_SubTag.NINJA,
+				i[0], i[1])
 
 
 func _not_too_close_to_pc(source: Array, index: int, opt_arg: Array) -> bool:

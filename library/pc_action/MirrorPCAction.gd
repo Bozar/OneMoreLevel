@@ -160,8 +160,7 @@ func _create_image_on_the_same_side(x: int, y: int) -> void:
 			continue
 
 		# Create a new actor.
-		_ref_CreateObject.create(_spr_Phantom,
-				Game_MainTag.ACTOR, Game_SubTag.PHANTOM,
+		_ref_CreateObject.create_actor(_spr_Phantom, Game_SubTag.PHANTOM,
 				mirror.x, mirror.y)
 
 		# Switch the actor's sprite to active.

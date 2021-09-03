@@ -44,8 +44,8 @@ func end_world(pc_x: int, pc_y: int) -> void:
 		if encirclement.size() > 0:
 			spawn_nearby = encirclement[_ref_RandomNumber.get_int(
 					0, encirclement.size())]
-			_ref_CreateObject.create(_spr_Knight, Game_MainTag.ACTOR,
-					Game_SubTag.KNIGHT, spawn_nearby[0], spawn_nearby[1])
+			_ref_CreateObject.create_actor(_spr_Knight, Game_SubTag.KNIGHT,
+					spawn_nearby[0], spawn_nearby[1])
 			spawn -= 1
 
 	for _i in range(spawn):
@@ -78,7 +78,7 @@ func _spawn_npc(scene: PackedScene, sub_tag: String) -> void:
 		position = _get_position()
 		x = position[0]
 		y = position[1]
-	_ref_CreateObject.create(scene, Game_MainTag.ACTOR, sub_tag, x, y)
+	_ref_CreateObject.create_actor(scene, sub_tag, x, y)
 
 
 func _get_position() -> Array:

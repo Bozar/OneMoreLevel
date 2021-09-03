@@ -175,8 +175,8 @@ func _try_hit_npc(hit_x: int, hit_y: int, push_x: int, push_y: int,
 				or _ref_DungeonBoard.has_building(i[0], i[1]):
 			continue
 		_ref_RemoveObject.remove_trap(i[0], i[1])
-		_ref_CreateObject.create(_spr_SoulFragment,
-				Game_MainTag.TRAP, Game_SubTag.TREASURE, i[0], i[1])
+		_ref_CreateObject.create_trap(_spr_SoulFragment, Game_SubTag.TREASURE,
+				i[0], i[1])
 
 	return true
 

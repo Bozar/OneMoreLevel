@@ -78,8 +78,7 @@ func _create_frog(pc_x: int, pc_y: int) -> void:
 			_ref_RandomNumber)
 
 	for i in neighbor:
-		_ref_CreateObject.create(_spr_Frog,
-				Game_MainTag.ACTOR, Game_SubTag.FROG, i[0], i[1])
+		_ref_CreateObject.create_actor(_spr_Frog, Game_SubTag.FROG, i[0], i[1])
 
 
 func _create_princess(pc_x: int, pc_y: int) -> void:
@@ -92,8 +91,7 @@ func _create_princess(pc_x: int, pc_y: int) -> void:
 			[])
 	Game_ArrayHelper.rand_picker(neighbor, 1, _ref_RandomNumber)
 
-	_ref_CreateObject.create(_spr_FrogPrincess,
-			Game_MainTag.ACTOR, Game_SubTag.FROG_PRINCESS,
+	_ref_CreateObject.create_actor(_spr_FrogPrincess, Game_SubTag.FROG_PRINCESS,
 			neighbor[0][0], neighbor[0][1])
 
 

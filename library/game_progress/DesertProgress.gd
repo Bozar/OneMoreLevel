@@ -77,8 +77,7 @@ func _create_worm_head(retry: int) -> void:
 
 	_ref_RemoveObject.remove_building(x, y)
 	_ref_RemoveObject.remove_trap(x, y)
-	_ref_CreateObject.create(_spr_WormHead, Game_MainTag.ACTOR,
-			Game_SubTag.WORM_HEAD, x, y)
+	_ref_CreateObject.create_actor(_spr_WormHead, Game_SubTag.WORM_HEAD, x, y)
 
 
 func _has_building_or_trap(x: int, y: int) -> bool:

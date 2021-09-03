@@ -68,8 +68,8 @@ func _attack() -> void:
 				_self.visible = true
 			else:
 				_ref_RemoveObject.remove_actor(self_x, self_y)
-				_ref_CreateObject.create(_spr_Treasure,
-						Game_MainTag.TRAP, Game_SubTag.TREASURE, self_x, self_y)
+				_ref_CreateObject.create_trap(_spr_Treasure,
+						Game_SubTag.TREASURE, self_x, self_y)
 			return
 
 
