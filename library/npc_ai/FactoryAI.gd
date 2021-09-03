@@ -38,13 +38,21 @@ func _try_teleport() -> void:
 func _try_approach() -> void:
 	var pc: Sprite = _ref_DungeonBoard.get_pc()
 
-	if Game_CoordCalculator.is_inside_range(_self_pos[0], _self_pos[1],
-			_pc_pos[0], _pc_pos[1], 1):
+	if _is_adjacent_to_pc():
 		if _ref_ObjectData.verify_state(pc, Game_StateTag.PASSIVE):
 			_teleport()
 	else:
-		_approach_pc()
+		_approach_pc([_pc_pos], 1, Game_FactoryData.SCP_STEP_COUNT)
 	_ref_ObjectData.set_state(_self, Game_StateTag.DEFAULT)
+
+
+func _stop_move() -> bool:
+	return _is_adjacent_to_pc()
+
+
+func _is_adjacent_to_pc() -> bool:
+	return Game_CoordCalculator.is_inside_range(_self_pos[0], _self_pos[1],
+			_pc_pos[0], _pc_pos[1], 1)
 
 
 func _is_obstacle(x: int, y: int) -> bool:

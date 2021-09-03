@@ -6,6 +6,8 @@ const MAX_RARE_TREASURE := 3
 
 const MAX_SCP := 13
 const SCP_GAP := 2
+const SCP_STEP_COUNT := 2
+
 const PC_SIGHT := 5
 
 const RESTORE_TREASURE := 7
