@@ -11,7 +11,6 @@ const MAX_BLOCK_COUNT: int = 6
 
 const MAX_RETRY: int = 999
 
-var _spr_PCKnight := preload("res://sprite/PCKnight.tscn")
 var _spr_Knight := preload("res://sprite/Knight.tscn")
 var _spr_KnightCaptain := preload("res://sprite/KnightCaptain.tscn")
 var _spr_Counter := preload("res://sprite/Counter.tscn")
@@ -153,7 +152,7 @@ func _create_actor(sub_tag: String) -> void:
 
 	match sub_tag:
 		Game_SubTag.PC:
-			new_actor = _spr_PCKnight
+			new_actor = _spr_PC
 			min_distance = Game_KnightData.RENDER_RANGE
 		Game_SubTag.KNIGHT:
 			new_actor = _spr_Knight
