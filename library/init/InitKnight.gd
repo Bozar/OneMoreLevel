@@ -9,11 +9,9 @@ const MIN_BLOCK_SIZE: int = 4
 const MAX_BLOCK_SIZE: int = 5
 const MAX_BLOCK_COUNT: int = 6
 
-const MIN_PC_DISTANCE: int = 5
-const MIN_NPC_DISTANCE: int = 3
-
 const MAX_RETRY: int = 999
 
+var _spr_PCKnight := preload("res://sprite/PCKnight.tscn")
 var _spr_Knight := preload("res://sprite/Knight.tscn")
 var _spr_KnightCaptain := preload("res://sprite/KnightCaptain.tscn")
 var _spr_Counter := preload("res://sprite/Counter.tscn")
@@ -31,11 +29,10 @@ func get_blueprint() -> Array:
 	_fill_hole()
 	_create_floor()
 
-	_create_actor(_spr_PC, Game_SubTag.PC, MIN_PC_DISTANCE)
-	_create_actor(_spr_KnightCaptain, Game_SubTag.KNIGHT_CAPTAIN,
-			MIN_NPC_DISTANCE)
+	_create_actor(Game_SubTag.PC)
+	_create_actor(Game_SubTag.KNIGHT_CAPTAIN)
 	for _i in range(Game_KnightData.MAX_KNIGHT):
-		_create_actor(_spr_Knight, Game_SubTag.KNIGHT, MIN_NPC_DISTANCE)
+		_create_actor(Game_SubTag.KNIGHT)
 
 	return _blueprint
 
@@ -147,10 +144,23 @@ func _create_floor():
 			_add_ground_to_blueprint(_spr_Floor, Game_SubTag.FLOOR, x, y)
 
 
-func _create_actor(scene: PackedScene, sub_tag: String, distance: int) -> void:
+func _create_actor(sub_tag: String) -> void:
+	var new_actor: PackedScene
+	var min_distance: int
 	var x: int
 	var y: int
 	var neighbor: Array
+
+	match sub_tag:
+		Game_SubTag.PC:
+			new_actor = _spr_PCKnight
+			min_distance = Game_KnightData.RENDER_RANGE
+		Game_SubTag.KNIGHT:
+			new_actor = _spr_Knight
+			min_distance = Game_KnightData.KNIGHT_GAP
+		Game_SubTag.KNIGHT_CAPTAIN:
+			new_actor = _spr_KnightCaptain
+			min_distance = Game_KnightData.KNIGHT_GAP
 
 	while true:
 		x = _ref_RandomNumber.get_x_coord()
@@ -158,7 +168,7 @@ func _create_actor(scene: PackedScene, sub_tag: String, distance: int) -> void:
 		if _get_terrain_marker(x, y) != WALL_MARKER:
 			break
 
-	neighbor = Game_CoordCalculator.get_neighbor(x, y, distance, true)
+	neighbor = Game_CoordCalculator.get_neighbor(x, y, min_distance, true)
 	for i in neighbor:
 		_set_terrain_marker(i[0], i[1], WALL_MARKER)
-	_add_actor_to_blueprint(scene, sub_tag, x, y)
+	_add_actor_to_blueprint(new_actor, sub_tag, x, y)

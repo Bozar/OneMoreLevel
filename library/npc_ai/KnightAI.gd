@@ -1,17 +1,18 @@
 extends Game_AITemplate
 
 
-var _id_to_danger_zone: Dictionary = {}
-var _boss_attack_count: int = 0
-var _hit_to_sprite: Dictionary
+const HIT_TO_SPRITE := {
+	0: Game_SpriteTypeTag.DEFAULT,
+	1: Game_SpriteTypeTag.DEFAULT_2,
+	2: Game_SpriteTypeTag.DEFAULT_3,
+}
+
+var _id_to_danger_zone := {}
+var _boss_attack_count := 0
 
 
 func _init(parent_node: Node2D).(parent_node) -> void:
-	_hit_to_sprite = {
-		0: Game_SpriteTypeTag.DEFAULT,
-		1: Game_SpriteTypeTag.DEFAULT_2,
-		2: Game_SpriteTypeTag.DEFAULT_3,
-	}
+	pass
 
 
 func take_action() -> void:
@@ -22,9 +23,8 @@ func take_action() -> void:
 	elif _ref_ObjectData.verify_state(_self, Game_StateTag.PASSIVE):
 		_recover()
 	# Default -> Active.
-	elif Game_CoordCalculator.is_inside_range(
-			_pc_pos[0], _pc_pos[1], _self_pos[0], _self_pos[1],
-			Game_KnightData.RANGE):
+	elif Game_CoordCalculator.is_inside_range(_self_pos[0], _self_pos[1],
+			_pc_pos[0], _pc_pos[1], Game_KnightData.RANGE):
 		_alert()
 	# Approach.
 	elif _is_ready_to_move():
@@ -59,8 +59,8 @@ func _recover() -> void:
 
 	_ref_ObjectData.set_state(_self, Game_StateTag.DEFAULT)
 
-	if _self.is_in_group(Game_SubTag.KNIGHT_BOSS) and _hit_to_sprite.has(hit):
-		new_sprite = _hit_to_sprite[hit]
+	if _self.is_in_group(Game_SubTag.KNIGHT_BOSS) and HIT_TO_SPRITE.has(hit):
+		new_sprite = HIT_TO_SPRITE[hit]
 	_ref_SwitchSprite.switch_sprite(_self, new_sprite)
 
 
@@ -181,16 +181,14 @@ func _try_hit_pc(danger_zone: Array) -> void:
 
 func _is_ready_to_move() -> bool:
 	var sight: int
+	var pc: Sprite = _ref_DungeonBoard.get_pc()
 
-	if _self.is_in_group(Game_SubTag.KNIGHT):
+	if _ref_ObjectData.verify_state(pc, Game_StateTag.PASSIVE):
+		sight = Game_KnightData.SNEAK_SIGHT
+	elif _self.is_in_group(Game_SubTag.KNIGHT):
 		sight = Game_KnightData.SIGHT
 	else:
 		sight = Game_KnightData.ELITE_SIGHT
 
-	if not Game_CoordCalculator.is_inside_range(
-			_pc_pos[0], _pc_pos[1], _self_pos[0], _self_pos[1], sight):
-		return false
-
-	if _ref_RandomNumber.get_percent_chance(Game_KnightData.WAIT_CHANCE):
-		return false
-	return true
+	return Game_CoordCalculator.is_inside_range(_self_pos[0], _self_pos[1],
+			_pc_pos[0], _pc_pos[1], sight)

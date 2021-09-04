@@ -8,9 +8,21 @@ func _init(parent_node: Node2D).(parent_node) -> void:
 	_fov_render_range = Game_KnightData.RENDER_RANGE
 
 
+func switch_sprite() -> void:
+	var pc: Sprite = _ref_DungeonBoard.get_pc()
+
+	if _ref_DangerZone.is_in_danger(_source_position[0], _source_position[1]):
+		_ref_SwitchSprite.switch_sprite(pc, Game_SpriteTypeTag.ACTIVE)
+	elif _ref_ObjectData.verify_state(pc, Game_StateTag.PASSIVE):
+		_ref_SwitchSprite.switch_sprite(pc, Game_SpriteTypeTag.PASSIVE)
+	else:
+		_ref_SwitchSprite.switch_sprite(pc, Game_SpriteTypeTag.DEFAULT)
+
+
 func attack() -> void:
 	var npc: Sprite = _ref_DungeonBoard.get_actor(
 			_target_position[0], _target_position[1])
+	var pc: Sprite = _ref_DungeonBoard.get_pc()
 
 	if _ref_ObjectData.verify_state(npc, Game_StateTag.DEFAULT):
 		end_turn = false
@@ -21,6 +33,7 @@ func attack() -> void:
 				_source_position[0], _source_position[1]):
 			end_turn = false
 			return
+		_ref_ObjectData.set_state(pc, Game_StateTag.DEFAULT)
 		if npc.is_in_group(Game_SubTag.KNIGHT_BOSS):
 			_hit_boss(npc)
 		else:
@@ -101,6 +114,7 @@ func _roll() -> bool:
 	var neighbor: Array = Game_CoordCalculator.get_neighbor(
 			_target_position[0], _target_position[1], 1)
 	var roll_over: Array = [-1, -1]
+	var pc: Sprite = _ref_DungeonBoard.get_pc()
 
 	for i in neighbor:
 		if (i[0] == _source_position[0]) and (i[1] == _source_position[1]):
@@ -115,4 +129,5 @@ func _roll() -> bool:
 	_ref_DungeonBoard.move_sprite(Game_MainTag.ACTOR,
 			_source_position[0], _source_position[1],
 			roll_over[0], roll_over[1])
+	_ref_ObjectData.set_state(pc, Game_StateTag.PASSIVE)
 	return true
