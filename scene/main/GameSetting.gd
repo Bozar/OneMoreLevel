@@ -37,7 +37,10 @@ func load_setting() -> void:
 	var transfer: Game_TransferData
 	var json_parser: Game_FileParser
 
+	_json_parse_error = false
 	for i in [SETTING_EXE_PATH, SETTING_RES_PATH]:
+		if not Game_FileIOHelper.has_file(i):
+			continue
 		json_parser = Game_FileIOHelper.read_as_json(i)
 		_json_parse_error = not json_parser.parse_success
 		if json_parser.parse_success:

@@ -59,3 +59,7 @@ static func get_file_list(path_to_dir: String) -> Array:
 				file_list.push_back(dir.get_current_dir() + "/" + file_name)
 			file_name = dir.get_next()
 	return file_list
+
+
+static func has_file(path_to_file: String) -> bool:
+	return File.new().file_exists(path_to_file)
