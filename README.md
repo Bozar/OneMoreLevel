@@ -22,7 +22,14 @@ Function keys:
 
 * Force reload: O, [Y].
 * Replay dungeon: R, [X].
-* Copy RNG seed: Ctrl + C, Ctrl + Y.
+* Replay world: I, [Start].
+* Copy RNG seed to clipboard: Ctrl + C, Ctrl + Y.
+
+Force reload and two replay keys start a new game in different ways.
+
+* Force reload: A random seed and world tag.
+* Replay dungeon: The same seed and world tag.
+* Replay world: A random seed and the same world tag.
 
 Following keys are available only in help screen.
 

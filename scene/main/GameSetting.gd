@@ -62,11 +62,15 @@ func load_setting() -> void:
 	emit_signal("setting_loaded")
 
 
-func save_setting() -> void:
-	var transfer: Game_TransferData = load(TRANSFER_SCENE).instance()
+func save_setting(save_tag: int) -> void:
+	var transfer: Game_TransferData
 
-	emit_signal("setting_saved", transfer)
-	get_tree().root.add_child(transfer)
+	if get_tree().root.has_node(TRANSFER_NODE):
+		transfer = get_tree().root.get_node(TRANSFER_NODE)
+	else:
+		transfer = load(TRANSFER_SCENE).instance()
+		get_tree().root.add_child(transfer)
+	emit_signal("setting_saved", transfer, save_tag)
 
 
 func get_wizard_mode() -> bool:

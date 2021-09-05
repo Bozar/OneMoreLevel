@@ -53,5 +53,9 @@ func _on_GameSetting_setting_loaded() -> void:
 	print("seed: {0}".format([_init_seed]))
 
 
-func _on_GameSetting_setting_saved(save_data: Game_TransferData) -> void:
-	save_data.rng_seed = get_rng_seed()
+func _on_GameSetting_setting_saved(save_data: Game_TransferData,
+		save_tag: int) -> void:
+	if save_tag == Game_SaveTag.REPLAY_DUNGEON:
+		save_data.rng_seed = get_rng_seed()
+	else:
+		save_data.rng_seed = 0

@@ -40,7 +40,8 @@ func init_world() -> void:
 	_ref_Schedule.init_schedule()
 
 
-func _on_GameSetting_setting_saved(save_data: Game_TransferData) -> void:
+func _on_GameSetting_setting_saved(save_data: Game_TransferData,
+		_save_tag: int) -> void:
 	save_data.world_tag = _world_tag
 
 

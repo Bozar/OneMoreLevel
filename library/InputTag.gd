@@ -9,6 +9,7 @@ const WAIT := "wait"
 
 const RELOAD := "reload"
 const REPLAY_DUNGEON := "replay_dungeon"
+const REPLAY_WORLD := "replay_world"
 const QUIT := "quit"
 const HELP := "help"
 const COPY_SEED := "copy_seed"
