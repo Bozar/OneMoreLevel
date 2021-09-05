@@ -14,5 +14,5 @@ const MAX_CAPTAIN := 3
 const START_RESPAWN := 13
 const KNIGHT_GAP := 2
 
-const RESTORE_TURN := 7
+const RESTORE_TURN := 9
 const RENDER_RANGE := 5
