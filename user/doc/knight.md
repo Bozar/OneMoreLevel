@@ -2,8 +2,6 @@
 
 (Press Enter to view key bindings.)
 
-> Everything is false, nothing is permitted. Silent Knight is watching you.
-
 Your mission is to sneak into the Silent Knight Hall and assassinate the knight boss. However, the boss will not show up until you have killed three captains (C). There is a counter that behaves like a wall (#) and shows the number of dead captains. Whether or not to kill knights (k) is your own choice.
 
 Press arrow keys to move, roll over or attack. Press Space to wait. Every action (move, roll over, attack and wait) costs exactly 1 turn. When an enemy dies, you gain 8 turns. You have at most 24 turns. You lose the game either because of running out of time or being killed by an enemy.

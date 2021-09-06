@@ -41,8 +41,6 @@ const FIRST_BIG_ROOM := [
 
 const MARKER_TREASURE:= 2
 const MARKER_RARE_TREASURE := 3
-const GAP_TREASURE := 2
-const GAP_RARE_TREASURE := 10
 
 var _spr_Door := preload("res://sprite/Door.tscn")
 var _spr_FactoryClock := preload("res://sprite/FactoryClock.tscn")
@@ -283,18 +281,18 @@ func _create_treasure(sub_tag: String, is_first_rare_treasure: bool,
 	var new_sprite: PackedScene
 	var gap: int
 	var pc_gap: int = Game_DungeonSize.MAX_Y if is_first_rare_treasure \
-			else GAP_TREASURE
+			else Game_FactoryData.TREASURE_GAP
 	var retry := 0
 
 	match sub_tag:
 		Game_SubTag.TREASURE:
 			marker = MARKER_TREASURE
 			new_sprite = _spr_Treasure
-			gap = GAP_TREASURE
+			gap = Game_FactoryData.TREASURE_GAP
 		Game_SubTag.RARE_TREASURE:
 			marker = MARKER_RARE_TREASURE
 			new_sprite = _spr_RareTreasure
-			gap = GAP_RARE_TREASURE
+			gap = Game_FactoryData.RARE_TREASURE_GAP
 		_:
 			return []
 
@@ -324,8 +322,8 @@ func _create_treasure(sub_tag: String, is_first_rare_treasure: bool,
 
 func _reset_rare_treasure_gap(coord: Array) -> void:
 	for i in coord:
-		for j in Game_CoordCalculator.get_neighbor(i[0], i[1], GAP_TREASURE,
-				true):
+		for j in Game_CoordCalculator.get_neighbor(i[0], i[1],
+				Game_FactoryData.TREASURE_GAP, true):
 			if _is_occupied(j[0], j[1]):
 				continue
 			_set_terrain_marker(j[0], j[1], MARKER_TREASURE)

@@ -4,7 +4,7 @@
 
 > Stalkers report running into concrete objects in the Zone. They are one head taller than an average man and they move swiftly and quietly. It seems that they enjoy chasing and cornering human beings, but no real harm has been done. Every object has a spray painted number on its chest. All of them are primes. The greatest known prime is 173.
 
-You need to find 3 rare gadget (!) in an abandonded factory. However, the factory is a weird place. Your courage only lasts 24 turns. You lose the game if you run out of time.
+You need to find 3 rare gadgets (!) in an abandonded factory. However, the factory is a weird place. Your courage only lasts 24 turns. You lose the game if you run out of time.
 
 ## The Factory
 
