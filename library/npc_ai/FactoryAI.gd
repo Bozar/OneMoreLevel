@@ -64,33 +64,14 @@ func _is_obstacle(x: int, y: int) -> bool:
 
 
 func _teleport() -> void:
-	var x: int
-	var y: int
-	var stop_loop: bool
+	var pos: Array
 
 	while true:
-		stop_loop = true
-		x = _ref_RandomNumber.get_x_coord()
-		y = _ref_RandomNumber.get_y_coord()
-
-		if Game_CoordCalculator.is_inside_range(x, y, _pc_pos[0], _pc_pos[1],
-				Game_FactoryData.PC_SIGHT):
-			continue
-		elif _ref_DungeonBoard.has_building(x, y) \
-				and (not _ref_DungeonBoard.has_sprite_with_sub_tag(
-						Game_SubTag.DOOR, x, y)):
-			continue
-
-		for i in Game_CoordCalculator.get_neighbor(x, y,
-				Game_FactoryData.SCP_GAP, true):
-			if _ref_DungeonBoard.has_actor(i[0], i[1]):
-				stop_loop = false
-				break
-		if stop_loop:
+		pos = _get_teleport_coord()
+		if pos.size() > 0:
 			break
-
 	_ref_DungeonBoard.move_sprite(Game_MainTag.ACTOR,
-			_self_pos[0], _self_pos[1], x, y)
+			_self_pos[0], _self_pos[1], pos[0], pos[1])
 
 
 func _switch_sprite(x: int, y: int) -> void:
@@ -105,3 +86,21 @@ func _switch_sprite(x: int, y: int) -> void:
 		new_type = Game_SpriteTypeTag.ACTIVE_1
 
 	_ref_SwitchSprite.switch_sprite(_self, new_type)
+
+
+func _get_teleport_coord() -> Array:
+	var x: int = _ref_RandomNumber.get_x_coord()
+	var y: int = _ref_RandomNumber.get_y_coord()
+
+	if Game_ShadowCastFOV.is_in_sight(x, y):
+		return []
+	elif _ref_DungeonBoard.has_building(x, y) \
+			and (not _ref_DungeonBoard.has_sprite_with_sub_tag(Game_SubTag.DOOR,
+					x, y)):
+		return []
+	else:
+		for i in Game_CoordCalculator.get_neighbor(x, y,
+				Game_FactoryData.SCP_GAP, true):
+			if _ref_DungeonBoard.has_actor(i[0], i[1]):
+				return []
+	return [x, y]

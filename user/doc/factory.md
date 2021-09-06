@@ -31,6 +31,6 @@ You cannot move if there is only one turn left and you have at least one common 
 
 ## Concrete Objects
 
-Concrete objects (C) lurk in the factory. At the start of your turn, every object in YOUR sight approaches you by at most 2 grids for 1 turn. They stop moving once being adjacent to you. If an object has not been seen by YOU for a few consecutive turns, it teleports to a random place that is 5+ grids away from you.
+Concrete objects (C) lurk in the factory. At the start of your turn, every object in your sight is awakened and every grids you can see is marked as visible. An awakened object approaches you by at most 2 grids for 1 turn. It stops moving once being adjacent to you. If an object has not been seen by you for a few consecutive turns, it teleports to a random place. You cannot tell how far away, but it does not enter a visible grid.
 
 You can see at most 5 grids. You cannot walk past or attack a concrete object, nor do they attack you. Press Space to wait if you are cornered. All adjacent objects will teleport away the next turn.
