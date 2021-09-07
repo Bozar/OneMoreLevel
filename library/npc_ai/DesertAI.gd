@@ -11,7 +11,7 @@ var _spr_Wall := preload("res://sprite/Wall.tscn")
 var _id_to_worm: Dictionary = {}
 # int: bool
 var _id_to_has_active_spice: Dictionary = {}
-var _quality_spice_chance: int = 0
+var _quality_spice_chance: int = Game_DesertData.CREATE_QUALITY_SPICE
 
 
 func _init(parent_node: Node2D).(parent_node) -> void:
@@ -68,8 +68,8 @@ func _create_body(id: int, index: int, x: int, y: int) -> void:
 			and (index < Game_DesertData.SPICE_END):
 		is_active = (not _id_to_has_active_spice[id]) \
 				and _ref_RandomNumber.get_percent_chance(_quality_spice_chance)
-		_ref_CreateObject.create(_spr_WormSpice,
-				Game_MainTag.ACTOR, Game_SubTag.WORM_SPICE, x, y)
+		_ref_CreateObject.create_actor(_spr_WormSpice, Game_SubTag.WORM_SPICE,
+				x, y)
 	# Create body.
 	else:
 		_ref_CreateObject.create_actor(_spr_WormBody, Game_SubTag.WORM_BODY,
