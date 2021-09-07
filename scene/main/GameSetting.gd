@@ -104,13 +104,11 @@ func get_json_parse_error() -> bool:
 	return _json_parse_error
 
 
-func _set_wizard_mode(setting) -> bool:
-	if setting.has(WIZARD) and (setting[WIZARD] is bool):
-		return setting[WIZARD]
-	return false
+func _set_wizard_mode(setting: Dictionary) -> bool:
+	return _try_convert_real_to_bool(setting, WIZARD)
 
 
-func _set_rng_seed(setting) -> int:
+func _set_rng_seed(setting: Dictionary) -> int:
 	var random: int
 
 	if setting.has(SEED) and (setting[SEED] is float):
@@ -119,7 +117,7 @@ func _set_rng_seed(setting) -> int:
 	return 0
 
 
-func _set_include_world(setting) -> Array:
+func _set_include_world(setting: Dictionary) -> Array:
 	var include: Array = []
 
 	if setting.has(INCLUDE_WORLD) and (setting[INCLUDE_WORLD] is Array):
@@ -127,7 +125,7 @@ func _set_include_world(setting) -> Array:
 	return include
 
 
-func _set_exclude_world(setting) -> Array:
+func _set_exclude_world(setting: Dictionary) -> Array:
 	var exclude: Array = [Game_WorldTag.DEMO]
 
 	if setting.has(EXCLUDE_WORLD) and (setting[EXCLUDE_WORLD] is Array):
@@ -135,13 +133,11 @@ func _set_exclude_world(setting) -> Array:
 	return exclude
 
 
-func _set_show_full_map(setting) -> bool:
-	if setting.has(SHOW_FULL_MAP) and (setting[SHOW_FULL_MAP] is bool):
-		return setting[SHOW_FULL_MAP]
-	return false
+func _set_show_full_map(setting: Dictionary) -> bool:
+	return _try_convert_real_to_bool(setting, SHOW_FULL_MAP)
 
 
-func _set_palette(setting) -> Dictionary:
+func _set_palette(setting: Dictionary) -> Dictionary:
 	var file_name: String = ""
 	var json_parser: Game_FileParser
 
@@ -155,3 +151,13 @@ func _set_palette(setting) -> Dictionary:
 			if json_parser.parse_success:
 				return json_parser.output_json
 	return {}
+
+
+func _try_convert_real_to_bool(setting: Dictionary, option: String) -> bool:
+	if setting.has(option):
+		match typeof(setting[option]):
+			TYPE_BOOL:
+				return setting[option]
+			TYPE_REAL:
+				return setting[option] >= 1
+	return false
