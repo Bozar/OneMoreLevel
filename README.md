@@ -4,6 +4,8 @@
 
 One More Level is a turn-based Roguelike game made with [Godot engine](https://godotengine.org). It is available on [GitHub](https://github.com/Bozar/OneMoreLevel/releases). The GUI font, [Fira Code](https://github.com/tonsky/FiraCode), is created by Nikita Prokopov. The tileset, [curses_vector](http://www.bay12forums.com/smf/index.php?topic=161328.0), is created by DragonDePlatino for Dwarf Fortress.
 
+You can play One More Level either locally (which is an executable file) or as a HTML5 game on [itch.io](https://bozar.itch.io/one-more-level). However, you cannot change settings (more details below) when playing online.
+
 Every time you start the game, One More Level presents you with a theme dungeon of unique mechanics and goals. This idea comes from [HyperRogue](https://store.steampowered.com/app/342610/HyperRogue/), one of the most bizarre and fascinating games I have ever played. You can beat the game in five minutes, so it never hurts to go down just one level deeper.
 
 ## Key Bindings
