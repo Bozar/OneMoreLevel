@@ -80,7 +80,7 @@ func get_blueprint() -> Array:
 	for _i in range(0, Game_FactoryData.MAX_TREASURE):
 		__ = _create_treasure(Game_SubTag.TREASURE, false, pc[0], pc[1])
 
-	_init_pc(Game_FactoryData.PC_SIGHT, pc[0], pc[1], _spr_Counter)
+	_init_pc(Game_FactoryData.PC_GAP, pc[0], pc[1], _spr_Counter)
 	_init_actor(Game_FactoryData.SCP_GAP, INVALID_COORD, INVALID_COORD,
 			Game_FactoryData.MAX_SCP, _spr_SCP_173, Game_SubTag.SCP_173)
 

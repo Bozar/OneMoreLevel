@@ -1,7 +1,7 @@
 class_name Game_FactoryData
 
 
-const MAX_TREASURE := 20
+const MAX_TREASURE := 22
 const MAX_RARE_TREASURE := 3
 
 const TREASURE_GAP := 2
@@ -12,6 +12,7 @@ const SCP_GAP := 2
 const SCP_STEP_COUNT := 2
 
 const PC_SIGHT := 5
+const PC_GAP := 2
 
 const RESTORE_TREASURE := 7
 const RESTORE_RARE_TREASURE := 24
