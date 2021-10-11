@@ -130,7 +130,7 @@ func _create_image_on_the_other_side(x: int, y: int) -> void:
 
 func _create_image_on_the_same_side(x: int, y: int) -> void:
 	var wall: Array = []
-	var mirror: Game_CoordCalculator.MirrorCoord
+	var mirror: Game_CoordCalculator.CoordPair
 	var actor: Sprite
 
 	# Cast a ray to the top.
@@ -145,7 +145,7 @@ func _create_image_on_the_same_side(x: int, y: int) -> void:
 	for i in wall:
 		# Continue if the image is outside the dungeon.
 		mirror = Game_CoordCalculator.get_mirror_image(x, y, i[0], i[1])
-		if not mirror.coord_in_dungeon:
+		if not mirror.is_in_dungeon:
 			continue
 
 		# Continue if there is a building blocks the image.

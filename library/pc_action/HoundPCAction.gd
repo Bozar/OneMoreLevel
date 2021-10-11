@@ -163,26 +163,27 @@ func _block_line_of_sight(x: int, y: int, _opt_arg: Array) -> bool:
 		return _ref_DungeonBoard.has_actor(x, y)
 
 
-func _get_hit_position(hit_diagonally: bool) -> Array:
+func _get_hit_position(hit_diagonally: bool) -> Game_CoordCalculator.CoordPair:
 	var shift_x: int = _target_position[0] - _source_position[0]
 	var shift_y: int = _target_position[1] - _source_position[1]
-	var mirror: Game_CoordCalculator.MirrorCoord
+	var coord: Game_CoordCalculator.CoordPair
 
 	if hit_diagonally:
 		if shift_x * shift_y > 0:
-			mirror = Game_CoordCalculator.get_mirror_image(
+			coord = Game_CoordCalculator.get_mirror_image(
 					_source_position[0], _source_position[1],
 					_source_position[0], _target_position[1])
-			return [mirror.x, mirror.y]
 		else:
-			mirror = Game_CoordCalculator.get_mirror_image(
+			coord = Game_CoordCalculator.get_mirror_image(
 					_source_position[0], _source_position[1],
 					_target_position[0], _source_position[1])
-			return [mirror.x, mirror.y]
+		return coord
 	else:
 		if shift_y != 0:
 			shift_y = -shift_y
-		return [shift_y + _target_position[0], shift_x + _target_position[1]]
+		return Game_CoordCalculator.CoordPair.new(
+				shift_y + _target_position[0],
+				shift_x + _target_position[1])
 
 
 func _can_hit_target(x: int, y: int, hit_diagonally: bool) -> bool:
@@ -210,16 +211,16 @@ func _try_set_and_get_boss_hit_point(x: int, y: int) -> int:
 
 
 func _try_attack(attack_diagonally: bool) -> void:
-	var hit_pos: Array
+	var hit_pos: Game_CoordCalculator.CoordPair
 	var hit_point: int
 
 	hit_pos = _get_hit_position(attack_diagonally)
-	if not _can_hit_target(hit_pos[0], hit_pos[1], attack_diagonally):
+	if not _can_hit_target(hit_pos.x, hit_pos.y, attack_diagonally):
 		return
 
-	_try_hit_phantom(hit_pos[0], hit_pos[1])
-	hit_point = _try_set_and_get_boss_hit_point(hit_pos[0], hit_pos[1])
-	_ref_RemoveObject.remove_actor(hit_pos[0], hit_pos[1])
+	_try_hit_phantom(hit_pos.x, hit_pos.y)
+	hit_point = _try_set_and_get_boss_hit_point(hit_pos.x, hit_pos.y)
+	_ref_RemoveObject.remove_actor(hit_pos.x, hit_pos.y)
 
 	if hit_point == Game_HoundData.MAX_BOSS_HIT_POINT:
 		_ref_EndGame.player_win()

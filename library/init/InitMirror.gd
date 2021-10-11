@@ -97,7 +97,7 @@ func _create_mirror(x: int, y: int) -> void:
 func _create_pc() -> void:
 	var pc_x: int
 	var pc_y: int
-	var mirror: Game_CoordCalculator.MirrorCoord
+	var coord: Game_CoordCalculator.CoordPair
 	var neighbor: Array
 
 	while true:
@@ -106,16 +106,16 @@ func _create_pc() -> void:
 		if not _is_occupied(pc_x, pc_y):
 			break
 
-	mirror = Game_CoordCalculator.get_mirror_image(pc_x, pc_y,
+	coord = Game_CoordCalculator.get_mirror_image(pc_x, pc_y,
 			Game_DungeonSize.CENTER_X, pc_y)
 	neighbor = Game_CoordCalculator.get_neighbor(pc_x, pc_y,
 					Game_MirrorData.CRYSTAL_DISTANCE, true) \
-			+ Game_CoordCalculator.get_neighbor(mirror.x, mirror.y,
+			+ Game_CoordCalculator.get_neighbor(coord.x, coord.y,
 					Game_MirrorData.CRYSTAL_DISTANCE, true)
 
 	_add_actor_to_blueprint(_spr_PC, Game_SubTag.PC, pc_x, pc_y)
 	_add_actor_to_blueprint(_spr_PCMirrorImage, Game_SubTag.PC_MIRROR_IMAGE,
-			mirror.x, mirror.y)
+			coord.x, coord.y)
 
 	for i in neighbor:
 		_occupy_position(i[0], i[1])

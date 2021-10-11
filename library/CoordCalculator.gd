@@ -1,24 +1,24 @@
 class_name Game_CoordCalculator
 
 
-class MirrorCoord:
-	var coord_in_dungeon: bool setget set_coord_in_dungeon, \
-			get_coord_in_dungeon
+class CoordPair:
+	var is_in_dungeon: bool setget set_is_in_dungeon, \
+			get_is_in_dungeon
 	var x: int setget set_x, get_x
 	var y: int setget set_y, get_y
 
 
-	func _init(_coord_in_dungeon: bool, _x: int, _y: int) -> void:
-		coord_in_dungeon = _coord_in_dungeon
-		x = _x
-		y = _y
+	func _init(new_x: int = -1, new_y: int = -1) -> void:
+		x = new_x
+		y = new_y
 
 
-	func get_coord_in_dungeon() -> bool:
-		return coord_in_dungeon
+	func get_is_in_dungeon() -> bool:
+		return (x >= 0) and (x < Game_DungeonSize.MAX_X) \
+				and (y >= 0) and (y < Game_DungeonSize.MAX_Y)
 
 
-	func set_coord_in_dungeon(__) -> void:
+	func set_is_in_dungeon(__) -> void:
 		pass
 
 
@@ -26,16 +26,16 @@ class MirrorCoord:
 		return x
 
 
-	func set_x(__) -> void:
-		pass
+	func set_x(new_x) -> void:
+		x = new_x
 
 
 	func get_y() -> int:
 		return y
 
 
-	func set_y(__) -> void:
-		pass
+	func set_y(new_y) -> void:
+		y = new_y
 
 
 static func get_range(x_source: int, y_source: int,
@@ -81,19 +81,13 @@ static func get_block(x_top_left: int, y_top_left: int, width: int,
 
 
 static func get_mirror_image(source_x: int, source_y: int,
-		center_x: int, center_y: int) -> MirrorCoord:
+		center_x: int, center_y: int) -> CoordPair:
 	var x: int = center_x * 2 - source_x
 	var y: int = center_y * 2 - source_y
 
-	return MirrorCoord.new(is_inside_dungeon(x, y), x, y)
+	return CoordPair.new(x, y)
 
 
-static func is_inside_dungeon(x: int, y: int,
-		max_x: int = Game_DungeonSize.MAX_X,
-		max_y: int = Game_DungeonSize.MAX_Y) -> bool:
-	var min_xy := -1
-	return is_in_between(x, min_xy, max_x) and is_in_between(y, min_xy, max_y)
-
-
-static func is_in_between(x: int, min_x: int, max_x: int) -> bool:
-	return (x > min_x) and (x < max_x)
+static func is_inside_dungeon(x: int, y: int) -> bool:
+	return (x >= 0) and (x < Game_DungeonSize.MAX_X) \
+			and (y >= 0) and (y < Game_DungeonSize.MAX_Y)

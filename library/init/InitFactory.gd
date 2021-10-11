@@ -183,10 +183,10 @@ func _build_from_prefab(packed_prefab: Game_DungeonPrefab.PackedPrefab,
 		for y in range(start_y - 1, start_y + packed_prefab.max_y + 1):
 			is_outside = not Game_CoordCalculator.is_inside_dungeon(x, y)
 			is_occupied = (not is_outside) and _is_occupied(x, y)
-			is_invalid_x = is_outside and Game_CoordCalculator.is_in_between(
-					x, start_x - 1, start_x + packed_prefab.max_x)
-			is_invalid_y = is_outside and Game_CoordCalculator.is_in_between(
-					y, start_y - 1, start_y + packed_prefab.max_y)
+			is_invalid_x = is_outside and _is_in_between(x, start_x - 1,
+					start_x + packed_prefab.max_x)
+			is_invalid_y = is_outside and _is_in_between(y, start_y - 1,
+					start_y + packed_prefab.max_y)
 
 			if is_occupied or (is_invalid_x and is_invalid_y):
 				tmp_x = _get_coord(packed_prefab, true)
@@ -327,3 +327,7 @@ func _reset_rare_treasure_gap(coord: Array) -> void:
 			if _is_occupied(j[0], j[1]):
 				continue
 			_set_terrain_marker(j[0], j[1], MARKER_TREASURE)
+
+
+func _is_in_between(x: int, min_x: int, max_x: int) -> bool:
+	return (x > min_x) and (x < max_x)
