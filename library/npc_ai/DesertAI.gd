@@ -27,6 +27,10 @@ func take_action() -> void:
 	if not _id_to_worm.has(id):
 		_init_worm(id)
 
+	# A newly created worm waits one turn.
+	if _ref_ObjectData.verify_state(_self, Game_StateTag.PASSIVE):
+		_ref_ObjectData.set_state(_self, Game_StateTag.DEFAULT)
+		return
 	if _can_bury_worm(id):
 		_set_danger_zone(_self, false)
 		_bury_worm(id)
@@ -50,7 +54,6 @@ func _init_worm(id: int) -> void:
 	_id_to_worm[id][0] = _self
 
 	_id_to_has_active_spice[id] = false
-
 	_set_danger_zone(_self, true)
 
 
@@ -61,21 +64,19 @@ func _create_body(id: int, index: int, x: int, y: int) -> void:
 
 	# Create tail.
 	if index == worm_length - 1:
-		_ref_CreateObject.create_actor(_spr_WormTail, Game_SubTag.WORM_BODY,
-				x, y)
+		worm_body = _ref_CreateObject.create_and_fetch_actor(_spr_WormTail,
+				Game_SubTag.WORM_BODY, x, y)
 	# Create spice.
 	elif (index >= Game_DesertData.SPICE_START) \
 			and (index < Game_DesertData.SPICE_END):
 		is_active = (not _id_to_has_active_spice[id]) \
 				and _ref_RandomNumber.get_percent_chance(_quality_spice_chance)
-		_ref_CreateObject.create_actor(_spr_WormSpice, Game_SubTag.WORM_SPICE,
-				x, y)
+		worm_body = _ref_CreateObject.create_and_fetch_actor(_spr_WormSpice,
+				Game_SubTag.WORM_SPICE, x, y)
 	# Create body.
 	else:
-		_ref_CreateObject.create_actor(_spr_WormBody, Game_SubTag.WORM_BODY,
-				x, y)
-
-	worm_body = _ref_DungeonBoard.get_actor(x, y)
+		worm_body = _ref_CreateObject.create_and_fetch_actor(_spr_WormBody,
+				Game_SubTag.WORM_BODY, x, y)
 	_id_to_worm[id][index] = worm_body
 
 	if is_active:
@@ -120,8 +121,7 @@ func _try_random_walk(id: int) -> bool:
 	_ref_RemoveObject.remove_trap(move_to.x, move_to.y)
 
 	_set_danger_zone(_self, false)
-	_ref_DungeonBoard.move_sprite(Game_MainTag.ACTOR,
-			_self_pos.x, _self_pos.y,
+	_ref_DungeonBoard.move_sprite(Game_MainTag.ACTOR, _self_pos.x, _self_pos.y,
 			move_to.x, move_to.y)
 	_set_danger_zone(_self, true)
 	return true

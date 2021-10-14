@@ -57,27 +57,25 @@ func _try_add_new_worm() -> void:
 
 
 func _create_worm_head(retry: int) -> void:
-	var x: int
-	var y: int
-	var neighbor: Array
-
-	x = _ref_RandomNumber.get_x_coord()
-	y = _ref_RandomNumber.get_y_coord()
-	neighbor = Game_CoordCalculator.get_neighbor(x, y,
+	var x: int = _ref_RandomNumber.get_x_coord()
+	var y: int = _ref_RandomNumber.get_y_coord()
+	var neighbor: Array = Game_CoordCalculator.get_neighbor(x, y,
 			Game_DesertData.WORM_DISTANCE, true)
+	var head: Sprite
 
 	for i in neighbor:
 		if _ref_DungeonBoard.has_actor(i.x, i.y):
 			_create_worm_head(retry)
 			return
-
 	if _has_building_or_trap(x, y) and (retry < MAX_RETRY):
 		_create_worm_head(retry + 1)
 		return
 
 	_ref_RemoveObject.remove_building(x, y)
 	_ref_RemoveObject.remove_trap(x, y)
-	_ref_CreateObject.create_actor(_spr_WormHead, Game_SubTag.WORM_HEAD, x, y)
+	head = _ref_CreateObject.create_and_fetch_actor(_spr_WormHead,
+			Game_SubTag.WORM_HEAD, x, y)
+	_ref_ObjectData.set_state(head, Game_StateTag.PASSIVE)
 
 
 func _has_building_or_trap(x: int, y: int) -> bool:
