@@ -57,11 +57,9 @@ func set_print_text(_text: String) -> void:
 
 
 func set_local_var(actor: Sprite) -> void:
-	var pc = _ref_DungeonBoard.get_pc()
-
 	_self = actor
 	_self_pos = Game_ConvertCoord.vector_to_coord(_self.position)
-	_pc_pos = Game_ConvertCoord.vector_to_coord(pc.position)
+	_pc_pos = _ref_DungeonBoard.get_pc_coord()
 
 
 func _approach_pc(start_point := [_pc_pos], step_length := 1, step_count := 1,

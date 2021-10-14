@@ -9,7 +9,7 @@ func _init(parent_node: Node2D).(parent_node) -> void:
 
 
 func take_action() -> void:
-	var pc: Sprite = _ref_DungeonBoard.get_pc()
+	var pc: Sprite
 	var distance: int
 
 	if _ref_ObjectData.verify_state(_self, Game_StateTag.PASSIVE):

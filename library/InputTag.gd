@@ -26,21 +26,21 @@ const SCROLL_TO_BOTTOM := "scroll_to_bottom"
 const NEXT_HELP := "next_help"
 const PREVIOUS_HELP := "previous_help"
 
-const DIRECTION_TO_COORD: Dictionary = {
+const DIRECTION_TO_COORD := {
 	MOVE_UP: [0, -1],
 	MOVE_DOWN: [0, 1],
 	MOVE_LEFT: [-1, 0],
 	MOVE_RIGHT: [1, 0],
 }
 
-const MOVE_INPUT: Array = [
+const MOVE_INPUT := [
 	MOVE_LEFT,
 	MOVE_RIGHT,
 	MOVE_UP,
 	MOVE_DOWN,
 ]
 
-const INPUT_TO_SPRITE: Dictionary = {
+const INPUT_TO_SPRITE := {
 	MOVE_UP: Game_SpriteTypeTag.UP,
 	MOVE_DOWN: Game_SpriteTypeTag.DOWN,
 	MOVE_LEFT: Game_SpriteTypeTag.LEFT,

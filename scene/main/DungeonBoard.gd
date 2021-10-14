@@ -55,6 +55,11 @@ func get_pc() -> Sprite:
 	return _pc
 
 
+func get_pc_coord() -> Game_IntCoord:
+	var pc := get_pc()
+	return Game_ConvertCoord.vector_to_coord(pc.position)
+
+
 func get_npc() -> Array:
 	var npc: Array = get_sprites_by_tag(Game_MainTag.ACTOR)
 	Game_ArrayHelper.filter_element(npc, self, "_filter_get_npc", [])

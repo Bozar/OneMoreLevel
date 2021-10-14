@@ -120,8 +120,7 @@ func reset_state() -> void:
 
 
 func set_source_position() -> void:
-	var pc: Sprite = _ref_DungeonBoard.get_pc()
-	_source_position = Game_ConvertCoord.vector_to_coord(pc.position)
+	_source_position = _ref_DungeonBoard.get_pc_coord()
 
 
 func set_target_position(direction: String) -> void:
@@ -180,7 +179,7 @@ func _is_checkmate() -> bool:
 func _render_end_game(win: bool) -> void:
 	var pc: Sprite = _ref_DungeonBoard.get_pc()
 
-	_source_position = Game_ConvertCoord.vector_to_coord(pc.position)
+	_source_position = _ref_DungeonBoard.get_pc_coord()
 	render_fov()
 	if not win:
 		_ref_Palette.set_dark_color(pc, Game_MainTag.ACTOR)

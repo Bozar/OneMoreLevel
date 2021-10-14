@@ -33,8 +33,7 @@ func remove_trap(_trap: Sprite, x: int, y: int) -> void:
 func _replenish_crystal() -> void:
 	var x: int
 	var y: int
-	var pc: Sprite = _ref_DungeonBoard.get_pc()
-	var pc_pos := Game_ConvertCoord.vector_to_coord(pc.position)
+	var pc_pos := _ref_DungeonBoard.get_pc_coord()
 	var mirror := Game_CoordCalculator.get_mirror_image(
 			pc_pos.x, pc_pos.y, Game_DungeonSize.CENTER_X, pc_pos.y)
 	var has_npc: int = 0
