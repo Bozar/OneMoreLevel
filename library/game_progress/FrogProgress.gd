@@ -78,7 +78,7 @@ func _create_frog(pc_x: int, pc_y: int) -> void:
 			_ref_RandomNumber)
 
 	for i in neighbor:
-		_ref_CreateObject.create_actor(_spr_Frog, Game_SubTag.FROG, i[0], i[1])
+		_ref_CreateObject.create_actor(_spr_Frog, Game_SubTag.FROG, i.x, i.y)
 
 
 func _create_princess(pc_x: int, pc_y: int) -> void:
@@ -92,32 +92,32 @@ func _create_princess(pc_x: int, pc_y: int) -> void:
 	Game_ArrayHelper.rand_picker(neighbor, 1, _ref_RandomNumber)
 
 	_ref_CreateObject.create_actor(_spr_FrogPrincess, Game_SubTag.FROG_PRINCESS,
-			neighbor[0][0], neighbor[0][1])
+			neighbor[0].x, neighbor[0].y)
 
 
 func _submerge_land(submerge: int) -> void:
 	var land_sprite: Array = _ref_DungeonBoard.get_sprites_by_tag(
 			Game_SubTag.LAND)
-	var land_pos: Array
+	var land_pos: Game_IntCoord
 	var x: int
 	var y: int
 
 	Game_ArrayHelper.rand_picker(land_sprite, submerge, _ref_RandomNumber)
 	for i in land_sprite:
-		land_pos = Game_ConvertCoord.vector_to_array(i.position)
-		x = land_pos[0]
-		y = land_pos[1]
+		land_pos = Game_ConvertCoord.vector_to_coord(i.position)
+		x = land_pos.x
+		y = land_pos.y
 		_add_or_remove_ground(false, x, y)
 		_add_or_remove_ground(true, x, y, _spr_Floor, Game_SubTag.SWAMP)
 
 
 func _remove_frog() -> void:
 	var frog: Array = _ref_DungeonBoard.get_sprites_by_tag(Game_SubTag.FROG)
-	var pos: Array
+	var pos: Game_IntCoord
 
 	for i in frog:
-		pos = Game_ConvertCoord.vector_to_array(i.position)
-		_ref_RemoveObject.remove_actor(pos[0], pos[1])
+		pos = Game_ConvertCoord.vector_to_coord(i.position)
+		_ref_RemoveObject.remove_actor(pos.x, pos.y)
 
 
 func _refresh_counter() -> void:
@@ -131,8 +131,8 @@ func _refresh_counter() -> void:
 
 
 func _filter_create_frog(source: Array, index: int, opt_arg: Array) -> bool:
-	var x: int = source[index][0]
-	var y: int = source[index][1]
+	var x: int = source[index].x
+	var y: int = source[index].y
 	var pc_x: int = opt_arg[0]
 	var pc_y: int = opt_arg[1]
 
@@ -144,8 +144,8 @@ func _filter_create_frog(source: Array, index: int, opt_arg: Array) -> bool:
 
 
 func _dup_create_princess(source: Array, index: int, _opt_arg: Array) -> int:
-	var x: int = source[index][0]
-	var y: int = source[index][1]
+	var x: int = source[index].x
+	var y: int = source[index].y
 
 	if _ref_DungeonBoard.has_sprite_with_sub_tag(Game_SubTag.SWAMP, x, y):
 		return 2

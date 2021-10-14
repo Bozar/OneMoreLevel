@@ -19,8 +19,8 @@ var _ref_DangerZone: Game_DangerZone
 var _ref_GameSetting: Game_GameSetting
 var _ref_Palette: Game_Palette
 
-var _source_position: Array
-var _target_position: Array
+var _source_position: Game_IntCoord
+var _target_position: Game_IntCoord
 var _input_direction: String
 # Set `_fov_render_range` if we use the default `_fov_render_range()`. Otherwise
 # there is no need to set it.
@@ -70,23 +70,21 @@ func set_end_turn(_end_turn: bool) -> void:
 
 
 func is_inside_dungeon() -> bool:
-	var x: int = _target_position[0]
-	var y: int = _target_position[1]
-
-	return Game_CoordCalculator.is_inside_dungeon(x, y)
+	return Game_CoordCalculator.is_inside_dungeon(
+			_target_position.x, _target_position.y)
 
 
 func is_npc() -> bool:
-	return _ref_DungeonBoard.has_actor(_target_position[0], _target_position[1])
+	return _ref_DungeonBoard.has_actor(_target_position.x, _target_position.y)
 
 
 func is_building() -> bool:
 	return _ref_DungeonBoard.has_building(
-			_target_position[0], _target_position[1])
+			_target_position.x, _target_position.y)
 
 
 func is_trap() -> bool:
-	return _ref_DungeonBoard.has_trap(_target_position[0], _target_position[1])
+	return _ref_DungeonBoard.has_trap(_target_position.x, _target_position.y)
 
 # 1. An action, (move or attack, for example) might call
 # EndGame.player_[win|lose]() implicitly. Therefore we need to decide whether
@@ -101,7 +99,7 @@ func move() -> void:
 
 
 func attack() -> void:
-	_ref_RemoveObject.remove_actor(_target_position[0], _target_position[1])
+	_ref_RemoveObject.remove_actor(_target_position.x, _target_position.y)
 	end_turn = true
 
 
@@ -123,15 +121,16 @@ func reset_state() -> void:
 
 func set_source_position() -> void:
 	var pc: Sprite = _ref_DungeonBoard.get_pc()
-	_source_position = Game_ConvertCoord.vector_to_array(pc.position)
+	_source_position = Game_ConvertCoord.vector_to_coord(pc.position)
 
 
 func set_target_position(direction: String) -> void:
 	var shift: Array = Game_InputTag.DIRECTION_TO_COORD[direction]
 
-	_target_position = [
-		_source_position[0] + shift[0], _source_position[1] + shift[1]
-	]
+	_target_position = Game_IntCoord.new(
+		_source_position.x + shift[0],
+		_source_position.y + shift[1]
+	)
 	_input_direction = direction
 
 
@@ -142,7 +141,7 @@ func render_fov() -> void:
 
 	Game_ShadowCastFOV.set_field_of_view(
 			Game_DungeonSize.MAX_X, Game_DungeonSize.MAX_Y,
-			_source_position[0], _source_position[1], _fov_render_range,
+			_source_position.x, _source_position.y, _fov_render_range,
 			self, "_block_line_of_sight", [])
 
 	for x in range(Game_DungeonSize.MAX_X):
@@ -154,7 +153,7 @@ func render_fov() -> void:
 func switch_sprite() -> void:
 	var pc: Sprite = _ref_DungeonBoard.get_pc()
 
-	if _ref_DangerZone.is_in_danger(_source_position[0], _source_position[1]):
+	if _ref_DangerZone.is_in_danger(_source_position.x, _source_position.y):
 		_ref_SwitchSprite.switch_sprite(pc, Game_SpriteTypeTag.ACTIVE)
 	else:
 		_ref_SwitchSprite.switch_sprite(pc, Game_SpriteTypeTag.DEFAULT)
@@ -181,7 +180,7 @@ func _is_checkmate() -> bool:
 func _render_end_game(win: bool) -> void:
 	var pc: Sprite = _ref_DungeonBoard.get_pc()
 
-	_source_position = Game_ConvertCoord.vector_to_array(pc.position)
+	_source_position = Game_ConvertCoord.vector_to_coord(pc.position)
 	render_fov()
 	if not win:
 		_ref_Palette.set_dark_color(pc, Game_MainTag.ACTOR)
@@ -275,5 +274,5 @@ func _set_sprite_memory(x: int, y: int, main_tag: String) -> void:
 
 func _move_pc_sprite() -> void:
 	_ref_DungeonBoard.move_sprite(Game_MainTag.ACTOR,
-			_source_position[0], _source_position[1],
-			_target_position[0], _target_position[1])
+			_source_position.x, _source_position.y,
+			_target_position.x, _target_position.y)

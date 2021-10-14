@@ -15,8 +15,8 @@ func create_and_fetch(prefab: PackedScene,
 			main_tag, sub_tag)
 	var z_index: int = Game_ZIndex.get_z_index(main_tag)
 
-	new_sprite.position = Game_ConvertCoord.index_to_vector(
-			x, y, x_offset, y_offset)
+	new_sprite.position = Game_ConvertCoord.coord_to_vector(x, y,
+			x_offset, y_offset)
 	new_sprite.add_to_group(main_tag)
 	new_sprite.add_to_group(sub_tag)
 	new_sprite.z_index = z_index

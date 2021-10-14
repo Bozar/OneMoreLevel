@@ -29,7 +29,7 @@ func wait() -> void:
 
 func attack() -> void:
 	var worm: Sprite = _ref_DungeonBoard.get_actor(
-			_target_position[0], _target_position[1])
+			_target_position.x, _target_position.y)
 	var is_active_spice: bool = _ref_ObjectData.verify_state(worm,
 			Game_StateTag.ACTIVE)
 	var pc: Sprite = _ref_DungeonBoard.get_pc()
@@ -62,8 +62,8 @@ func interact_with_building() -> void:
 
 
 func _remove_building_or_trap() -> void:
-	var x: int = _target_position[0]
-	var y: int = _target_position[1]
+	var x: int = _target_position.x
+	var y: int = _target_position.y
 
 	_ref_RemoveObject.remove_building(x, y)
 	_ref_RemoveObject.remove_trap(x, y)
@@ -71,8 +71,8 @@ func _remove_building_or_trap() -> void:
 
 
 func _is_checkmate() -> bool:
-	var x: int = _source_position[0]
-	var y: int = _source_position[1]
+	var x: int = _source_position.x
+	var y: int = _source_position.y
 
 	var neighbor: Array = Game_CoordCalculator.get_neighbor(x, y, 1)
 	var count_neighbor: int = MAX_NEIGHBOR - neighbor.size()
@@ -84,7 +84,7 @@ func _is_checkmate() -> bool:
 	var is_passive: bool
 
 	for i in neighbor:
-		actor = _ref_DungeonBoard.get_actor(i[0], i[1])
+		actor = _ref_DungeonBoard.get_actor(i.x, i.y)
 		if actor == null:
 			continue
 
@@ -105,7 +105,7 @@ func _switch_to_number(is_number: bool) -> void:
 	if is_number:
 		type_tag = Game_SpriteTypeTag.convert_digit_to_tag(
 				_ref_ObjectData.get_hit_point(pc))
-	elif _ref_DangerZone.is_in_danger(_source_position[0], _source_position[1]):
+	elif _ref_DangerZone.is_in_danger(_source_position.x, _source_position.y):
 		type_tag = Game_SpriteTypeTag.ACTIVE
 	else:
 		type_tag = Game_SpriteTypeTag.DEFAULT

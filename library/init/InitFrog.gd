@@ -58,7 +58,7 @@ func _init_path() -> int:
 		neighbor = Game_CoordCalculator.get_neighbor(x, y, 1)
 		counter = 0
 		for j in range(neighbor.size()):
-			if _is_occupied(neighbor[j][0], neighbor[j][1]):
+			if _is_occupied(neighbor[j].x, neighbor[j].y):
 				continue
 			neighbor[counter] = neighbor[j]
 			counter += 1
@@ -67,7 +67,7 @@ func _init_path() -> int:
 			return current_length
 
 		counter = _ref_RandomNumber.get_int(0, neighbor.size())
-		x = neighbor[counter][0]
-		y = neighbor[counter][1]
+		x = neighbor[counter].x
+		y = neighbor[counter].y
 
 	return current_length

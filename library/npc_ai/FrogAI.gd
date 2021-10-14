@@ -27,10 +27,10 @@ func _reset_hit_point() -> void:
 
 
 func _can_grapple() -> bool:
-	var self_x: int = _self_pos[0]
-	var self_y: int = _self_pos[1]
-	var pc_x: int = _pc_pos[0]
-	var pc_y: int = _pc_pos[1]
+	var self_x: int = _self_pos.x
+	var self_y: int = _self_pos.y
+	var pc_x: int = _pc_pos.x
+	var pc_y: int = _pc_pos.y
 	var pc: Sprite = _ref_DungeonBoard.get_pc()
 
 	if _ref_ObjectData.verify_state(pc, Game_StateTag.PASSIVE):
@@ -43,23 +43,20 @@ func _can_grapple() -> bool:
 
 func _grapple() -> void:
 	var neighbor: Array = Game_CoordCalculator.get_neighbor(
-			_self_pos[0], _self_pos[1], Game_FrogData.ATTACK_RANGE)
-	var pc_move: Array = Game_CoordCalculator.get_neighbor(
-			_pc_pos[0], _pc_pos[1], 1, true)
+			_self_pos.x, _self_pos.y, Game_FrogData.ATTACK_RANGE)
 
-	Game_ArrayHelper.filter_element(neighbor, self, "_filter_grapple",
-			[pc_move])
+	Game_ArrayHelper.filter_element(neighbor, self, "_filter_grapple", [])
 	_ref_SwitchSprite.switch_sprite(_self, Game_SpriteTypeTag.ACTIVE)
 	for i in neighbor:
-		_set_danger_zone(i[0], i[1], true)
+		_set_danger_zone(i.x, i.y, true)
 	_ref_EndGame.player_lose()
 
 
 func _random_walk() -> void:
-	var x: int = _self_pos[0]
-	var y: int = _self_pos[1]
+	var x: int = _self_pos.x
+	var y: int = _self_pos.y
 	var max_distance: int = Game_CoordCalculator.get_range(
-			x, y, _pc_pos[0], _pc_pos[1])
+			x, y, _pc_pos.x, _pc_pos.y)
 	var neighbor: Array = Game_CoordCalculator.get_neighbor(x, y, 2, false)
 
 	Game_ArrayHelper.filter_element(neighbor, self, "_filter_rand_walk", [])
@@ -69,10 +66,10 @@ func _random_walk() -> void:
 		return
 
 	Game_ArrayHelper.rand_picker(neighbor, 1, _ref_RandomNumber)
-	x = neighbor[0][0]
-	y = neighbor[0][1]
+	x = neighbor[0].x
+	y = neighbor[0].y
 	_ref_DungeonBoard.move_sprite(Game_MainTag.ACTOR,
-			_self_pos[0], _self_pos[1], x, y)
+			_self_pos.x, _self_pos.y, x, y)
 
 
 func _set_danger_zone(x: int, y: int, danger: bool) -> void:
@@ -91,8 +88,8 @@ func _path_is_clear() -> bool:
 	var counter: int
 
 	for i in CAST_RAY:
-		x = _self_pos[0]
-		y = _self_pos[1]
+		x = _self_pos.x
+		y = _self_pos.y
 		counter = 0
 		for _j in range(Game_FrogData.ATTACK_RANGE):
 			x += i[0]
@@ -108,16 +105,16 @@ func _path_is_clear() -> bool:
 	return true
 
 
-func _filter_grapple(source: Array, index: int, opt_arg: Array) -> bool:
-	var pc_move: Array = opt_arg[0]
-	return source[index] in pc_move
+func _filter_grapple(source: Array, index: int, _opt_arg: Array) -> bool:
+	return Game_CoordCalculator.get_range(_pc_pos.x, _pc_pos.y,
+			source[index].x, source[index].y) == 1
 
 
 func _filter_rand_walk(source: Array, index: int, _opt_arg: Array) -> bool:
-	var self_x: int = _self_pos[0]
-	var self_y: int = _self_pos[1]
-	var sor_x: int = source[index][0]
-	var sor_y: int = source[index][1]
+	var self_x: int = _self_pos.x
+	var self_y: int = _self_pos.y
+	var sor_x: int = source[index].x
+	var sor_y: int = source[index].y
 
 	if (self_x == sor_x) or (self_y == sor_y) \
 			or _ref_DangerZone.is_in_danger(sor_x, sor_y) \
@@ -127,12 +124,12 @@ func _filter_rand_walk(source: Array, index: int, _opt_arg: Array) -> bool:
 
 
 func _dup_rand_walk(source: Array, index: int, opt_arg: Array) -> int:
-	var self_x: int = _self_pos[0]
-	var self_y: int = _self_pos[1]
-	var sor_x: int = source[index][0]
-	var sor_y: int = source[index][1]
-	var pc_x: int = _pc_pos[0]
-	var pc_y: int = _pc_pos[1]
+	var self_x: int = _self_pos.x
+	var self_y: int = _self_pos.y
+	var sor_x: int = source[index].x
+	var sor_y: int = source[index].y
+	var pc_x: int = _pc_pos.x
+	var pc_y: int = _pc_pos.y
 	var max_distance: int = opt_arg[0]
 	var repeat: int = 1
 	var swamp: int = 1 if _ref_DungeonBoard.has_sprite_with_sub_tag(

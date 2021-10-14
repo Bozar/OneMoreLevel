@@ -11,7 +11,7 @@ func _init(parent_node: Node2D).(parent_node) -> void:
 func switch_sprite() -> void:
 	var pc: Sprite = _ref_DungeonBoard.get_pc()
 
-	if _ref_DangerZone.is_in_danger(_source_position[0], _source_position[1]):
+	if _ref_DangerZone.is_in_danger(_source_position.x, _source_position.y):
 		_ref_SwitchSprite.switch_sprite(pc, Game_SpriteTypeTag.ACTIVE)
 	elif _ref_ObjectData.verify_state(pc, Game_StateTag.PASSIVE):
 		_ref_SwitchSprite.switch_sprite(pc, Game_SpriteTypeTag.PASSIVE)
@@ -21,7 +21,7 @@ func switch_sprite() -> void:
 
 func attack() -> void:
 	var npc: Sprite = _ref_DungeonBoard.get_actor(
-			_target_position[0], _target_position[1])
+			_target_position.x, _target_position.y)
 	var pc: Sprite = _ref_DungeonBoard.get_pc()
 
 	if _ref_ObjectData.verify_state(npc, Game_StateTag.DEFAULT):
@@ -29,8 +29,7 @@ func attack() -> void:
 	elif _ref_ObjectData.verify_state(npc, Game_StateTag.ACTIVE):
 		end_turn = _roll()
 	elif _ref_ObjectData.verify_state(npc, Game_StateTag.PASSIVE):
-		if _ref_DangerZone.is_in_danger(
-				_source_position[0], _source_position[1]):
+		if _ref_DangerZone.is_in_danger(_source_position.x, _source_position.y):
 			end_turn = false
 			return
 		_ref_ObjectData.set_state(pc, Game_StateTag.DEFAULT)
@@ -45,43 +44,42 @@ func attack() -> void:
 
 
 func move() -> void:
-	if _ref_DangerZone.is_in_danger(_target_position[0], _target_position[1]):
+	if _ref_DangerZone.is_in_danger(_target_position.x, _target_position.y):
 		return
 	.move()
 
 
 func wait() -> void:
-	if _ref_DangerZone.is_in_danger(_source_position[0], _source_position[1]):
+	if _ref_DangerZone.is_in_danger(_source_position.x, _source_position.y):
 		return
 	.wait()
 
 
 func _is_checkmate() -> bool:
-	var x: int = _source_position[0]
-	var y: int = _source_position[1]
+	var x: int = _source_position.x
+	var y: int = _source_position.y
 	var neighbor: Array = Game_CoordCalculator.get_neighbor(x, y, 1)
 	var actor: Sprite
-	var coord: Game_CoordCalculator.CoordPair
+	var coord: Game_IntCoord
 
 	if not _ref_DangerZone.is_in_danger(x, y):
 		return false
 	for i in neighbor:
-		if not (_ref_DangerZone.is_in_danger(i[0], i[1]) \
-				or _is_occupied(i[0], i[1])):
+		if not (_ref_DangerZone.is_in_danger(i.x, i.y) \
+				or _is_occupied(i.x, i.y)):
 			return false
-		elif _ref_DungeonBoard.has_actor(i[0], i[1]):
-			actor = _ref_DungeonBoard.get_actor(i[0], i[1])
+		elif _ref_DungeonBoard.has_actor(i.x, i.y):
+			actor = _ref_DungeonBoard.get_actor(i.x, i.y)
 			if _ref_ObjectData.verify_state(actor, Game_StateTag.ACTIVE):
-				coord = Game_CoordCalculator.get_mirror_image(
-						x, y, i[0], i[1])
-				if coord.is_in_dungeon \
+				coord = Game_CoordCalculator.get_mirror_image(x, y, i.x, i.y)
+				if Game_CoordCalculator.is_inside_dungeon(coord.x, coord.y) \
 						and (not _is_occupied(coord.x, coord.y)):
 					return false
 	return true
 
 
 func _hit_knight() -> void:
-	_ref_RemoveObject.remove_actor(_target_position[0], _target_position[1])
+	_ref_RemoveObject.remove_actor(_target_position.x, _target_position.y)
 
 
 func _hit_boss(boss: Sprite) -> void:
@@ -99,11 +97,11 @@ func _hit_boss(boss: Sprite) -> void:
 			is_occupied = _is_occupied(teleport_x, teleport_y)
 			is_too_close = Game_CoordCalculator.is_inside_range(
 					teleport_x, teleport_y,
-					_source_position[0], _source_position[1],
+					_source_position.x, _source_position.y,
 					Game_KnightData.ELITE_SIGHT)
 
 		_ref_DungeonBoard.move_sprite(Game_MainTag.ACTOR,
-				_target_position[0], _target_position[1],
+				_target_position.x, _target_position.y,
 				teleport_x, teleport_y)
 	else:
 		_hit_knight()
@@ -112,22 +110,22 @@ func _hit_boss(boss: Sprite) -> void:
 
 func _roll() -> bool:
 	var neighbor: Array = Game_CoordCalculator.get_neighbor(
-			_target_position[0], _target_position[1], 1)
-	var roll_over: Array = [-1, -1]
+			_target_position.x, _target_position.y, 1)
+	var roll_over := Game_IntCoord.new(-1, -1)
 	var pc: Sprite = _ref_DungeonBoard.get_pc()
 
 	for i in neighbor:
-		if (i[0] == _source_position[0]) and (i[1] == _source_position[1]):
+		if (i.x == _source_position.x) and (i.y == _source_position.y):
 			continue
-		elif (i[0] == _source_position[0]) or (i[1] == _source_position[1]):
+		elif (i.x == _source_position.x) or (i.y == _source_position.y):
 			roll_over = i
 			break
 
-	if _is_occupied(roll_over[0], roll_over[1]):
+	if _is_occupied(roll_over.x, roll_over.y):
 		return false
 
 	_ref_DungeonBoard.move_sprite(Game_MainTag.ACTOR,
-			_source_position[0], _source_position[1],
-			roll_over[0], roll_over[1])
+			_source_position.x, _source_position.y,
+			roll_over.x, roll_over.y)
 	_ref_ObjectData.set_state(pc, Game_StateTag.PASSIVE)
 	return true

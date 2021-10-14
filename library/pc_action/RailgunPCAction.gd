@@ -19,7 +19,7 @@ var _kill_count: int = Game_RailgunData.MAX_KILL_COUNT
 var _ammo: int = Game_RailgunData.MAX_AMMO
 var _face_direction: Array = [0, -1]
 var _has_found_pillar: bool = false
-var _plillar_position: Array
+var _plillar_position: Game_IntCoord
 
 
 func _init(parent_node: Node2D).(parent_node) -> void:
@@ -54,7 +54,7 @@ func render_fov() -> void:
 
 	Game_CrossShapedFOV.set_t_shaped_sight(
 			Game_DungeonSize.MAX_X, Game_DungeonSize.MAX_Y,
-			_source_position[0], _source_position[1],
+			_source_position.x, _source_position.y,
 			_face_direction[0], _face_direction[1],
 			HALF_SIGHT_WIDTH,
 			Game_RailgunData.PC_FRONT_SIGHT, Game_RailgunData.PC_SIDE_SIGHT,
@@ -98,8 +98,8 @@ func wait() -> void:
 
 func attack() -> void:
 	var pc: Sprite = _ref_DungeonBoard.get_pc()
-	var x: int = _target_position[0]
-	var y: int = _target_position[1]
+	var x: int = _target_position.x
+	var y: int = _target_position.y
 
 	if _ammo < 1:
 		return
@@ -122,7 +122,7 @@ func attack() -> void:
 		if _ammo == 0:
 			_kill_count -= Game_RailgunData.ONE_KILL
 		if Game_CoordCalculator.is_inside_range(
-				_source_position[0], _source_position[1], x, y,
+				_source_position.x, _source_position.y, x, y,
 				Game_RailgunData.CLOSE_RANGE):
 			_kill_count -= Game_RailgunData.ONE_KILL
 		_kill_count = max(_kill_count, 0) as int
@@ -137,7 +137,7 @@ func attack() -> void:
 func move() -> void:
 	if _is_under_attack():
 		return
-	elif _ref_DungeonBoard.has_actor(_target_position[0], _target_position[1]):
+	elif _ref_DungeonBoard.has_actor(_target_position.x, _target_position.y):
 		return
 	_pc_move()
 
@@ -145,7 +145,7 @@ func move() -> void:
 func interact_with_trap() -> void:
 	if _is_under_attack():
 		return
-	_ref_RemoveObject.remove_trap(_target_position[0], _target_position[1])
+	_ref_RemoveObject.remove_trap(_target_position.x, _target_position.y)
 	_pc_restore()
 	_pc_move()
 
@@ -174,28 +174,28 @@ func _block_line_of_sight(x: int, y: int, _opt_arg: Array) -> bool:
 
 func _init_skull_pillar() -> void:
 	var building: Array
-	var pos: Array
+	var pos: Game_IntCoord
 	var neighbor: Array
 
-	if _plillar_position.size() > 0:
+	if _plillar_position != null:
 		return
 
 	building = _ref_DungeonBoard.get_sprites_by_tag(Game_SubTag.WALL)
 	Game_ArrayHelper.shuffle(building, _ref_RandomNumber)
 
 	for i in building:
-		pos = Game_ConvertCoord.vector_to_array(i.position)
-		if Game_CoordCalculator.is_inside_range(pos[0], pos[1],
-				_source_position[0], _source_position[1],
+		pos = Game_ConvertCoord.vector_to_coord(i.position)
+		if Game_CoordCalculator.is_inside_range(pos.x, pos.y,
+				_source_position.x, _source_position.y,
 				Game_DungeonSize.CENTER_X):
 			continue
 
-		neighbor = Game_CoordCalculator.get_neighbor(pos[0], pos[1], 1, false)
+		neighbor = Game_CoordCalculator.get_neighbor(pos.x, pos.y, 1, false)
 		for j in neighbor:
-			if _ref_DungeonBoard.has_ground(j[0], j[1]):
-				_ref_RemoveObject.remove_building(pos[0], pos[1])
+			if _ref_DungeonBoard.has_ground(j.x, j.y):
+				_ref_RemoveObject.remove_building(pos.x, pos.y)
 				_ref_CreateObject.create_building(_spr_Portal,
-						Game_SubTag.PILLAR, pos[0], pos[1])
+						Game_SubTag.PILLAR, pos.x, pos.y)
 				_plillar_position = pos
 				return
 
@@ -252,12 +252,12 @@ func _try_find_pillar() -> void:
 	if _has_found_pillar:
 		return
 	_has_found_pillar = Game_CoordCalculator.is_inside_range(
-			_target_position[0], _target_position[1],
-			_plillar_position[0], _plillar_position[1],
+			_target_position.x, _target_position.y,
+			_plillar_position.x, _plillar_position.y,
 			Game_RailgunData.TOUCH_PILLAR)
 	if _has_found_pillar:
 		pillar = _ref_DungeonBoard.get_building(
-				_plillar_position[0], _plillar_position[1])
+				_plillar_position.x, _plillar_position.y)
 		_ref_SwitchSprite.switch_sprite(pillar, Game_SpriteTypeTag.ACTIVE)
 
 
@@ -284,14 +284,14 @@ func _is_under_attack() -> bool:
 	var x: int
 	var y: int
 	var npc: Sprite
-	var horizontal_move: bool = (_source_position[1] == _target_position[1])
-	var vertical_move: bool = (_source_position[0] == _target_position[0])
+	var horizontal_move: bool = (_source_position.y == _target_position.y)
+	var vertical_move: bool = (_source_position.x == _target_position.x)
 	var horizontal_attack := false
 	var vertical_attack := false
 
 	for i in RAY_DIRECTION:
-		x = _source_position[0]
-		y = _source_position[1]
+		x = _source_position.x
+		y = _source_position.y
 		while true:
 			x += i[0]
 			y += i[1]
@@ -302,9 +302,9 @@ func _is_under_attack() -> bool:
 				if npc == null:
 					continue
 				elif _ref_ObjectData.verify_state(npc, Game_StateTag.ACTIVE):
-					if x == _source_position[0]:
+					if x == _source_position.x:
 						vertical_attack = true
-					elif y == _source_position[1]:
+					elif y == _source_position.y:
 						horizontal_attack = true
 				break
 
@@ -335,8 +335,8 @@ func _is_passable(direction: int) -> bool:
 			return false
 
 	for i in shift_coord:
-		x = _source_position[0] + i[0]
-		y = _source_position[1] + i[1]
+		x = _source_position.x + i[0]
+		y = _source_position.y + i[1]
 		if (not Game_CoordCalculator.is_inside_dungeon(x, y)) \
 				or _ref_DungeonBoard.has_building(x, y) \
 				or _ref_DungeonBoard.has_actor(x, y):

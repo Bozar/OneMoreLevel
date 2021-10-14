@@ -31,7 +31,7 @@ func take_action() -> void:
 			return
 
 	for i in [_self_pos, _pc_pos]:
-		ground = _ref_DungeonBoard.get_ground(i[0], i[1])
+		ground = _ref_DungeonBoard.get_ground(i.x, i.y)
 		is_in_fog.push_back(_ref_ObjectData.verify_state(ground,
 				Game_StateTag.ACTIVE))
 	self_is_in_fog = is_in_fog[0]
@@ -61,8 +61,8 @@ func remove_data(actor: Sprite) -> void:
 
 
 func _switch_sprite() -> void:
-	var pos: Array = Game_ConvertCoord.vector_to_array(_self.position)
-	var ground: Sprite = _ref_DungeonBoard.get_ground(pos[0], pos[1])
+	var pos := Game_ConvertCoord.vector_to_coord(_self.position)
+	var ground: Sprite = _ref_DungeonBoard.get_ground(pos.x, pos.y)
 	var sprite_type: String
 
 	if _ref_ObjectData.verify_state(ground, Game_StateTag.ACTIVE):
@@ -81,8 +81,8 @@ func _boss_countdown() -> bool:
 	var hit_point: int
 
 	if _boss_duration == INIT_DURATION:
-		boss_to_pc = Game_CoordCalculator.get_range(_self_pos[0], _self_pos[1],
-				_pc_pos[0], _pc_pos[1])
+		boss_to_pc = Game_CoordCalculator.get_range(_self_pos.x, _self_pos.y,
+				_pc_pos.x, _pc_pos.y)
 		_boss_duration = boss_to_pc + Game_HoundData.BOSS_DURATION
 
 	if _boss_duration > 0:
@@ -94,7 +94,7 @@ func _boss_countdown() -> bool:
 		# Otherwise add hit point by 1 in HoundProgress.
 		# HoundPCAction._try_set_and_get_boss_hit_point().
 		# HoundProgress.remove_actor().
-		_ref_RemoveObject.remove_actor(_self_pos[0], _self_pos[1])
+		_ref_RemoveObject.remove_actor(_self_pos.x, _self_pos.y)
 		# Player wins if boss leaves the third time.
 		if hit_point + 1 == Game_HoundData.MAX_BOSS_HIT_POINT:
 			_ref_EndGame.player_win()
@@ -105,20 +105,20 @@ func _can_hit_pc(self_is_in_fog: bool, pc_is_in_fog: bool) -> bool:
 	if self_is_in_fog != pc_is_in_fog:
 		return false
 	elif self_is_in_fog:
-		return Game_CoordCalculator.is_inside_range(_self_pos[0], _self_pos[1],
-				_pc_pos[0], _pc_pos[1], ONE_STEP_IN_FOG)
+		return Game_CoordCalculator.is_inside_range(_self_pos.x, _self_pos.y,
+				_pc_pos.x, _pc_pos.y, ONE_STEP_IN_FOG)
 	else:
-		return Game_CoordCalculator.is_inside_range(_self_pos[0], _self_pos[1],
-				_pc_pos[0], _pc_pos[1], ONE_STEP_OUTSIDE_FOG) \
-						and (_self_pos[0] != _pc_pos[0]) \
-						and (_self_pos[1] != _pc_pos[1])
+		return Game_CoordCalculator.is_inside_range(_self_pos.x, _self_pos.y,
+				_pc_pos.x, _pc_pos.y, ONE_STEP_OUTSIDE_FOG) \
+						and (_self_pos.x != _pc_pos.x) \
+						and (_self_pos.y != _pc_pos.y)
 
 
 func _can_see_pc(is_boss: bool) -> bool:
 	if is_boss:
 		return true
-	return Game_CoordCalculator.is_inside_range(_self_pos[0], _self_pos[1],
-			_pc_pos[0], _pc_pos[1], Game_HoundData.HOUND_SIGHT)
+	return Game_CoordCalculator.is_inside_range(_self_pos.x, _self_pos.y,
+			_pc_pos.x, _pc_pos.y, Game_HoundData.HOUND_SIGHT)
 
 
 func _hound_approach(self_is_in_fog: bool, pc_is_in_fog: bool) -> void:
@@ -126,7 +126,7 @@ func _hound_approach(self_is_in_fog: bool, pc_is_in_fog: bool) -> void:
 	var alternative_start: Array = []
 	var one_step: int
 
-	start_point = Game_CoordCalculator.get_neighbor(_pc_pos[0], _pc_pos[1],
+	start_point = Game_CoordCalculator.get_neighbor(_pc_pos.x, _pc_pos.y,
 			ONE_STEP_OUTSIDE_FOG)
 	Game_ArrayHelper.filter_element(start_point, self,
 			"_verify_and_get_start_point", [pc_is_in_fog, alternative_start])
@@ -144,41 +144,41 @@ func _hound_approach(self_is_in_fog: bool, pc_is_in_fog: bool) -> void:
 
 func _is_passable_func(source_array: Array, current_index: int,
 		opt_arg: Array) -> bool:
-	var x: int = source_array[current_index][0]
-	var y: int = source_array[current_index][1]
+	var x: int = source_array[current_index].x
+	var y: int = source_array[current_index].y
 	var self_is_in_fog: bool = opt_arg[0]
 
 	if _ref_DungeonBoard.has_actor(x, y):
 		return false
 	elif self_is_in_fog:
 		return Game_CoordCalculator.is_inside_range(x, y,
-				_self_pos[0], _self_pos[1], 1)
+				_self_pos.x, _self_pos.y, 1)
 	else:
 		if Game_CoordCalculator.is_inside_range(x, y,
-				_self_pos[0], _self_pos[1], 1):
+				_self_pos.x, _self_pos.y, 1):
 			return true
-		return (x != _self_pos[0]) and (y != _self_pos[1])
+		return (x != _self_pos.x) and (y != _self_pos.y)
 
 
 func _verify_and_get_start_point(source: Array, index: int, opt_arg: Array) \
 		-> bool:
-	var x: int = source[index][0]
-	var y: int = source[index][1]
+	var x: int = source[index].x
+	var y: int = source[index].y
 	var pc_is_in_fog: bool = opt_arg[0]
 	var alternative_start: Array = opt_arg[1]
 
 	if _ref_DungeonBoard.has_building(x, y):
 		return false
 
-	if Game_CoordCalculator.is_inside_range(x, y, _pc_pos[0], _pc_pos[1], 1) \
-			or ((x != _pc_pos[0]) and (y != _pc_pos[1])):
-		alternative_start.push_back([x, y])
+	if Game_CoordCalculator.is_inside_range(x, y, _pc_pos.x, _pc_pos.y, 1) \
+			or ((x != _pc_pos.x) and (y != _pc_pos.y)):
+		alternative_start.push_back(Game_IntCoord.new(x, y))
 
 	if pc_is_in_fog:
 		return Game_CoordCalculator.is_inside_range(x, y,
-				_pc_pos[0], _pc_pos[1], 1)
+				_pc_pos.x, _pc_pos.y, 1)
 	else:
-		return (x != _pc_pos[0]) and (y != _pc_pos[1])
+		return (x != _pc_pos.x) and (y != _pc_pos.y)
 
 
 func _set_pc_hit_point(add_hit_point: int) -> void:
@@ -200,10 +200,10 @@ func _set_pc_hit_point(add_hit_point: int) -> void:
 			elif _ref_DungeonBoard.has_actor(x, y):
 				continue
 			elif Game_CoordCalculator.is_inside_range(x, y,
-					_pc_pos[0], _pc_pos[1], Game_HoundData.MIN_BOSS_DISTANCE):
+					_pc_pos.x, _pc_pos.y, Game_HoundData.MIN_BOSS_DISTANCE):
 				continue
 			elif not Game_CoordCalculator.is_inside_range(x, y,
-					_pc_pos[0], _pc_pos[1], Game_HoundData.MAX_BOSS_DISTANCE):
+					_pc_pos.x, _pc_pos.y, Game_HoundData.MAX_BOSS_DISTANCE):
 				continue
 			else:
 				break
@@ -227,13 +227,13 @@ func _set_pc_hit_point(add_hit_point: int) -> void:
 
 func _boss_absorb_fog() -> void:
 	var hit_point: int = _ref_ObjectData.get_hit_point(_self)
-	var pos: Array = Game_ConvertCoord.vector_to_array(_self.position)
-	var neighbor: Array = Game_CoordCalculator.get_neighbor(pos[0], pos[1],
+	var pos := Game_ConvertCoord.vector_to_coord(_self.position)
+	var neighbor: Array = Game_CoordCalculator.get_neighbor(pos.x, pos.y,
 			hit_point, true)
 	var ground: Sprite
 
 	for i in neighbor:
-		ground = _ref_DungeonBoard.get_ground(i[0], i[1])
+		ground = _ref_DungeonBoard.get_ground(i.x, i.y)
 		# Change ground hit point but leave state unchanged. Update state in
 		# HoundProgress._add_or_remove_fog().
 		if (ground == null) or (_ref_ObjectData.verify_state(ground,

@@ -41,7 +41,7 @@ func _set_static_area(x: int, y: int, max_range: int) -> void:
 			true)
 
 	for i in neighbor:
-		_occupy_position(i[0], i[1])
+		_occupy_position(i.x, i.y)
 
 
 func _init_river() -> void:

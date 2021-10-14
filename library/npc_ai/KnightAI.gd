@@ -23,8 +23,8 @@ func take_action() -> void:
 	elif _ref_ObjectData.verify_state(_self, Game_StateTag.PASSIVE):
 		_recover()
 	# Default -> Active.
-	elif Game_CoordCalculator.is_inside_range(_self_pos[0], _self_pos[1],
-			_pc_pos[0], _pc_pos[1], Game_KnightData.RANGE):
+	elif Game_CoordCalculator.is_inside_range(_self_pos.x, _self_pos.y,
+			_pc_pos.x, _pc_pos.y, Game_KnightData.RANGE):
 		_alert()
 	# Approach.
 	elif _is_ready_to_move():
@@ -88,8 +88,8 @@ func _switch_ground(danger_zone: Array) -> void:
 	var sprite_type: String
 
 	for i in danger_zone:
-		ground_sprite= _ref_DungeonBoard.get_ground(i[0], i[1])
-		if _ref_DangerZone.is_in_danger(i[0], i[1]):
+		ground_sprite= _ref_DungeonBoard.get_ground(i.x, i.y)
+		if _ref_DangerZone.is_in_danger(i.x, i.y):
 			sprite_type = Game_SpriteTypeTag.ACTIVE
 		else:
 			sprite_type = Game_SpriteTypeTag.DEFAULT
@@ -98,7 +98,7 @@ func _switch_ground(danger_zone: Array) -> void:
 
 func _get_danger_zone() -> Array:
 	var neighbor: Array = Game_CoordCalculator.get_neighbor(
-			_pc_pos[0], _pc_pos[1], 1, true)
+			_pc_pos.x, _pc_pos.y, 1, true)
 	var candidate: Array = [_pc_pos]
 	var one_grid: Array = []
 	var two_grids: Array = []
@@ -106,15 +106,15 @@ func _get_danger_zone() -> Array:
 	var danger_zone: Array
 
 	for i in neighbor:
-		if _ref_DungeonBoard.has_building(i[0], i[1]):
+		if _ref_DungeonBoard.has_building(i.x, i.y):
 			continue
-		elif (i[0] == _self_pos[0]) and (i[1] == _self_pos[1]):
+		elif (i.x == _self_pos.x) and (i.y == _self_pos.y):
 			continue
 		candidate.push_back(i)
 
 	one_grid = [_pc_pos]
 	for i in candidate:
-		if (i[0] == _self_pos[0]) or (i[1] == _self_pos[1]):
+		if (i.x == _self_pos.x) or (i.y == _self_pos.y):
 			two_grids.push_back(i)
 	four_grids = candidate
 
@@ -142,8 +142,8 @@ func _can_attack_twice() -> bool:
 		return false
 	if _boss_attack_count > 0:
 		return false
-	if not Game_CoordCalculator.is_inside_range(_pc_pos[0], _pc_pos[1],
-			_self_pos[0], _self_pos[1], Game_KnightData.RANGE):
+	if not Game_CoordCalculator.is_inside_range(_pc_pos.x, _pc_pos.y,
+			_self_pos.x, _self_pos.y, Game_KnightData.RANGE):
 		return false
 	return true
 
@@ -160,14 +160,14 @@ func _prepare_second_attack(id: int) -> void:
 
 func _set_danger_zone(danger_zone: Array, is_dangerous: bool) -> void:
 	for i in danger_zone:
-		_ref_DangerZone.set_danger_zone(i[0], i[1], is_dangerous)
+		_ref_DangerZone.set_danger_zone(i.x, i.y, is_dangerous)
 
 
 func _try_hit_pc(danger_zone: Array) -> void:
 	var victim: Sprite
 
 	for i in danger_zone:
-		victim = _ref_DungeonBoard.get_actor(i[0], i[1])
+		victim = _ref_DungeonBoard.get_actor(i.x, i.y)
 		if victim == null:
 			continue
 		if victim.is_in_group(Game_SubTag.PC):
@@ -175,7 +175,7 @@ func _try_hit_pc(danger_zone: Array) -> void:
 			# print("pc dead")
 		elif victim.is_in_group(Game_SubTag.KNIGHT) \
 				and _ref_ObjectData.verify_state(victim, Game_StateTag.PASSIVE):
-			_ref_RemoveObject.remove_actor(i[0], i[1])
+			_ref_RemoveObject.remove_actor(i.x, i.y)
 			_ref_CountDown.add_count(Game_KnightData.RESTORE_TURN)
 
 
@@ -190,5 +190,5 @@ func _is_ready_to_move() -> bool:
 	else:
 		sight = Game_KnightData.ELITE_SIGHT
 
-	return Game_CoordCalculator.is_inside_range(_self_pos[0], _self_pos[1],
-			_pc_pos[0], _pc_pos[1], sight)
+	return Game_CoordCalculator.is_inside_range(_self_pos.x, _self_pos.y,
+			_pc_pos.x, _pc_pos.y, sight)

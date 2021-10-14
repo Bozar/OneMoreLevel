@@ -32,22 +32,22 @@ func _on_CreateObject_sprite_created(new_sprite: Sprite,
 
 
 func _on_Schedule_turn_started(current_sprite: Sprite) -> void:
-	var _pc_pos: Array
+	var pc_pos: Game_IntCoord
 
 	if current_sprite.is_in_group(Game_SubTag.PC):
-		_pc_pos = Game_ConvertCoord.vector_to_array(current_sprite.position)
-		_progress.renew_world(_pc_pos[0], _pc_pos[1])
+		pc_pos = Game_ConvertCoord.vector_to_coord(current_sprite.position)
+		_progress.renew_world(pc_pos.x, pc_pos.y)
 
 
 func _on_Schedule_turn_ended(current_sprite: Sprite) -> void:
-	var _pc_pos: Array
+	var pc_pos: Game_IntCoord
 
 	# Do not change world (like adding new NPCs) when the game is over.
 	if _game_over:
 		return
 	if current_sprite.is_in_group(Game_SubTag.PC):
-		_pc_pos = Game_ConvertCoord.vector_to_array(current_sprite.position)
-		_progress.end_world(_pc_pos[0], _pc_pos[1])
+		pc_pos = Game_ConvertCoord.vector_to_coord(current_sprite.position)
+		_progress.end_world(pc_pos.x, pc_pos.y)
 
 
 func _on_RemoveObject_sprite_removed(remove_sprite: Sprite,

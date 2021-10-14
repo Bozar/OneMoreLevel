@@ -29,30 +29,28 @@ func move() -> void:
 
 
 func attack() -> void:
-	var mirror: Array
+	var mirror: Game_IntCoord
 	var pc: Sprite = _ref_DungeonBoard.get_pc()
 
 	if _pc_hit_target:
-		_create_image_on_the_other_side(
-				_target_position[0], _target_position[1])
-		_create_image_on_the_same_side(
-				_target_position[0], _target_position[1])
+		_create_image_on_the_other_side(_target_position.x, _target_position.y)
+		_create_image_on_the_same_side(_target_position.x, _target_position.y)
 		if _ref_ObjectData.get_hit_point(pc) == Game_MirrorData.MAX_CRYSTAL:
 			_ref_EndGame.player_win()
 		_ref_CountDown.add_count(Game_MirrorData.RESTORE_TURN)
 	else:
-		mirror = _get_mirror(_target_position[0], _target_position[1])
-		_ref_RemoveObject.remove_actor(mirror[0], mirror[1])
+		mirror = _get_mirror(_target_position.x, _target_position.y)
+		_ref_RemoveObject.remove_actor(mirror.x, mirror.y)
 	end_turn = true
 
 
 func interact_with_trap() -> void:
-	var mirror: Array
+	var mirror: Game_IntCoord
 	var pc: Sprite = _ref_DungeonBoard.get_pc()
 
 	if not _pc_hit_target:
-		mirror = _get_mirror(_target_position[0], _target_position[1])
-		_ref_RemoveObject.remove_trap(mirror[0], mirror[1])
+		mirror = _get_mirror(_target_position.x, _target_position.y)
+		_ref_RemoveObject.remove_trap(mirror.x, mirror.y)
 
 	_move_pc_and_image()
 	if _ref_ObjectData.get_hit_point(pc) == Game_MirrorData.MAX_CRYSTAL:
@@ -64,29 +62,28 @@ func _is_checkmate() -> bool:
 	var npc: Array = _ref_DungeonBoard.get_sprites_by_tag(Game_SubTag.PHANTOM)
 	var trap: Sprite = _ref_DungeonBoard.get_sprites_by_tag(
 			Game_SubTag.CRYSTAL)[0]
-	var trap_x: int = Game_ConvertCoord.vector_to_array(trap.position)[0]
+	var trap_x: int = Game_ConvertCoord.vector_to_coord(trap.position).x
 
 	for i in npc:
 		if _ref_ObjectData.verify_state(i, Game_StateTag.DEFAULT):
 			return false
-	return (_source_position[0] - Game_DungeonSize.CENTER_X) \
+	return (_source_position.x - Game_DungeonSize.CENTER_X) \
 			* (trap_x - Game_DungeonSize.CENTER_X) > 0
 
 
-func _get_mirror(x: int, y: int) -> Array:
-	var mirror := Game_CoordCalculator.get_mirror_image(x, y,
+func _get_mirror(x: int, y: int) -> Game_IntCoord:
+	return Game_CoordCalculator.get_mirror_image(x, y,
 			Game_DungeonSize.CENTER_X, y)
-	return [mirror.x, mirror.y]
 
 
 func _target_is_occupied(main_tag: String) -> bool:
-	var mirror: Array = _get_mirror(_target_position[0], _target_position[1])
+	var mirror := _get_mirror(_target_position.x, _target_position.y)
 
 	if _ref_DungeonBoard.has_sprite(main_tag,
-			_target_position[0], _target_position[1]):
+			_target_position.x, _target_position.y):
 		_pc_hit_target = true
 		return true
-	elif _ref_DungeonBoard.has_sprite(main_tag, mirror[0], mirror[1]):
+	elif _ref_DungeonBoard.has_sprite(main_tag, mirror.x, mirror.y):
 		_pc_hit_target = false
 		return true
 	return false
@@ -95,25 +92,25 @@ func _target_is_occupied(main_tag: String) -> bool:
 func _create_image_on_the_other_side(x: int, y: int) -> void:
 	var actor: Sprite = _ref_DungeonBoard.get_actor(x, y)
 	var pc: Sprite = _ref_DungeonBoard.get_pc()
-	var mirror: Array = _get_mirror(x, y)
+	var mirror := _get_mirror(x, y)
 	var images: Array
 	var remove: int
-	var position: Array
+	var pos: Game_IntCoord
 
 	# On this side: Switch phantom's sprite into default.
 	if _ref_DungeonBoard.has_trap(x, y):
 		_ref_SwitchSprite.switch_sprite(actor, Game_SpriteTypeTag.DEFAULT)
 
 	# On the other side: Remove an existing phantom.
-	_ref_RemoveObject.remove_actor(mirror[0], mirror[1])
+	_ref_RemoveObject.remove_actor(mirror.x, mirror.y)
 
 	# Move the phantom to the other side. State: passive. Color: grey.
 	_ref_DungeonBoard.move_sprite(Game_MainTag.ACTOR,
-			x, y, mirror[0], mirror[1])
+			x, y, mirror.x, mirror.y)
 	_ref_ObjectData.set_state(actor, Game_StateTag.PASSIVE)
 
 	# On the other side: Remove a trap.
-	_ref_RemoveObject.remove_trap(mirror[0], mirror[1])
+	_ref_RemoveObject.remove_trap(mirror.x, mirror.y)
 
 	# There can be at most (5 - crystal) phantom images.
 	images = _ref_DungeonBoard.get_sprites_by_tag(Game_SubTag.PHANTOM)
@@ -124,13 +121,13 @@ func _create_image_on_the_other_side(x: int, y: int) -> void:
 	if remove > 0:
 		Game_ArrayHelper.rand_picker(images, remove, _ref_RandomNumber)
 		for i in images:
-			position = Game_ConvertCoord.vector_to_array(i.position)
-			_ref_RemoveObject.remove_actor(position[0], position[1])
+			pos = Game_ConvertCoord.vector_to_coord(i.position)
+			_ref_RemoveObject.remove_actor(pos.x, pos.y)
 
 
 func _create_image_on_the_same_side(x: int, y: int) -> void:
 	var wall: Array = []
-	var mirror: Game_CoordCalculator.CoordPair
+	var mirror: Game_IntCoord
 	var actor: Sprite
 
 	# Cast a ray to the top.
@@ -145,7 +142,7 @@ func _create_image_on_the_same_side(x: int, y: int) -> void:
 	for i in wall:
 		# Continue if the image is outside the dungeon.
 		mirror = Game_CoordCalculator.get_mirror_image(x, y, i[0], i[1])
-		if not mirror.is_in_dungeon:
+		if not Game_CoordCalculator.is_inside_dungeon(mirror.x, mirror.y):
 			continue
 
 		# Continue if there is a building blocks the image.
@@ -221,27 +218,25 @@ func _filter_create_image(source: Array, index: int, opt_arg: Array) -> bool:
 
 func _reset_sprite_color() -> void:
 	var set_this: Sprite
-	var pos: Array
+	var pos: Game_IntCoord
 
 	for y in range(0, Game_DungeonSize.MAX_Y):
 		set_this = _ref_DungeonBoard.get_building(Game_DungeonSize.CENTER_X, y)
 		_ref_Palette.set_default_color(set_this, Game_MainTag.BUILDING)
 
 	for i in _ref_DungeonBoard.get_sprites_by_tag(Game_MainTag.TRAP):
-		pos = Game_ConvertCoord.vector_to_array(i.position)
-		i.visible = not _ref_DungeonBoard.has_actor(pos[0], pos[1])
+		pos = Game_ConvertCoord.vector_to_coord(i.position)
+		i.visible = not _ref_DungeonBoard.has_actor(pos.x, pos.y)
 		_ref_Palette.set_default_color(i, Game_MainTag.TRAP)
 
 
 func _move_pc_and_image() -> void:
-	var source_mirror: Array = _get_mirror(
-			_source_position[0], _source_position[1])
-	var target_mirror: Array = _get_mirror(
-			_target_position[0], _target_position[1])
+	var source_mirror := _get_mirror(_source_position.x, _source_position.y)
+	var target_mirror := _get_mirror(_target_position.x, _target_position.y)
 
 	_ref_DungeonBoard.move_sprite(Game_MainTag.ACTOR,
-			_source_position[0], _source_position[1],
-			_target_position[0], _target_position[1])
+			_source_position.x, _source_position.y,
+			_target_position.x, _target_position.y)
 	_ref_DungeonBoard.move_sprite(Game_MainTag.ACTOR,
-			source_mirror[0], source_mirror[1],
-			target_mirror[0], target_mirror[1])
+			source_mirror.x, source_mirror.y,
+			target_mirror.x, target_mirror.y)

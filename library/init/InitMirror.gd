@@ -97,7 +97,7 @@ func _create_mirror(x: int, y: int) -> void:
 func _create_pc() -> void:
 	var pc_x: int
 	var pc_y: int
-	var coord: Game_CoordCalculator.CoordPair
+	var coord: Game_IntCoord
 	var neighbor: Array
 
 	while true:
@@ -118,7 +118,7 @@ func _create_pc() -> void:
 			coord.x, coord.y)
 
 	for i in neighbor:
-		_occupy_position(i[0], i[1])
+		_occupy_position(i.x, i.y)
 
 
 func _init_crystal() -> void:
@@ -163,4 +163,4 @@ func _create_phantom(x: int, y: int) -> void:
 
 	_add_actor_to_blueprint(_spr_Phantom, Game_SubTag.PHANTOM, x, y)
 	for i in neighbor:
-		_occupy_position(i[0], i[1])
+		_occupy_position(i.x, i.y)

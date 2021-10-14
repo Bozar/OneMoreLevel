@@ -63,7 +63,7 @@ func _init_wall() -> void:
 		return
 	dup_block = block.duplicate()
 	for i in block:
-		_set_terrain_marker(i[0], i[1], PATH_MARKER)
+		_set_terrain_marker(i.x, i.y, PATH_MARKER)
 
 	# Shrink by 1 grid in four directions. Leave paths around the block.
 	Game_ArrayHelper.filter_element(block, self, "_is_building_site",
@@ -72,7 +72,7 @@ func _init_wall() -> void:
 	# Reset markers to default if fail to build any walls.
 	if block.size() == 0:
 		for i in dup_block:
-			_set_terrain_marker(i[0], i[1], DEFAULT_MARKER)
+			_set_terrain_marker(i.x, i.y, DEFAULT_MARKER)
 		return
 
 	# Dig a grid when necessary to generate a more zigzagging terrain.
@@ -88,19 +88,19 @@ func _init_wall() -> void:
 			new_sprite = _spr_Counter
 			new_sub_tag = Game_SubTag.COUNTER
 			_has_counter = true
-		_set_terrain_marker(i[0], i[1], WALL_MARKER)
-		_add_building_to_blueprint(new_sprite, new_sub_tag, i[0], i[1])
+		_set_terrain_marker(i.x, i.y, WALL_MARKER)
+		_add_building_to_blueprint(new_sprite, new_sub_tag, i.x, i.y)
 
 
 func _is_empty_space(coord: Array, index: int, _opt_arg: Array) -> bool:
-	var x: int = coord[index][0]
-	var y: int = coord[index][1]
+	var x: int = coord[index].x
+	var y: int = coord[index].y
 	return _get_terrain_marker(x, y) == DEFAULT_MARKER
 
 
 func _is_building_site(coord: Array, index: int, opt_arg: Array) -> bool:
-	var x: int = coord[index][0]
-	var y: int = coord[index][1]
+	var x: int = coord[index].x
+	var y: int = coord[index].y
 	var start_x: int = opt_arg[0]
 	var start_y: int = opt_arg[1]
 	var width: int = opt_arg[2]
@@ -127,7 +127,7 @@ func _fill_hole() -> void:
 			neighbor = Game_CoordCalculator.get_neighbor(x, y, 1)
 			fill_this = true
 			for i in neighbor:
-				if _get_terrain_marker(i[0], i[1]) != WALL_MARKER:
+				if _get_terrain_marker(i.x, i.y) != WALL_MARKER:
 					fill_this = false
 					break
 			if fill_this:
@@ -169,5 +169,5 @@ func _create_actor(sub_tag: String) -> void:
 
 	neighbor = Game_CoordCalculator.get_neighbor(x, y, min_distance, true)
 	for i in neighbor:
-		_set_terrain_marker(i[0], i[1], WALL_MARKER)
+		_set_terrain_marker(i.x, i.y, WALL_MARKER)
 	_add_actor_to_blueprint(new_actor, sub_tag, x, y)

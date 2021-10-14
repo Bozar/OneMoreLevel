@@ -140,7 +140,7 @@ func move_sprite(main_tag: String, source_x: int, source_y: int,
 
 	_sprite_dict[main_tag][source_x][source_y] = null
 	_sprite_dict[main_tag][target_x][target_y] = sprite
-	sprite.position = Game_ConvertCoord.index_to_vector(target_x, target_y)
+	sprite.position = Game_ConvertCoord.coord_to_vector(target_x, target_y)
 
 	_try_move_arrow(sprite)
 
@@ -156,9 +156,9 @@ func swap_sprite(main_tag: String, source_x: int, source_y: int,
 	_sprite_dict[main_tag][source_x][source_y] = target_sprite
 	_sprite_dict[main_tag][target_x][target_y] = source_sprite
 
-	source_sprite.position = Game_ConvertCoord.index_to_vector(
+	source_sprite.position = Game_ConvertCoord.coord_to_vector(
 			target_x, target_y)
-	target_sprite.position = Game_ConvertCoord.index_to_vector(
+	target_sprite.position = Game_ConvertCoord.coord_to_vector(
 			source_x, source_y)
 
 	_try_move_arrow(source_sprite)
@@ -167,7 +167,7 @@ func swap_sprite(main_tag: String, source_x: int, source_y: int,
 
 func _on_CreateObject_sprite_created(new_sprite: Sprite,
 		main_tag: String, sub_tag: String, _x: int, _y: int) -> void:
-	var pos: Array
+	var pos: Game_IntCoord
 
 	# Save references to arrow indicators.
 	if main_tag == Game_MainTag.INDICATOR:
@@ -179,8 +179,8 @@ func _on_CreateObject_sprite_created(new_sprite: Sprite,
 	# Save references to dungeon sprites.
 	for i in Game_MainTag.DUNGEON_OBJECT:
 		if i == main_tag:
-			pos = Game_ConvertCoord.vector_to_array(new_sprite.position)
-			_sprite_dict[i][pos[0]][pos[1]] = new_sprite
+			pos = Game_ConvertCoord.vector_to_coord(new_sprite.position)
+			_sprite_dict[i][pos.x][pos.y] = new_sprite
 			return
 
 

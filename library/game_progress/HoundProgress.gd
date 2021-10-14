@@ -74,7 +74,7 @@ func _add_or_remove_fog() -> void:
 			_fog_source[i][2] += 1
 			neighbor = Game_CoordCalculator.get_neighbor(x, y, fog_range, true)
 			for j in neighbor:
-				ground = _ref_DungeonBoard.get_ground(j[0], j[1])
+				ground = _ref_DungeonBoard.get_ground(j.x, j.y)
 				if ground != null:
 					_ref_ObjectData.add_hit_point(ground,
 							Game_HoundData.FOG_DURATION)
@@ -161,7 +161,7 @@ func _respawn_actor(pc_x: int, pc_y: int, min_distance: int, max_distance: int,
 			neighbor = Game_CoordCalculator.get_neighbor(x, y,
 					Game_HoundData.MIN_HOUND_GAP)
 			for i in neighbor:
-				if _ref_DungeonBoard.has_actor(i[0], i[1]):
+				if _ref_DungeonBoard.has_actor(i.x, i.y):
 					next_loop = true
 					break
 		if not next_loop:

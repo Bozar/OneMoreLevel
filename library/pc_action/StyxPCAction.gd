@@ -40,7 +40,7 @@ func render_fov() -> void:
 				continue
 			ground.visible = true
 			distance = Game_CoordCalculator.get_range(x, y,
-					_source_position[0], _source_position[1])
+					_source_position.x, _source_position.y)
 			if distance > Game_StyxData.PC_MAX_SIGHT:
 				ground.visible = false
 			elif distance > Game_StyxData.PC_SIGHT:
@@ -66,25 +66,25 @@ func move() -> void:
 	var y: int
 	var source_direction: int = _INPUT_TO_INT[_input_direction]
 	var target_direction: int = _get_ground_direction(
-			_target_position[0], _target_position[1])
+			_target_position.x, _target_position.y)
 
 	if _is_opposite_direction(source_direction, target_direction):
 		end_turn = false
 		return
 
 	for i in Game_StateTag.DIRECTION_TO_COORD.keys():
-		x = _target_position[0]
-		y = _target_position[1]
+		x = _target_position.x
+		y = _target_position.y
 		while Game_CoordCalculator.is_inside_dungeon(x, y) \
 				and (_get_ground_direction(x, y) == _STATE_TO_INT[i]):
 			x += Game_StateTag.DIRECTION_TO_COORD[i][0]
 			y += Game_StateTag.DIRECTION_TO_COORD[i][1]
-		if (x != _target_position[0]) or (y != _target_position[1]):
+		if (x != _target_position.x) or (y != _target_position.y):
 			x -= Game_StateTag.DIRECTION_TO_COORD[i][0]
 			y -= Game_StateTag.DIRECTION_TO_COORD[i][1]
 			break
 	_ref_DungeonBoard.move_sprite(Game_MainTag.ACTOR,
-			_source_position[0], _source_position[1], x, y)
+			_source_position.x, _source_position.y, x, y)
 
 	if _pc_is_near_harbor(x, y):
 		_ref_EndGame.player_win()
@@ -132,6 +132,6 @@ func _pc_is_near_harbor(x: int, y: int) -> bool:
 
 	for i in neighbor:
 		if _ref_DungeonBoard.has_sprite_with_sub_tag(Game_SubTag.HARBOR,
-				i[0], i[1]):
+				i.x, i.y):
 			return true
 	return false

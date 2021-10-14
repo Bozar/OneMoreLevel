@@ -13,7 +13,7 @@ func take_action() -> void:
 
 
 func _pc_is_close() -> bool:
-	var delta_x: int = abs(_self_pos[0] - _pc_pos[0]) as int
-	var delta_y: int = abs(_self_pos[1] - _pc_pos[1]) as int
+	var delta_x: int = abs(_self_pos.x - _pc_pos.x) as int
+	var delta_y: int = abs(_self_pos.y - _pc_pos.y) as int
 
 	return delta_x + delta_y < 2

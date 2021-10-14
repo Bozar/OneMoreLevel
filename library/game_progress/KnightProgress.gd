@@ -105,6 +105,6 @@ func _has_neighbor(x: int, y: int) -> bool:
 			Game_KnightData.KNIGHT_GAP)
 
 	for i in neighbor:
-		if _ref_DungeonBoard.has_actor(i[0], i[1]):
+		if _ref_DungeonBoard.has_actor(i.x, i.y):
 			return true
 	return false

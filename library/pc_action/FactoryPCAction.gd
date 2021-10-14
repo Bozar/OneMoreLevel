@@ -33,7 +33,7 @@ func switch_sprite() -> void:
 
 func render_fov() -> void:
 	var show_full_map: bool = _ref_GameSetting.get_show_full_map()
-	var pos: Array
+	var pos: Game_IntCoord
 
 	if _is_first_render:
 		_init_sprites()
@@ -44,12 +44,12 @@ func render_fov() -> void:
 
 	Game_ShadowCastFOV.set_field_of_view(
 			Game_DungeonSize.MAX_X, Game_DungeonSize.MAX_Y,
-			_source_position[0], _source_position[1], _fov_render_range,
+			_source_position.x, _source_position.y, _fov_render_range,
 			self, "_block_line_of_sight", [])
 
 	for i in _find_npcs:
-		pos = Game_ConvertCoord.vector_to_array(i.position)
-		if Game_ShadowCastFOV.is_in_sight(pos[0], pos[1]):
+		pos = Game_ConvertCoord.vector_to_coord(i.position)
+		if Game_ShadowCastFOV.is_in_sight(pos.x, pos.y):
 			_ref_ObjectData.set_state(i, Game_StateTag.ACTIVE)
 
 	if show_full_map:
@@ -65,13 +65,13 @@ func render_fov() -> void:
 
 func interact_with_building() -> void:
 	if _ref_DungeonBoard.has_sprite_with_sub_tag(Game_SubTag.DOOR,
-			_target_position[0], _target_position[1]):
+			_target_position.x, _target_position.y):
 		move()
 
 
 func interact_with_trap() -> void:
 	var trap: Sprite = _ref_DungeonBoard.get_sprite(Game_MainTag.TRAP,
-			_target_position[0], _target_position[1])
+			_target_position.x, _target_position.y)
 	var win: bool
 	var __
 
@@ -88,7 +88,7 @@ func interact_with_trap() -> void:
 		_treasure += 1
 		_treasure = min(_treasure, Game_FactoryData.MAX_TREASURE_SLOT) as int
 
-	_ref_RemoveObject.remove_trap(_target_position[0], _target_position[1])
+	_ref_RemoveObject.remove_trap(_target_position.x, _target_position.y)
 	._move_pc_sprite()
 
 	if win:
@@ -126,12 +126,12 @@ func _init_sprites() -> void:
 
 
 func _show_or_hide_sprite(sprites: Array, auto_reset: bool) -> void:
-	var pos: Array
+	var pos: Game_IntCoord
 
 	for i in sprites:
-		pos = Game_ConvertCoord.vector_to_array(i.position)
-		if _ref_DungeonBoard.has_actor(pos[0], pos[1]):
-			if auto_reset or Game_ShadowCastFOV.is_in_sight(pos[0], pos[1]):
+		pos = Game_ConvertCoord.vector_to_coord(i.position)
+		if _ref_DungeonBoard.has_actor(pos.x, pos.y):
+			if auto_reset or Game_ShadowCastFOV.is_in_sight(pos.x, pos.y):
 				i.visible = false
 		elif auto_reset:
 			i.visible = true
@@ -145,11 +145,11 @@ func _is_cornered() -> bool:
 	var building: Sprite
 
 	for i in Game_CoordCalculator.get_neighbor(
-			_source_position[0], _source_position[1], 1):
-		if _ref_DungeonBoard.has_actor(i[0], i[1]):
+			_source_position.x, _source_position.y, 1):
+		if _ref_DungeonBoard.has_actor(i.x, i.y):
 			continue
 		else:
-			building = _ref_DungeonBoard.get_building(i[0], i[1])
+			building = _ref_DungeonBoard.get_building(i.x, i.y)
 			if (building == null) or building.is_in_group(Game_SubTag.DOOR):
 				return false
 			continue

@@ -15,11 +15,11 @@ func _init(parent_node: Node2D).(parent_node) -> void:
 
 func switch_sprite() -> void:
 	var pc: Sprite = _ref_DungeonBoard.get_pc()
-	var pc_pos: Array = Game_ConvertCoord.vector_to_array(pc.position)
-	var ground: Sprite = _ref_DungeonBoard.get_ground(pc_pos[0], pc_pos[1])
+	var pc_pos := Game_ConvertCoord.vector_to_coord(pc.position)
+	var ground := _ref_DungeonBoard.get_ground(pc_pos.x, pc_pos.y)
 	var new_sprite_type: String
 
-	if _ground_is_active(pc_pos[0], pc_pos[1]):
+	if _ground_is_active(pc_pos.x, pc_pos.y):
 		if _ref_ObjectData.get_hit_point(ground) == 0:
 			new_sprite_type = Game_SpriteTypeTag.ACTIVE_1
 		else:
@@ -32,7 +32,7 @@ func switch_sprite() -> void:
 func set_source_position() -> void:
 	.set_source_position()
 	_move_diagonally = _ground_is_active(
-			_source_position[0], _source_position[1])
+			_source_position.x, _source_position.y)
 
 
 func set_target_position(direction: String) -> void:
@@ -102,16 +102,16 @@ func interact_with_building() -> void:
 func move() -> void:
 	if _move_diagonally:
 		if _count_input == INPUT_TWICE:
-			if (_source_position[0] != _target_position[0]) \
-					and (_source_position[1] != _target_position[1]) \
+			if (_source_position.x != _target_position.x) \
+					and (_source_position.y != _target_position.y) \
 					and _ground_is_active(
-							_target_position[0], _target_position[1]):
+							_target_position.x, _target_position.y):
 				.move()
 				_restore_in_cage()
 				_try_attack(_move_diagonally)
 			_reset_input_state()
 	else:
-		if not _ground_is_active(_target_position[0], _target_position[1]):
+		if not _ground_is_active(_target_position.x, _target_position.y):
 			.move()
 			_restore_in_cage()
 			_try_attack(_move_diagonally)
@@ -136,15 +136,15 @@ func _is_checkmate() -> bool:
 		return false
 
 	neighbor = Game_CoordCalculator.get_neighbor(
-			_source_position[0], _source_position[1], 1)
+			_source_position.x, _source_position.y, 1)
 	for i in neighbor:
-		if not _ref_DungeonBoard.has_building(i[0], i[1]):
+		if not _ref_DungeonBoard.has_building(i.x, i.y):
 			return false
 	return true
 
 
 func _set_diagonal_position(direction: String) -> void:
-	var save_source: Array = _source_position
+	var save_source: Game_IntCoord = _source_position
 
 	_source_position = _target_position
 	.set_target_position(direction)
@@ -163,27 +163,28 @@ func _block_line_of_sight(x: int, y: int, _opt_arg: Array) -> bool:
 		return _ref_DungeonBoard.has_actor(x, y)
 
 
-func _get_hit_position(hit_diagonally: bool) -> Game_CoordCalculator.CoordPair:
-	var shift_x: int = _target_position[0] - _source_position[0]
-	var shift_y: int = _target_position[1] - _source_position[1]
-	var coord: Game_CoordCalculator.CoordPair
+func _get_hit_position(hit_diagonally: bool) -> Game_IntCoord:
+	var shift_x: int = _target_position.x - _source_position.x
+	var shift_y: int = _target_position.y - _source_position.y
+	var coord: Game_IntCoord
 
 	if hit_diagonally:
 		if shift_x * shift_y > 0:
 			coord = Game_CoordCalculator.get_mirror_image(
-					_source_position[0], _source_position[1],
-					_source_position[0], _target_position[1])
+					_source_position.x, _source_position.y,
+					_source_position.x, _target_position.y)
 		else:
 			coord = Game_CoordCalculator.get_mirror_image(
-					_source_position[0], _source_position[1],
-					_target_position[0], _source_position[1])
+					_source_position.x, _source_position.y,
+					_target_position.x, _source_position.y)
 		return coord
 	else:
 		if shift_y != 0:
 			shift_y = -shift_y
-		return Game_CoordCalculator.CoordPair.new(
-				shift_y + _target_position[0],
-				shift_x + _target_position[1])
+		return Game_IntCoord.new(
+				shift_y + _target_position.x,
+				shift_x + _target_position.y
+		)
 
 
 func _can_hit_target(x: int, y: int, hit_diagonally: bool) -> bool:
@@ -211,7 +212,7 @@ func _try_set_and_get_boss_hit_point(x: int, y: int) -> int:
 
 
 func _try_attack(attack_diagonally: bool) -> void:
-	var hit_pos: Game_CoordCalculator.CoordPair
+	var hit_pos: Game_IntCoord
 	var hit_point: int
 
 	hit_pos = _get_hit_position(attack_diagonally)
@@ -234,12 +235,12 @@ func _reset_input_state() -> void:
 
 func _restore_in_cage() -> void:
 	var pc: Sprite = _ref_DungeonBoard.get_pc()
-	var pos: Array = Game_ConvertCoord.vector_to_array(pc.position)
-	var neighbor: Array = Game_CoordCalculator.get_neighbor(pos[0], pos[1], 1)
+	var pos := Game_ConvertCoord.vector_to_coord(pc.position)
+	var neighbor := Game_CoordCalculator.get_neighbor(pos.x, pos.y, 1)
 	var is_surrounded: bool = true
 
 	for i in neighbor:
-		if not _ref_DungeonBoard.has_building(i[0], i[1]):
+		if not _ref_DungeonBoard.has_building(i.x, i.y):
 			is_surrounded = false
 			break
 	if is_surrounded:

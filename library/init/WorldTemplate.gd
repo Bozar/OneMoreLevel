@@ -132,7 +132,7 @@ func _init_actor(min_distance: int, x: int, y: int, max_actor: int,
 
 	neighbor = Game_CoordCalculator.get_neighbor(x, y, min_distance, true)
 	for i in neighbor:
-		_occupy_position(i[0], i[1])
+		_occupy_position(i.x, i.y)
 	_add_to_blueprint(actor_scene, Game_MainTag.ACTOR, sub_tag, x, y)
 
 	_init_actor(min_distance, x, y, max_actor, actor_scene, sub_tag)

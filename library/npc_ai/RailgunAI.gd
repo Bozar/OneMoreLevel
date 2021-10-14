@@ -22,12 +22,12 @@ func take_action() -> void:
 	elif _is_in_close_range():
 		_switch_mode(true)
 	elif _detect_pc():
-		# if Game_CoordCalculator.get_range(_self_pos[0], _self_pos[1],
-		# 		_pc_pos[0], _pc_pos[1]) > Game_RailgunData.NPC_SIGHT:
+		# if Game_CoordCalculator.get_range(_self_pos.x, _self_pos.y,
+		# 		_pc_pos.x, _pc_pos.y) > Game_RailgunData.NPC_SIGHT:
 		# 	_self.modulate = _ref_Palette.DEBUG
 		# 	print("gunshot")
 		_approach_pc()
-		_ref_RemoveObject.remove_trap(_self_pos[0], _self_pos[1])
+		_ref_RemoveObject.remove_trap(_self_pos.x, _self_pos.y)
 
 
 func _switch_mode(aim_mode: bool) -> void:
@@ -46,10 +46,10 @@ func _switch_mode(aim_mode: bool) -> void:
 
 
 func _attack() -> void:
-	var self_x: int = _self_pos[0]
-	var self_y: int = _self_pos[1]
-	var pc_x: int = _pc_pos[0]
-	var pc_y: int = _pc_pos[1]
+	var self_x: int = _self_pos.x
+	var self_y: int = _self_pos.y
+	var pc_x: int = _pc_pos.x
+	var pc_y: int = _pc_pos.y
 	var hit_point: int = _ref_ObjectData.get_hit_point(_self)
 	var shift_x: int = DIRECTION_TO_SHIFT[hit_point][0]
 	var shift_y: int = DIRECTION_TO_SHIFT[hit_point][1]
@@ -74,10 +74,10 @@ func _attack() -> void:
 
 
 func _is_in_close_range() -> bool:
-	var self_x: int = _self_pos[0]
-	var self_y: int = _self_pos[1]
-	var pc_x: int = _pc_pos[0]
-	var pc_y: int = _pc_pos[1]
+	var self_x: int = _self_pos.x
+	var self_y: int = _self_pos.y
+	var pc_x: int = _pc_pos.x
+	var pc_y: int = _pc_pos.y
 	var shift_x: int
 	var shift_y: int
 
@@ -134,5 +134,5 @@ func _detect_pc() -> bool:
 		detect_distance = Game_RailgunData.NPC_EAR_SHOT
 	else:
 		detect_distance = Game_RailgunData.NPC_SIGHT
-	return Game_CoordCalculator.is_inside_range(_self_pos[0], _self_pos[1],
-			_pc_pos[0], _pc_pos[1], detect_distance)
+	return Game_CoordCalculator.is_inside_range(_self_pos.x, _self_pos.y,
+			_pc_pos.x, _pc_pos.y, detect_distance)

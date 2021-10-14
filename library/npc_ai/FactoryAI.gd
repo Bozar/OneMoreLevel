@@ -6,7 +6,7 @@ func _init(parent_node: Node2D).(parent_node) -> void:
 
 
 func take_action() -> void:
-	var pos: Array
+	var pos: Game_IntCoord
 
 	match _ref_ObjectData.get_state(_self):
 		Game_StateTag.DEFAULT:
@@ -16,8 +16,8 @@ func take_action() -> void:
 		Game_StateTag.ACTIVE:
 			_try_approach()
 
-	pos = Game_ConvertCoord.vector_to_array(_self.position)
-	_switch_sprite(pos[0], pos[1])
+	pos = Game_ConvertCoord.vector_to_coord(_self.position)
+	_switch_sprite(pos.x, pos.y)
 
 
 func _start_wait() -> void:
@@ -51,8 +51,8 @@ func _stop_move() -> bool:
 
 
 func _is_adjacent_to_pc() -> bool:
-	return Game_CoordCalculator.is_inside_range(_self_pos[0], _self_pos[1],
-			_pc_pos[0], _pc_pos[1], 1)
+	return Game_CoordCalculator.is_inside_range(_self_pos.x, _self_pos.y,
+			_pc_pos.x, _pc_pos.y, 1)
 
 
 func _is_obstacle(x: int, y: int) -> bool:
@@ -64,14 +64,14 @@ func _is_obstacle(x: int, y: int) -> bool:
 
 
 func _teleport() -> void:
-	var pos: Array
+	var pos: Game_IntCoord
 
 	while true:
 		pos = _get_teleport_coord()
-		if pos.size() > 0:
+		if pos != null:
 			break
 	_ref_DungeonBoard.move_sprite(Game_MainTag.ACTOR,
-			_self_pos[0], _self_pos[1], pos[0], pos[1])
+			_self_pos.x, _self_pos.y, pos.x, pos.y)
 
 
 func _switch_sprite(x: int, y: int) -> void:
@@ -88,19 +88,19 @@ func _switch_sprite(x: int, y: int) -> void:
 	_ref_SwitchSprite.switch_sprite(_self, new_type)
 
 
-func _get_teleport_coord() -> Array:
+func _get_teleport_coord() -> Game_IntCoord:
 	var x: int = _ref_RandomNumber.get_x_coord()
 	var y: int = _ref_RandomNumber.get_y_coord()
 
 	if Game_ShadowCastFOV.is_in_sight(x, y):
-		return []
+		return null
 	elif _ref_DungeonBoard.has_building(x, y) \
 			and (not _ref_DungeonBoard.has_sprite_with_sub_tag(Game_SubTag.DOOR,
 					x, y)):
-		return []
+		return null
 	else:
 		for i in Game_CoordCalculator.get_neighbor(x, y,
 				Game_FactoryData.SCP_GAP, true):
-			if _ref_DungeonBoard.has_actor(i[0], i[1]):
-				return []
-	return [x, y]
+			if _ref_DungeonBoard.has_actor(i.x, i.y):
+				return null
+	return Game_IntCoord.new(x, y)

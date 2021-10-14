@@ -18,16 +18,16 @@ func pass_turn() -> void:
 
 
 func is_npc() -> bool:
-	var reach_x: int = (_target_position[0] - _source_position[0]) * 2 \
-			+ _source_position[0]
-	var reach_y: int = (_target_position[1] - _source_position[1]) * 2 \
-			+ _source_position[1]
+	var reach_x: int = (_target_position.x - _source_position.x) * 2 \
+			+ _source_position.x
+	var reach_y: int = (_target_position.y - _source_position.y) * 2 \
+			+ _source_position.y
 
-	if _ref_DungeonBoard.has_actor(_target_position[0], _target_position[1]):
+	if _ref_DungeonBoard.has_actor(_target_position.x, _target_position.y):
 		return true
 	elif _ref_DungeonBoard.has_actor(reach_x, reach_y):
-		_target_position[0] = reach_x
-		_target_position[1] = reach_y
+		_target_position.x = reach_x
+		_target_position.y = reach_y
 		return true
 	return false
 
@@ -41,7 +41,7 @@ func is_trap() -> bool:
 
 
 func move() -> void:
-	if _is_in_swamp(_source_position[0], _source_position[1]):
+	if _is_in_swamp(_source_position.x, _source_position.y):
 		_step_counter += 1
 		if _step_counter >= Game_FrogData.SINK_IN_MUD:
 			_pass_next_turn = true
@@ -73,8 +73,8 @@ func reset_state() -> void:
 
 func switch_sprite() -> void:
 	var pc: Sprite = _ref_DungeonBoard.get_pc()
-	var x: int = _source_position[0]
-	var y: int = _source_position[1]
+	var x: int = _source_position.x
+	var y: int = _source_position.y
 
 	if _is_in_swamp(x, y):
 		if _step_counter == Game_FrogData.SINK_IN_MUD - 1:

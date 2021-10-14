@@ -67,7 +67,7 @@ func _create_worm_head(retry: int) -> void:
 			Game_DesertData.WORM_DISTANCE, true)
 
 	for i in neighbor:
-		if _ref_DungeonBoard.has_actor(i[0], i[1]):
+		if _ref_DungeonBoard.has_actor(i.x, i.y):
 			_create_worm_head(retry)
 			return
 

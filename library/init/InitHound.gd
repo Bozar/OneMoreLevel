@@ -47,8 +47,8 @@ func _init_wall() -> void:
 		for j in range(0, neighbor.size()):
 			if (counter_index == 0) and (j == 0):
 				continue
-			x = neighbor[j][0]
-			y = neighbor[j][1]
+			x = neighbor[j].x
+			y = neighbor[j].y
 			_occupy_position(x, y)
 			if counter_index == 0:
 				_add_building_to_blueprint(_spr_WallHound, Game_SubTag.COUNTER,
@@ -83,11 +83,11 @@ func _create_pc() -> void:
 			continue
 		neighbor = Game_CoordCalculator.get_neighbor(x, y, 1)
 		for i in neighbor:
-			if _is_occupied(i[0], i[1]):
+			if _is_occupied(i.x, i.y):
 				continue
 			neighbor = Game_CoordCalculator.get_neighbor(x, y,
 					Game_HoundData.PC_SIGHT, true)
 			for j in neighbor:
-				_occupy_position(j[0], j[1])
+				_occupy_position(j.x, j.y)
 			_add_actor_to_blueprint(_spr_PCHound, Game_SubTag.PC, x, y)
 			return

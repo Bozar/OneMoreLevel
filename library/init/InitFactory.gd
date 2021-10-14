@@ -311,9 +311,9 @@ func _create_treasure(sub_tag: String, is_first_rare_treasure: bool,
 
 	_add_trap_to_blueprint(new_sprite, sub_tag, x, y)
 	for i in Game_CoordCalculator.get_neighbor(x, y, gap):
-		if _is_occupied(i[0], i[1]):
+		if _is_occupied(i.x, i.y):
 			continue
-		_set_terrain_marker(i[0], i[1], marker)
+		_set_terrain_marker(i.x, i.y, marker)
 	# Occupy trap grids so that NPCs cannot stand on them and show a default
 	# sprite when game starts.
 	_occupy_position(x, y)
@@ -324,9 +324,9 @@ func _reset_rare_treasure_gap(coord: Array) -> void:
 	for i in coord:
 		for j in Game_CoordCalculator.get_neighbor(i[0], i[1],
 				Game_FactoryData.TREASURE_GAP, true):
-			if _is_occupied(j[0], j[1]):
+			if _is_occupied(j.x, j.y):
 				continue
-			_set_terrain_marker(j[0], j[1], MARKER_TREASURE)
+			_set_terrain_marker(j.x, j.y, MARKER_TREASURE)
 
 
 func _is_in_between(x: int, min_x: int, max_x: int) -> bool:

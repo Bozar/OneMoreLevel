@@ -45,7 +45,7 @@ func _respawn_npc(pc_x: int, pc_y: int) -> void:
 					Game_RailgunData.NPC_GAP, true)
 			has_neighbor = false
 			for i in neighbor:
-				if _ref_DungeonBoard.has_actor(i[0], i[1]):
+				if _ref_DungeonBoard.has_actor(i.x, i.y):
 					has_neighbor = true
 					break
 			if has_neighbor:

@@ -18,8 +18,8 @@ var _ref_Schedule: Game_Schedule
 var _ref_Palette: Game_Palette
 
 var _self: Sprite
-var _pc_pos: Array
-var _self_pos: Array
+var _pc_pos: Game_IntCoord
+var _self_pos: Game_IntCoord
 var _dungeon: Dictionary
 
 
@@ -60,8 +60,8 @@ func set_local_var(actor: Sprite) -> void:
 	var pc = _ref_DungeonBoard.get_pc()
 
 	_self = actor
-	_self_pos = Game_ConvertCoord.vector_to_array(_self.position)
-	_pc_pos = Game_ConvertCoord.vector_to_array(pc.position)
+	_self_pos = Game_ConvertCoord.vector_to_coord(_self.position)
+	_pc_pos = Game_ConvertCoord.vector_to_coord(pc.position)
 
 
 func _approach_pc(start_point := [_pc_pos], step_length := 1, step_count := 1,
@@ -70,8 +70,8 @@ func _approach_pc(start_point := [_pc_pos], step_length := 1, step_count := 1,
 
 	_init_dungeon()
 	for i in start_point:
-		if _dungeon[i[0]][i[1]] == Game_PathFindingData.UNKNOWN:
-			_dungeon[i[0]][i[1]] = Game_PathFindingData.DESTINATION
+		if _dungeon[i.x][i.y] == Game_PathFindingData.UNKNOWN:
+			_dungeon[i.x][i.y] = Game_PathFindingData.DESTINATION
 		else:
 			push_warning(INVALID_START_POINT)
 			return
@@ -81,14 +81,14 @@ func _approach_pc(start_point := [_pc_pos], step_length := 1, step_count := 1,
 		if (i > 0) and _stop_move():
 			break
 		destination = Game_DijkstraPathFinding.get_path(_dungeon,
-				_self_pos[0], _self_pos[1], step_length,
+				_self_pos.x, _self_pos.y, step_length,
 				self, "_is_passable_func", opt_passable_arg)
 
 		if destination.size() > 0:
 			Game_ArrayHelper.rand_picker(destination, 1, _ref_RandomNumber)
 			_ref_DungeonBoard.move_sprite(Game_MainTag.ACTOR,
-					_self_pos[0], _self_pos[1],
-					destination[0][0], destination[0][1])
+					_self_pos.x, _self_pos.y,
+					destination[0].x, destination[0].y)
 			_self_pos = destination[0]
 
 
@@ -112,8 +112,8 @@ func _is_obstacle(x: int, y: int) -> bool:
 
 func _is_passable_func(source_array: Array, current_index: int,
 		_opt_arg: Array) -> bool:
-	var x: int = source_array[current_index][0]
-	var y: int = source_array[current_index][1]
+	var x: int = source_array[current_index].x
+	var y: int = source_array[current_index].y
 	return not _ref_DungeonBoard.has_actor(x, y)
 
 

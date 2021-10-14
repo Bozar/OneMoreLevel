@@ -28,7 +28,7 @@ func render_fov() -> void:
 
 	Game_ShadowCastFOV.set_field_of_view(
 			Game_DungeonSize.MAX_X, Game_DungeonSize.MAX_Y,
-			_source_position[0], _source_position[1], _fov_render_range,
+			_source_position.x, _source_position.y, _fov_render_range,
 			self, "_block_line_of_sight", [])
 
 	for x in range(Game_DungeonSize.MAX_X):
@@ -43,14 +43,14 @@ func wait() -> void:
 	var add_count: bool = false
 
 	_wind_blow()
-	if _ref_DungeonBoard.has_trap(_source_position[0], _source_position[1]):
-		add_count = _reach_destination(_source_position[0], _source_position[1])
+	if _ref_DungeonBoard.has_trap(_source_position.x, _source_position.y):
+		add_count = _reach_destination(_source_position.x, _source_position.y)
 	_end_turn_or_game(add_count)
 
 
 func interact_with_building() -> void:
-	_bounce_off(_source_position[0], _source_position[1],
-			_target_position[0], _target_position[1])
+	_bounce_off(_source_position.x, _source_position.y,
+			_target_position.x, _target_position.y)
 	_end_turn_or_game(false)
 
 
@@ -58,16 +58,16 @@ func interact_with_trap() -> void:
 	var add_count: bool
 
 	_ref_DungeonBoard.move_sprite(Game_MainTag.ACTOR,
-			_source_position[0], _source_position[1],
-			_target_position[0], _target_position[1])
-	add_count = _reach_destination(_target_position[0], _target_position[1])
+			_source_position.x, _source_position.y,
+			_target_position.x, _target_position.y)
+	add_count = _reach_destination(_target_position.x, _target_position.y)
 	_end_turn_or_game(add_count)
 
 
 func move() -> void:
 	_ref_DungeonBoard.move_sprite(Game_MainTag.ACTOR,
-			_source_position[0], _source_position[1],
-			_target_position[0], _target_position[1])
+			_source_position.x, _source_position.y,
+			_target_position.x, _target_position.y)
 	_end_turn_or_game(false)
 
 
@@ -75,36 +75,36 @@ func set_target_position(direction: String) -> void:
 	_wind_blow()
 	.set_target_position(direction)
 	_target_position = _try_move_over_border(
-			_target_position[0], _target_position[1])
+			_target_position.x, _target_position.y)
 
 
 func _wind_blow() -> void:
 	var pc: Sprite = _ref_DungeonBoard.get_actor(
-			_source_position[0], _source_position[1])
+			_source_position.x, _source_position.y)
 	var wind_direction: Array = Game_StateTag.DIRECTION_TO_COORD[ \
 			_ref_ObjectData.get_state(pc)]
-	var new_position: Array = [
-		_source_position[0] + wind_direction[0],
-		_source_position[1] + wind_direction[1]
-	]
+	var new_position := Game_IntCoord.new(
+		_source_position.x + wind_direction[0],
+		_source_position.y + wind_direction[1]
+	)
 
-	new_position = _try_move_over_border(new_position[0], new_position[1])
-	if _ref_DungeonBoard.has_building(new_position[0], new_position[1]):
-		_bounce_off(_source_position[0], _source_position[1],
-				new_position[0], new_position[1])
+	new_position = _try_move_over_border(new_position.x, new_position.y)
+	if _ref_DungeonBoard.has_building(new_position.x, new_position.y):
+		_bounce_off(_source_position.x, _source_position.y,
+				new_position.x, new_position.y)
 	else:
 		_ref_DungeonBoard.move_sprite(Game_MainTag.ACTOR,
-				_source_position[0], _source_position[1],
-				new_position[0], new_position[1])
-	_source_position = Game_ConvertCoord.vector_to_array(pc.position)
+				_source_position.x, _source_position.y,
+				new_position.x, new_position.y)
+	_source_position = Game_ConvertCoord.vector_to_coord(pc.position)
 
 
-func _try_move_over_border(x: int, y: int) -> Array:
+func _try_move_over_border(x: int, y: int) -> Game_IntCoord:
 	if TELEPORT_X.has(x):
 		x = TELEPORT_X[x]
 	if TELEPORT_Y.has(y):
 		y = TELEPORT_Y[y]
-	return [x, y]
+	return Game_IntCoord.new(x, y)
 
 
 func _reach_destination(x: int, y: int) -> bool:
@@ -125,11 +125,11 @@ func _reach_destination(x: int, y: int) -> bool:
 func _bounce_off(pc_x: int, pc_y: int, wall_x: int, wall_y: int) -> void:
 	var mirror := Game_CoordCalculator.get_mirror_image(wall_x, wall_y,
 			pc_x, pc_y)
-	var new_position: Array = _try_move_over_border(mirror.x, mirror.y)
+	var new_position := _try_move_over_border(mirror.x, mirror.y)
 
-	if not _ref_DungeonBoard.has_building(new_position[0], new_position[1]):
+	if not _ref_DungeonBoard.has_building(new_position.x, new_position.y):
 		_ref_DungeonBoard.move_sprite(Game_MainTag.ACTOR, pc_x, pc_y,
-				new_position[0], new_position[1])
+				new_position.x, new_position.y)
 
 
 func _reactive_beacon() -> void:

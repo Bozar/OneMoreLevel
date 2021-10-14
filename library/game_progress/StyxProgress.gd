@@ -28,7 +28,7 @@ func _change_water_flow() -> void:
 			Game_MainTag.GROUND)
 	var valid_state: Array
 	var direction: String
-	var pos: Array
+	var pos: Game_IntCoord
 	var x: int
 	var y: int
 	var flow: Sprite
@@ -42,9 +42,9 @@ func _change_water_flow() -> void:
 		direction = valid_state[0]
 		_rotate_sprite(i, direction)
 
-		pos = Game_ConvertCoord.vector_to_array(i.position)
-		x = pos[0]
-		y = pos[1]
+		pos = Game_ConvertCoord.vector_to_coord(i.position)
+		x = pos.x
+		y = pos.y
 		for _j in range(Game_StyxData.FLOW_LENGTH):
 			x += Game_StateTag.DIRECTION_TO_COORD[direction][0]
 			y += Game_StateTag.DIRECTION_TO_COORD[direction][1]
