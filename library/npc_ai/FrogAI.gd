@@ -46,7 +46,7 @@ func _grapple() -> void:
 			_self_pos.x, _self_pos.y, Game_FrogData.ATTACK_RANGE)
 
 	Game_ArrayHelper.filter_element(neighbor, self, "_filter_grapple", [])
-	_ref_SwitchSprite.switch_sprite(_self, Game_SpriteTypeTag.ACTIVE)
+	_ref_SwitchSprite.set_sprite(_self, Game_SpriteTypeTag.ACTIVE)
 	for i in neighbor:
 		_set_danger_zone(i.x, i.y, true)
 	_ref_EndGame.player_lose()
@@ -77,9 +77,9 @@ func _set_danger_zone(x: int, y: int, danger: bool) -> void:
 
 	_ref_DangerZone.set_danger_zone(x, y, danger)
 	if _ref_DangerZone.is_in_danger(x, y):
-		_ref_SwitchSprite.switch_sprite(ground, Game_SpriteTypeTag.ACTIVE)
+		_ref_SwitchSprite.set_sprite(ground, Game_SpriteTypeTag.ACTIVE)
 	else:
-		_ref_SwitchSprite.switch_sprite(ground, Game_SpriteTypeTag.DEFAULT)
+		_ref_SwitchSprite.set_sprite(ground, Game_SpriteTypeTag.DEFAULT)
 
 
 func _path_is_clear() -> bool:

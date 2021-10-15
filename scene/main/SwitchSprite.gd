@@ -5,7 +5,7 @@ class_name Game_SwitchSprite
 var _ref_ObjectData: Game_ObjectData
 
 
-func switch_sprite(sprite: Sprite, type_tag: String) -> void:
+func set_sprite(sprite: Sprite, type_tag: String) -> void:
 	var current_type: String
 
 	if not sprite.has_node(type_tag):

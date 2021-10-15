@@ -42,7 +42,7 @@ func _switch_mode(aim_mode: bool) -> void:
 		new_sprite = Game_SpriteTypeTag.DEFAULT
 
 	_ref_ObjectData.set_state(_self, new_state)
-	_ref_SwitchSprite.switch_sprite(_self, new_sprite)
+	_ref_SwitchSprite.set_sprite(_self, new_sprite)
 
 
 func _attack() -> void:
@@ -63,7 +63,7 @@ func _attack() -> void:
 		elif _is_actor(self_x, self_y):
 			if (self_x == pc_x) and (self_y == pc_y):
 				_ref_EndGame.player_lose()
-				_ref_SwitchSprite.switch_sprite(_self,
+				_ref_SwitchSprite.set_sprite(_self,
 						Game_SpriteTypeTag.ACTIVE_1)
 				_self.visible = true
 			else:

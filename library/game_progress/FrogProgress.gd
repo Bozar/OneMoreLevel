@@ -126,7 +126,7 @@ func _refresh_counter() -> void:
 				Game_SubTag.COUNTER)[0]
 	if _wave_counter < 0:
 		return
-	_ref_SwitchSprite.switch_sprite(_counter_sprite,
+	_ref_SwitchSprite.set_sprite(_counter_sprite,
 			Game_SpriteTypeTag.convert_digit_to_tag(_wave_counter + 1))
 
 

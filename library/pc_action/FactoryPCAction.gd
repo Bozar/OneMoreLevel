@@ -28,7 +28,7 @@ func switch_sprite() -> void:
 	var pc: Sprite = _ref_DungeonBoard.get_pc()
 	var new_type: String = Game_SpriteTypeTag.convert_digit_to_tag(_treasure)
 
-	_ref_SwitchSprite.switch_sprite(pc, new_type)
+	_ref_SwitchSprite.set_sprite(pc, new_type)
 
 
 func render_fov() -> void:
@@ -77,7 +77,7 @@ func interact_with_trap() -> void:
 
 	if trap.is_in_group(Game_SubTag.RARE_TREASURE):
 		_rare_treasure += 1
-		_ref_SwitchSprite.switch_sprite(_find_clock, CLOCK_TYPE[_rare_treasure])
+		_ref_SwitchSprite.set_sprite(_find_clock, CLOCK_TYPE[_rare_treasure])
 		win = _rare_treasure == Game_FactoryData.MAX_RARE_TREASURE
 		if not win:
 			_ref_CountDown.add_count(Game_FactoryData.RESTORE_RARE_TREASURE)

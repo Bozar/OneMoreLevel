@@ -134,13 +134,15 @@ func set_target_position(direction: String) -> void:
 
 
 func render_fov() -> void:
+	var pos := _ref_DungeonBoard.get_pc_coord()
+
 	if _ref_GameSetting.get_show_full_map():
 		_render_without_fog_of_war()
 		return
 
 	Game_ShadowCastFOV.set_field_of_view(
 			Game_DungeonSize.MAX_X, Game_DungeonSize.MAX_Y,
-			_source_position.x, _source_position.y, _fov_render_range,
+			pos.x, pos.y, _fov_render_range,
 			self, "_block_line_of_sight", [])
 
 	for x in range(Game_DungeonSize.MAX_X):
@@ -153,9 +155,9 @@ func switch_sprite() -> void:
 	var pc: Sprite = _ref_DungeonBoard.get_pc()
 
 	if _ref_DangerZone.is_in_danger(_source_position.x, _source_position.y):
-		_ref_SwitchSprite.switch_sprite(pc, Game_SpriteTypeTag.ACTIVE)
+		_ref_SwitchSprite.set_sprite(pc, Game_SpriteTypeTag.ACTIVE)
 	else:
-		_ref_SwitchSprite.switch_sprite(pc, Game_SpriteTypeTag.DEFAULT)
+		_ref_SwitchSprite.set_sprite(pc, Game_SpriteTypeTag.DEFAULT)
 
 
 func game_over(win: bool) -> void:
@@ -179,7 +181,6 @@ func _is_checkmate() -> bool:
 func _render_end_game(win: bool) -> void:
 	var pc: Sprite = _ref_DungeonBoard.get_pc()
 
-	_source_position = _ref_DungeonBoard.get_pc_coord()
 	render_fov()
 	if not win:
 		_ref_Palette.set_dark_color(pc, Game_MainTag.ACTOR)

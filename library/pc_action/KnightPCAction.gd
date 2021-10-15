@@ -12,11 +12,11 @@ func switch_sprite() -> void:
 	var pc: Sprite = _ref_DungeonBoard.get_pc()
 
 	if _ref_DangerZone.is_in_danger(_source_position.x, _source_position.y):
-		_ref_SwitchSprite.switch_sprite(pc, Game_SpriteTypeTag.ACTIVE)
+		_ref_SwitchSprite.set_sprite(pc, Game_SpriteTypeTag.ACTIVE)
 	elif _ref_ObjectData.verify_state(pc, Game_StateTag.PASSIVE):
-		_ref_SwitchSprite.switch_sprite(pc, Game_SpriteTypeTag.PASSIVE)
+		_ref_SwitchSprite.set_sprite(pc, Game_SpriteTypeTag.PASSIVE)
 	else:
-		_ref_SwitchSprite.switch_sprite(pc, Game_SpriteTypeTag.DEFAULT)
+		_ref_SwitchSprite.set_sprite(pc, Game_SpriteTypeTag.DEFAULT)
 
 
 func attack() -> void:

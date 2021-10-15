@@ -34,7 +34,7 @@ func create_actor(actor: Sprite, sub_tag: String, _x: int, _y: int) -> void:
 		_all_counters = _ref_DungeonBoard.get_sprites_by_tag(
 				Game_SubTag.COUNTER)
 		Game_ArrayHelper.shuffle(_all_counters, _ref_RandomNumber)
-	_ref_SwitchSprite.switch_sprite(_all_counters[_boss_hit_point],
+	_ref_SwitchSprite.set_sprite(_all_counters[_boss_hit_point],
 			Game_SpriteTypeTag.PASSIVE)
 
 
@@ -49,7 +49,7 @@ func remove_actor(actor: Sprite, x: int, y: int) -> void:
 		# The boss is hit by PC.
 		# HoundPCAction._try_set_and_get_boss_hit_point().
 		if _ref_ObjectData.get_hit_point(actor) > _boss_hit_point:
-			_ref_SwitchSprite.switch_sprite(_all_counters[_boss_hit_point],
+			_ref_SwitchSprite.set_sprite(_all_counters[_boss_hit_point],
 					Game_SpriteTypeTag.ACTIVE)
 			_boss_hit_point = _ref_ObjectData.get_hit_point(actor)
 		# The boss is removed due to running out of time.
@@ -107,7 +107,7 @@ func _set_ground_state(ground: Sprite, is_active: bool) -> void:
 	else:
 		_ref_ObjectData.set_state(ground, Game_StateTag.DEFAULT)
 		new_sprite_type = Game_SpriteTypeTag.DEFAULT
-	_ref_SwitchSprite.switch_sprite(ground, new_sprite_type)
+	_ref_SwitchSprite.set_sprite(ground, new_sprite_type)
 
 
 func _respawn_minion(pc_x: int, pc_y: int) -> void:

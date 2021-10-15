@@ -26,7 +26,7 @@ func switch_sprite() -> void:
 			new_sprite_type = Game_SpriteTypeTag.ACTIVE
 	else:
 		new_sprite_type = Game_SpriteTypeTag.DEFAULT
-	_ref_SwitchSprite.switch_sprite(pc, new_sprite_type)
+	_ref_SwitchSprite.set_sprite(pc, new_sprite_type)
 
 
 func set_source_position() -> void:
@@ -41,7 +41,7 @@ func set_target_position(direction: String) -> void:
 	if _move_diagonally:
 		if _count_input == NO_INPUT:
 			.set_target_position(direction)
-			_ref_SwitchSprite.switch_sprite(pc,
+			_ref_SwitchSprite.set_sprite(pc,
 					Game_InputTag.INPUT_TO_SPRITE[direction])
 			_count_input += 1
 		elif _count_input == INPUT_ONCE:

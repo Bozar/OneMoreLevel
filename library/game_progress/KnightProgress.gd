@@ -63,7 +63,7 @@ func remove_actor(actor: Sprite, _x: int, _y: int) -> void:
 
 	if _counter == null:
 		_counter = _ref_DungeonBoard.get_sprites_by_tag(Game_SubTag.COUNTER)[0]
-	_ref_SwitchSprite.switch_sprite(_counter, SWITCH_NUMBER[_dead_captain - 1])
+	_ref_SwitchSprite.set_sprite(_counter, SWITCH_NUMBER[_dead_captain - 1])
 
 
 func _spawn_npc(sub_tag: String, pc_x: int, pc_y: int) -> void:

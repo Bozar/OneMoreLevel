@@ -73,7 +73,7 @@ func _switch_sprite() -> void:
 		sprite_type = Game_SpriteTypeTag.ACTIVE
 	else:
 		sprite_type = Game_SpriteTypeTag.DEFAULT
-	_ref_SwitchSprite.switch_sprite(_self, sprite_type)
+	_ref_SwitchSprite.set_sprite(_self, sprite_type)
 
 
 func _boss_countdown() -> bool:
@@ -219,7 +219,7 @@ func _set_pc_hit_point(add_hit_point: int) -> void:
 	_ref_ObjectData.set_hit_point(pc, pc_hit_point)
 	new_sprite_type = Game_SpriteTypeTag.convert_digit_to_tag(
 			Game_HoundData.MAX_PC_HIT_POINT - pc_hit_point)
-	_ref_SwitchSprite.switch_sprite(phantom, new_sprite_type)
+	_ref_SwitchSprite.set_sprite(phantom, new_sprite_type)
 	if pc_hit_point == Game_HoundData.MAX_PC_HIT_POINT:
 		_player_lose = true
 		_ref_EndGame.player_lose()
@@ -243,4 +243,4 @@ func _boss_absorb_fog() -> void:
 				Game_HoundData.ABSORB_DURATION)
 		if _ref_ObjectData.get_hit_point(ground) < 1:
 			_ref_ObjectData.set_hit_point(ground, 0)
-			_ref_SwitchSprite.switch_sprite(ground, Game_SpriteTypeTag.ACTIVE_1)
+			_ref_SwitchSprite.set_sprite(ground, Game_SpriteTypeTag.ACTIVE_1)

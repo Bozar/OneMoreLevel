@@ -224,7 +224,7 @@ func _render_counter(kill: int) -> void:
 
 	for i in range(counter.size()):
 		sprite_type = Game_SpriteTypeTag.convert_digit_to_tag(counter[i])
-		_ref_SwitchSprite.switch_sprite(_counter_sprite[i], sprite_type)
+		_ref_SwitchSprite.set_sprite(_counter_sprite[i], sprite_type)
 
 
 func _switch_mode(aim_mode: bool, pc: Sprite) -> void:
@@ -239,7 +239,7 @@ func _switch_mode(aim_mode: bool, pc: Sprite) -> void:
 		new_sprite = Game_SpriteTypeTag.DEFAULT
 
 	_ref_ObjectData.set_state(pc, new_state)
-	_ref_SwitchSprite.switch_sprite(pc, new_sprite)
+	_ref_SwitchSprite.set_sprite(pc, new_sprite)
 
 
 func _is_aim_mode(pc: Sprite) -> bool:
@@ -258,7 +258,7 @@ func _try_find_pillar() -> void:
 	if _has_found_pillar:
 		pillar = _ref_DungeonBoard.get_building(
 				_plillar_position.x, _plillar_position.y)
-		_ref_SwitchSprite.switch_sprite(pillar, Game_SpriteTypeTag.ACTIVE)
+		_ref_SwitchSprite.set_sprite(pillar, Game_SpriteTypeTag.ACTIVE)
 
 
 func _set_move_hit_point() -> void:

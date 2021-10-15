@@ -40,7 +40,7 @@ func attack() -> void:
 		return
 
 	_ref_ObjectData.set_state(worm, Game_StateTag.PASSIVE)
-	_ref_SwitchSprite.switch_sprite(worm, Game_SpriteTypeTag.PASSIVE)
+	_ref_SwitchSprite.set_sprite(worm, Game_SpriteTypeTag.PASSIVE)
 
 	if is_active_spice:
 		_ref_ObjectData.add_hit_point(pc, 1)
@@ -109,7 +109,7 @@ func _switch_to_number(is_number: bool) -> void:
 		type_tag = Game_SpriteTypeTag.ACTIVE
 	else:
 		type_tag = Game_SpriteTypeTag.DEFAULT
-	_ref_SwitchSprite.switch_sprite(pc, type_tag)
+	_ref_SwitchSprite.set_sprite(pc, type_tag)
 
 
 func _block_line_of_sight(x: int, y: int, _opt_arg: Array) -> bool:

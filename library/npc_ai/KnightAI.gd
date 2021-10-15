@@ -50,7 +50,7 @@ func _attack() -> void:
 		_prepare_second_attack(id)
 	else:
 		_ref_ObjectData.set_state(_self, Game_StateTag.PASSIVE)
-		_ref_SwitchSprite.switch_sprite(_self, Game_SpriteTypeTag.PASSIVE)
+		_ref_SwitchSprite.set_sprite(_self, Game_SpriteTypeTag.PASSIVE)
 
 
 func _recover() -> void:
@@ -61,7 +61,7 @@ func _recover() -> void:
 
 	if _self.is_in_group(Game_SubTag.KNIGHT_BOSS) and HIT_TO_SPRITE.has(hit):
 		new_sprite = HIT_TO_SPRITE[hit]
-	_ref_SwitchSprite.switch_sprite(_self, new_sprite)
+	_ref_SwitchSprite.set_sprite(_self, new_sprite)
 
 
 func _alert() -> void:
@@ -69,7 +69,7 @@ func _alert() -> void:
 	var danger_zone: Array = _get_danger_zone()
 
 	_ref_ObjectData.set_state(_self, Game_StateTag.ACTIVE)
-	_ref_SwitchSprite.switch_sprite(_self, Game_SpriteTypeTag.ACTIVE)
+	_ref_SwitchSprite.set_sprite(_self, Game_SpriteTypeTag.ACTIVE)
 
 	_id_to_danger_zone[id] = danger_zone
 	_set_danger_zone(danger_zone, true)
@@ -93,7 +93,7 @@ func _switch_ground(danger_zone: Array) -> void:
 			sprite_type = Game_SpriteTypeTag.ACTIVE
 		else:
 			sprite_type = Game_SpriteTypeTag.DEFAULT
-		_ref_SwitchSprite.switch_sprite(ground_sprite, sprite_type)
+		_ref_SwitchSprite.set_sprite(ground_sprite, sprite_type)
 
 
 func _get_danger_zone() -> Array:
