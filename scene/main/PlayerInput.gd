@@ -24,9 +24,7 @@ var _end_game: bool = false
 
 
 func _unhandled_input(event: InputEvent) -> void:
-	var may_have_conflict: bool = true
-
-	_pc_action.reset_state()
+	var may_have_conflict := true
 
 	if _verify_input(event, Game_InputTag.QUIT):
 		get_tree().quit()
@@ -56,7 +54,6 @@ func _unhandled_input(event: InputEvent) -> void:
 		elif _verify_input(event, Game_InputTag.FULLY_RESTORE_TURN):
 			_ref_CountDown.add_count(99)
 
-	_pc_action.set_source_position()
 	if _is_move_input(event):
 		_handle_move_input()
 	elif _verify_input(event, Game_InputTag.WAIT):
@@ -85,6 +82,7 @@ func _on_Schedule_turn_started(current_sprite: Sprite) -> void:
 	if not current_sprite.is_in_group(Game_SubTag.PC):
 		return
 
+	_pc_action.reset_state()
 	_pc_action.set_source_position()
 	_pc_action.switch_sprite()
 	_pc_action.render_fov()
@@ -96,6 +94,8 @@ func _on_Schedule_turn_started(current_sprite: Sprite) -> void:
 
 
 func _on_EndGame_game_over(win: bool) -> void:
+	# Update PC's posotion if he dies in his own turn.
+	_pc_action.set_source_position()
 	_pc_action.game_over(win)
 	_end_game = true
 	set_process_unhandled_input(true)
@@ -115,6 +115,9 @@ func _is_move_input(event: InputEvent) -> bool:
 
 
 func _handle_move_input() -> void:
+	# PC may move more than once in his turn, therefore we need to update his
+	# position accordingly.
+	_pc_action.set_source_position()
 	_pc_action.set_target_position(_direction)
 	if not _pc_action.is_inside_dungeon():
 		return
