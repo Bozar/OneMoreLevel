@@ -82,8 +82,8 @@ func _on_Schedule_turn_started(current_sprite: Sprite) -> void:
 	if not current_sprite.is_in_group(Game_SubTag.PC):
 		return
 
-	_pc_action.reset_state()
 	_pc_action.set_source_position()
+	_pc_action.reset_state()
 	_pc_action.switch_sprite()
 	_pc_action.render_fov()
 	if not _pc_action.allow_input():
