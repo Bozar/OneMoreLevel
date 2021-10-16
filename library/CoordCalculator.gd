@@ -1,6 +1,19 @@
 class_name Game_CoordCalculator
 
 
+const UP := 0
+const DOWN := 1
+const LEFT := 2
+const RIGHT := 3
+
+const DIRECTION_TO_SHIFT := {
+	UP: [0, -1],
+	DOWN: [0, 1],
+	LEFT: [-1, 0],
+	RIGHT: [1, 0],
+}
+
+
 static func get_range(x_source: int, y_source: int,
 		x_target: int, y_target: int) -> int:
 	var delta_x: int = abs(x_source - x_target) as int
@@ -52,3 +65,31 @@ static func get_mirror_image(source_x: int, source_y: int,
 static func is_inside_dungeon(x: int, y: int) -> bool:
 	return (x >= 0) and (x < Game_DungeonSize.MAX_X) \
 			and (y >= 0) and (y < Game_DungeonSize.MAX_Y)
+
+
+# ray_direction: Game_CoordCalculator.[UP|DOWN|LEFT|RIGHT]
+# is_obstacle_func(x: int, y: int, optional_arg: Array) -> bool
+# Return an array of coordinates: [Game_IntCoord, ...].
+static func get_ray_path(source_x: int, source_y: int, max_range: int,
+		ray_direction: int, has_start_point: bool, has_end_point: bool,
+		func_host: Object, is_obstacle_func: String, optional_arg: Array = []) \
+		-> Array:
+	var x: int = source_x
+	var y: int = source_y
+	var is_obstacle := funcref(func_host, is_obstacle_func)
+	var shift: Array = DIRECTION_TO_SHIFT[ray_direction]
+	var ray_path := []
+
+	if has_start_point:
+		ray_path.push_back(Game_IntCoord.new(x, y))
+	for _i in range(0, max_range):
+		x += shift[0]
+		y += shift[1]
+		if not is_inside_dungeon(x, y):
+			return ray_path
+		if is_obstacle.call_func(x, y, optional_arg):
+			if has_end_point:
+				ray_path.push_back(Game_IntCoord.new(x, y))
+			return ray_path
+		ray_path.push_back(Game_IntCoord.new(x, y))
+	return ray_path
