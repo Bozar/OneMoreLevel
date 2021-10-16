@@ -138,6 +138,7 @@ func render_fov() -> void:
 
 	if _ref_GameSetting.get_show_full_map():
 		_render_without_fog_of_war()
+		_post_process_fov(pos.x, pos.y)
 		return
 
 	Game_ShadowCastFOV.set_field_of_view(
@@ -149,6 +150,7 @@ func render_fov() -> void:
 		for y in range(Game_DungeonSize.MAX_Y):
 			for i in Game_MainTag.DUNGEON_OBJECT:
 				_set_sprite_color(x, y, i, Game_ShadowCastFOV, "is_in_sight")
+	_post_process_fov(pos.x, pos.y)
 
 
 func switch_sprite() -> void:
@@ -276,3 +278,8 @@ func _move_pc_sprite() -> void:
 	_ref_DungeonBoard.move_sprite(Game_MainTag.ACTOR,
 			_source_position.x, _source_position.y,
 			_target_position.x, _target_position.y)
+
+
+# Render dungeon objects at the end of the default render_fov().
+func _post_process_fov(_pc_x: int, _pc_y: int) -> void:
+	pass

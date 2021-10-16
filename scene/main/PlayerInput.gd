@@ -57,7 +57,7 @@ func _unhandled_input(event: InputEvent) -> void:
 	if _is_move_input(event):
 		_handle_move_input()
 	elif _verify_input(event, Game_InputTag.WAIT):
-		_pc_action.wait()
+		_handle_wait_input()
 
 	# Do not end PC's turn if game ends.
 	if _end_game:
@@ -130,3 +130,10 @@ func _handle_move_input() -> void:
 		_pc_action.interact_with_trap()
 	else:
 		_pc_action.move()
+
+
+func _handle_wait_input() -> void:
+	# PC may move to another place before waiting in his turn, therefore we need
+	# to update his position accordingly.
+	_pc_action.set_source_position()
+	_pc_action.wait()
