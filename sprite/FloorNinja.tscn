@@ -5,14 +5,14 @@
 [sub_resource type="AtlasTexture" id=1]
 flags = 4
 atlas = ExtResource( 1 )
-region = Rect2( 360, 108, 24, 36 )
+region = Rect2( 240, 540, 24, 36 )
 
 [sub_resource type="AtlasTexture" id=2]
 flags = 4
 atlas = ExtResource( 1 )
-region = Rect2( 24, 72, 24, 36 )
+region = Rect2( 0, 540, 24, 36 )
 
-[node name="SoulFragment" type="Sprite"]
+[node name="FloorNinja" type="Sprite"]
 
 [node name="default" type="Sprite" parent="."]
 texture = SubResource( 1 )
@@ -20,3 +20,4 @@ texture = SubResource( 1 )
 [node name="active" type="Sprite" parent="."]
 visible = false
 texture = SubResource( 2 )
+normal_map = ExtResource( 1 )
