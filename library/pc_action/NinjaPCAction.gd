@@ -25,7 +25,7 @@ var _time_stop := 0
 
 
 func _init(parent_node: Node2D).(parent_node) -> void:
-	pass
+	_fov_render_range = Game_NinjaData.PC_SIGHT
 
 
 func reset_state() -> void:
@@ -105,7 +105,6 @@ func _move_outside_time_stop() -> void:
 
 
 func _move_inside_time_stop(has_trap: bool) -> void:
-	end_turn = false
 	if _is_horizontal_move():
 		_move_pc_sprite()
 		if not has_trap:
@@ -113,11 +112,7 @@ func _move_inside_time_stop(has_trap: bool) -> void:
 	elif not _charge_and_try_hit(INPUT_TO_COORD[_input_direction], true):
 		if not has_trap:
 			_time_stop -= 1
-
-	if _time_stop < 1:
-		end_turn = true
-	else:
-		render_fov()
+	end_turn = _time_stop < 1
 
 
 # direction is Game_CoordCalculator.[UP|DOWN|LEFT|RIGHT]
@@ -207,12 +202,13 @@ func _hit_actor(x: int, y: int) -> void:
 	__ = ACTOR_TRAJECTORY.erase(id)
 	_ref_RemoveObject.remove_actor(x, y)
 	_ref_CreateObject.create_trap(_spr_SoulFragment, Game_SubTag.TREASURE, x, y)
-	render_fov()
 
 
 func _try_end_game() -> void:
 	if _ref_DungeonBoard.get_npc().size() == 0:
 		_ref_EndGame.player_win()
+	else:
+		render_fov()
 
 
 func _update_indicator() -> void:
@@ -241,3 +237,8 @@ func _post_process_fov(_pc_x: int, pc_y: int) -> void:
 		for x in range(i[0], i[1]):
 			wall = _ref_DungeonBoard.get_building(x, pc_y)
 			_ref_Palette.set_default_color(wall, Game_MainTag.BUILDING)
+
+
+func _is_checkmate() -> bool:
+	var pc := _ref_DungeonBoard.get_pc()
+	return _ref_ObjectData.get_bool(pc)
