@@ -11,9 +11,9 @@ var _ref_SwitchSprite: Game_SwitchSprite
 var _ref_DangerZone: Game_DangerZone
 var _ref_EndGame: Game_EndGame
 var _ref_RandomNumber: Game_RandomNumber
-var _ref_RemoveObject : Game_RemoveObject
-var _ref_CountDown : Game_CountDown
-var _ref_CreateObject : Game_CreateObject
+var _ref_RemoveObject: Game_RemoveObject
+var _ref_CountDown: Game_CountDown
+var _ref_CreateObject: Game_CreateObject
 var _ref_Schedule: Game_Schedule
 var _ref_Palette: Game_Palette
 

@@ -14,7 +14,7 @@ var _spr_TriangleUp := preload("res://sprite/TriangleUp.tscn")
 
 var _ref_RandomNumber: Game_RandomNumber
 var _ref_CreateObject: Game_CreateObject
-var _ref_GameSetting : Game_GameSetting
+var _ref_GameSetting: Game_GameSetting
 var _ref_DangerZone: Game_DangerZone
 var _ref_Schedule: Game_Schedule
 

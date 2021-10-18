@@ -14,7 +14,7 @@ var _ref_RandomNumber: Game_RandomNumber
 var _ref_EndGame: Game_EndGame
 var _ref_CountDown: Game_CountDown
 var _ref_SwitchSprite: Game_SwitchSprite
-var _ref_CreateObject : Game_CreateObject
+var _ref_CreateObject: Game_CreateObject
 var _ref_DangerZone: Game_DangerZone
 var _ref_GameSetting: Game_GameSetting
 var _ref_Palette: Game_Palette
@@ -24,7 +24,7 @@ var _target_position: Game_IntCoord
 var _input_direction: String
 # Set `_fov_render_range` if we use the default `_fov_render_range()`. Otherwise
 # there is no need to set it.
-var _fov_render_range: int = 5
+var _fov_render_range := 5
 
 
 # Refer: PlayerInput.gd.
