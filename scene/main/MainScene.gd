@@ -47,7 +47,7 @@ const SIGNAL_BIND := [
 	[
 		"sprite_removed", "_on_RemoveObject_sprite_removed",
 		REMOVE_OBJECT,
-		DUNGEON, SCHEDULE, OBJECT_DATA, ENEMY_AI, GAME_PROGRESS,
+		DUNGEON, SCHEDULE, OBJECT_DATA, ENEMY_AI, GAME_PROGRESS, PLAYER_INPUT,
 	],
 	[
 		"game_over", "_on_EndGame_game_over",

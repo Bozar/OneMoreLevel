@@ -167,6 +167,11 @@ func game_over(win: bool) -> void:
 	switch_sprite()
 
 
+func remove_data(_remove_sprite: Sprite, _main_tag: String, _x: int, _y: int) \
+		-> void:
+	pass
+
+
 func _is_occupied(x: int, y: int) -> bool:
 	if not Game_CoordCalculator.is_inside_dungeon(x, y):
 		return true

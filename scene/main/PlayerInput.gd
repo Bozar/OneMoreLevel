@@ -78,6 +78,11 @@ func _on_CreateObject_sprite_created(_new_sprite: Sprite,
 		set_process_unhandled_input(true)
 
 
+func _on_RemoveObject_sprite_removed(remove_sprite: Sprite, main_tag: String,
+		x: int, y: int) -> void:
+	_pc_action.remove_data(remove_sprite, main_tag, x, y)
+
+
 func _on_Schedule_turn_started(current_sprite: Sprite) -> void:
 	if not current_sprite.is_in_group(Game_SubTag.PC):
 		return
