@@ -7,16 +7,19 @@ const MIN_Y := 0
 const MAX_Y := 13
 const GROUND_Y := 12
 
+const LEVEL_1_Y := 3
+const LEVEL_2_Y := 6
+const LEVEL_3_Y := 9
+
 const PC_SPEED := 2
 const PC_SIGHT := 6
-const MAX_TIME_STOP := 9
+const MAX_TIME_STOP := 4
+const MAX_PC_HP := 4
 
 const NINJA_SPEED := 3
 const ATTACK_RANGE := 1
+const VERTICAL_NINJA_SIGHT := 4
+const MAX_NINJA_HP := 1
 
-# const TIME_STOP_DIVISOR := 6.0
-# const MAX_SOUL_DURATION := 8
-
-# const MAX_NPC := 12
-# const MIN_DISTANCE_TO_PC := 5
-# const MAX_DISTANCE_TO_PC := 9
+const MAX_NINJA_PER_LEVEL := 4
+const MAX_NINJA := 12
