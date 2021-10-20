@@ -3,6 +3,12 @@ extends Game_WorldTemplate
 
 const PATH_TO_PREFABS := "ninja"
 
+const RANGE_Y := [
+	[Game_NinjaData.LEVEL_2_Y, Game_NinjaData.LEVEL_3_Y],
+	[Game_NinjaData.LEVEL_1_Y, Game_NinjaData.LEVEL_2_Y],
+	[Game_NinjaData.MIN_Y, Game_NinjaData.LEVEL_1_Y],
+]
+
 var _spr_FloorNinja := preload("res://sprite/FloorNinja.tscn")
 var _spr_PCNinja := preload("res://sprite/PCNinja.tscn")
 var _spr_Ninja := preload("res://sprite/Ninja.tscn")
@@ -16,9 +22,9 @@ func _init(parent_node: Node2D).(parent_node) -> void:
 func get_blueprint() -> Array:
 	_create_wall()
 	_init_floor(_spr_FloorNinja)
-	_create_actor()
-	_init_pc(0, Game_DungeonSize.CENTER_X, Game_NinjaData.MAX_Y - 1,
+	_init_pc(1, Game_DungeonSize.CENTER_X, Game_NinjaData.MAX_Y - 1,
 			_spr_PCNinja)
+	_create_actor()
 
 	return _blueprint
 
@@ -38,13 +44,25 @@ func _create_wall() -> void:
 
 
 func _create_actor() -> void:
-	var _ninja_pos := [
-		[Game_DungeonSize.CENTER_X, Game_DungeonSize.CENTER_Y],
-		[Game_DungeonSize.CENTER_X - 1, Game_DungeonSize.CENTER_Y - 2],
-		[Game_DungeonSize.CENTER_X - 1, Game_DungeonSize.CENTER_Y - 3],
-		[Game_DungeonSize.CENTER_X - 1, Game_NinjaData.GROUND_Y],
-		[Game_NinjaData.MIN_X, Game_NinjaData.GROUND_Y],
-		[Game_DungeonSize.CENTER_X, Game_NinjaData.GROUND_Y - 3],
-	]
-	for i in _ninja_pos:
-		_add_actor_to_blueprint(_spr_Ninja, Game_SubTag.NINJA, i[0], i[1])
+	for i in RANGE_Y:
+		_create_actor_in_one_region(i[0], i[1],
+				Game_NinjaData.MAX_NINJA_PER_LEVEL)
+
+
+func _create_actor_in_one_region(min_y: int, max_y: int, count: int) -> void:
+	if count < 1:
+		return
+
+	var x := _ref_RandomNumber.get_int(Game_NinjaData.MIN_X,
+			Game_NinjaData.MAX_X)
+	var y := _ref_RandomNumber.get_int(min_y, max_y)
+	var neighbor: Array
+
+	if _is_occupied(x, y):
+		_create_actor_in_one_region(min_y, max_y, count)
+	else:
+		_add_actor_to_blueprint(_spr_Ninja, Game_SubTag.NINJA, x, y)
+		neighbor = Game_CoordCalculator.get_neighbor(x, y, 1, true)
+		for i in neighbor:
+			_occupy_position(i.x, i.y)
+		_create_actor_in_one_region(min_y, max_y, count - 1)
