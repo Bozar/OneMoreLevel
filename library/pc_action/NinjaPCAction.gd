@@ -58,13 +58,13 @@ func attack() -> void:
 func wait() -> void:
 	var __
 
+	# First, end time stop if necessary.
 	if _time_stop > 0:
 		_time_stop = 0
 		switch_sprite()
-	elif _is_above_ground():
+	# Then fall down if possible.
+	if _is_above_ground():
 		__ = _charge_and_try_hit(Game_CoordCalculator.DOWN, false)
-		_update_trajectory()
-		_update_indicator()
 
 	end_turn = true
 
@@ -75,6 +75,18 @@ func interact_with_trap() -> void:
 
 func move() -> void:
 	_pc_move(false)
+
+
+func remove_data(remove_sprite: Sprite, _main_tag: String, _x: int, _y: int) \
+		-> void:
+	if not remove_sprite.is_in_group(Game_SubTag.NINJA):
+		return
+
+	var id := remove_sprite.get_instance_id()
+	var __
+
+	_set_trajectory_type(id, Game_SpriteTypeTag.DEFAULT)
+	__ = ACTOR_TRAJECTORY.erase(id)
 
 
 func _pc_move(has_trap: bool) -> void:
@@ -194,11 +206,6 @@ func _is_obstacle(x: int, y: int, _opt_art: Array) -> bool:
 
 
 func _hit_actor(x: int, y: int) -> void:
-	var id := _ref_DungeonBoard.get_actor(x, y).get_instance_id()
-	var __
-
-	_set_trajectory_type(id, Game_SpriteTypeTag.DEFAULT)
-	__ = ACTOR_TRAJECTORY.erase(id)
 	_ref_RemoveObject.remove_actor(x, y)
 	_ref_CreateObject.create_trap(_spr_SoulFragment, Game_SubTag.TREASURE, x, y)
 
@@ -236,3 +243,10 @@ func _post_process_fov(_pc_x: int, pc_y: int) -> void:
 		for x in range(i[0], i[1]):
 			wall = _ref_DungeonBoard.get_building(x, pc_y)
 			_ref_Palette.set_default_color(wall, Game_MainTag.BUILDING)
+
+
+func _render_end_game(win: bool) -> void:
+	_update_trajectory()
+	_update_indicator()
+
+	._render_end_game(win)
