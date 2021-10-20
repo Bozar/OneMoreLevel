@@ -90,13 +90,12 @@ func _pc_move(has_trap: bool) -> void:
 
 
 func _move_outside_time_stop() -> void:
-	var __
-
 	if _is_horizontal_move():
 		_move_pc_sprite()
-		if _is_above_ground():
-			__ = _charge_and_try_hit(Game_CoordCalculator.DOWN, false)
-		end_turn = true
+		if _charge_and_try_hit(Game_CoordCalculator.DOWN, true):
+			_time_stop = Game_NinjaData.MAX_TIME_STOP
+		else:
+			end_turn = true
 	elif _is_upward_move_from_ground() or _is_downward_move():
 		if _charge_and_try_hit(INPUT_TO_COORD[_input_direction], true):
 			_time_stop = Game_NinjaData.MAX_TIME_STOP
@@ -237,8 +236,3 @@ func _post_process_fov(_pc_x: int, pc_y: int) -> void:
 		for x in range(i[0], i[1]):
 			wall = _ref_DungeonBoard.get_building(x, pc_y)
 			_ref_Palette.set_default_color(wall, Game_MainTag.BUILDING)
-
-
-func _is_checkmate() -> bool:
-	var pc := _ref_DungeonBoard.get_pc()
-	return _ref_ObjectData.get_bool(pc)
