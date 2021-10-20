@@ -56,15 +56,17 @@ func attack() -> void:
 
 
 func wait() -> void:
-	if _time_stop < 1:
-		return
+	var __
 
-	_time_stop = 0
-	switch_sprite()
+	if _time_stop > 0:
+		_time_stop = 0
+		switch_sprite()
+	elif _is_above_ground():
+		__ = _charge_and_try_hit(Game_CoordCalculator.DOWN, false)
+		_update_trajectory()
+		_update_indicator()
+
 	end_turn = true
-
-	_update_trajectory()
-	_update_indicator()
 
 
 func interact_with_trap() -> void:
