@@ -58,14 +58,11 @@ func attack() -> void:
 func wait() -> void:
 	var __
 
-	# First, end time stop if necessary.
 	if _time_stop > 0:
 		_time_stop = 0
 		switch_sprite()
-	# Then fall down if possible.
-	if _is_above_ground():
+	elif _is_above_ground():
 		__ = _charge_and_try_hit(Game_CoordCalculator.DOWN, false)
-
 	end_turn = true
 
 
@@ -77,6 +74,8 @@ func move() -> void:
 	_pc_move(false)
 
 
+# A ninja is removed either because of being hit in NinjaPCAction (this script)
+# or being idle in NinjaProgress.
 func remove_data(remove_sprite: Sprite, _main_tag: String, _x: int, _y: int) \
 		-> void:
 	if not remove_sprite.is_in_group(Game_SubTag.NINJA):
