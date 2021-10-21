@@ -38,6 +38,7 @@ func init_world() -> void:
 			_init_indicator(sb.x, sb.y)
 		_ref_CreateObject.create(sb.scene, sb.main_tag, sb.sub_tag, sb.x, sb.y)
 	_ref_Schedule.init_schedule()
+	_world_template.clear_blueprint()
 
 
 func _on_GameSetting_setting_saved(save_data: Game_TransferData,

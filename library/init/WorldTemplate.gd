@@ -40,6 +40,11 @@ func get_blueprint() -> Array:
 	return _blueprint
 
 
+func clear_blueprint() -> void:
+	_dungeon_board.clear()
+	_blueprint.clear()
+
+
 func _init_dungeon_board() -> void:
 	for i in range(Game_DungeonSize.MAX_X):
 		_dungeon_board[i] = []
