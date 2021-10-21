@@ -2,6 +2,7 @@ extends Game_WorldTemplate
 
 
 const PATH_TO_PREFABS := "ninja"
+const HP_CHAR := "X"
 
 const RANGE_Y := [
 	[Game_NinjaData.LEVEL_2_Y, Game_NinjaData.LEVEL_3_Y],
@@ -10,6 +11,7 @@ const RANGE_Y := [
 ]
 
 var _spr_FloorNinja := preload("res://sprite/FloorNinja.tscn")
+var _spr_HPBar := preload("res://sprite/HPBar.tscn")
 var _spr_PCNinja := preload("res://sprite/PCNinja.tscn")
 var _spr_Ninja := preload("res://sprite/Ninja.tscn")
 var _spr_WallNinja := preload("res://sprite/WallNinja.tscn")
@@ -20,7 +22,7 @@ func _init(parent_node: Node2D).(parent_node) -> void:
 
 
 func get_blueprint() -> Array:
-	_create_wall()
+	_create_wall_floor()
 	_init_floor(_spr_FloorNinja)
 	_init_pc(1, Game_DungeonSize.CENTER_X, Game_NinjaData.MAX_Y - 1,
 			_spr_PCNinja)
@@ -29,18 +31,28 @@ func get_blueprint() -> Array:
 	return _blueprint
 
 
-func _create_wall() -> void:
+func _create_wall_floor() -> void:
 	var file_list: Array = Game_FileIOHelper.get_file_list(
 			Game_DungeonPrefab.RESOURCE_PATH + PATH_TO_PREFABS)
 	var packed_prefab: Game_DungeonPrefab.PackedPrefab \
 			= Game_DungeonPrefab.get_prefab(file_list[0], [])
+	var new_scene: PackedScene
+	var sub_tag: String
 
 	for x in range(0, packed_prefab.max_x):
 		for y in range(0, packed_prefab.max_y):
-			if packed_prefab.prefab[x][y] == Game_DungeonPrefab.WALL_CHAR:
-				_occupy_position(x, y)
-				_add_building_to_blueprint(_spr_WallNinja, Game_SubTag.WALL,
-						x, y)
+			_occupy_position(x, y)
+			match packed_prefab.prefab[x][y]:
+				Game_DungeonPrefab.WALL_CHAR:
+					new_scene = _spr_WallNinja
+					sub_tag = Game_SubTag.WALL
+					_add_building_to_blueprint(new_scene, sub_tag, x, y)
+				HP_CHAR:
+					new_scene = _spr_HPBar
+					sub_tag = Game_SubTag.FLOOR
+					_add_ground_to_blueprint(new_scene, sub_tag, x, y)
+				_:
+					_reverse_occupy(x, y)
 
 
 func _create_actor() -> void:

@@ -10,6 +10,10 @@ const STATE_TO_SPRITE_TYPE := {
 	1: Game_SpriteTypeTag.ACTIVE,
 	0: Game_SpriteTypeTag.DEFAULT,
 }
+const HP_BAR := [
+	[Game_DungeonSize.CENTER_X + 1, Game_NinjaData.MAX_X],
+	[Game_NinjaData.MIN_X, Game_DungeonSize.CENTER_X],
+]
 
 var _end_game := false
 
@@ -139,4 +143,13 @@ func _ray_is_blocked(x: int, y: int, opt_arg: Array) -> bool:
 
 
 func _update_health_bar(hit_point: int) -> void:
-	print(hit_point)
+	var this_floor: Sprite
+	var bar: Array
+
+	if hit_point < 1:
+		return
+
+	bar = HP_BAR[hit_point - 1]
+	for x in range(bar[0], bar[1]):
+		this_floor = _ref_DungeonBoard.get_ground(x, Game_DungeonSize.MAX_Y - 1)
+		_ref_SwitchSprite.set_sprite(this_floor, Game_SpriteTypeTag.PASSIVE)

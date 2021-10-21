@@ -14,7 +14,7 @@ const LEVEL_3_Y := 9
 const PC_SPEED := 2
 const PC_SIGHT := 6
 const MAX_TIME_STOP := 4
-const MAX_PC_HP := 3
+const MAX_PC_HP := 2
 
 const NINJA_SPEED := 3
 const ATTACK_RANGE := 1
