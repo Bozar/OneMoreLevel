@@ -30,23 +30,6 @@ func remove_actor(actor: Sprite, _x: int, _y: int) -> void:
 			break
 
 
-func remove_building(_building: Sprite, x: int, y: int) -> void:
-	_add_or_remove_ground(true, x, y)
-
-
-func remove_trap(_trap: Sprite, x: int, y: int) -> void:
-	_add_or_remove_ground(true, x, y)
-
-
-func create_building(_building: Sprite, _sub_tag: String,
-		x: int, y: int) -> void:
-	_add_or_remove_ground(false, x, y)
-
-
-func create_trap(_trap: Sprite, _sub_tag: String, x: int, y: int) -> void:
-	_add_or_remove_ground(false, x, y)
-
-
 func _try_add_new_worm() -> void:
 	for i in range(_respawn_counter.size()):
 		if _respawn_counter[i] == RESET_COUNTER:

@@ -150,3 +150,12 @@ func _dup_create_princess(source: Array, index: int, _opt_arg: Array) -> int:
 	if _ref_DungeonBoard.has_sprite_with_sub_tag(Game_SubTag.SWAMP, x, y):
 		return 2
 	return 1
+
+
+func _add_or_remove_ground(add_ground: bool, x: int, y: int,
+		new_sprite: PackedScene = _spr_Floor,
+		sub_tag: String = Game_SubTag.FLOOR) -> void:
+	if add_ground:
+		_ref_CreateObject.create_ground(new_sprite, sub_tag, x, y)
+	else:
+		_ref_RemoveObject.remove_ground(x, y)
