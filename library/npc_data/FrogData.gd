@@ -6,6 +6,7 @@ const PATH_LENGTH := 5
 const SUBMERGE_LAND := 15
 const SUBMERGE_MORE_LAND := 20
 const RENDER_RANGE := 4
+const HIDE_FROG_PERCENT := 0.5
 
 const MAX_FROG := 8
 const HALF_FROG := 4

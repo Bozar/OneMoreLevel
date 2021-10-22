@@ -96,3 +96,33 @@ func _set_pc_state(state_tag: String) -> void:
 
 func _block_line_of_sight(x: int, y: int, _opt_arg: Array) -> bool:
 	return _ref_DungeonBoard.has_actor(x, y)
+
+
+func _post_process_fov(pc_x: int, pc_y: int) -> void:
+	var frogs := _ref_DungeonBoard.get_npc()
+	var hide_count: int
+	var pos: Game_IntCoord
+	var find_floor: Sprite
+
+	Game_ArrayHelper.filter_element(frogs, self, "_hide_frog", [pc_x, pc_y])
+	hide_count = (frogs.size() * Game_FrogData.HIDE_FROG_PERCENT) as int
+	Game_ArrayHelper.rand_picker(frogs, hide_count, _ref_RandomNumber)
+
+	for i in frogs:
+		pos = Game_ConvertCoord.vector_to_coord(i.position)
+		i.visible = false
+		find_floor = _ref_DungeonBoard.get_ground(pos.x, pos.y)
+		find_floor.visible = true
+
+
+func _hide_frog(source: Array, index: int, opt_arg: Array) -> bool:
+	var pos: Game_IntCoord
+	var pc_x: int = opt_arg[0]
+	var pc_y: int = opt_arg[1]
+
+	if source[index].is_in_group(Game_SubTag.FROG_PRINCESS):
+		return false
+
+	pos = Game_ConvertCoord.vector_to_coord(source[index].position)
+	return not Game_CoordCalculator.is_inside_range(pos.x, pos.y, pc_x, pc_y,
+			Game_FrogData.RENDER_RANGE)

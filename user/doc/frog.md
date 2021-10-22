@@ -50,6 +50,8 @@ If a frog cannot grapple PC, it moves diagonally to a grid exactly 2 steps away.
 
 Frogs emerge in five waves. There is a counter in the bottom right corner of the map which shows the current wave number. The counter acts as a land grid and it cannot be submerged.
 
+Half of the frogs that are out of PC's sight become invisible. Frog princess is always visible.
+
 Wave 1. This is the initial wave. There are 8 frog knights. When 4 of them disappear due to being hit, enter wave 2.
 
 Wave 2. Some land is submerged by swamp. The remaining frog knights disappear. Princess appears the first time. Hit the princess to enter wave 3.
