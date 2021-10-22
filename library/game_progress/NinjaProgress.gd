@@ -2,6 +2,7 @@ extends Game_ProgressTemplate
 
 
 var _spr_Ninja := preload("res://sprite/Ninja.tscn")
+var _spr_NinjaShadow := preload("res://sprite/NinjaShadow.tscn")
 
 
 func _init(parent_node: Node2D).(parent_node) -> void:
@@ -9,10 +10,12 @@ func _init(parent_node: Node2D).(parent_node) -> void:
 
 
 func end_world(_pc_x: int, _pc_y: int) -> void:
-	var count_npc: int
+	var count_npc := _try_remove_npc()
+	var count_shadow := _ref_DungeonBoard.get_sprites_by_tag(
+			Game_SubTag.NINJA_SHADOW).size()
+	var respawn_shadow := count_shadow < Game_NinjaData.MAX_SHADOW_NINJA
 
-	count_npc = _try_remove_npc()
-	_try_respawn_npc(count_npc)
+	_try_respawn_npc(count_npc, respawn_shadow)
 
 
 # Remove an idle ninja. Refer: NinjaAI.
@@ -30,9 +33,12 @@ func _try_remove_npc() -> int:
 	return count_npc
 
 
-func _try_respawn_npc(count_npc: int) -> void:
+func _try_respawn_npc(count_npc: int, respawn_shadow: bool) -> void:
 	var respawn: int
 	var region := []
+	var shadow_index := -1
+	var new_scene: PackedScene
+	var sub_tag: String
 	var actor: Sprite
 
 	respawn = Game_NinjaData.MAX_NINJA - count_npc
@@ -51,7 +57,15 @@ func _try_respawn_npc(count_npc: int) -> void:
 		return
 	Game_ArrayHelper.rand_picker(region, respawn, _ref_RandomNumber)
 
-	for i in region:
-		actor = _ref_CreateObject.create_and_fetch_actor(_spr_Ninja,
-				Game_SubTag.NINJA, i.x, i.y)
+	if respawn_shadow:
+		shadow_index = _ref_RandomNumber.get_int(0, region.size())
+	for i in region.size():
+		if i == shadow_index:
+			new_scene = _spr_NinjaShadow
+			sub_tag = Game_SubTag.NINJA_SHADOW
+		else:
+			new_scene = _spr_Ninja
+			sub_tag = Game_SubTag.NINJA
+		actor = _ref_CreateObject.create_and_fetch_actor(new_scene,
+				sub_tag, region[i].x, region[i].y)
 		_ref_ObjectData.set_bool(actor, true)

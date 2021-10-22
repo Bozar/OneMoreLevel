@@ -23,18 +23,24 @@ func _init(parent_node: Node2D).(parent_node) -> void:
 
 
 func take_action() -> void:
-	var __
-	var has_moved := false
-	var hit_pc := false
-	var move_result: Array
-	var pc := _ref_DungeonBoard.get_pc()
-	var pc_hp: int
-
 	# A newly created ninja waits one turn.
 	if _ref_ObjectData.get_bool(_self):
 		_ref_ObjectData.set_bool(_self, false)
 		_switch_sprite(false)
 		return
+
+	if _self.is_in_group(Game_SubTag.NINJA):
+		_ninja_act()
+	else:
+		_shadow_ninja_act()
+
+
+func _ninja_act() -> void:
+	var has_moved := false
+	var hit_pc := false
+	var move_result: Array
+	var pc := _ref_DungeonBoard.get_pc()
+	var pc_hp: int
 
 	# Hit PC when inside attack range.
 	if Game_CoordCalculator.is_inside_range(_self_pos.x, _self_pos.y,
@@ -71,6 +77,25 @@ func take_action() -> void:
 		_update_health_bar(pc_hp)
 		if pc_hp >= Game_NinjaData.MAX_PC_HP:
 			_ref_EndGame.player_lose()
+
+
+func _shadow_ninja_act() -> void:
+	var has_moved := false
+	var move_result: Array
+
+	_ref_RemoveObject.remove_trap(_self_pos.x, _self_pos.y)
+
+	if _self_pos.y == Game_NinjaData.GROUND_Y:
+		has_moved = _try_move_horizontally()
+	else:
+		move_result = _try_move_vertically(Game_CoordCalculator.DOWN)
+		has_moved = move_result[0]
+
+	_switch_sprite(false)
+	if has_moved:
+		_ref_ObjectData.set_hit_point(_self, 0)
+	else:
+		_ref_ObjectData.add_hit_point(_self, 1)
 
 
 func _switch_sprite(hit_pc: bool) -> void:

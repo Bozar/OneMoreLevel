@@ -22,13 +22,32 @@ const WALL_COORD := [
 var _spr_SoulFragment := preload("res://sprite/SoulFragment.tscn")
 
 var _time_stop := 0
+var _previous_pc_y := -1
 
 
 func _init(parent_node: Node2D).(parent_node) -> void:
 	_fov_render_range = Game_NinjaData.PC_SIGHT
 
 
+# A ninja is removed either because of being hit in NinjaPCAction (this script)
+# or being idle in NinjaProgress.
+func remove_data(remove_sprite: Sprite, main_tag: String, _x: int, _y: int) \
+		-> void:
+	if main_tag != Game_MainTag.ACTOR:
+		return
+
+	var id := remove_sprite.get_instance_id()
+	var __
+
+	_set_trajectory_type(id, Game_SpriteTypeTag.DEFAULT)
+	__ = ACTOR_TRAJECTORY.erase(id)
+
+
 func reset_state() -> void:
+	# Initialize _previous_pc_y for the first time. Later, it will be set in
+	# _update_indicator().
+	if _previous_pc_y < 0:
+		_previous_pc_y = _source_position.y
 	_update_trajectory()
 	_update_indicator()
 
@@ -72,20 +91,6 @@ func interact_with_trap() -> void:
 
 func move() -> void:
 	_pc_move(false)
-
-
-# A ninja is removed either because of being hit in NinjaPCAction (this script)
-# or being idle in NinjaProgress.
-func remove_data(remove_sprite: Sprite, _main_tag: String, _x: int, _y: int) \
-		-> void:
-	if not remove_sprite.is_in_group(Game_SubTag.NINJA):
-		return
-
-	var id := remove_sprite.get_instance_id()
-	var __
-
-	_set_trajectory_type(id, Game_SpriteTypeTag.DEFAULT)
-	__ = ACTOR_TRAJECTORY.erase(id)
 
 
 func _pc_move(has_trap: bool) -> void:
@@ -205,8 +210,22 @@ func _is_obstacle(x: int, y: int, _opt_art: Array) -> bool:
 
 
 func _hit_actor(x: int, y: int) -> void:
+	var shadows := _ref_DungeonBoard.get_sprites_by_tag(
+			Game_SubTag.NINJA_SHADOW)
+	var shadow_pos: Game_IntCoord
+	var create_trap := true
+
+	for i in shadows:
+		shadow_pos = Game_ConvertCoord.vector_to_coord(i.position)
+		if (x == shadow_pos.x) or (y == shadow_pos.y):
+			create_trap = false
+			break
+	if create_trap:
+		_ref_CreateObject.create_trap(_spr_SoulFragment, Game_SubTag.TREASURE,
+				x, y)
+	else:
+		_ref_RemoveObject.remove_trap(x, y)
 	_ref_RemoveObject.remove_actor(x, y)
-	_ref_CreateObject.create_trap(_spr_SoulFragment, Game_SubTag.TREASURE, x, y)
 
 
 func _try_end_game() -> void:
@@ -228,11 +247,12 @@ func _update_indicator() -> void:
 	for i in WALL_COORD:
 		for x in range(i[0], i[1]):
 			# Reset the previous line.
-			wall = _ref_DungeonBoard.get_building(x, _source_position.y)
+			wall = _ref_DungeonBoard.get_building(x, _previous_pc_y)
 			_ref_SwitchSprite.set_sprite(wall, default_type)
 			# Set the current line.
 			wall = _ref_DungeonBoard.get_building(x, pos.y)
 			_ref_SwitchSprite.set_sprite(wall, new_type)
+	_previous_pc_y = pos.y
 
 
 func _post_process_fov(_pc_x: int, pc_y: int) -> void:
