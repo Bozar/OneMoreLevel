@@ -1,16 +1,16 @@
 extends Game_PCActionTemplate
 
 
-const TELEPORT_X: Dictionary = {
+const TELEPORT_X := {
 	-1: Game_DungeonSize.MAX_X - 1,
 	Game_DungeonSize.MAX_X: 0,
 }
-const TELEPORT_Y: Dictionary = {
+const TELEPORT_Y := {
 	-1: Game_DungeonSize.MAX_Y - 1,
 	Game_DungeonSize.MAX_Y: 0,
 }
 
-var _count_beacon: int = Game_BalloonData.MAX_TRAP
+var _count_beacon := Game_BalloonData.MAX_TRAP
 
 
 func _init(parent_node: Node2D).(parent_node) -> void:
@@ -22,6 +22,9 @@ func switch_sprite() -> void:
 
 
 func render_fov() -> void:
+	var pos: Game_IntCoord
+
+	_set_render_sprites()
 	if _ref_GameSetting.get_show_full_map():
 		_render_without_fog_of_war()
 		return
@@ -31,16 +34,16 @@ func render_fov() -> void:
 			_source_position.x, _source_position.y, _fov_render_range,
 			self, "_block_line_of_sight", [])
 
-	for x in range(Game_DungeonSize.MAX_X):
-		for y in range(Game_DungeonSize.MAX_Y):
-			for i in Game_MainTag.DUNGEON_OBJECT:
-				if i != Game_MainTag.TRAP:
-					_set_sprite_color(x, y, i, Game_ShadowCastFOV,
-							"is_in_sight")
+	for mtag in RENDER_SPRITES:
+		for i in RENDER_SPRITES[mtag]:
+			if mtag != Game_MainTag.TRAP:
+				pos = Game_ConvertCoord.vector_to_coord(i.position)
+				_set_sprite_color(pos.x, pos.y, mtag, Game_ShadowCastFOV,
+						"is_in_sight")
 
 
 func wait() -> void:
-	var add_count: bool = false
+	var add_count := false
 
 	_wind_blow()
 	if _ref_DungeonBoard.has_trap(_source_position.x, _source_position.y):
@@ -79,8 +82,7 @@ func set_target_position(direction: String) -> void:
 
 
 func _wind_blow() -> void:
-	var pc: Sprite = _ref_DungeonBoard.get_actor(
-			_source_position.x, _source_position.y)
+	var pc := _ref_DungeonBoard.get_pc()
 	var wind_direction: Array = Game_StateTag.DIRECTION_TO_COORD[ \
 			_ref_ObjectData.get_state(pc)]
 	var new_position := Game_IntCoord.new(
@@ -108,8 +110,8 @@ func _try_move_over_border(x: int, y: int) -> Game_IntCoord:
 
 
 func _reach_destination(x: int, y: int) -> bool:
-	var beacon: Sprite = _ref_DungeonBoard.get_trap(x, y)
-	var add_count: bool = false
+	var beacon := _ref_DungeonBoard.get_trap(x, y)
+	var add_count := false
 
 	if _ref_ObjectData.verify_state(beacon, Game_StateTag.DEFAULT):
 		_count_beacon -= 1

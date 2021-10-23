@@ -1,24 +1,23 @@
 extends Game_PCActionTemplate
 
 
-const INVALID_DIRECTION: int = 0
+const INVALID_DIRECTION := 0
 
-const _STATE_TO_INT: Dictionary = {
+const STATE_TO_INT := {
 	Game_StateTag.UP: 1,
 	Game_StateTag.DOWN: -1,
 	Game_StateTag.LEFT: 2,
 	Game_StateTag.RIGHT: -2,
 	Game_StateTag.DEFAULT: INVALID_DIRECTION,
 }
-const _INPUT_TO_INT: Dictionary = {
+const INPUT_TO_INT := {
 	Game_InputTag.MOVE_UP: 1,
 	Game_InputTag.MOVE_DOWN: -1,
 	Game_InputTag.MOVE_LEFT: 2,
 	Game_InputTag.MOVE_RIGHT: -2,
 }
 
-var _extra_turn_counter: int = 0
-# var _ground_sprite: Array
+var _extra_turn_counter := 0
 
 
 func _init(parent_node: Node2D).(parent_node) -> void:
@@ -26,33 +25,31 @@ func _init(parent_node: Node2D).(parent_node) -> void:
 
 
 func render_fov() -> void:
-	var ground: Sprite
+	var pos: Game_IntCoord
 	var distance: int
 
+	_set_render_sprites()
 	if _ref_GameSetting.get_show_full_map():
 		_render_without_fog_of_war()
 		return
 
-	for x in range(Game_DungeonSize.MAX_X):
-		for y in range(Game_DungeonSize.MAX_Y):
-			ground = _ref_DungeonBoard.get_ground(x, y)
-			if ground == null:
-				continue
-			ground.visible = true
-			distance = Game_CoordCalculator.get_range(x, y,
-					_source_position.x, _source_position.y)
-			if distance > Game_StyxData.PC_MAX_SIGHT:
-				ground.visible = false
-			elif distance > Game_StyxData.PC_SIGHT:
-				_ref_Palette.set_dark_color(ground, Game_MainTag.GROUND)
-			elif distance > 0:
-				_ref_Palette.set_default_color(ground, Game_MainTag.GROUND)
-			else:
-				ground.visible = false
+	for i in RENDER_SPRITES[Game_MainTag.GROUND]:
+		i.visible = true
+		pos = Game_ConvertCoord.vector_to_coord(i.position)
+		distance = Game_CoordCalculator.get_range(pos.x, pos.y,
+				_source_position.x, _source_position.y)
+		if distance > Game_StyxData.PC_MAX_SIGHT:
+			i.visible = false
+		elif distance > Game_StyxData.PC_SIGHT:
+			_ref_Palette.set_dark_color(i, Game_MainTag.GROUND)
+		elif distance > 0:
+			_ref_Palette.set_default_color(i, Game_MainTag.GROUND)
+		else:
+			i.visible = false
 
 
 func wait() -> void:
-	var pc: Sprite = _ref_DungeonBoard.get_pc()
+	var pc := _ref_DungeonBoard.get_pc()
 
 	_ref_ObjectData.set_state(pc, Game_StateTag.ACTIVE)
 	_extra_turn_counter = 0
@@ -64,7 +61,7 @@ func wait() -> void:
 func move() -> void:
 	var x: int
 	var y: int
-	var source_direction: int = _INPUT_TO_INT[_input_direction]
+	var source_direction: int = INPUT_TO_INT[_input_direction]
 	var target_direction: int = _get_ground_direction(
 			_target_position.x, _target_position.y)
 
@@ -76,7 +73,7 @@ func move() -> void:
 		x = _target_position.x
 		y = _target_position.y
 		while Game_CoordCalculator.is_inside_dungeon(x, y) \
-				and (_get_ground_direction(x, y) == _STATE_TO_INT[i]):
+				and (_get_ground_direction(x, y) == STATE_TO_INT[i]):
 			x += Game_StateTag.DIRECTION_TO_COORD[i][0]
 			y += Game_StateTag.DIRECTION_TO_COORD[i][1]
 		if (x != _target_position.x) or (y != _target_position.y):
@@ -102,11 +99,11 @@ func _is_opposite_direction(source: int, target: int) -> bool:
 
 
 func _get_ground_direction(x: int, y: int) -> int:
-	var ground: Sprite = _ref_DungeonBoard.get_ground(x, y)
+	var ground := _ref_DungeonBoard.get_ground(x, y)
 
 	if ground == null:
 		return INVALID_DIRECTION
-	return _STATE_TO_INT[_ref_ObjectData.get_state(ground)]
+	return STATE_TO_INT[_ref_ObjectData.get_state(ground)]
 
 
 func _try_reduce_extra_turn() -> void:
@@ -118,8 +115,8 @@ func _try_reduce_extra_turn() -> void:
 
 
 func _switch_lighthouse_color() -> void:
-	var lighthouse: Sprite = _ref_DungeonBoard.get_building(
-			Game_DungeonSize.CENTER_X, Game_DungeonSize.CENTER_Y)
+	var lighthouse := _ref_DungeonBoard.get_building(Game_DungeonSize.CENTER_X,
+			Game_DungeonSize.CENTER_Y)
 
 	if _extra_turn_counter == Game_StyxData.EXTRA_TURN_COUNTER:
 		_ref_Palette.set_dark_color(lighthouse, Game_MainTag.BUILDING)
@@ -128,9 +125,7 @@ func _switch_lighthouse_color() -> void:
 
 
 func _pc_is_near_harbor(x: int, y: int) -> bool:
-	var neighbor: Array = Game_CoordCalculator.get_neighbor(x, y, 1)
-
-	for i in neighbor:
+	for i in Game_CoordCalculator.get_neighbor(x, y, 1):
 		if _ref_DungeonBoard.has_sprite_with_sub_tag(Game_SubTag.HARBOR,
 				i.x, i.y):
 			return true

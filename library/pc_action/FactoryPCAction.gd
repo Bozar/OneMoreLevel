@@ -8,9 +8,7 @@ const CLOCK_TYPE := [
 	Game_SpriteTypeTag.RIGHT
 ]
 
-var _is_first_render := true
 var _find_clock: Sprite
-var _find_npcs := []
 var _treasure := 0
 var _rare_treasure := 0
 
@@ -32,22 +30,23 @@ func switch_sprite() -> void:
 
 
 func render_fov() -> void:
-	var show_full_map: bool = _ref_GameSetting.get_show_full_map()
+	var show_full_map := _ref_GameSetting.get_show_full_map()
 	var pos: Game_IntCoord
 
-	if _is_first_render:
-		_init_sprites()
-		_is_first_render = false
+	_set_render_sprites()
+	if _find_clock == null:
+		_find_clock = _ref_DungeonBoard.get_sprites_by_tag(Game_SubTag.ARROW)[0]
 
 	if show_full_map:
 		_render_without_fog_of_war()
 
 	Game_ShadowCastFOV.set_field_of_view(
 			Game_DungeonSize.MAX_X, Game_DungeonSize.MAX_Y,
-			_source_position.x, _source_position.y, _fov_render_range,
+			_source_position.x, _source_position.y, Game_FactoryData.PC_SIGHT,
 			self, "_block_line_of_sight", [])
 
-	for i in _find_npcs:
+	# Refer to FactoryAI.gd.
+	for i in _ref_DungeonBoard.get_npc():
 		pos = Game_ConvertCoord.vector_to_coord(i.position)
 		if Game_ShadowCastFOV.is_in_sight(pos.x, pos.y):
 			_ref_ObjectData.set_state(i, Game_StateTag.ACTIVE)
@@ -55,11 +54,13 @@ func render_fov() -> void:
 	if show_full_map:
 		return
 
-	for x in range(Game_DungeonSize.MAX_X):
-		for y in range(Game_DungeonSize.MAX_Y):
-			for i in Game_MainTag.DUNGEON_OBJECT:
-				_set_sprite_color_with_memory(x, y, i, i != Game_MainTag.ACTOR,
-						Game_ShadowCastFOV, "is_in_sight")
+	for mtag in RENDER_SPRITES:
+		for i in RENDER_SPRITES[mtag]:
+			pos = Game_ConvertCoord.vector_to_coord(i.position)
+			_set_sprite_color_with_memory(pos.x, pos.y, mtag,
+					mtag != Game_MainTag.ACTOR, Game_ShadowCastFOV,
+					"is_in_sight")
+
 	_ref_Palette.set_default_color(_find_clock, Game_MainTag.BUILDING)
 
 
@@ -118,11 +119,6 @@ func move() -> void:
 
 func attack() -> void:
 	end_turn = false
-
-
-func _init_sprites() -> void:
-	_find_clock = _ref_DungeonBoard.get_sprites_by_tag(Game_SubTag.ARROW)[0]
-	_find_npcs = _ref_DungeonBoard.get_sprites_by_tag(Game_SubTag.SCP_173)
 
 
 func _show_or_hide_sprite(sprites: Array, auto_reset: bool) -> void:

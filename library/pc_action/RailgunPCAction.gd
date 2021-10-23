@@ -37,12 +37,14 @@ func switch_sprite() -> void:
 
 
 func game_over(win) -> void:
-	var pc: Sprite = _ref_DungeonBoard.get_pc()
 	_render_end_game(win)
-	_switch_mode(true, pc)
+	_switch_mode(true)
 
 
 func render_fov() -> void:
+	var pos: Game_IntCoord
+
+	_set_render_sprites()
 	# A wall sprite will be replaced by pillar sprite in _init_skull_pillar().
 	_init_skull_pillar()
 	_init_counter()
@@ -60,22 +62,22 @@ func render_fov() -> void:
 			Game_RailgunData.PC_FRONT_SIGHT, Game_RailgunData.PC_SIDE_SIGHT,
 			self, "_block_line_of_sight", [])
 
-	for x in range(Game_DungeonSize.MAX_X):
-		for y in range(Game_DungeonSize.MAX_Y):
-			for i in Game_MainTag.DUNGEON_OBJECT:
-				match i:
-					Game_MainTag.ACTOR:
-						_set_sprite_color_with_memory(x, y, i, false,
+	for mtag in RENDER_SPRITES:
+		for i in RENDER_SPRITES[mtag]:
+			pos = Game_ConvertCoord.vector_to_coord(i.position)
+			match mtag:
+				Game_MainTag.ACTOR:
+					_set_sprite_color_with_memory(pos.x, pos.y, mtag, false,
+							Game_CrossShapedFOV, "is_in_sight")
+				Game_MainTag.TRAP:
+					_set_sprite_color(pos.x, pos.y, mtag, Game_CrossShapedFOV,
+							"is_in_sight")
+				_:
+					if _do_not_render_building(pos.x, pos.y):
+						pass
+					else:
+						_set_sprite_color_with_memory(pos.x, pos.y, mtag, true,
 								Game_CrossShapedFOV, "is_in_sight")
-					Game_MainTag.TRAP:
-						_set_sprite_color(x, y, i, Game_CrossShapedFOV,
-								"is_in_sight")
-					_:
-						if _do_not_render_building(x, y):
-							pass
-						else:
-							_set_sprite_color_with_memory(x, y, i, true,
-									Game_CrossShapedFOV, "is_in_sight")
 
 
 func is_inside_dungeon() -> bool:
@@ -83,8 +85,7 @@ func is_inside_dungeon() -> bool:
 
 
 func is_npc() -> bool:
-	var pc: Sprite = _ref_DungeonBoard.get_pc()
-	return _is_aim_mode(pc)
+	return _is_aim_mode()
 
 
 func is_building() -> bool:
@@ -92,8 +93,7 @@ func is_building() -> bool:
 
 
 func wait() -> void:
-	var pc: Sprite = _ref_DungeonBoard.get_pc()
-	_switch_mode(not _is_aim_mode(pc), pc)
+	_switch_mode(not _is_aim_mode())
 
 
 func attack() -> void:
@@ -106,7 +106,7 @@ func attack() -> void:
 	_ammo -= 1
 	_ammo = max(_ammo, 0) as int
 	_ref_ObjectData.add_hit_point(pc, Game_RailgunData.GUN_SHOT_HP)
-	_switch_mode(false, pc)
+	_switch_mode(false)
 
 	while Game_CoordCalculator.is_inside_dungeon(x, y) \
 			and (not _ref_DungeonBoard.has_building(x, y)):
@@ -227,9 +227,10 @@ func _render_counter(kill: int) -> void:
 		_ref_SwitchSprite.set_sprite(_counter_sprite[i], sprite_type)
 
 
-func _switch_mode(aim_mode: bool, pc: Sprite) -> void:
+func _switch_mode(aim_mode: bool) -> void:
 	var new_state: String
 	var new_sprite: String
+	var pc := _ref_DungeonBoard.get_pc()
 
 	if aim_mode:
 		new_state = Game_StateTag.ACTIVE
@@ -242,7 +243,8 @@ func _switch_mode(aim_mode: bool, pc: Sprite) -> void:
 	_ref_SwitchSprite.set_sprite(pc, new_sprite)
 
 
-func _is_aim_mode(pc: Sprite) -> bool:
+func _is_aim_mode() -> bool:
+	var pc := _ref_DungeonBoard.get_pc()
 	return _ref_ObjectData.verify_state(pc, Game_StateTag.ACTIVE)
 
 

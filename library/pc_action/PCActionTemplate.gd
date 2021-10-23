@@ -4,6 +4,13 @@ class_name Game_PCActionTemplate
 # The child should also implement _init() to pass arguments.
 
 
+const RENDER_SPRITES := {
+	Game_MainTag.GROUND: [],
+	Game_MainTag.TRAP: [],
+	Game_MainTag.BUILDING: [],
+	Game_MainTag.ACTOR: [],
+}
+
 var message: String setget set_message, get_message
 var end_turn: bool setget set_end_turn, get_end_turn
 
@@ -134,23 +141,27 @@ func set_target_position(direction: String) -> void:
 
 
 func render_fov() -> void:
-	var pos := _ref_DungeonBoard.get_pc_coord()
+	var pc_pos := _ref_DungeonBoard.get_pc_coord()
+	var this_pos: Game_IntCoord
 
+	_set_render_sprites()
 	if _ref_GameSetting.get_show_full_map():
 		_render_without_fog_of_war()
-		_post_process_fov(pos.x, pos.y)
+		# _post_process_fov(pc_pos.x, pc_pos.y)
 		return
 
 	Game_ShadowCastFOV.set_field_of_view(
 			Game_DungeonSize.MAX_X, Game_DungeonSize.MAX_Y,
-			pos.x, pos.y, _fov_render_range,
+			pc_pos.x, pc_pos.y, _fov_render_range,
 			self, "_block_line_of_sight", [])
 
-	for x in range(Game_DungeonSize.MAX_X):
-		for y in range(Game_DungeonSize.MAX_Y):
-			for i in Game_MainTag.DUNGEON_OBJECT:
-				_set_sprite_color(x, y, i, Game_ShadowCastFOV, "is_in_sight")
-	_post_process_fov(pos.x, pos.y)
+	for mtag in RENDER_SPRITES:
+		for i in RENDER_SPRITES[mtag]:
+			this_pos = Game_ConvertCoord.vector_to_coord(i.position)
+			_set_sprite_color(this_pos.x, this_pos.y, mtag, Game_ShadowCastFOV,
+					"is_in_sight")
+
+	_post_process_fov(pc_pos.x, pc_pos.y)
 
 
 func switch_sprite() -> void:
@@ -194,17 +205,14 @@ func _render_end_game(win: bool) -> void:
 
 
 func _render_without_fog_of_war() -> void:
-	var this_sprite: Sprite
+	var pos: Game_IntCoord
 
-	for x in range(Game_DungeonSize.MAX_X):
-		for y in range(Game_DungeonSize.MAX_Y):
-			for i in Game_MainTag.DUNGEON_OBJECT:
-				this_sprite = _ref_DungeonBoard.get_sprite(i, x, y)
-				if this_sprite == null:
-					continue
-				this_sprite.visible = _sprite_is_visible(i, x, y, false)
-				if i == Game_MainTag.GROUND:
-					_ref_Palette.set_dark_color(this_sprite, i)
+	for mtag in RENDER_SPRITES:
+		for i in RENDER_SPRITES[mtag]:
+			pos = Game_ConvertCoord.vector_to_coord(i.position)
+			i.visible = _sprite_is_visible(mtag, pos.x, pos.y, false)
+			if mtag == Game_MainTag.GROUND:
+				_ref_Palette.set_dark_color(i, mtag)
 
 
 # is_in_sight_func(x: int, y: int) -> bool
@@ -288,3 +296,8 @@ func _move_pc_sprite() -> void:
 # Render dungeon objects at the end of the default render_fov().
 func _post_process_fov(_pc_x: int, _pc_y: int) -> void:
 	pass
+
+
+func _set_render_sprites() -> void:
+	for i in RENDER_SPRITES:
+		RENDER_SPRITES[i] = _ref_DungeonBoard.get_sprites_by_tag(i)
