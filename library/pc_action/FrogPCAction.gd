@@ -2,7 +2,8 @@ extends Game_PCActionTemplate
 
 
 var _pass_next_turn: bool
-var _step_counter: int = 0
+var _step_counter := 0
+var _visible_counter := 1
 
 
 func _init(parent_node: Node2D).(parent_node) -> void:
@@ -53,6 +54,7 @@ func attack() -> void:
 	var pc: Sprite = _ref_DungeonBoard.get_pc()
 
 	_step_counter = 0
+	_visible_counter = 1
 	.attack()
 	# PC's hit point is set in FrogProgress. End game after frog princess is
 	# removed.
@@ -67,6 +69,7 @@ func wait() -> void:
 
 
 func reset_state() -> void:
+	_set_visible_counter()
 	_set_pc_state(Game_StateTag.DEFAULT)
 	.reset_state()
 
@@ -94,35 +97,34 @@ func _set_pc_state(state_tag: String) -> void:
 	_ref_ObjectData.set_state(pc, state_tag)
 
 
+func _set_visible_counter() -> void:
+	if _visible_counter > 0:
+		_visible_counter -= 1
+	else:
+		_visible_counter = Game_FrogData.VISIBLE_COUNTER
+
+
 func _block_line_of_sight(x: int, y: int, _opt_arg: Array) -> bool:
 	return _ref_DungeonBoard.has_actor(x, y)
 
 
-func _post_process_fov(pc_x: int, pc_y: int) -> void:
-	var frogs := _ref_DungeonBoard.get_npc()
-	var hide_count: int
+func _post_process_fov(_pc_x: int, _pc_y: int) -> void:
 	var pos: Game_IntCoord
 	var find_floor: Sprite
 
-	Game_ArrayHelper.filter_element(frogs, self, "_hide_frog", [pc_x, pc_y])
-	hide_count = (frogs.size() * Game_FrogData.HIDE_FROG_PERCENT) as int
-	Game_ArrayHelper.rand_picker(frogs, hide_count, _ref_RandomNumber)
+	if _visible_counter < 1:
+		return
 
-	for i in frogs:
+	for i in _ref_DungeonBoard.get_npc():
 		pos = Game_ConvertCoord.vector_to_coord(i.position)
+		if i.is_in_group(Game_SubTag.FROG_PRINCESS) \
+				or Game_ShadowCastFOV.is_in_sight(pos.x, pos.y):
+			continue
 		i.visible = false
 		find_floor = _ref_DungeonBoard.get_ground(pos.x, pos.y)
 		find_floor.visible = true
 
 
-func _hide_frog(source: Array, index: int, opt_arg: Array) -> bool:
-	var pos: Game_IntCoord
-	var pc_x: int = opt_arg[0]
-	var pc_y: int = opt_arg[1]
-
-	if source[index].is_in_group(Game_SubTag.FROG_PRINCESS):
-		return false
-
-	pos = Game_ConvertCoord.vector_to_coord(source[index].position)
-	return not Game_CoordCalculator.is_inside_range(pos.x, pos.y, pc_x, pc_y,
-			Game_FrogData.RENDER_RANGE)
+func _render_end_game(win: bool) -> void:
+	_visible_counter = 0
+	._render_end_game(win)
