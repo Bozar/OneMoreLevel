@@ -33,7 +33,7 @@ func create_actor(actor: Sprite, sub_tag: String, _x: int, _y: int) -> void:
 	if _all_counters.size() == 0:
 		_all_counters = _ref_DungeonBoard.get_sprites_by_tag(
 				Game_SubTag.COUNTER)
-		Game_ArrayHelper.shuffle(_all_counters, _ref_RandomNumber)
+		_all_counters.sort_custom(self, "_sort_counter")
 	_ref_SwitchSprite.set_sprite(_all_counters[_boss_hit_point],
 			Game_SpriteTypeTag.PASSIVE)
 
@@ -167,3 +167,12 @@ func _respawn_actor(pc_x: int, pc_y: int, min_distance: int, max_distance: int,
 		if not next_loop:
 			break
 	_ref_CreateObject.create_actor(new_sprite, sub_tag, x, y)
+
+
+func _sort_counter(left: Sprite, right: Sprite) -> bool:
+	var left_pos := Game_ConvertCoord.vector_to_coord(left.position)
+	var right_pos := Game_ConvertCoord.vector_to_coord(right.position)
+
+	if right_pos.y > left_pos.y:
+		return true
+	return right_pos.x > left_pos.x
