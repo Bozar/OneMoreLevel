@@ -29,3 +29,7 @@ Add world names from `data/world_list.md` to `include_world` or `exclude_world` 
 Set `show_full_map` to `true` to disable fog of war.
 
 Leave `palette` blank to use the default color theme. If you want to use another theme, copy a json file (for example, `blue.json`) from `palette/` to `data/`, and then feed `palette` with a file name with or without the json file extension (both `blue` and `blue.json` works). You can also create your own theme based on `default.json`.
+
+## Export the Game
+
+If you want to export One More Level using Godot engine by yourself, first you need to download the project from GitHub (see above, About This Game). You also have to tweak export settings to filter certain files. In the GitHub repository, there is a file in the root folder called `export.md`. Refer to it for more information.
