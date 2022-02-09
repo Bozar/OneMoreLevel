@@ -12,7 +12,13 @@ A beacon has three states:
 * Active: A light colored plus sign (+).
 * Inactive: A dark colored plus sign (+).
 
-Reaching an unexplored beacon restores 3 turns and grants you 1 point. Then it becomes inactive. Visit an active beacon also restores 3 turns, but it grants you no point. All inactive beacons become active when an unexplored or active beacon is reached.
+Reaching an unexplored beacon restores one or more turns and grants you 1 point. Then it becomes inactive. Visit an active beacon restores the same amount of turns as above, but it grants you no point. All inactive beacons become active when an unexplored or active beacon is reached.
+
+The amount of turn restoration depends on the number of unexplored beacons:
+
+* 3+ beacons: Restore 1 turn.
+* 2 beacons: Restore 3 turns.
+* 1 beacon: Restore 5 turns.
 
 You can move over the border of the dungeon and reappear on the opposite side. When there is a chimney (#) in the way, the balloon will try to step back one grid if possible.
 

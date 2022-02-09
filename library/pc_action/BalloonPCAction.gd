@@ -167,5 +167,10 @@ func _end_turn_or_game(add_count: bool) -> void:
 		_ref_EndGame.player_win()
 	else:
 		if add_count:
-			_ref_CountDown.add_count(Game_BalloonData.RESTORE_TURN)
+			if _count_beacon > Game_BalloonData.STAGE_1_BEACON:
+				_ref_CountDown.add_count(Game_BalloonData.STAGE_1_RESTORE)
+			elif _count_beacon > Game_BalloonData.STAGE_2_BEACON:
+				_ref_CountDown.add_count(Game_BalloonData.STAGE_2_RESTORE)
+			else:
+				_ref_CountDown.add_count(Game_BalloonData.STAGE_3_RESTORE)
 		end_turn = true

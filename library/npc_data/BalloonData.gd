@@ -8,4 +8,10 @@ const MAX_TRAP := 5
 const MAX_REMAINING_TRAP := 2
 const MAX_WALL := 20
 
-const RESTORE_TURN := 4
+const STAGE_1_BEACON := 2
+const STAGE_2_BEACON := 1
+
+const STAGE_1_RESTORE := 2
+const STAGE_2_RESTORE := 4
+const STAGE_3_RESTORE := 6
+
