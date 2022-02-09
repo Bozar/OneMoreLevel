@@ -1,7 +1,7 @@
 class_name Game_SidebarText
 
 
-const VERSION := "{0}0.4.1"
+const VERSION := "{0}0.4.2"
 # const VERSION := "{0}0.3.1-\nNightly-\n04-16-2021"
 
 const TURN := "Turn: {0}"
