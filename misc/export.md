@@ -17,7 +17,7 @@ Project settings - Display - Window:
 
 Export:
 
-* Head Include: <link rel="stylesheet" href="customStyle.css">
+* Head Include: `<link rel="stylesheet" href="customStyle.css">`
 * Canvas Resize Policy: Project
 
 In order to run the HTML5 game, deploy it on a server along with `misc/customStyle.css`.
