@@ -72,4 +72,4 @@ Leave `palette` blank to use the default color theme. If you want to use another
 
 ## Export the Game
 
-If you want to export One More Level using Godot engine by yourself, first you need to download the project from GitHub (see above, About This Game). You also have to tweak export settings to filter certain files. In the GitHub repository, there is a file in the root folder called `export.md`. Refer to it for more information.
+If you want to export One More Level using Godot engine by yourself, first you need to download the project from GitHub (see above, About This Game). You also have to tweak export settings to filter certain files. In the GitHub repository, refer to `misc/export.md` for more information.
