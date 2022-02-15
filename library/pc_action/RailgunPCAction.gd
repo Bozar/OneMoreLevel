@@ -273,11 +273,7 @@ func _set_move_hit_point() -> void:
 func _do_not_render_building(x: int, y: int) -> bool:
 	var building: Sprite = _ref_DungeonBoard.get_building(x, y)
 
-	if building == null:
-		return false
-	if building.is_in_group(Game_SubTag.PILLAR):
-		return _has_found_pillar
-	elif building.is_in_group(Game_SubTag.COUNTER):
+	if (building != null) and building.is_in_group(Game_SubTag.COUNTER):
 		return true
 	return false
 
