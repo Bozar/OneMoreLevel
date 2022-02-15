@@ -17,7 +17,7 @@ const INPUT_TO_INT := {
 	Game_InputTag.MOVE_RIGHT: -2,
 }
 
-var _extra_turn_counter := 0
+var _explore_score := 0
 
 
 func _init(parent_node: Node2D).(parent_node) -> void:
@@ -31,6 +31,7 @@ func render_fov() -> void:
 	_set_render_sprites()
 	if _ref_GameSetting.get_show_full_map():
 		_render_without_fog_of_war()
+		_switch_lighthouse_color()
 		return
 
 	for i in RENDER_SPRITES[Game_MainTag.GROUND]:
@@ -46,15 +47,13 @@ func render_fov() -> void:
 			_ref_Palette.set_default_color(i, Game_MainTag.GROUND)
 		else:
 			i.visible = false
+	_switch_lighthouse_color()
 
 
 func wait() -> void:
 	var pc := _ref_DungeonBoard.get_pc()
 
 	_ref_ObjectData.set_state(pc, Game_StateTag.ACTIVE)
-	_extra_turn_counter = 0
-	_switch_lighthouse_color()
-
 	.wait()
 
 
@@ -87,8 +86,6 @@ func move() -> void:
 		_ref_EndGame.player_win()
 		end_turn = false
 	else:
-		_try_reduce_extra_turn()
-		_switch_lighthouse_color()
 		end_turn = true
 
 
@@ -106,22 +103,14 @@ func _get_ground_direction(x: int, y: int) -> int:
 	return STATE_TO_INT[_ref_ObjectData.get_state(ground)]
 
 
-func _try_reduce_extra_turn() -> void:
-	if _extra_turn_counter < Game_StyxData.EXTRA_TURN_COUNTER:
-		_extra_turn_counter += 1
-	else:
-		_ref_CountDown.subtract_count(Game_StyxData.EXTRA_TURN)
-		_extra_turn_counter = 0
-
-
 func _switch_lighthouse_color() -> void:
 	var lighthouse := _ref_DungeonBoard.get_building(Game_DungeonSize.CENTER_X,
 			Game_DungeonSize.CENTER_Y)
 
-	if _extra_turn_counter == Game_StyxData.EXTRA_TURN_COUNTER:
-		_ref_Palette.set_dark_color(lighthouse, Game_MainTag.BUILDING)
-	else:
+	if _explore_score > Game_StyxData.MIN_SCORE:
 		_ref_Palette.set_default_color(lighthouse, Game_MainTag.BUILDING)
+	else:
+		_ref_Palette.set_dark_color(lighthouse, Game_MainTag.BUILDING)
 
 
 func _pc_is_near_harbor(x: int, y: int) -> bool:

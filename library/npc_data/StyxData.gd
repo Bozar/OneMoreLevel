@@ -7,5 +7,7 @@ const LIGHTHOUSE := 2
 const HARBOR := 1
 
 const FLOW_LENGTH := 2
-const EXTRA_TURN_COUNTER := 1
-const EXTRA_TURN := 1
+
+const DISCOVER_HARBOR := 1
+const REACH_HARBOR := 4
+const MIN_SCORE := 3
