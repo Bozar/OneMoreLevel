@@ -18,6 +18,7 @@ const INPUT_TO_INT := {
 }
 
 var _explore_score := 0
+var _sight_counter := Game_StyxData.NORMAL_THRESHOLD
 
 
 func _init(parent_node: Node2D).(parent_node) -> void:
@@ -27,6 +28,7 @@ func _init(parent_node: Node2D).(parent_node) -> void:
 func render_fov() -> void:
 	var pos: Game_IntCoord
 	var distance: int
+	var sight := _get_pc_sight()
 
 	_set_render_sprites()
 	if _ref_GameSetting.get_show_full_map():
@@ -39,9 +41,9 @@ func render_fov() -> void:
 		pos = Game_ConvertCoord.vector_to_coord(i.position)
 		distance = Game_CoordCalculator.get_range(pos.x, pos.y,
 				_source_position.x, _source_position.y)
-		if distance > Game_StyxData.PC_MAX_SIGHT:
+		if distance > sight:
 			i.visible = false
-		elif distance > Game_StyxData.PC_SIGHT:
+		elif distance == sight:
 			_ref_Palette.set_dark_color(i, Game_MainTag.GROUND)
 		elif distance > 0:
 			_ref_Palette.set_default_color(i, Game_MainTag.GROUND)
@@ -54,6 +56,7 @@ func wait() -> void:
 	var pc := _ref_DungeonBoard.get_pc()
 
 	_ref_ObjectData.set_state(pc, Game_StateTag.ACTIVE)
+	_set_sight_counter(0)
 	.wait()
 
 
@@ -81,6 +84,7 @@ func move() -> void:
 			break
 	_ref_DungeonBoard.move_sprite(Game_MainTag.ACTOR,
 			_source_position.x, _source_position.y, x, y)
+	_set_sight_counter(_sight_counter + 1)
 
 	if _pc_is_near_harbor(x, y):
 		_ref_EndGame.player_win()
@@ -119,3 +123,17 @@ func _pc_is_near_harbor(x: int, y: int) -> bool:
 				i.x, i.y):
 			return true
 	return false
+
+
+func _get_pc_sight() -> int:
+	for i in Game_StyxData.THRESHOLD_TO_SIGHT:
+		if _sight_counter < i:
+			return Game_StyxData.THRESHOLD_TO_SIGHT[i]
+	return Game_StyxData.MAX_SIGHT
+
+
+func _set_sight_counter(counter: int) -> void:
+	_sight_counter = counter
+
+	if _sight_counter > Game_StyxData.MAX_THRESHOLD:
+		_sight_counter = Game_StyxData.MAX_THRESHOLD
