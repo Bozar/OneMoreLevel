@@ -69,7 +69,7 @@ func wait() -> void:
 	var pc := _ref_DungeonBoard.get_pc()
 
 	_ref_ObjectData.set_state(pc, Game_StateTag.ACTIVE)
-	_sight_counter = 0
+	_set_sight_counter(0)
 	_try_end_game()
 
 
@@ -98,8 +98,7 @@ func move() -> void:
 	_ref_DungeonBoard.move_sprite(Game_MainTag.ACTOR,
 			_source_position.x, _source_position.y, x, y)
 
-	if _sight_counter < Game_StyxData.NORMAL_THRESHOLD:
-		_sight_counter += 1
+	_set_sight_counter(_sight_counter + 1)
 	_try_discover_harbor(x, y)
 	_try_end_game()
 
@@ -186,3 +185,16 @@ func _try_end_game() -> void:
 		end_turn = false
 	else:
 		end_turn = true
+
+
+func _set_sight_counter(counter: int) -> void:
+	var lighthouse := _ref_DungeonBoard.get_building(
+			Game_DungeonSize.CENTER_X, Game_DungeonSize.CENTER_Y)
+	var delta_counter: int
+	var new_type: String
+
+	_sight_counter = min(counter, Game_StyxData.NORMAL_THRESHOLD) as int
+
+	delta_counter = Game_StyxData.NORMAL_THRESHOLD - _sight_counter
+	new_type = Game_SpriteTypeTag.convert_digit_to_tag(delta_counter)
+	_ref_SwitchSprite.set_sprite(lighthouse, new_type)
