@@ -2,6 +2,9 @@ extends Game_PCActionTemplate
 
 
 const INVALID_DIRECTION := 0
+const UNKNOWN_HP := 0
+const SEEN_HP := 1
+const REACHED_HP := 2
 
 const STATE_TO_INT := {
 	Game_StateTag.UP: 1,
@@ -16,8 +19,10 @@ const INPUT_TO_INT := {
 	Game_InputTag.MOVE_LEFT: 2,
 	Game_InputTag.MOVE_RIGHT: -2,
 }
+const RENDER_THIS := [Game_MainTag.GROUND, Game_MainTag.BUILDING]
 
-var _explore_score := 0
+var _seen_harbor := 0
+var _reached_harbor := 0
 var _sight_counter := Game_StyxData.NORMAL_THRESHOLD
 
 
@@ -33,31 +38,39 @@ func render_fov() -> void:
 	_set_render_sprites()
 	if _ref_GameSetting.get_show_full_map():
 		_render_without_fog_of_war()
-		_switch_lighthouse_color()
+		_set_lighthouse_color()
 		return
 
-	for i in RENDER_SPRITES[Game_MainTag.GROUND]:
-		i.visible = true
-		pos = Game_ConvertCoord.vector_to_coord(i.position)
-		distance = Game_CoordCalculator.get_range(pos.x, pos.y,
-				_source_position.x, _source_position.y)
-		if distance > sight:
-			i.visible = false
-		elif distance == sight:
-			_ref_Palette.set_dark_color(i, Game_MainTag.GROUND)
-		elif distance > 0:
-			_ref_Palette.set_default_color(i, Game_MainTag.GROUND)
-		else:
-			i.visible = false
-	_switch_lighthouse_color()
+	for mtags in RENDER_THIS:
+		for i in RENDER_SPRITES[mtags]:
+			i.visible = true
+			pos = Game_ConvertCoord.vector_to_coord(i.position)
+			distance = Game_CoordCalculator.get_range(pos.x, pos.y,
+					_source_position.x, _source_position.y)
+			if distance > sight:
+				i.visible = false
+			elif distance == sight:
+				_ref_Palette.set_dark_color(i, mtags)
+			elif distance > 0:
+				_ref_Palette.set_default_color(i, mtags)
+			else:
+				i.visible = false
+
+			if mtags == Game_MainTag.BUILDING:
+				if i.is_in_group(Game_SubTag.LIGHTHOUSE):
+					i.visible = true
+					_set_lighthouse_color()
+				elif i.is_in_group(Game_SubTag.HARBOR):
+					_set_harbor_visibility(i)
+					_set_harbor_color(i)
 
 
 func wait() -> void:
 	var pc := _ref_DungeonBoard.get_pc()
 
 	_ref_ObjectData.set_state(pc, Game_StateTag.ACTIVE)
-	_set_sight_counter(0)
-	.wait()
+	_sight_counter = 0
+	_try_end_game()
 
 
 func move() -> void:
@@ -84,13 +97,11 @@ func move() -> void:
 			break
 	_ref_DungeonBoard.move_sprite(Game_MainTag.ACTOR,
 			_source_position.x, _source_position.y, x, y)
-	_set_sight_counter(_sight_counter + 1)
 
-	if _pc_is_near_harbor(x, y):
-		_ref_EndGame.player_win()
-		end_turn = false
-	else:
-		end_turn = true
+	if _sight_counter < Game_StyxData.NORMAL_THRESHOLD:
+		_sight_counter += 1
+	_try_discover_harbor(x, y)
+	_try_end_game()
 
 
 func _is_opposite_direction(source: int, target: int) -> bool:
@@ -107,33 +118,71 @@ func _get_ground_direction(x: int, y: int) -> int:
 	return STATE_TO_INT[_ref_ObjectData.get_state(ground)]
 
 
-func _switch_lighthouse_color() -> void:
+func _set_lighthouse_color() -> void:
 	var lighthouse := _ref_DungeonBoard.get_building(Game_DungeonSize.CENTER_X,
 			Game_DungeonSize.CENTER_Y)
 
-	if _explore_score > Game_StyxData.MIN_SCORE:
+	if (_seen_harbor > Game_StyxData.MIN_SEEN_HARBOR) \
+			or (_reached_harbor > Game_StyxData.MIN_REACHED_HARBOR):
 		_ref_Palette.set_default_color(lighthouse, Game_MainTag.BUILDING)
 	else:
 		_ref_Palette.set_dark_color(lighthouse, Game_MainTag.BUILDING)
 
 
-func _pc_is_near_harbor(x: int, y: int) -> bool:
-	for i in Game_CoordCalculator.get_neighbor(x, y, 1):
-		if _ref_DungeonBoard.has_sprite_with_sub_tag(Game_SubTag.HARBOR,
-				i.x, i.y):
-			return true
-	return false
+func _set_harbor_visibility(set_this: Sprite) -> void:
+	if _ref_ObjectData.get_hit_point(set_this) > UNKNOWN_HP:
+		set_this.visible = true
+
+
+func _set_harbor_color(set_this: Sprite) -> void:
+	if _ref_ObjectData.get_hit_point(set_this) > UNKNOWN_HP:
+		_ref_Palette.set_default_color(set_this, Game_MainTag.BUILDING)
 
 
 func _get_pc_sight() -> int:
-	for i in Game_StyxData.THRESHOLD_TO_SIGHT:
-		if _sight_counter < i:
-			return Game_StyxData.THRESHOLD_TO_SIGHT[i]
-	return Game_StyxData.MAX_SIGHT
+	if _sight_counter < Game_StyxData.NORMAL_THRESHOLD:
+		return Game_StyxData.MIN_SIGHT
+	return Game_StyxData.NORMAL_SIGHT
 
 
-func _set_sight_counter(counter: int) -> void:
-	_sight_counter = counter
+func _try_discover_harbor(pc_x: int, pc_y: int) -> void:
+	var harbor_pos: Game_IntCoord
+	var pc_to_harbor: int
 
-	if _sight_counter > Game_StyxData.MAX_THRESHOLD:
-		_sight_counter = Game_StyxData.MAX_THRESHOLD
+	for i in _ref_DungeonBoard.get_sprites_by_tag(Game_SubTag.HARBOR):
+		harbor_pos = Game_ConvertCoord.vector_to_coord(i.position)
+		pc_to_harbor = Game_CoordCalculator.get_range(pc_x, pc_y,
+				harbor_pos.x, harbor_pos.y)
+
+		match _ref_ObjectData.get_hit_point(i):
+			UNKNOWN_HP:
+				if pc_to_harbor == 1:
+					_ref_ObjectData.set_hit_point(i, REACHED_HP)
+					_ref_SwitchSprite.set_sprite(i, Game_SpriteTypeTag.ACTIVE)
+					_reached_harbor += 1
+					_seen_harbor += 1
+				elif pc_to_harbor < _get_pc_sight():
+					_ref_ObjectData.set_hit_point(i, SEEN_HP)
+					_seen_harbor += 1
+			SEEN_HP:
+				if pc_to_harbor == 1:
+					_ref_ObjectData.set_hit_point(i, REACHED_HP)
+					_ref_SwitchSprite.set_sprite(i, Game_SpriteTypeTag.ACTIVE)
+					_reached_harbor += 1
+
+
+func _try_end_game() -> void:
+	var win := false
+
+	if _reached_harbor == Game_StyxData.MAX_HARBOR:
+		win = true
+	elif _ref_CountDown.get_count(true) == 1:
+		if (_seen_harbor > Game_StyxData.MIN_SEEN_HARBOR) \
+				or (_reached_harbor > Game_StyxData.MIN_REACHED_HARBOR):
+			win = true
+
+	if win:
+		_ref_EndGame.player_win()
+		end_turn = false
+	else:
+		end_turn = true
