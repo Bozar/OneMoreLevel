@@ -5,7 +5,6 @@ const LIGHTHOUSE_GAP := 2
 
 const FLOW_LENGTH := 2
 
-const MIN_SEEN_HARBOR := 1
 const MIN_REACHED_HARBOR := 0
 const MAX_HARBOR := 4
 

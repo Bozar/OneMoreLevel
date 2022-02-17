@@ -21,7 +21,6 @@ const INPUT_TO_INT := {
 }
 const RENDER_THIS := [Game_MainTag.GROUND, Game_MainTag.BUILDING]
 
-var _seen_harbor := 0
 var _reached_harbor := 0
 var _sight_counter := Game_StyxData.NORMAL_THRESHOLD
 
@@ -121,8 +120,7 @@ func _set_lighthouse_color() -> void:
 	var lighthouse := _ref_DungeonBoard.get_building(Game_DungeonSize.CENTER_X,
 			Game_DungeonSize.CENTER_Y)
 
-	if (_seen_harbor > Game_StyxData.MIN_SEEN_HARBOR) \
-			or (_reached_harbor > Game_StyxData.MIN_REACHED_HARBOR):
+	if _reached_harbor > Game_StyxData.MIN_REACHED_HARBOR:
 		_ref_Palette.set_default_color(lighthouse, Game_MainTag.BUILDING)
 	else:
 		_ref_Palette.set_dark_color(lighthouse, Game_MainTag.BUILDING)
@@ -147,40 +145,28 @@ func _get_pc_sight() -> int:
 func _try_discover_harbor(pc_x: int, pc_y: int) -> void:
 	var harbor_pos: Game_IntCoord
 	var pc_to_harbor: int
+	var harbor_hp: int
 
 	for i in _ref_DungeonBoard.get_sprites_by_tag(Game_SubTag.HARBOR):
 		harbor_pos = Game_ConvertCoord.vector_to_coord(i.position)
 		pc_to_harbor = Game_CoordCalculator.get_range(pc_x, pc_y,
 				harbor_pos.x, harbor_pos.y)
+		harbor_hp = _ref_ObjectData.get_hit_point(i)
 
-		match _ref_ObjectData.get_hit_point(i):
-			UNKNOWN_HP:
-				if pc_to_harbor == 1:
-					_ref_ObjectData.set_hit_point(i, REACHED_HP)
-					_ref_SwitchSprite.set_sprite(i, Game_SpriteTypeTag.ACTIVE)
-					_reached_harbor += 1
-					_seen_harbor += 1
-				elif pc_to_harbor < _get_pc_sight():
-					_ref_ObjectData.set_hit_point(i, SEEN_HP)
-					_seen_harbor += 1
-			SEEN_HP:
-				if pc_to_harbor == 1:
-					_ref_ObjectData.set_hit_point(i, REACHED_HP)
-					_ref_SwitchSprite.set_sprite(i, Game_SpriteTypeTag.ACTIVE)
-					_reached_harbor += 1
+		if (pc_to_harbor == 1) and (harbor_hp < REACHED_HP):
+			_ref_ObjectData.set_hit_point(i, REACHED_HP)
+			_ref_SwitchSprite.set_sprite(i, Game_SpriteTypeTag.ACTIVE)
+			_reached_harbor += 1
+		elif (pc_to_harbor < _get_pc_sight()) and (harbor_hp < SEEN_HP):
+			_ref_ObjectData.set_hit_point(i, SEEN_HP)
 
 
 func _try_end_game() -> void:
-	var win := false
+	var max_reach := _reached_harbor == Game_StyxData.MAX_HARBOR
+	var last_turn := (_ref_CountDown.get_count(true) == 1) \
+			and (_reached_harbor > Game_StyxData.MIN_REACHED_HARBOR)
 
-	if _reached_harbor == Game_StyxData.MAX_HARBOR:
-		win = true
-	elif _ref_CountDown.get_count(true) == 1:
-		if (_seen_harbor > Game_StyxData.MIN_SEEN_HARBOR) \
-				or (_reached_harbor > Game_StyxData.MIN_REACHED_HARBOR):
-			win = true
-
-	if win:
+	if max_reach or last_turn:
 		_ref_EndGame.player_win()
 		end_turn = false
 	else:
