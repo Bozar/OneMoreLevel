@@ -2,8 +2,12 @@ extends Game_WorldTemplate
 
 
 const HARBOR_MARKER := OCCUPIED_MARKER + 1
-const PC_X := 1
-const PC_Y := Game_DungeonSize.MAX_Y - 2
+const PC_COORD := [
+	[1, 1],
+	[1, Game_DungeonSize.MAX_Y - 2],
+	[Game_DungeonSize.MAX_X - 2, 1],
+	[Game_DungeonSize.MAX_X - 2, Game_DungeonSize.MAX_Y - 2],
+]
 
 var _spr_Counter := preload("res://sprite/Counter.tscn")
 var _spr_Harbor := preload("res://sprite/Harbor.tscn")
@@ -15,10 +19,15 @@ func _init(parent_node: Node2D).(parent_node) -> void:
 
 
 func get_blueprint() -> Array:
+	var coord_index := _ref_RandomNumber.get_int(0, PC_COORD.size())
+	var pc_pos: Array = PC_COORD[coord_index]
+	var pc_x: int = pc_pos[0]
+	var pc_y: int = pc_pos[1]
+
 	_init_lighthouse()
-	_init_harbor()
+	_init_harbor(pc_x, pc_y)
 	_init_river()
-	_init_pc(0, PC_X, PC_Y)
+	_init_pc(0, pc_x, pc_y)
 
 	return _blueprint
 
@@ -34,27 +43,29 @@ func _init_lighthouse() -> void:
 		_occupy_position(i.x, i.y)
 
 
-func _init_harbor() -> void:
+func _init_harbor(pc_x: int, pc_y: int) -> void:
 	var neighbor: Array
-	var x: int
-	var y: int
+	var harbor_x: int
+	var harbor_y: int
 
-	neighbor = Game_CoordCalculator.get_neighbor(PC_X, PC_Y,
+	neighbor = Game_CoordCalculator.get_neighbor(pc_x, pc_y,
 			Game_StyxData.NORMAL_SIGHT, true)
 	for i in neighbor:
 		_set_terrain_marker(i.x, i.y, HARBOR_MARKER)
 
 	for _i in range(0, Game_StyxData.MAX_HARBOR):
 		while true:
-			x = _ref_RandomNumber.get_x_coord()
-			y = _ref_RandomNumber.get_y_coord()
-			if _is_occupied(x, y) or _is_terrain_marker(x, y, HARBOR_MARKER):
+			harbor_x = _ref_RandomNumber.get_x_coord()
+			harbor_y = _ref_RandomNumber.get_y_coord()
+			if _is_occupied(harbor_x, harbor_y) \
+					or _is_terrain_marker(harbor_x, harbor_y, HARBOR_MARKER):
 				continue
 			break
 
-		_add_building_to_blueprint(_spr_Harbor, Game_SubTag.HARBOR, x, y)
-		_occupy_position(x, y)
-		neighbor = Game_CoordCalculator.get_neighbor(x, y,
+		_add_building_to_blueprint(_spr_Harbor, Game_SubTag.HARBOR,
+				harbor_x, harbor_y)
+		_occupy_position(harbor_x, harbor_y)
+		neighbor = Game_CoordCalculator.get_neighbor(harbor_x, harbor_y,
 				Game_StyxData.NORMAL_SIGHT, false)
 		for j in neighbor:
 			if _is_terrain_marker(j.x, j.y, DEFAULT_MARKER):
