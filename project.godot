@@ -290,6 +290,11 @@ _global_script_classes=[ {
 "path": "res://scene/gui/SidebarVBox.gd"
 }, {
 "base": "Reference",
+"class": "Game_SnowRunnerData",
+"language": "GDScript",
+"path": "res://library/npc_data/SnowRunnerData.gd"
+}, {
+"base": "Reference",
 "class": "Game_SpriteBlueprint",
 "language": "GDScript",
 "path": "res://library/init/SpriteBlueprint.gd"
@@ -406,6 +411,7 @@ _global_script_class_icons={
 "Game_ShadowCastFOV": "",
 "Game_SidebarText": "",
 "Game_SidebarVBox": "",
+"Game_SnowRunnerData": "",
 "Game_SpriteBlueprint": "",
 "Game_SpriteType": "",
 "Game_SpriteTypeTag": "",
