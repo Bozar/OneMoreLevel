@@ -54,3 +54,5 @@ const NINJA_SHADOW := "ninja_shadow"
 
 const DOOR := "door"
 const SCP_173 := "scp_173"
+
+const CROSSROAD := "crossroad"
