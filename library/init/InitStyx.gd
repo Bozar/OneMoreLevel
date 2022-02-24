@@ -9,7 +9,7 @@ const PC_COORD := [
 	[Game_DungeonSize.MAX_X - 2, Game_DungeonSize.MAX_Y - 2],
 ]
 
-var _spr_Counter := preload("res://sprite/Counter.tscn")
+var _spr_Lighthouse := preload("res://sprite/Lighthouse.tscn")
 var _spr_Harbor := preload("res://sprite/Harbor.tscn")
 var _spr_Arrow := preload("res://sprite/Arrow.tscn")
 
@@ -37,7 +37,7 @@ func _init_lighthouse() -> void:
 			Game_DungeonSize.CENTER_X, Game_DungeonSize.CENTER_Y,
 			Game_StyxData.LIGHTHOUSE_GAP, true)
 
-	_add_building_to_blueprint(_spr_Counter, Game_SubTag.LIGHTHOUSE,
+	_add_building_to_blueprint(_spr_Lighthouse, Game_SubTag.LIGHTHOUSE,
 			Game_DungeonSize.CENTER_X, Game_DungeonSize.CENTER_Y)
 	for i in neighbor:
 		_occupy_position(i.x, i.y)
