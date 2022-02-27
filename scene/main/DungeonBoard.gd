@@ -150,6 +150,11 @@ func move_sprite(main_tag: String, source_x: int, source_y: int,
 	_try_move_arrow(sprite)
 
 
+func move_actor(source_x: int, source_y: int, target_x: int, target_y: int) \
+		-> void:
+	move_sprite(Game_MainTag.ACTOR, source_x, source_y, target_x, target_y)
+
+
 func swap_sprite(main_tag: String, source_x: int, source_y: int,
 		target_x: int, target_y: int) -> void:
 	var source_sprite: Sprite = get_sprite(main_tag, source_x, source_y)

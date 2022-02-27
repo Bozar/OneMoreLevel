@@ -68,8 +68,7 @@ func _random_walk() -> void:
 	Game_ArrayHelper.rand_picker(neighbor, 1, _ref_RandomNumber)
 	x = neighbor[0].x
 	y = neighbor[0].y
-	_ref_DungeonBoard.move_sprite(Game_MainTag.ACTOR,
-			_self_pos.x, _self_pos.y, x, y)
+	_ref_DungeonBoard.move_actor(_self_pos.x, _self_pos.y, x, y)
 
 
 func _set_danger_zone(x: int, y: int, danger: bool) -> void:

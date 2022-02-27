@@ -70,8 +70,7 @@ func _teleport() -> void:
 		pos = _get_teleport_coord()
 		if pos != null:
 			break
-	_ref_DungeonBoard.move_sprite(Game_MainTag.ACTOR,
-			_self_pos.x, _self_pos.y, pos.x, pos.y)
+	_ref_DungeonBoard.move_actor(_self_pos.x, _self_pos.y, pos.x, pos.y)
 
 
 func _switch_sprite(x: int, y: int) -> void:

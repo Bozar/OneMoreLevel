@@ -94,8 +94,7 @@ func move() -> void:
 			x -= Game_StateTag.DIRECTION_TO_COORD[i][0]
 			y -= Game_StateTag.DIRECTION_TO_COORD[i][1]
 			break
-	_ref_DungeonBoard.move_sprite(Game_MainTag.ACTOR,
-			_source_position.x, _source_position.y, x, y)
+	_ref_DungeonBoard.move_actor(_source_position.x, _source_position.y, x, y)
 
 	_set_sight_counter(_sight_counter + 1)
 	_try_discover_harbor(x, y)

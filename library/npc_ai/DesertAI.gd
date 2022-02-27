@@ -121,8 +121,7 @@ func _try_random_walk(id: int) -> bool:
 	_ref_RemoveObject.remove_trap(move_to.x, move_to.y)
 
 	_set_danger_zone(_self, false)
-	_ref_DungeonBoard.move_sprite(Game_MainTag.ACTOR, _self_pos.x, _self_pos.y,
-			move_to.x, move_to.y)
+	_ref_DungeonBoard.move_actor(_self_pos.x, _self_pos.y, move_to.x, move_to.y)
 	_set_danger_zone(_self, true)
 	return true
 
@@ -142,8 +141,7 @@ func _move_body(id: int) -> void:
 			return
 
 		save_position = Game_ConvertCoord.vector_to_coord(worm[i].position)
-		_ref_DungeonBoard.move_sprite(Game_MainTag.ACTOR,
-				save_position.x, save_position.y,
+		_ref_DungeonBoard.move_actor(save_position.x, save_position.y,
 				current_position.x, current_position.y)
 		current_position = save_position
 

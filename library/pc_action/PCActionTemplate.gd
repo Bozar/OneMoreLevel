@@ -288,8 +288,7 @@ func _set_sprite_memory(x: int, y: int, main_tag: String) -> void:
 
 
 func _move_pc_sprite() -> void:
-	_ref_DungeonBoard.move_sprite(Game_MainTag.ACTOR,
-			_source_position.x, _source_position.y,
+	_ref_DungeonBoard.move_actor(_source_position.x, _source_position.y,
 			_target_position.x, _target_position.y)
 
 

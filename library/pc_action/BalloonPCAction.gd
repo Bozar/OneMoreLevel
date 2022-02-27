@@ -60,16 +60,14 @@ func interact_with_building() -> void:
 func interact_with_trap() -> void:
 	var add_count: bool
 
-	_ref_DungeonBoard.move_sprite(Game_MainTag.ACTOR,
-			_source_position.x, _source_position.y,
+	_ref_DungeonBoard.move_actor(_source_position.x, _source_position.y,
 			_target_position.x, _target_position.y)
 	add_count = _reach_destination(_target_position.x, _target_position.y)
 	_end_turn_or_game(add_count)
 
 
 func move() -> void:
-	_ref_DungeonBoard.move_sprite(Game_MainTag.ACTOR,
-			_source_position.x, _source_position.y,
+	_ref_DungeonBoard.move_actor(_source_position.x, _source_position.y,
 			_target_position.x, _target_position.y)
 	_end_turn_or_game(false)
 
@@ -95,8 +93,7 @@ func _wind_blow() -> void:
 		_bounce_off(_source_position.x, _source_position.y,
 				new_position.x, new_position.y)
 	else:
-		_ref_DungeonBoard.move_sprite(Game_MainTag.ACTOR,
-				_source_position.x, _source_position.y,
+		_ref_DungeonBoard.move_actor(_source_position.x, _source_position.y,
 				new_position.x, new_position.y)
 	_source_position = Game_ConvertCoord.vector_to_coord(pc.position)
 
@@ -130,8 +127,7 @@ func _bounce_off(pc_x: int, pc_y: int, wall_x: int, wall_y: int) -> void:
 	var new_position := _try_move_over_border(mirror.x, mirror.y)
 
 	if not _ref_DungeonBoard.has_building(new_position.x, new_position.y):
-		_ref_DungeonBoard.move_sprite(Game_MainTag.ACTOR, pc_x, pc_y,
-				new_position.x, new_position.y)
+		_ref_DungeonBoard.move_actor(pc_x, pc_y, new_position.x, new_position.y)
 
 
 func _reactive_beacon() -> void:

@@ -100,8 +100,7 @@ func _hit_boss(boss: Sprite) -> void:
 					_source_position.x, _source_position.y,
 					Game_KnightData.ELITE_SIGHT)
 
-		_ref_DungeonBoard.move_sprite(Game_MainTag.ACTOR,
-				_target_position.x, _target_position.y,
+		_ref_DungeonBoard.move_actor(_target_position.x, _target_position.y,
 				teleport_x, teleport_y)
 	else:
 		_hit_knight()
@@ -124,8 +123,7 @@ func _roll() -> bool:
 	if _is_occupied(roll_over.x, roll_over.y):
 		return false
 
-	_ref_DungeonBoard.move_sprite(Game_MainTag.ACTOR,
-			_source_position.x, _source_position.y,
+	_ref_DungeonBoard.move_actor(_source_position.x, _source_position.y,
 			roll_over.x, roll_over.y)
 	_ref_ObjectData.set_state(pc, Game_StateTag.PASSIVE)
 	return true

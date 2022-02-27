@@ -129,8 +129,7 @@ func _try_move_vertically(direction: int) -> Array:
 			return [false, is_pc]
 	else:
 		last_grid = path[path.size() - 1]
-	_ref_DungeonBoard.move_sprite(Game_MainTag.ACTOR, pos.x, pos.y,
-			last_grid.x, last_grid.y)
+	_ref_DungeonBoard.move_actor(pos.x, pos.y, last_grid.x, last_grid.y)
 	return [true, is_pc]
 
 
@@ -147,8 +146,7 @@ func _try_move_horizontally() -> bool:
 
 	if _ref_DungeonBoard.has_actor(move_to.x, move_to.y):
 		return false
-	_ref_DungeonBoard.move_sprite(Game_MainTag.ACTOR, pos.x, pos.y,
-			move_to.x, move_to.y)
+	_ref_DungeonBoard.move_actor(pos.x, pos.y, move_to.x, move_to.y)
 	return true
 
 

@@ -105,8 +105,7 @@ func _create_image_on_the_other_side(x: int, y: int) -> void:
 	_ref_RemoveObject.remove_actor(mirror.x, mirror.y)
 
 	# Move the phantom to the other side. State: passive. Color: grey.
-	_ref_DungeonBoard.move_sprite(Game_MainTag.ACTOR,
-			x, y, mirror.x, mirror.y)
+	_ref_DungeonBoard.move_actor(x, y, mirror.x, mirror.y)
 	_ref_ObjectData.set_state(actor, Game_StateTag.PASSIVE)
 
 	# On the other side: Remove a trap.
@@ -234,9 +233,7 @@ func _move_pc_and_image() -> void:
 	var source_mirror := _get_mirror(_source_position.x, _source_position.y)
 	var target_mirror := _get_mirror(_target_position.x, _target_position.y)
 
-	_ref_DungeonBoard.move_sprite(Game_MainTag.ACTOR,
-			_source_position.x, _source_position.y,
+	_ref_DungeonBoard.move_actor(_source_position.x, _source_position.y,
 			_target_position.x, _target_position.y)
-	_ref_DungeonBoard.move_sprite(Game_MainTag.ACTOR,
-			source_mirror.x, source_mirror.y,
+	_ref_DungeonBoard.move_actor(source_mirror.x, source_mirror.y,
 			target_mirror.x, target_mirror.y)
