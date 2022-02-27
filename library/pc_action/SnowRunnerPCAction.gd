@@ -31,10 +31,13 @@ const DIRECT_TO_SHIFT := {
 	RIGHT: [1, 0],
 }
 
+var _spr_TruckGoods := preload("res://sprite/TruckGoods.tscn")
+
 var _move_direction := 0
 var _keep_moving := false
 var _deliveries := 0
 var _show_pc_digit := false
+var _truck_slot := []
 
 
 func _init(parent_node: Node2D).(parent_node) -> void:
@@ -48,6 +51,7 @@ func game_over(win: bool) -> void:
 
 func switch_sprite() -> void:
 	_init_move_direction()
+	_init_truck()
 	_switch_pc_sprite(false)
 
 
@@ -170,6 +174,26 @@ func _init_move_direction() -> void:
 		_move_direction = LEFT
 
 
+func _init_truck() -> void:
+	if _truck_slot.size() > 0:
+		return
+
+	var slot_shift: Array = DIRECT_TO_SHIFT[_get_opposite_direct()]
+	var x := _source_position.x
+	var y := _source_position.y
+	var new_sprite: Sprite
+
+	for i in range(0, Game_SnowRunnerData.MAX_SLOT):
+		if i == 0:
+			_truck_slot.push_back(_ref_DungeonBoard.get_pc())
+		else:
+			x += slot_shift[0]
+			y += slot_shift[1]
+			new_sprite = _ref_CreateObject.create_and_fetch_actor(
+					_spr_TruckGoods, Game_SubTag.TREASURE, x, y)
+			_truck_slot.push_back(new_sprite)
+
+
 func _is_opposite_direct(new_direct: int) -> bool:
 	return _move_direction + new_direct == 0
 
@@ -212,9 +236,16 @@ func _can_turn_left() -> bool:
 			and target_ground.is_in_group(Game_SubTag.CROSSROAD)
 
 
-# A trap in the way is removed and consumes 1 turn.
+# TODO: A trap in the way is removed and consumes 1 turn.
 func _move_truck() -> void:
-	_move_pc_sprite()
+	var self_pos: Game_IntCoord
+	var new_pos := _target_position
+
+	for i in _truck_slot:
+		self_pos = Game_ConvertCoord.vector_to_coord(i.position)
+		_ref_DungeonBoard.move_actor(self_pos.x, self_pos.y,
+				new_pos.x, new_pos.y)
+		new_pos = self_pos
 
 
 func _switch_pc_sprite(show_digit: bool) -> void:
