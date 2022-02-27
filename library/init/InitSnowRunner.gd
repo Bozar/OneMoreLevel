@@ -7,7 +7,7 @@ const DOOR_CHAR := "+"
 const CROSSROAD_CHAR := "="
 
 var _spr_Door := preload("res://sprite/Door.tscn")
-var _spr_Arrow := preload("res://sprite/Arrow.tscn")
+var _spr_PCSnowRunner := preload("res://sprite/PCSnowRunner.tscn")
 
 
 func _init(parent_node: Node2D).(parent_node) -> void:
@@ -16,9 +16,9 @@ func _init(parent_node: Node2D).(parent_node) -> void:
 
 func get_blueprint() -> Array:
 	_create_building_ground()
-	_init_pc(0, 4, Game_DungeonSize.CENTER_Y + 2,
+	_init_pc(0, 4, Game_DungeonSize.CENTER_Y,
 	# _init_pc(0, Game_DungeonSize.CENTER_X + 1, Game_DungeonSize.CENTER_Y - 3,
-			_spr_Arrow)
+			_spr_PCSnowRunner)
 
 	return _blueprint
 

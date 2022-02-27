@@ -32,7 +32,7 @@ The field of view is updated once at the start of a turn. You cannot examine sur
 
 Suppose you start from grid 1, press right arrow key to move to grid 8. You can only see things around grid 1 and 8, but nothing in between.
 
-## Reaching an Harbor
+## Reaching a Harbor
 
 A harbor is an impassable building similar to the lighthouse. There are 4 harbors in Styx and all of them are invisible at the start of the game.
 

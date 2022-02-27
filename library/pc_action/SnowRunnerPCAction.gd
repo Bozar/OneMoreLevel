@@ -33,17 +33,22 @@ const DIRECT_TO_SHIFT := {
 
 var _move_direction := 0
 var _keep_moving := false
+var _deliveries := 0
+var _show_pc_digit := false
 
 
 func _init(parent_node: Node2D).(parent_node) -> void:
 	pass
 
 
-func switch_sprite() -> void:
-	var pc := _ref_DungeonBoard.get_pc()
+func game_over(win: bool) -> void:
+	_render_end_game(win)
+	_switch_pc_sprite(true)
 
+
+func switch_sprite() -> void:
 	_init_move_direction()
-	_ref_SwitchSprite.set_sprite(pc, DIRECT_TO_SPRITE[_move_direction])
+	_switch_pc_sprite(false)
 
 
 func allow_input() -> bool:
@@ -128,7 +133,9 @@ func interact_with_building() -> void:
 
 # Switch to a digit that shows the number of deliveries.
 func wait() -> void:
-	end_turn = true
+	_switch_pc_sprite(not _show_pc_digit)
+	_keep_moving = false
+	end_turn = false
 
 
 func pass_turn() -> void:
@@ -208,3 +215,15 @@ func _can_turn_left() -> bool:
 # A trap in the way is removed and consumes 1 turn.
 func _move_truck() -> void:
 	_move_pc_sprite()
+
+
+func _switch_pc_sprite(show_digit: bool) -> void:
+	var pc := _ref_DungeonBoard.get_pc()
+	var digit: String = Game_SpriteTypeTag.convert_digit_to_tag(_deliveries)
+	var direct: String = DIRECT_TO_SPRITE[_move_direction]
+
+	if show_digit:
+		_ref_SwitchSprite.set_sprite(pc, digit)
+	else:
+		_ref_SwitchSprite.set_sprite(pc, direct)
+	_show_pc_digit = show_digit

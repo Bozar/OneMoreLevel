@@ -1,0 +1,139 @@
+[gd_scene load_steps=17 format=2]
+
+[ext_resource path="res://resource/curses_vector_24x36.png" type="Texture" id=1]
+
+[sub_resource type="AtlasTexture" id=1]
+flags = 4
+atlas = ExtResource( 1 )
+region = Rect2( 240, 540, 24, 36 )
+
+[sub_resource type="AtlasTexture" id=2]
+flags = 4
+atlas = ExtResource( 1 )
+region = Rect2( 192, 36, 24, 36 )
+
+[sub_resource type="AtlasTexture" id=3]
+flags = 4
+atlas = ExtResource( 1 )
+region = Rect2( 216, 36, 24, 36 )
+
+[sub_resource type="AtlasTexture" id=4]
+flags = 4
+atlas = ExtResource( 1 )
+region = Rect2( 264, 36, 24, 36 )
+
+[sub_resource type="AtlasTexture" id=5]
+flags = 4
+atlas = ExtResource( 1 )
+region = Rect2( 240, 36, 24, 36 )
+
+[sub_resource type="AtlasTexture" id=6]
+flags = 4
+atlas = ExtResource( 1 )
+region = Rect2( 0, 108, 24, 36 )
+
+[sub_resource type="AtlasTexture" id=7]
+flags = 4
+atlas = ExtResource( 1 )
+region = Rect2( 24, 108, 24, 36 )
+
+[sub_resource type="AtlasTexture" id=8]
+flags = 4
+atlas = ExtResource( 1 )
+region = Rect2( 48, 108, 24, 36 )
+
+[sub_resource type="AtlasTexture" id=9]
+flags = 4
+atlas = ExtResource( 1 )
+region = Rect2( 72, 108, 24, 36 )
+
+[sub_resource type="AtlasTexture" id=10]
+flags = 4
+atlas = ExtResource( 1 )
+region = Rect2( 96, 108, 24, 36 )
+
+[sub_resource type="AtlasTexture" id=11]
+flags = 4
+atlas = ExtResource( 1 )
+region = Rect2( 120, 108, 24, 36 )
+
+[sub_resource type="AtlasTexture" id=12]
+flags = 4
+atlas = ExtResource( 1 )
+region = Rect2( 144, 108, 24, 36 )
+
+[sub_resource type="AtlasTexture" id=13]
+flags = 4
+atlas = ExtResource( 1 )
+region = Rect2( 168, 108, 24, 36 )
+
+[sub_resource type="AtlasTexture" id=14]
+flags = 4
+atlas = ExtResource( 1 )
+region = Rect2( 192, 108, 24, 36 )
+
+[sub_resource type="AtlasTexture" id=15]
+flags = 4
+atlas = ExtResource( 1 )
+region = Rect2( 216, 108, 24, 36 )
+
+[node name="PCSnowRunner" type="Sprite"]
+
+[node name="default" type="Sprite" parent="."]
+texture = SubResource( 1 )
+
+[node name="up" type="Sprite" parent="."]
+visible = false
+texture = SubResource( 2 )
+
+[node name="down" type="Sprite" parent="."]
+visible = false
+texture = SubResource( 3 )
+
+[node name="left" type="Sprite" parent="."]
+visible = false
+texture = SubResource( 4 )
+
+[node name="right" type="Sprite" parent="."]
+visible = false
+texture = SubResource( 5 )
+
+[node name="zero" type="Sprite" parent="."]
+visible = false
+texture = SubResource( 6 )
+
+[node name="one" type="Sprite" parent="."]
+visible = false
+texture = SubResource( 7 )
+
+[node name="two" type="Sprite" parent="."]
+visible = false
+texture = SubResource( 8 )
+
+[node name="three" type="Sprite" parent="."]
+visible = false
+texture = SubResource( 9 )
+
+[node name="four" type="Sprite" parent="."]
+visible = false
+texture = SubResource( 10 )
+
+[node name="five" type="Sprite" parent="."]
+visible = false
+texture = SubResource( 11 )
+
+[node name="six" type="Sprite" parent="."]
+visible = false
+texture = SubResource( 12 )
+
+[node name="seven" type="Sprite" parent="."]
+visible = false
+texture = SubResource( 13 )
+
+[node name="eight" type="Sprite" parent="."]
+visible = false
+texture = SubResource( 14 )
+
+[node name="nine" type="Sprite" parent="."]
+visible = false
+texture = SubResource( 15 )
