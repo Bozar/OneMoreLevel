@@ -16,7 +16,8 @@ func _init(parent_node: Node2D).(parent_node) -> void:
 
 func get_blueprint() -> Array:
 	_create_building_ground()
-	_init_pc(0, Game_DungeonSize.CENTER_X + 1, Game_DungeonSize.CENTER_Y - 3,
+	_init_pc(0, 4, Game_DungeonSize.CENTER_Y + 2,
+	# _init_pc(0, Game_DungeonSize.CENTER_X + 1, Game_DungeonSize.CENTER_Y - 3,
 			_spr_Arrow)
 
 	return _blueprint
