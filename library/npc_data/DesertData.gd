@@ -6,7 +6,7 @@ const MIN_LENGTH := 12
 const SPICE_START := 2
 const SPICE_END := 5
 
-const CREATE_SPICE := 5
+const CREATE_SPICE := 10
 const BONUS_CREATE_SPICE := 5
 const CREATE_QUALITY_SPICE := 10
 
