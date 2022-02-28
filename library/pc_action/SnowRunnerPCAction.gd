@@ -1,36 +1,6 @@
 extends Game_PCActionTemplate
 
 
-const UP := 1
-const RIGHT := 2
-const DOWN := -1
-const LEFT := -2
-
-const TURN_RIGHT := {
-	UP: RIGHT,
-	RIGHT: DOWN,
-	DOWN: LEFT,
-	LEFT: UP,
-}
-const INPUT_TO_DIRECT := {
-	Game_InputTag.MOVE_UP: UP,
-	Game_InputTag.MOVE_DOWN: DOWN,
-	Game_InputTag.MOVE_LEFT: LEFT,
-	Game_InputTag.MOVE_RIGHT: RIGHT,
-}
-const DIRECT_TO_SPRITE := {
-	UP: Game_SpriteTypeTag.UP,
-	DOWN: Game_SpriteTypeTag.DOWN,
-	LEFT: Game_SpriteTypeTag.LEFT,
-	RIGHT: Game_SpriteTypeTag.RIGHT,
-}
-const DIRECT_TO_SHIFT := {
-	UP: [0, -1],
-	DOWN: [0, 1],
-	LEFT: [-1, 0],
-	RIGHT: [1, 0],
-}
-
 var _spr_TruckGoods := preload("res://sprite/TruckGoods.tscn")
 
 var _move_direction := 0
@@ -77,9 +47,9 @@ func allow_input() -> bool:
 	target_x = _target_position.x
 	target_y = _target_position.y
 
-	right_direct = TURN_RIGHT[_move_direction]
-	right_x = source_x + DIRECT_TO_SHIFT[right_direct][0]
-	right_y = source_y + DIRECT_TO_SHIFT[right_direct][1]
+	right_direct = Game_StateTag.TURN_RIGHT[_move_direction]
+	right_x = source_x + Game_StateTag.DIRECTION_TO_COORD[right_direct][0]
+	right_y = source_y + Game_StateTag.DIRECTION_TO_COORD[right_direct][1]
 
 	if _ref_DungeonBoard.has_building(target_x, target_y):
 		_keep_moving = false
@@ -105,7 +75,7 @@ func is_trap() -> bool:
 
 
 func move() -> void:
-	var new_direct: int = INPUT_TO_DIRECT[_input_direction]
+	var new_direct: int = Game_InputTag.INPUT_TO_STATE[_input_direction]
 
 	if _is_opposite_direct(new_direct):
 		_keep_moving = false
@@ -165,20 +135,21 @@ func _init_move_direction() -> void:
 	delta_x = door_pos.x - _source_position.x
 	delta_y = door_pos.y - _source_position.y
 	if delta_x > 0:
-		_move_direction = UP
+		_move_direction = Game_StateTag.UP
 	elif delta_x < 0:
-		_move_direction = DOWN
+		_move_direction = Game_StateTag.DOWN
 	elif delta_y > 0:
-		_move_direction = RIGHT
+		_move_direction = Game_StateTag.RIGHT
 	else:
-		_move_direction = LEFT
+		_move_direction = Game_StateTag.LEFT
 
 
 func _init_truck() -> void:
 	if _truck_slot.size() > 0:
 		return
 
-	var slot_shift: Array = DIRECT_TO_SHIFT[_get_opposite_direct()]
+	var slot_shift: Array = Game_StateTag.DIRECTION_TO_COORD[
+			_get_opposite_direct()]
 	var x := _source_position.x
 	var y := _source_position.y
 	var new_sprite: Sprite
@@ -203,19 +174,19 @@ func _is_same_direct(new_direct: int) -> bool:
 
 
 func _get_opposite_direct() -> int:
-	return -_move_direction
+	return Game_StateTag.OPPOSITE_DIRECTION[_move_direction]
 
 
 func _is_turn_right(new_direct: int) -> bool:
-	return new_direct == TURN_RIGHT[_move_direction]
+	return new_direct == Game_StateTag.TURN_RIGHT[_move_direction]
 
 
 func _is_turn_left(new_direct: int) -> bool:
-	return _move_direction == TURN_RIGHT[new_direct]
+	return new_direct == Game_StateTag.TURN_LEFT[_move_direction]
 
 
 func _can_turn_right() -> bool:
-	var shift: Array = DIRECT_TO_SHIFT[_move_direction]
+	var shift: Array = Game_StateTag.DIRECTION_TO_COORD[_move_direction]
 	var x: int = _source_position.x + shift[0]
 	var y: int = _source_position.y + shift[1]
 	var target_ground := _ref_DungeonBoard.get_ground(x, y)
@@ -227,7 +198,7 @@ func _can_turn_right() -> bool:
 func _can_turn_left() -> bool:
 	var source_ground := _ref_DungeonBoard.get_ground(
 			_source_position.x, _source_position.y)
-	var shift: Array = DIRECT_TO_SHIFT[_get_opposite_direct()]
+	var shift: Array = Game_StateTag.DIRECTION_TO_COORD[_get_opposite_direct()]
 	var x: int = _source_position.x + shift[0]
 	var y: int = _source_position.y + shift[1]
 	var target_ground := _ref_DungeonBoard.get_ground(x, y)
@@ -251,7 +222,7 @@ func _move_truck() -> void:
 func _switch_pc_sprite(show_digit: bool) -> void:
 	var pc := _ref_DungeonBoard.get_pc()
 	var digit: String = Game_SpriteTypeTag.convert_digit_to_tag(_deliveries)
-	var direct: String = DIRECT_TO_SPRITE[_move_direction]
+	var direct: String = Game_StateTag.STATE_TO_SPRITE[_move_direction]
 
 	if show_digit:
 		_ref_SwitchSprite.set_sprite(pc, digit)

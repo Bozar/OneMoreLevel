@@ -34,3 +34,17 @@ const STATE_TO_SPRITE := {
 	LEFT: Game_SpriteTypeTag.LEFT,
 	RIGHT: Game_SpriteTypeTag.RIGHT,
 }
+
+const TURN_RIGHT := {
+	UP: RIGHT,
+	RIGHT: DOWN,
+	DOWN: LEFT,
+	LEFT: UP,
+}
+
+const TURN_LEFT := {
+	UP: LEFT,
+	RIGHT: UP,
+	DOWN: RIGHT,
+	LEFT: DOWN,
+}
