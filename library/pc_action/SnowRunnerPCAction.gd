@@ -1,6 +1,12 @@
 extends Game_PCActionTemplate
 
 
+enum {
+	EMPTY_SLOT = 0,
+	GOODS_SLOT,
+	PASSENGER_SLOT,
+}
+
 var _spr_TruckGoods := preload("res://sprite/TruckGoods.tscn")
 
 var _move_direction := 0
@@ -88,7 +94,8 @@ func move() -> void:
 		_keep_moving = false
 		end_turn = true
 		_move_direction = new_direct
-		# TODO: Cost 1 more turn if truck is fully loaded.
+		if _is_fully_loaded():
+			_ref_CountDown.subtract_count(Game_SnowRunnerData.GOODS_COST_TURN)
 
 	if end_turn:
 		_move_truck()
@@ -161,7 +168,7 @@ func _init_truck() -> void:
 			x += slot_shift[0]
 			y += slot_shift[1]
 			new_sprite = _ref_CreateObject.create_and_fetch_actor(
-					_spr_TruckGoods, Game_SubTag.TREASURE, x, y)
+					_spr_TruckGoods, Game_SubTag.TRUCK_GOODS, x, y)
 			_truck_slot.push_back(new_sprite)
 
 
@@ -207,10 +214,20 @@ func _can_turn_left() -> bool:
 			and target_ground.is_in_group(Game_SubTag.CROSSROAD)
 
 
-# TODO: A trap in the way is removed and consumes 1 turn.
+func _is_fully_loaded() -> bool:
+	for i in range(1, _truck_slot.size()):
+		if _ref_ObjectData.get_hit_point(_truck_slot[i]) == EMPTY_SLOT:
+			return false
+	return true
+
+
 func _move_truck() -> void:
 	var self_pos: Game_IntCoord
 	var new_pos := _target_position
+
+	if _ref_DungeonBoard.has_trap(new_pos.x, new_pos.y):
+		_ref_RemoveObject.remove_trap(new_pos.x, new_pos.y)
+		_ref_CountDown.subtract_count(Game_SnowRunnerData.SNOW_COST_TURN)
 
 	for i in _truck_slot:
 		self_pos = Game_ConvertCoord.vector_to_coord(i.position)

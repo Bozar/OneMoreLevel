@@ -57,3 +57,5 @@ const DOOR := "door"
 const SCP_173 := "scp_173"
 
 const CROSSROAD := "crossroad"
+const TRUCK_GOODS := "truck_goods"
+const SNOW := "snow"
