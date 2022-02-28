@@ -136,7 +136,7 @@ func _reactive_beacon() -> void:
 			_set_beacon_state(i, Game_StateTag.ACTIVE)
 
 
-func _set_beacon_state(beacon: Sprite, state: String) -> void:
+func _set_beacon_state(beacon: Sprite, state: int) -> void:
 	match state:
 		Game_StateTag.ACTIVE:
 			_ref_ObjectData.set_state(beacon, state)

@@ -43,17 +43,19 @@ func _set_wind_direction() -> void:
 	_wind_forecast[1] = candidate[0]
 
 	_ref_ObjectData.set_state(pc, _wind_forecast[0])
-	_ref_SwitchSprite.set_sprite(pc,
-			Game_StateTag.STATE_TO_SPRITE[_wind_forecast[0]])
+	_ref_SwitchSprite.set_sprite(pc, Game_StateTag.STATE_TO_SPRITE[
+			_wind_forecast[0]])
 
 	for x in range(0, 2):
 		ground = _ref_DungeonBoard.get_ground(x, 0)
-		_ref_SwitchSprite.set_sprite(ground, _wind_forecast[x])
+		_ref_SwitchSprite.set_sprite(ground, Game_StateTag.STATE_TO_SPRITE[
+				_wind_forecast[x]])
 	for y in range(1, 3):
 		ground = _ref_DungeonBoard.get_ground(0, y)
-		_ref_SwitchSprite.set_sprite(ground, _wind_forecast[0])
+		_ref_SwitchSprite.set_sprite(ground, Game_StateTag.STATE_TO_SPRITE[
+				_wind_forecast[0]])
 
 
 func _dup_set_wind(source: Array, index: int, opt_arg: Array) -> int:
-	var direction: String = opt_arg[0]
+	var direction: int = opt_arg[0]
 	return 1 if (source[index] == direction) else 2

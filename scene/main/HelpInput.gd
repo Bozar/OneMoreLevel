@@ -42,5 +42,5 @@ func _unhandled_input(event: InputEvent) -> void:
 			break
 
 
-func _on_SwitchScreen_screen_switched(screen_tag: String) -> void:
+func _on_SwitchScreen_screen_switched(screen_tag: int) -> void:
 	set_process_unhandled_input(screen_tag == Game_ScreenTag.HELP)

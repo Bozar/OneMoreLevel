@@ -15,15 +15,15 @@ func _on_RemoveObject_sprite_removed(remove_sprite: Sprite, _main_tag: String,
 		i.remove_data(_get_id(remove_sprite))
 
 
-func get_state(sprite: Sprite) -> String:
+func get_state(sprite: Sprite) -> int:
 	return get_node(OBJECT_STATE).get_state(_get_id(sprite))
 
 
-func set_state(sprite: Sprite, state: String) -> void:
+func set_state(sprite: Sprite, state: int) -> void:
 	get_node(OBJECT_STATE).set_state(_get_id(sprite), state)
 
 
-func verify_state(sprite: Sprite, state: String) -> bool:
+func verify_state(sprite: Sprite, state: int) -> bool:
 	return get_node(OBJECT_STATE).verify_state(_get_id(sprite), state)
 
 

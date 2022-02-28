@@ -1,14 +1,16 @@
 class_name Game_StateTag
 
 
-const DEFAULT := "default"
-const ACTIVE := "active"
-const PASSIVE := "passive"
+enum {
+	DEFAULT,
+	ACTIVE,
+	PASSIVE,
 
-const UP := "up"
-const DOWN := "down"
-const LEFT := "left"
-const RIGHT := "right"
+	UP,
+	DOWN,
+	LEFT,
+	RIGHT,
+}
 
 const DIRECTION_TO_COORD := {
 	UP: [0, -1],

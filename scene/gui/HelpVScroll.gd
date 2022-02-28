@@ -63,7 +63,7 @@ func _on_InitWorld_world_selected(new_world: String) -> void:
 	get_node(DUNGEON).text = _help_text[_help_index]
 
 
-func _on_SwitchScreen_screen_switched(screen_tag: String) -> void:
+func _on_SwitchScreen_screen_switched(screen_tag: int) -> void:
 	_reset_scroll_bar()
 	_reset_index()
 	visible = (screen_tag == Game_ScreenTag.HELP)

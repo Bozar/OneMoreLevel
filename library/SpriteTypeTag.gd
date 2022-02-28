@@ -1,4 +1,5 @@
 class_name Game_SpriteTypeTag
+# SpriteType.set_sprite_type() requires a string tag.
 
 
 const DEFAULT := "default"
@@ -31,11 +32,11 @@ const EIGHT := "eight"
 const NINE := "nine"
 
 const ORDERED_SPRITE_TYPE := [
-    ZERO, ONE, TWO, THREE, FOUR, FIVE, SIX, SEVEN, EIGHT, NINE,
+	ZERO, ONE, TWO, THREE, FOUR, FIVE, SIX, SEVEN, EIGHT, NINE,
 ]
 
 
 static func convert_digit_to_tag(digit: int) -> String:
-    if (digit > -1) and (digit < ORDERED_SPRITE_TYPE.size()):
-        return ORDERED_SPRITE_TYPE[digit]
-    return ZERO
+	if (digit > -1) and (digit < ORDERED_SPRITE_TYPE.size()):
+		return ORDERED_SPRITE_TYPE[digit]
+	return ZERO

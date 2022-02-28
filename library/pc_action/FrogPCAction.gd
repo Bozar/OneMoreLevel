@@ -92,7 +92,7 @@ func _is_in_swamp(x: int, y: int) -> bool:
 	return _ref_DungeonBoard.has_sprite_with_sub_tag(Game_SubTag.SWAMP, x, y)
 
 
-func _set_pc_state(state_tag: String) -> void:
+func _set_pc_state(state_tag: int) -> void:
 	var pc: Sprite = _ref_DungeonBoard.get_pc()
 	_ref_ObjectData.set_state(pc, state_tag)
 

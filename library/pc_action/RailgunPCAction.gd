@@ -228,7 +228,7 @@ func _render_counter(kill: int) -> void:
 
 
 func _switch_mode(aim_mode: bool) -> void:
-	var new_state: String
+	var new_state: int
 	var new_sprite: String
 	var pc := _ref_DungeonBoard.get_pc()
 

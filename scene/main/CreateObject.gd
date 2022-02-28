@@ -77,5 +77,5 @@ func create_and_fetch_actor(prefab: PackedScene, sub_tag: String,
 			x_offset, y_offset)
 
 
-func _on_SwitchScreen_screen_switched(screen_tag: String) -> void:
+func _on_SwitchScreen_screen_switched(screen_tag: int) -> void:
 	visible = (screen_tag == Game_ScreenTag.MAIN)

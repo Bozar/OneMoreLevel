@@ -1,4 +1,5 @@
 class_name Game_WorldTag
+# setting.json requires a string tag.
 
 
 const INVALID := "INVALID"

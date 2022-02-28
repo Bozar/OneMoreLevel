@@ -27,7 +27,7 @@ func _change_water_flow() -> void:
 	var ground: Array = _ref_DungeonBoard.get_sprites_by_tag(
 			Game_MainTag.GROUND)
 	var valid_state: Array
-	var direction: String
+	var direction: int
 	var pos: Game_IntCoord
 	var x: int
 	var y: int
@@ -56,7 +56,7 @@ func _change_water_flow() -> void:
 				break
 
 
-func _rotate_sprite(ground: Sprite, direction: String) -> void:
+func _rotate_sprite(ground: Sprite, direction: int) -> void:
 	_ref_ObjectData.set_state(ground, direction)
 	_ref_SwitchSprite.set_sprite(ground,
 			Game_StateTag.STATE_TO_SPRITE[direction])

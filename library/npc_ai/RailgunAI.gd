@@ -31,7 +31,7 @@ func take_action() -> void:
 
 
 func _switch_mode(aim_mode: bool) -> void:
-	var new_state: String
+	var new_state: int
 	var new_sprite: String
 
 	if aim_mode:

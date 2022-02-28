@@ -1,4 +1,5 @@
 class_name Game_InputTag
+# InputTemplate._verify_input() requires a string tag.
 
 
 const MOVE_LEFT := "move_left"
