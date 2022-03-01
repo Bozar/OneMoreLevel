@@ -42,4 +42,4 @@ Achieving 18 kills is different from killing 18 devils. A victim of your railgun
 
 > Someone draws a group of curious symbols on a wall. Rumors say that this is a user guide written in Dabus language, which opens a portal to Pillar of Skulls. Record these symbols if possible, so that Doomguy will be able to share them with his friends on the island.
 
-Finding curious symbols is a side quest that has no impact on your main quest. Complete it for fun or for extra challenge. A special wall marked as an upper case X is at least 10 steps away from your starting position. Try to move adjacent to it. After that, its symbol changes into an upper case P and it remains grey even if it is out of your sight.
+Finding curious symbols is a side quest that has no impact on your main quest. Complete it for fun or for extra challenge. A special wall marked as an upper case X is at least 10 steps away from your starting position. Try to move adjacent to it. After that, its symbol changes into an upper case P.
