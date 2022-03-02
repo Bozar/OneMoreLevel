@@ -5,24 +5,24 @@
 [sub_resource type="AtlasTexture" id=1]
 flags = 4
 atlas = ExtResource( 1 )
-region = Rect2( 264, 72, 24, 36 )
+region = Rect2( 24, 540, 24, 36 )
 
 [sub_resource type="AtlasTexture" id=2]
 flags = 4
 atlas = ExtResource( 1 )
 region = Rect2( 0, 540, 24, 36 )
 
-[sub_resource type="AtlasTexture" id=3]
-flags = 4
-atlas = ExtResource( 1 )
-region = Rect2( 48, 0, 24, 36 )
-
 [sub_resource type="AtlasTexture" id=4]
 flags = 4
 atlas = ExtResource( 1 )
 region = Rect2( 24, 0, 24, 36 )
 
-[node name="TruckGoods" type="Sprite"]
+[sub_resource type="AtlasTexture" id=5]
+flags = 4
+atlas = ExtResource( 1 )
+region = Rect2( 48, 0, 24, 36 )
+
+[node name="TruckSlot" type="Sprite"]
 
 [node name="default" type="Sprite" parent="."]
 texture = SubResource( 1 )
@@ -33,8 +33,8 @@ texture = SubResource( 2 )
 
 [node name="active_1" type="Sprite" parent="."]
 visible = false
-texture = SubResource( 3 )
+texture = SubResource( 4 )
 
 [node name="passive_1" type="Sprite" parent="."]
 visible = false
-texture = SubResource( 4 )
+texture = SubResource( 5 )
