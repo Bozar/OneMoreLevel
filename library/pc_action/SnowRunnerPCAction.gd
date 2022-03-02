@@ -44,8 +44,7 @@ func allow_input() -> bool:
 	var right_x: int
 	var right_y: int
 	var source_ground: Sprite
-	var target_ground: Sprite
-	var right_building: Sprite
+	var right_door: Sprite
 
 	if not _keep_moving:
 		return true
@@ -65,19 +64,21 @@ func allow_input() -> bool:
 		_keep_moving = false
 	else:
 		source_ground = _ref_DungeonBoard.get_ground(source_x, source_y)
-		target_ground = _ref_DungeonBoard.get_ground(target_x, target_y)
-		right_building = _ref_DungeonBoard.get_building(right_x, right_y)
-		if source_ground.is_in_group(Game_SubTag.CROSSROAD) \
-				or target_ground.is_in_group(Game_SubTag.CROSSROAD):
+		right_door = _ref_DungeonBoard.get_building(right_x, right_y)
+		if source_ground.is_in_group(Game_SubTag.CROSSROAD):
 			_keep_moving = false
-		elif right_building.is_in_group(Game_SubTag.ONLOAD_GOODS):
-			if not _is_fully_loaded():
-				_keep_moving = false
-		elif right_building.is_in_group(Game_SubTag.OFFLOAD_GOODS):
+		elif right_door.is_in_group(Game_SubTag.ONLOAD_GOODS):
+			if _deliveries == Game_SnowRunnerData.MAX_DELIVERIES:
+				if _is_empty_loaded():
+					_keep_moving = false
+			elif _goods_in_garage > 0:
+				if not _is_fully_loaded():
+					_keep_moving = false
+		elif right_door.is_in_group(Game_SubTag.OFFLOAD_GOODS):
 			if _has_goods():
 				_keep_moving = false
-		elif right_building.is_in_group(Game_SubTag.DOOR):
-			match _ref_ObjectData.get_state(right_building):
+		elif right_door.is_in_group(Game_SubTag.DOOR):
+			match _ref_ObjectData.get_state(right_door):
 				Game_StateTag.DEFAULT:
 					if _has_passenger():
 						_keep_moving = false
