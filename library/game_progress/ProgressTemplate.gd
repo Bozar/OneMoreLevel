@@ -50,6 +50,10 @@ func remove_trap(_trap: Sprite, _x: int, _y: int) -> void:
 	pass
 
 
+func remove_ground(_ground: Sprite, _x: int, _y: int) -> void:
+	pass
+
+
 func create_actor(_actor: Sprite, _sub_tag: String, _x: int, _y: int) -> void:
 	pass
 
@@ -60,6 +64,10 @@ func create_building(_building: Sprite, _sub_tag: String, _x: int, _y: int) \
 
 
 func create_trap(_trap: Sprite, _sub_tag: String, _x: int, _y: int) -> void:
+	pass
+
+
+func create_ground(_ground: Sprite, _sub_tag: String, _x: int, _y: int) -> void:
 	pass
 
 

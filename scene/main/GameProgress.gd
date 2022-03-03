@@ -23,12 +23,15 @@ func _on_InitWorld_world_selected(new_world: String) -> void:
 
 func _on_CreateObject_sprite_created(new_sprite: Sprite,
 		main_tag: String, sub_tag: String, x: int, y: int) -> void:
-	if main_tag == Game_MainTag.ACTOR:
-		_progress.create_actor(new_sprite, sub_tag, x, y)
-	elif main_tag == Game_MainTag.BUILDING:
-		_progress.create_building(new_sprite, sub_tag, x, y)
-	elif main_tag == Game_MainTag.TRAP:
-		_progress.create_trap(new_sprite, sub_tag, x, y)
+	match main_tag:
+		Game_MainTag.ACTOR:
+			_progress.create_actor(new_sprite, sub_tag, x, y)
+		Game_MainTag.BUILDING:
+			_progress.create_building(new_sprite, sub_tag, x, y)
+		Game_MainTag.TRAP:
+			_progress.create_trap(new_sprite, sub_tag, x, y)
+		Game_MainTag.GROUND:
+			_progress.create_ground(new_sprite, sub_tag, x, y)
 
 
 func _on_Schedule_turn_started(current_sprite: Sprite) -> void:
@@ -52,12 +55,15 @@ func _on_Schedule_turn_ended(current_sprite: Sprite) -> void:
 
 func _on_RemoveObject_sprite_removed(remove_sprite: Sprite,
 		main_tag: String, x: int, y: int) -> void:
-	if main_tag == Game_MainTag.ACTOR:
-		_progress.remove_actor(remove_sprite, x, y)
-	elif main_tag == Game_MainTag.BUILDING:
-		_progress.remove_building(remove_sprite, x, y)
-	elif main_tag == Game_MainTag.TRAP:
-		_progress.remove_trap(remove_sprite, x, y)
+	match main_tag:
+		Game_MainTag.ACTOR:
+			_progress.remove_actor(remove_sprite, x, y)
+		Game_MainTag.BUILDING:
+			_progress.remove_building(remove_sprite, x, y)
+		Game_MainTag.TRAP:
+			_progress.remove_trap(remove_sprite, x, y)
+		Game_MainTag.GROUND:
+			_progress.remove_ground(remove_sprite, x, y)
 
 
 func _on_EndGame_game_over(win: bool) -> void:

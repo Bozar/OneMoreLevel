@@ -14,7 +14,7 @@ var _spr_TruckSlot := preload("res://sprite/TruckSlot.tscn")
 var _move_direction := 0
 var _keep_moving := false
 var _deliveries := 0
-var _goods_in_garage := Game_SnowRunnerData.MAX_DELIVERIES
+var _goods_in_garage := Game_SnowRunnerData.MAX_DELIVERY
 var _show_pc_digit := false
 var _truck_slot := []
 var _has_new_passenger := false
@@ -68,7 +68,7 @@ func allow_input() -> bool:
 		if source_ground.is_in_group(Game_SubTag.CROSSROAD):
 			_keep_moving = false
 		elif right_door.is_in_group(Game_SubTag.ONLOAD_GOODS):
-			if _deliveries == Game_SnowRunnerData.MAX_DELIVERIES:
+			if _deliveries == Game_SnowRunnerData.MAX_DELIVERY:
 				if _is_empty_loaded():
 					_keep_moving = false
 			elif _goods_in_garage > 0:
@@ -99,12 +99,12 @@ func move() -> void:
 	if _is_same_direct(new_direct):
 		_keep_moving = true
 		end_turn = true
-		_try_active_passenger()
+		_active_passenger()
 	elif _can_turn_right(new_direct) or _can_turn_left(new_direct):
 		_keep_moving = false
 		end_turn = true
 		_move_direction = new_direct
-		_try_turn_slowly()
+		_turn_slowly()
 
 	# end_turn is false by default.
 	if end_turn:
@@ -123,7 +123,7 @@ func interact_with_building() -> void:
 	end_turn = false
 
 	if door.is_in_group(Game_SubTag.ONLOAD_GOODS):
-		if _deliveries == Game_SnowRunnerData.MAX_DELIVERIES:
+		if _deliveries == Game_SnowRunnerData.MAX_DELIVERY:
 			if _is_empty_loaded():
 				_ref_EndGame.player_win()
 		elif _try_onload_goods():
@@ -134,10 +134,10 @@ func interact_with_building() -> void:
 	elif door.is_in_group(Game_SubTag.DOOR):
 		match _ref_ObjectData.get_state(door):
 			Game_StateTag.ACTIVE:
-				if _try_pick_passenger(door):
+				if _try_pick_up_passenger(door):
 					end_turn = true
 			Game_StateTag.DEFAULT:
-				if _try_drop_passenger():
+				if _try_drop_off_passenger():
 					end_turn = true
 
 
@@ -274,7 +274,7 @@ func _move_truck() -> void:
 	var self_pos: Game_IntCoord
 	var new_pos := _target_position
 
-	_try_clear_snow(new_pos.x, new_pos.y)
+	_clear_snow(new_pos.x, new_pos.y)
 	_move_pc_sprite()
 
 	new_pos = _source_position
@@ -301,59 +301,63 @@ func _try_onload_goods() -> bool:
 	if _goods_in_garage > 0:
 		for i in _truck_slot:
 			if _ref_ObjectData.get_hit_point(i) == SLOT.DEFAULT:
+				# Set truck slot.
 				_ref_ObjectData.set_hit_point(i, SLOT.GOODS)
 				_ref_SwitchSprite.set_sprite(i, Game_SpriteTypeTag.ACTIVE)
+				# Update progress.
 				_goods_in_garage -= 1
 				return true
 	return false
 
 
-func _try_offload_goods(building: Sprite) -> bool:
-	var pos := Game_ConvertCoord.vector_to_coord(building.position)
+func _try_offload_goods(door: Sprite) -> bool:
+	var pos := Game_ConvertCoord.vector_to_coord(door.position)
 
 	for i in _truck_slot:
 		if _ref_ObjectData.get_hit_point(i) == SLOT.GOODS:
 			# Set truck slot.
 			_ref_ObjectData.set_hit_point(i, SLOT.DEFAULT)
 			_ref_SwitchSprite.set_sprite(i, Game_SpriteTypeTag.DEFAULT)
-			# Set door.
+			# Replace sprite: offload -> door.
 			_ref_RemoveObject.remove_building(pos.x, pos.y)
 			_ref_CreateObject.create_building(_spr_DoorTruck, Game_SubTag.DOOR,
 					pos.x, pos.y)
 			# Update progress.
 			_deliveries += 1
-			_ref_CountDown.add_count(Game_SnowRunnerData.DELIVER_GOODS)
+			_ref_CountDown.add_count(Game_SnowRunnerData.OFFLOAD_GOODS)
 			return true
 	return false
 
 
-func _try_pick_passenger(building: Sprite) -> bool:
+func _try_pick_up_passenger(door: Sprite) -> bool:
 	for i in _truck_slot:
 		if _ref_ObjectData.get_hit_point(i) == SLOT.DEFAULT:
 			# Set truck slot.
 			_ref_ObjectData.set_hit_point(i, SLOT.PASSIVE_PASSENGER)
 			_ref_SwitchSprite.set_sprite(i, Game_SpriteTypeTag.PASSIVE_1)
 			_has_new_passenger = true
-			# Set door.
-			_ref_ObjectData.set_state(building, Game_StateTag.DEFAULT)
-			_ref_SwitchSprite.set_sprite(building, Game_SpriteTypeTag.DEFAULT)
+			# Set door. Set sprite type and state in SnowRunnerProgress.
+			_ref_ObjectData.set_hit_point(door,
+					Game_SnowRunnerData.PASSENGER_LEAVE)
+			# Update progress.
+			_ref_CountDown.add_count(Game_SnowRunnerData.PICK_UP_PASSENGER)
 			return true
 	return false
 
 
-func _try_drop_passenger() -> bool:
+func _try_drop_off_passenger() -> bool:
 	for i in _truck_slot:
 		if _ref_ObjectData.get_hit_point(i) == SLOT.ACTIVE_PASSENGER:
 			# Set truck slot.
 			_ref_ObjectData.set_hit_point(i, SLOT.DEFAULT)
 			_ref_SwitchSprite.set_sprite(i, Game_SpriteTypeTag.DEFAULT)
 			# Update progress.
-			_ref_CountDown.add_count(Game_SnowRunnerData.DELIVER_PASSENGER)
+			_ref_CountDown.add_count(Game_SnowRunnerData.DROP_OFF_PASSENGER)
 			return true
 	return false
 
 
-func _try_active_passenger() -> void:
+func _active_passenger() -> void:
 	if not _has_new_passenger:
 		return
 
@@ -364,12 +368,12 @@ func _try_active_passenger() -> void:
 			_ref_SwitchSprite.set_sprite(i, Game_SpriteTypeTag.ACTIVE_1)
 
 
-func _try_turn_slowly() -> void:
+func _turn_slowly() -> void:
 	if _is_fully_loaded():
 		_ref_CountDown.subtract_count(Game_SnowRunnerData.GOODS_COST_TURN)
 
 
-func _try_clear_snow(x: int, y: int) -> void:
+func _clear_snow(x: int, y: int) -> void:
 	if _ref_DungeonBoard.has_trap(x, y):
 		_ref_RemoveObject.remove_trap(x, y)
 		_ref_CountDown.subtract_count(Game_SnowRunnerData.SNOW_COST_TURN)
