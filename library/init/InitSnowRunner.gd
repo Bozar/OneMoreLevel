@@ -87,7 +87,7 @@ func _create_building_ground() -> void:
 	_create_building_by_threshold(door_coords, Game_SnowRunnerData.MAX_DOOR,
 			_spr_DoorTruck, Game_SubTag.DOOR,
 			_spr_Wall, Game_SubTag.WALL)
-	# # print(door_coords.size())
+	# print(door_coords.size())
 
 	# Create offload doors. They are shown as ordinary doors when game starts.
 	# Refer: SnowRunnerProgress.end_world().
@@ -95,6 +95,7 @@ func _create_building_ground() -> void:
 			Game_SnowRunnerData.MAX_DELIVERY,
 			_spr_DoorTruck, Game_SubTag.OFFLOAD_GOODS,
 			_spr_DoorTruck, Game_SubTag.DOOR)
+	# print(offload_coords.size())
 
 
 func _create_building_by_threshold(coords: Array, max_building: int,
