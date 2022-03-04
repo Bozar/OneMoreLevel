@@ -5,7 +5,7 @@
 [sub_resource type="AtlasTexture" id=1]
 flags = 4
 atlas = ExtResource( 1 )
-region = Rect2( 192, 180, 24, 36 )
+region = Rect2( 264, 468, 24, 36 )
 
 [node name="OffloadGoods" type="Sprite"]
 

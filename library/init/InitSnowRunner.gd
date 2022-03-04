@@ -39,24 +39,30 @@ func _create_building_ground() -> void:
 	var main_tag: String
 	var sub_tag: String
 	var ground_coords := []
+	var door_coords := []
 
 	for x in range(0, packed_prefab.max_x):
 		for y in range(0, packed_prefab.max_y):
 			match packed_prefab.prefab[x][y]:
+				DOOR_CHAR:
+					# Some doors are replaeced by walls.
+					door_coords.push_back(Game_IntCoord.new(x, y))
+					# new_scene = _spr_DoorTruck
+					# main_tag = Game_MainTag.BUILDING
+					# sub_tag = Game_SubTag.DOOR
 				Game_DungeonPrefab.WALL_CHAR:
 					new_scene = _spr_Wall
 					main_tag = Game_MainTag.BUILDING
 					sub_tag = Game_SubTag.WALL
-				DOOR_CHAR:
-					new_scene = _spr_DoorTruck
-					main_tag = Game_MainTag.BUILDING
-					sub_tag = Game_SubTag.DOOR
 				ONLOAD_GOODS_CHAR:
 					new_scene = _spr_OnloadGoods
 					main_tag = Game_MainTag.BUILDING
 					sub_tag = Game_SubTag.ONLOAD_GOODS
 				OFFLOAD_GOODS_CHAR:
-					new_scene = _spr_OffloadGoods
+					# Offload doors are shown as ordinary doors when the game
+					# starts. Refer: SnowRunnerProgress.end_world().
+					new_scene = _spr_DoorTruck
+					# new_scene = _spr_OffloadGoods
 					main_tag = Game_MainTag.BUILDING
 					sub_tag = Game_SubTag.OFFLOAD_GOODS
 				CROSSROAD_CHAR:
@@ -72,9 +78,22 @@ func _create_building_ground() -> void:
 					if packed_prefab.prefab[x][y] == START_CHAR:
 						_pc_x = x
 						_pc_y = y
-			_add_to_blueprint(new_scene, main_tag, sub_tag, x, y)
+			if packed_prefab.prefab[x][y] != DOOR_CHAR:
+				_add_to_blueprint(new_scene, main_tag, sub_tag, x, y)
 
 	Game_ArrayHelper.shuffle(ground_coords, _ref_RandomNumber)
-	for i in range(0, Game_SnowRunnerData.SNOWFALL):
+	for i in range(0, Game_SnowRunnerData.MAX_SNOW):
 		_add_trap_to_blueprint(_spr_Crystal, Game_SubTag.SNOW,
 				ground_coords[i].x, ground_coords[i].y)
+
+	Game_ArrayHelper.shuffle(door_coords, _ref_RandomNumber)
+	# print(door_coords.size())
+	for i in range(0, door_coords.size()):
+		if i < Game_SnowRunnerData.MAX_DOOR:
+			new_scene = _spr_DoorTruck
+			sub_tag = Game_SubTag.DOOR
+		else:
+			new_scene = _spr_Wall
+			sub_tag = Game_SubTag.WALL
+		_add_building_to_blueprint(new_scene, sub_tag,
+				door_coords[i].x, door_coords[i].y)

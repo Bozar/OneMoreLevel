@@ -17,6 +17,7 @@ var _deliveries := 0
 var _goods_in_garage := Game_SnowRunnerData.MAX_DELIVERY
 var _show_pc_digit := false
 var _truck_slot := []
+var _door_coord := []
 var _has_new_passenger := false
 
 
@@ -26,13 +27,14 @@ func _init(parent_node: Node2D).(parent_node) -> void:
 
 func game_over(win: bool) -> void:
 	_render_end_game(win)
-	_switch_pc_sprite(not win)
+	_switch_pc_sprite(not win, false)
 
 
 func switch_sprite() -> void:
 	_init_move_direction()
 	_init_truck()
-	_switch_pc_sprite(false)
+	_init_door_coord()
+	_switch_pc_sprite(false, false)
 
 
 func allow_input() -> bool:
@@ -143,7 +145,7 @@ func interact_with_building() -> void:
 
 # Switch to a digit that shows the number of deliveries.
 func wait() -> void:
-	_switch_pc_sprite(not _show_pc_digit)
+	_switch_pc_sprite(not _show_pc_digit, true)
 	_keep_moving = false
 	end_turn = false
 
@@ -200,6 +202,19 @@ func _init_truck() -> void:
 		new_sprite = _ref_CreateObject.create_and_fetch_actor(_spr_TruckSlot,
 				Game_SubTag.TRUCK_SLOT, x, y)
 		_truck_slot.push_back(new_sprite)
+
+
+func _init_door_coord() -> void:
+	if _door_coord.size() > 0:
+		return
+
+	var tags := [Game_SubTag.DOOR, Game_SubTag.OFFLOAD_GOODS]
+	var pos: Game_IntCoord
+
+	for i in tags:
+		for j in _ref_DungeonBoard.get_sprites_by_tag(i):
+			pos = Game_ConvertCoord.vector_to_coord(j.position)
+			_door_coord.push_back(pos)
 
 
 func _is_same_direct(new_direct: int) -> bool:
@@ -285,16 +300,27 @@ func _move_truck() -> void:
 		new_pos = self_pos
 
 
-func _switch_pc_sprite(show_digit: bool) -> void:
+func _switch_pc_sprite(show_digit: bool, force_render_fov: bool) -> void:
 	var pc := _ref_DungeonBoard.get_pc()
 	var digit: String = Game_SpriteTypeTag.convert_digit_to_tag(_deliveries)
 	var direct: String = Game_StateTag.STATE_TO_SPRITE[_move_direction]
 
 	if show_digit:
 		_ref_SwitchSprite.set_sprite(pc, digit)
+		for i in _door_coord:
+			_set_sprite_color(i.x, i.y, Game_MainTag.BUILDING, self,
+					"_door_is_in_sight")
 	else:
 		_ref_SwitchSprite.set_sprite(pc, direct)
+		if force_render_fov:
+			for i in _door_coord:
+				_set_sprite_color(i.x, i.y, Game_MainTag.BUILDING,
+						Game_ShadowCastFOV, "is_in_sight")
 	_show_pc_digit = show_digit
+
+
+func _door_is_in_sight(_x: int, _y: int) -> bool:
+	return true
 
 
 func _try_onload_goods() -> bool:
