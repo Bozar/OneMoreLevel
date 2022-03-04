@@ -13,7 +13,7 @@ const NO_SNOW := 0
 const SNOW_FALL := 20
 const SNOW_MELT := 40
 
-const MAX_SNOW := 25
+const MAX_SNOW := 20
 const MAX_DOOR := 20
 const MAX_OFFLOAD := 2
 

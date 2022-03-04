@@ -38,18 +38,21 @@ func _create_building_ground() -> void:
 	var new_scene: PackedScene
 	var main_tag: String
 	var sub_tag: String
+	var create_this: bool
 	var ground_coords := []
 	var door_coords := []
+	var offload_coords := []
 
 	for x in range(0, packed_prefab.max_x):
 		for y in range(0, packed_prefab.max_y):
+			create_this = true
 			match packed_prefab.prefab[x][y]:
 				DOOR_CHAR:
-					# Some doors are replaeced by walls.
 					door_coords.push_back(Game_IntCoord.new(x, y))
-					# new_scene = _spr_DoorTruck
-					# main_tag = Game_MainTag.BUILDING
-					# sub_tag = Game_SubTag.DOOR
+					create_this = false
+				OFFLOAD_GOODS_CHAR:
+					offload_coords.push_back(Game_IntCoord.new(x, y))
+					create_this = false
 				Game_DungeonPrefab.WALL_CHAR:
 					new_scene = _spr_Wall
 					main_tag = Game_MainTag.BUILDING
@@ -58,13 +61,6 @@ func _create_building_ground() -> void:
 					new_scene = _spr_OnloadGoods
 					main_tag = Game_MainTag.BUILDING
 					sub_tag = Game_SubTag.ONLOAD_GOODS
-				OFFLOAD_GOODS_CHAR:
-					# Offload doors are shown as ordinary doors when the game
-					# starts. Refer: SnowRunnerProgress.end_world().
-					new_scene = _spr_DoorTruck
-					# new_scene = _spr_OffloadGoods
-					main_tag = Game_MainTag.BUILDING
-					sub_tag = Game_SubTag.OFFLOAD_GOODS
 				CROSSROAD_CHAR:
 					new_scene = _spr_FloorSnowRunner
 					main_tag = Game_MainTag.GROUND
@@ -78,22 +74,42 @@ func _create_building_ground() -> void:
 					if packed_prefab.prefab[x][y] == START_CHAR:
 						_pc_x = x
 						_pc_y = y
-			if packed_prefab.prefab[x][y] != DOOR_CHAR:
+			if create_this:
 				_add_to_blueprint(new_scene, main_tag, sub_tag, x, y)
 
-	Game_ArrayHelper.shuffle(ground_coords, _ref_RandomNumber)
-	for i in range(0, Game_SnowRunnerData.MAX_SNOW):
-		_add_trap_to_blueprint(_spr_Crystal, Game_SubTag.SNOW,
-				ground_coords[i].x, ground_coords[i].y)
+	# Create snow.
+	Game_ArrayHelper.rand_picker(ground_coords, Game_SnowRunnerData.MAX_SNOW,
+			_ref_RandomNumber)
+	for i in ground_coords:
+		_add_trap_to_blueprint(_spr_Crystal, Game_SubTag.SNOW, i.x, i.y)
 
-	Game_ArrayHelper.shuffle(door_coords, _ref_RandomNumber)
-	# print(door_coords.size())
-	for i in range(0, door_coords.size()):
-		if i < Game_SnowRunnerData.MAX_DOOR:
-			new_scene = _spr_DoorTruck
-			sub_tag = Game_SubTag.DOOR
+	# Create doors. Replace some of them with walls.
+	_create_building_by_threshold(door_coords, Game_SnowRunnerData.MAX_DOOR,
+			_spr_DoorTruck, Game_SubTag.DOOR,
+			_spr_Wall, Game_SubTag.WALL)
+	# # print(door_coords.size())
+
+	# Create offload doors. They are shown as ordinary doors when game starts.
+	# Refer: SnowRunnerProgress.end_world().
+	_create_building_by_threshold(offload_coords,
+			Game_SnowRunnerData.MAX_DELIVERY,
+			_spr_DoorTruck, Game_SubTag.OFFLOAD_GOODS,
+			_spr_DoorTruck, Game_SubTag.DOOR)
+
+
+func _create_building_by_threshold(coords: Array, max_building: int,
+		this_scene: PackedScene, this_sub_tag: String,
+		that_scene: PackedScene, that_sub_tag: String) -> void:
+	var new_scene: PackedScene
+	var new_sub_tag: String
+
+	Game_ArrayHelper.shuffle(coords, _ref_RandomNumber)
+	for i in range(0, coords.size()):
+		if i < max_building:
+			new_scene = this_scene
+			new_sub_tag = this_sub_tag
 		else:
-			new_scene = _spr_Wall
-			sub_tag = Game_SubTag.WALL
-		_add_building_to_blueprint(new_scene, sub_tag,
-				door_coords[i].x, door_coords[i].y)
+			new_scene = that_scene
+			new_sub_tag = that_sub_tag
+		_add_building_to_blueprint(new_scene, new_sub_tag,
+				coords[i].x, coords[i].y)
