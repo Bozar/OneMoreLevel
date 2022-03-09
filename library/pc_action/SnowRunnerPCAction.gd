@@ -208,7 +208,9 @@ func _init_door_coord() -> void:
 	if _door_coord.size() > 0:
 		return
 
-	var tags := [Game_SubTag.DOOR, Game_SubTag.OFFLOAD_GOODS]
+	var tags := [
+		Game_SubTag.DOOR, Game_SubTag.OFFLOAD_GOODS, Game_SubTag.ONLOAD_GOODS,
+	]
 	var pos: Game_IntCoord
 
 	for i in tags:
