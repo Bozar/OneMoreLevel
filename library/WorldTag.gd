@@ -16,6 +16,7 @@ const HOUND := "hound"
 const NINJA := "ninja"
 const FACTORY := "factory"
 const SNOWRUNNER := "snowrunner"
+const BARON := "baron"
 
 const TAG_TO_NAME := {
 	DEMO: "Demo",
@@ -30,6 +31,7 @@ const TAG_TO_NAME := {
 	NINJA: "Ninja",
 	FACTORY: "Factory",
 	SNOWRUNNER: "SnowRunner",
+	BARON: "Baron",
 }
 
 

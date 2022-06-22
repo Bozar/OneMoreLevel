@@ -1,6 +1,7 @@
 # World List
 
 * balloon
+* baron
 * demo
 * desert
 * factory
