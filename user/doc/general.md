@@ -1,7 +1,6 @@
 # General Help
 
-[→: Dungeon help | ←: Key bindings]
-[↑, PgUp: Scroll up | ↓, PgDn: Scroll down]
+[INPUT_HINT]
 
 ## About This Game
 

@@ -1,7 +1,6 @@
 # Only My Railgun Can Shoot It
 
-[→: Key bindings | ←: General help]
-[↑, PgUp: Scroll up | ↓, PgDn: Scroll down]
+[INPUT_HINT]
 
 > Doomguy believes that danger is the abbreviation of deadly anger. Doomguy enters Baator with a railgun and mere five charges. Doomguy engraves the railgun barrel with MM. "It means Might and Mercy." so says Doomguy.
 

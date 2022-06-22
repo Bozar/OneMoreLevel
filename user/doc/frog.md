@@ -1,7 +1,6 @@
 # Frog Princess and the Spear of Love
 
-[→: Key bindings | ←: General help]
-[↑, PgUp: Scroll up | ↓, PgDn: Scroll down]
+[INPUT_HINT]
 
 > Our princess and her twelve knights are turned into frogs by an evil wizard. Finn the human and Jack the dog, take the spear that wounds and heals someone with the same stab. Venture into swamp, remove the curse and save our kingdom from doom.
 

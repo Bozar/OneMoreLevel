@@ -1,7 +1,6 @@
 # Mirror X Mirror
 
-[→: Key bindings | ←: General help]
-[↑, PgUp: Scroll up | ↓, PgDn: Scroll down]
+[INPUT_HINT]
 
 ## Winning and Losing
 

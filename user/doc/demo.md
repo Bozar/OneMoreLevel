@@ -1,6 +1,5 @@
 # Demo
 
-[→: Key bindings | ←: General help]
-[↑, PgUp: Scroll up | ↓, PgDn: Scroll down]
+[INPUT_HINT]
 
 Demo help.
