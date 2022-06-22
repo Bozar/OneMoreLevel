@@ -1,6 +1,7 @@
 # Desert
 
-(Press Enter to view key bindings.)
+[→: Key bindings | ←: General help]
+[↑, PgUp: Scroll up | ↓, PgDn: Scroll down]
 
 You need to bump and collect 3 quality spices (*) from a living sandworm. Press Space to show how many spices you have so far, but you cannot wait in desert, which makes the job a little bit harder.
 

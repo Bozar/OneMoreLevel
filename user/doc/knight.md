@@ -1,6 +1,7 @@
 # Silent Knight Hall
 
-(Press Enter to view key bindings.)
+[→: Key bindings | ←: General help]
+[↑, PgUp: Scroll up | ↓, PgDn: Scroll down]
 
 Your mission is to sneak into the Silent Knight Hall and assassinate the knight boss. However, the boss will not show up until you have killed three captains (C). There is a counter that behaves like a wall (#) and shows the number of dead captains. Whether or not to kill knights (k) is your own choice.
 

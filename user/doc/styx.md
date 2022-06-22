@@ -1,6 +1,7 @@
 # Styx Ferryman
 
-(Press Enter to view key bindings.)
+[→: Key bindings | ←: General help]
+[↑, PgUp: Scroll up | ↓, PgDn: Scroll down]
 
 ## Winning and Losing
 

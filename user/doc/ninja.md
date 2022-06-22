@@ -1,6 +1,7 @@
 # Ninja Slayer
 
-(Press Enter to view key bindings.)
+[→: Key bindings | ←: General help]
+[↑, PgUp: Scroll up | ↓, PgDn: Scroll down]
 
 > - Sorry, love. My heart has no room for another lady. She would slow me down.
 > - If so, let me be the bone of your sword.

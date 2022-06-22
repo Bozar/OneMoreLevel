@@ -1,6 +1,7 @@
 # SnowRunner
 
-(Press Enter to view key bindings.)
+[→: Key bindings | ←: General help]
+[↑, PgUp: Scroll up | ↓, PgDn: Scroll down]
 
 ## Turn Restoration Cheatsheet
 

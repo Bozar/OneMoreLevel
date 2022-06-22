@@ -1,6 +1,7 @@
 # Balloon Travellers
 
-(Press Enter to view key bindings.)
+[→: Key bindings | ←: General help]
+[↑, PgUp: Scroll up | ↓, PgDn: Scroll down]
 
 > Sit in a hot balloon and fly across a power station in a speed race. Reach designated places to earn points. Do not bump into tower like chimneys when possible.
 

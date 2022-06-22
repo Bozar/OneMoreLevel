@@ -1,6 +1,7 @@
 # Key Bindings
 
-(Press Enter to view general help.)
+[→: General help | ←: Dungeon help]
+[↑, PgUp: Scroll up | ↓, PgDn: Scroll down]
 
 One More Level is made with Godot engine, which natively supports keyboards and gamepads (Xbox, DualShock and Nintendo). Xbox buttons are shown in square brackets below.
 
