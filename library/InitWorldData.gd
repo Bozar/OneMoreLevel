@@ -2,7 +2,7 @@ class_name Game_InitWorldData
 
 
 const WORLD_PLACEHOLDER := "%str%"
-const HINT_PLACEHOLDER := "[INPUT_HINT]"
+const HINT_PLACEHOLDER := "[INPUT_HINT]\n"
 
 const INIT_PATH := "res://library/init/Init%str%.gd"
 const ACTION_PATH := "res://library/pc_action/%str%PCAction.gd"
@@ -53,9 +53,7 @@ static func get_help(world_tag: String) -> Array:
 
 	for i in parse_help.size():
 		if parse_help[i].parse_success and parse_hint[i].parse_success:
-			# Remove the last blank line from hint_text.
 			hint_text = parse_hint[i].output_text
-			hint_text.erase(hint_text.length() -1,1)
 			help_text = parse_help[i].output_text
 			help_text = help_text.replace(HINT_PLACEHOLDER, hint_text)
 			result.push_back(help_text)
