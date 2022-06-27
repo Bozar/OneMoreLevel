@@ -1,10 +1,21 @@
 extends Game_WorldTemplate
-# Initialize a simple map for testing.
 
 
-var _spr_Dwarf := preload("res://sprite/Dwarf.tscn")
+const PATH_TO_PREFABS := "baron"
+const MAX_PREFAB := 9
+const FLIP_CHANCE := 50
+const X_STEP := 7
+const Y_STEP := 5
+const CHAR_TRUNK := "O"
+const CHAR_BRANCH := "+"
 
-var _dungeon: Dictionary = {}
+var _spr_TreeTrunk := preload("res://sprite/TreeTrunk.tscn")
+var _spr_TreeBranch := preload("res://sprite/TreeBranch.tscn")
+
+var _char_to_blueprint := {
+	CHAR_TRUNK: [_spr_TreeTrunk, Game_SubTag.TREE_TRUNK],
+	CHAR_BRANCH: [_spr_TreeBranch, Game_SubTag.TREE_BRANCH],
+}
 
 
 func _init(parent_node: Node2D).(parent_node) -> void:
@@ -12,38 +23,52 @@ func _init(parent_node: Node2D).(parent_node) -> void:
 
 
 func get_blueprint() -> Array:
-	_init_wall()
+	_init_tree()
 	_init_floor()
 	_init_pc()
-	_init_dwarf()
 
 	return _blueprint
 
 
-func _init_wall() -> void:
-	var shift: int = 2
-	var min_x: int = Game_DungeonSize.CENTER_X - shift
-	var max_x: int = Game_DungeonSize.CENTER_X + shift + 1
-	var min_y: int = Game_DungeonSize.CENTER_Y - shift
-	var max_y: int = Game_DungeonSize.CENTER_Y + shift + 1
+func _init_tree() -> void:
+	var packed_prefabs: Array = _load_prefabs()
+	var prefab_index := 0
+	var this_prefab: Game_DungeonPrefab.PackedPrefab
+	var this_char: String
 
-	for x in range(min_x, max_x):
-		for y in range(min_y, max_y):
-			_occupy_position(x, y)
-			_add_building_to_blueprint(_spr_Wall, Game_SubTag.WALL, x, y)
+	for start_x in range(0, Game_DungeonSize.MAX_X, X_STEP):
+		for start_y in range(0, Game_DungeonSize.MAX_Y, Y_STEP):
+			this_prefab = packed_prefabs[prefab_index]
+			prefab_index += 1
+
+			for x in this_prefab.max_x:
+				for y in this_prefab.max_y:
+					this_char = this_prefab.prefab[x][y]
+					if _char_to_blueprint.has(this_char):
+						_add_building_to_blueprint(
+								_char_to_blueprint[this_char][0],
+								_char_to_blueprint[this_char][1],
+								x + start_x, y + start_y)
 
 
-func _init_dwarf() -> void:
-	var dwarf: int = _ref_RandomNumber.get_int(3, 6)
-	var x: int
-	var y: int
+func _load_prefabs() -> Array:
+	var file_list: Array = Game_FileIOHelper.get_file_list(
+			Game_DungeonPrefab.RESOURCE_PATH + PATH_TO_PREFABS)
+	var file_index: int
+	var edit_arg: Array
+	var packed_prefabs := []
 
-	while dwarf > 0:
-		x = _ref_RandomNumber.get_x_coord()
-		y = _ref_RandomNumber.get_y_coord()
-		if _is_occupied(x, y):
-			continue
+	for _i in range(0, MAX_PREFAB):
+		file_index = _ref_RandomNumber.get_int(0, file_list.size())
+		edit_arg = [
+			Game_DungeonPrefab.HORIZONTAL_FLIP \
+					if _ref_RandomNumber.get_percent_chance(FLIP_CHANCE) \
+					else Game_DungeonPrefab.DO_NOT_EDIT,
+			Game_DungeonPrefab.VERTICAL_FLIP \
+					if _ref_RandomNumber.get_percent_chance(FLIP_CHANCE) \
+					else Game_DungeonPrefab.DO_NOT_EDIT
+		]
+		packed_prefabs.push_back(Game_DungeonPrefab.get_prefab(
+				file_list[file_index], edit_arg))
 
-		_occupy_position(x, y)
-		_add_actor_to_blueprint(_spr_Dwarf, Game_SubTag.DWARF, x, y)
-		dwarf -= 1
+	return packed_prefabs

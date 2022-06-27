@@ -61,3 +61,6 @@ const TRUCK_SLOT := "truck_slot"
 const ONLOAD_GOODS := "onload_goods"
 const OFFLOAD_GOODS := "offload_goods"
 const SNOW := "snow"
+
+const TREE_TRUNK := "tree_trunk"
+const TREE_BRANCH := "tree_branch"
