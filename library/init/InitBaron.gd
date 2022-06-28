@@ -1,7 +1,7 @@
 extends Game_WorldTemplate
 
 
-const PATH_TO_PREFABS := "baron"
+const PATH_TO_PREFABS := Game_DungeonPrefab.RESOURCE_PATH + "baron"
 const MAX_PREFAB := 9
 const FLIP_CHANCE := 50
 const X_STEP := 7
@@ -52,14 +52,13 @@ func _init_tree() -> void:
 
 
 func _load_prefabs() -> Array:
-	var file_list: Array = Game_FileIOHelper.get_file_list(
-			Game_DungeonPrefab.RESOURCE_PATH + PATH_TO_PREFABS)
-	var file_index: int
+	var file_list: Array = Game_FileIOHelper.get_file_list(PATH_TO_PREFABS)
 	var edit_arg: Array
 	var packed_prefabs := []
 
-	for _i in range(0, MAX_PREFAB):
-		file_index = _ref_RandomNumber.get_int(0, file_list.size())
+	# There must be more than MAX_PREFAB prefabs.
+	Game_ArrayHelper.rand_picker(file_list, MAX_PREFAB, _ref_RandomNumber)
+	for i in file_list:
 		edit_arg = [
 			Game_DungeonPrefab.HORIZONTAL_FLIP \
 					if _ref_RandomNumber.get_percent_chance(FLIP_CHANCE) \
@@ -68,7 +67,6 @@ func _load_prefabs() -> Array:
 					if _ref_RandomNumber.get_percent_chance(FLIP_CHANCE) \
 					else Game_DungeonPrefab.DO_NOT_EDIT
 		]
-		packed_prefabs.push_back(Game_DungeonPrefab.get_prefab(
-				file_list[file_index], edit_arg))
+		packed_prefabs.push_back(Game_DungeonPrefab.get_prefab(i, edit_arg))
 
 	return packed_prefabs
