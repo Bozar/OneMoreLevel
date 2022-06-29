@@ -1,4 +1,4 @@
-[gd_scene load_steps=28 format=2]
+[gd_scene load_steps=29 format=2]
 
 [ext_resource path="res://scene/main/InitWorld.gd" type="Script" id=1]
 [ext_resource path="res://scene/gui/MainGUI.tscn" type="PackedScene" id=2]
@@ -27,6 +27,7 @@
 [ext_resource path="res://scene/gui/HelpGUI.tscn" type="PackedScene" id=25]
 [ext_resource path="res://scene/main/Palette.gd" type="Script" id=26]
 [ext_resource path="res://scene/main/BoolState.gd" type="Script" id=27]
+[ext_resource path="res://scene/main/ObjectLayer.gd" type="Script" id=28]
 
 [node name="MainScene" type="Node2D"]
 script = ExtResource( 4 )
@@ -105,6 +106,9 @@ script = ExtResource( 13 )
 
 [node name="ObjectState" type="Node2D" parent="ObjectData"]
 script = ExtResource( 8 )
+
+[node name="ObjectLayer" type="Node2D" parent="ObjectData"]
+script = ExtResource( 28 )
 
 [node name="BoolState" type="Node2D" parent="ObjectData"]
 script = ExtResource( 27 )

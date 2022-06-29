@@ -3,6 +3,7 @@ class_name Game_ObjectData
 
 
 const OBJECT_STATE := "ObjectState"
+const OBJECT_LAYER := "ObjectLayer"
 const BOOL_STATE := "BoolState"
 const SPRITE_TYPE := "SpriteType"
 const HIT_POINT := "HitPoint"
@@ -25,6 +26,14 @@ func set_state(sprite: Sprite, state: int) -> void:
 
 func verify_state(sprite: Sprite, state: int) -> bool:
 	return get_node(OBJECT_STATE).verify_state(_get_id(sprite), state)
+
+
+func get_layer(sprite: Sprite) -> int:
+	return get_node(OBJECT_LAYER).get_layer(_get_id(sprite))
+
+
+func set_layer(sprite: Sprite, layer: int) -> void:
+	get_node(OBJECT_LAYER).set_layer(_get_id(sprite), layer)
 
 
 func get_bool(sprite: Sprite) -> bool:
