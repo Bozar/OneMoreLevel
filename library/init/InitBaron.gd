@@ -30,7 +30,7 @@ func _init(parent_node: Node2D).(parent_node) -> void:
 
 
 func get_blueprint() -> Array:
-	_init_tree()
+	_create_tree()
 	_create_floor()
 
 	Game_ArrayHelper.rand_picker(_tree_grids, Game_BaronData.MAX_BIRD + 1,
@@ -42,7 +42,7 @@ func get_blueprint() -> Array:
 	return _blueprint
 
 
-func _init_tree() -> void:
+func _create_tree() -> void:
 	var packed_prefabs: Array = _load_prefabs()
 	var prefab_index := 0
 	var this_prefab: Game_DungeonPrefab.PackedPrefab
