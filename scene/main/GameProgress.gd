@@ -21,8 +21,8 @@ func _on_InitWorld_world_selected(new_world: String) -> void:
 	_progress = Game_InitWorldData.get_progress(new_world).new(self)
 
 
-func _on_CreateObject_sprite_created(new_sprite: Sprite,
-		main_tag: String, sub_tag: String, x: int, y: int) -> void:
+func _on_CreateObject_sprite_created(new_sprite: Sprite, main_tag: String,
+		sub_tag: String, x: int, y: int, _layer: int) -> void:
 	match main_tag:
 		Game_MainTag.ACTOR:
 			_progress.create_actor(new_sprite, sub_tag, x, y)
@@ -54,7 +54,7 @@ func _on_Schedule_turn_ended(current_sprite: Sprite) -> void:
 
 
 func _on_RemoveObject_sprite_removed(remove_sprite: Sprite,
-		main_tag: String, x: int, y: int) -> void:
+		main_tag: String, x: int, y: int, _sprite_layer: int) -> void:
 	match main_tag:
 		Game_MainTag.ACTOR:
 			_progress.remove_actor(remove_sprite, x, y)

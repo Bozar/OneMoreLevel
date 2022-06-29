@@ -72,14 +72,14 @@ func _on_InitWorld_world_selected(new_world: String) -> void:
 	_pc_action = Game_InitWorldData.get_pc_action(new_world).new(self)
 
 
-func _on_CreateObject_sprite_created(_new_sprite: Sprite,
-		_main_tag: String, sub_tag: String, _x: int, _y: int) -> void:
+func _on_CreateObject_sprite_created(_new_sprite: Sprite, _main_tag: String,
+		sub_tag: String, _x: int, _y: int, _layer: int) -> void:
 	if sub_tag == Game_SubTag.PC:
 		set_process_unhandled_input(true)
 
 
 func _on_RemoveObject_sprite_removed(remove_sprite: Sprite, main_tag: String,
-		x: int, y: int) -> void:
+		x: int, y: int, _sprite_layer: int) -> void:
 	_pc_action.remove_data(remove_sprite, main_tag, x, y)
 
 

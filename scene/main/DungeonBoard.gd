@@ -14,33 +14,34 @@ var _sub_tag_to_sprite: Dictionary = {
 
 
 func _ready() -> void:
-	_init_dict()
+	pass
 
 
-func has_sprite(main_tag: String, x: int, y: int) -> bool:
-	if not Game_CoordCalculator.is_inside_dungeon(x, y):
-		return false
-	if not _sprite_dict.has(main_tag):
-		return false
-	if not _sprite_dict[main_tag].has(x):
-		return false
-	return _sprite_dict[main_tag][x][y] != null
+func has_sprite(main_tag: String, x: int, y: int, sprite_layer := 0) -> bool:
+	return get_sprite(main_tag, x, y, sprite_layer) != null
 
 
-func has_sprite_with_sub_tag(sub_tag: String, x: int, y: int) -> bool:
+func has_sprite_with_sub_tag(sub_tag: String, x: int, y: int,
+		sprite_layer := 0) -> bool:
 	var find_sprite: Sprite
 
 	for i in Game_MainTag.DUNGEON_OBJECT:
-		find_sprite = get_sprite(i, x, y)
+		find_sprite = get_sprite(i, x, y, sprite_layer)
 		if (find_sprite != null) and find_sprite.is_in_group(sub_tag):
 			return true
 	return false
 
 
-func get_sprite(main_tag: String, x: int, y: int) -> Sprite:
-	if has_sprite(main_tag, x, y):
-		return _sprite_dict[main_tag][x][y]
-	return null
+func get_sprite(main_tag: String, x: int, y: int, sprite_layer := 0) -> Sprite:
+	main_tag = _try_convert_main_tag(main_tag, sprite_layer)
+
+	if not Game_CoordCalculator.is_inside_dungeon(x, y):
+		return null
+	elif not _sprite_dict.has(main_tag):
+		return null
+	elif not _sprite_dict[main_tag].has(x):
+		return null
+	return _sprite_dict[main_tag][x][y]
 
 
 # There should be only one sprite in the group `Game_SubTag.PC`.
@@ -105,12 +106,12 @@ func get_sprites_by_tag(tag: String) -> Array:
 	# return get_tree().get_nodes_in_group(tag)
 
 
-func get_actor(x: int, y: int) -> Sprite:
-	return get_sprite(Game_MainTag.ACTOR, x, y)
+func get_actor(x: int, y: int, sprite_layer := 0) -> Sprite:
+	return get_sprite(Game_MainTag.ACTOR, x, y, sprite_layer)
 
 
-func has_actor(x: int, y: int) -> bool:
-	return has_sprite(Game_MainTag.ACTOR, x, y)
+func has_actor(x: int, y: int, sprite_layer := 0) -> bool:
+	return has_sprite(Game_MainTag.ACTOR, x, y, sprite_layer)
 
 
 func get_building(x: int, y: int) -> Sprite:
@@ -138,31 +139,34 @@ func has_ground(x: int, y: int) -> bool:
 
 
 func move_sprite(main_tag: String, source_x: int, source_y: int,
-		target_x: int, target_y: int) -> void:
-	var sprite: Sprite = get_sprite(main_tag, source_x, source_y)
-	if sprite == null:
+		target_x: int, target_y: int, sprite_layer := 0) -> void:
+	var move_this := get_sprite(main_tag, source_x, source_y, sprite_layer)
+	if move_this == null:
 		return
 
+	main_tag = _try_convert_main_tag(main_tag, sprite_layer)
 	_sprite_dict[main_tag][source_x][source_y] = null
-	_sprite_dict[main_tag][target_x][target_y] = sprite
-	sprite.position = Game_ConvertCoord.coord_to_vector(target_x, target_y)
+	_sprite_dict[main_tag][target_x][target_y] = move_this
+	move_this.position = Game_ConvertCoord.coord_to_vector(target_x, target_y)
 
-	_try_move_arrow(sprite)
+	_try_move_arrow(move_this)
 
 
-func move_actor(source_x: int, source_y: int, target_x: int, target_y: int) \
-		-> void:
-	move_sprite(Game_MainTag.ACTOR, source_x, source_y, target_x, target_y)
+func move_actor(source_x: int, source_y: int, target_x: int, target_y: int,
+		sprite_layer := 0) -> void:
+	move_sprite(Game_MainTag.ACTOR, source_x, source_y, target_x, target_y,
+			sprite_layer)
 
 
 func swap_sprite(main_tag: String, source_x: int, source_y: int,
-		target_x: int, target_y: int) -> void:
-	var source_sprite: Sprite = get_sprite(main_tag, source_x, source_y)
-	var target_sprite: Sprite = get_sprite(main_tag, target_x, target_y)
+		target_x: int, target_y: int, sprite_layer := 0) -> void:
+	var source_sprite := get_sprite(main_tag, source_x, source_y, sprite_layer)
+	var target_sprite := get_sprite(main_tag, target_x, target_y, sprite_layer)
 
 	if (source_sprite == null) or (target_sprite == null):
 		return
 
+	main_tag = _try_convert_main_tag(main_tag, sprite_layer)
 	_sprite_dict[main_tag][source_x][source_y] = target_sprite
 	_sprite_dict[main_tag][target_x][target_y] = source_sprite
 
@@ -175,36 +179,39 @@ func swap_sprite(main_tag: String, source_x: int, source_y: int,
 	_try_move_arrow(target_sprite)
 
 
-func _on_CreateObject_sprite_created(new_sprite: Sprite,
-		main_tag: String, sub_tag: String, _x: int, _y: int) -> void:
+func _on_CreateObject_sprite_created(new_sprite: Sprite, main_tag: String,
+		sub_tag: String, _x: int, _y: int, sprite_layer: int) -> void:
 	var pos: Game_IntCoord
+	var new_tag: String
 
 	# Save references to arrow indicators.
 	if main_tag == Game_MainTag.INDICATOR:
 		for i in _sub_tag_to_sprite.keys():
 			if i == sub_tag:
 				_sub_tag_to_sprite[i] = new_sprite
-		return
-
 	# Save references to dungeon sprites.
-	for i in Game_MainTag.DUNGEON_OBJECT:
-		if i == main_tag:
+	else:
+		for i in Game_MainTag.DUNGEON_OBJECT:
+			if i != main_tag:
+				continue
+			new_tag = _try_convert_main_tag(i, sprite_layer)
+			if not _sprite_dict.has(new_tag):
+				_init_dict(new_tag)
 			pos = Game_ConvertCoord.vector_to_coord(new_sprite.position)
-			_sprite_dict[i][pos.x][pos.y] = new_sprite
-			return
+			_sprite_dict[new_tag][pos.x][pos.y] = new_sprite
 
 
 func _on_RemoveObject_sprite_removed(_sprite: Sprite, main_tag: String,
-		x: int, y: int) -> void:
+		x: int, y: int, sprite_layer: int) -> void:
+	main_tag = _try_convert_main_tag(main_tag, sprite_layer)
 	_sprite_dict[main_tag][x][y] = null
 
 
-func _init_dict() -> void:
-	for i in Game_MainTag.DUNGEON_OBJECT:
-		_sprite_dict[i] = {}
-		for x in range(Game_DungeonSize.MAX_X):
-			_sprite_dict[i][x] = []
-			_sprite_dict[i][x].resize(Game_DungeonSize.MAX_Y)
+func _init_dict(new_tag: String) -> void:
+	_sprite_dict[new_tag] = {}
+	for x in range(Game_DungeonSize.MAX_X):
+		_sprite_dict[new_tag][x] = []
+		_sprite_dict[new_tag][x].resize(Game_DungeonSize.MAX_Y)
 
 
 # Move arrow indicators when PC moves.
@@ -225,3 +232,9 @@ func _filter_get_sprites_by_tag(source: Array, index: int,
 func _filter_get_npc(source: Array, index: int, _opt_arg: Array) -> bool:
 	return not (source[index].is_queued_for_deletion() \
 			or source[index].is_in_group(Game_SubTag.PC))
+
+
+func _try_convert_main_tag(main_tag: String, sprite_layer: int) -> String:
+	return main_tag \
+			if sprite_layer == 0 \
+			else main_tag + "_" + String(sprite_layer)

@@ -42,8 +42,8 @@ func init_schedule() -> void:
 		_start_first_turn = false
 
 
-func _on_CreateObject_sprite_created(new_sprite: Sprite,
-		main_tag: String, sub_tag: String, _x: int, _y: int) -> void:
+func _on_CreateObject_sprite_created(new_sprite: Sprite, main_tag: String,
+		sub_tag: String, _x: int, _y: int, _layer: int) -> void:
 	if main_tag == Game_MainTag.ACTOR:
 		if sub_tag == Game_SubTag.PC:
 			_actors[0] = new_sprite
@@ -51,8 +51,8 @@ func _on_CreateObject_sprite_created(new_sprite: Sprite,
 			_actors.append(new_sprite)
 
 
-func _on_RemoveObject_sprite_removed(remove_sprite: Sprite,
-		_main_tag: String, _x: int, _y: int) -> void:
+func _on_RemoveObject_sprite_removed(remove_sprite: Sprite, _main_tag: String,
+		_x: int, _y: int, _sprite_layer: int) -> void:
 	var current_sprite: Sprite
 
 	if remove_sprite == _get_current():

@@ -36,7 +36,8 @@ func init_world() -> void:
 	for sb in _world_template.get_blueprint():
 		if _is_pc(sb.sub_tag):
 			_init_indicator(sb.x, sb.y)
-		_ref_CreateObject.create(sb.scene, sb.main_tag, sb.sub_tag, sb.x, sb.y)
+		_ref_CreateObject.create(sb.scene, sb.main_tag, sb.sub_tag, sb.x, sb.y,
+				sb.sprite_layer)
 	_ref_Schedule.init_schedule()
 	_world_template.clear_blueprint()
 
@@ -71,15 +72,18 @@ func _get_world() -> Game_WorldTemplate:
 func _init_indicator(x: int, y: int) -> void:
 	_ref_CreateObject.create(_spr_TriangleRight,
 			Game_MainTag.INDICATOR, Game_SubTag.ARROW_RIGHT,
-			0, y, -Game_DungeonSize.ARROW_MARGIN)
+			0, y, 0,
+			-Game_DungeonSize.ARROW_MARGIN)
 
 	_ref_CreateObject.create(_spr_TriangleDown,
 			Game_MainTag.INDICATOR, Game_SubTag.ARROW_DOWN,
-			x, 0, 0, -Game_DungeonSize.ARROW_MARGIN)
+			x, 0, 0,
+			0, -Game_DungeonSize.ARROW_MARGIN)
 
 	_ref_CreateObject.create(_spr_TriangleUp,
 			Game_MainTag.INDICATOR, Game_SubTag.ARROW_UP,
-			x, Game_DungeonSize.MAX_Y - 1, 0, Game_DungeonSize.ARROW_MARGIN)
+			x, Game_DungeonSize.MAX_Y - 1, 0,
+			0, Game_DungeonSize.ARROW_MARGIN)
 
 
 func _is_pc(group_name: String) -> bool:

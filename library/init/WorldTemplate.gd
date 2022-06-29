@@ -81,9 +81,9 @@ func _is_terrain_marker(x: int, y: int, marker: int) -> bool:
 
 
 func _add_to_blueprint(scene: PackedScene, main_tag: String, sub_tag: String,
-		x: int, y: int) -> void:
+		x: int, y: int, sprite_layer := 0) -> void:
 	_blueprint.push_back(Game_SpriteBlueprint.new(scene, main_tag, sub_tag,
-			x, y))
+			x, y, sprite_layer))
 
 
 func _add_ground_to_blueprint(scene: PackedScene, sub_tag: String,
@@ -102,8 +102,8 @@ func _add_building_to_blueprint(scene: PackedScene, sub_tag: String,
 
 
 func _add_actor_to_blueprint(scene: PackedScene, sub_tag: String,
-		x: int, y: int) -> void:
-	_add_to_blueprint(scene, Game_MainTag.ACTOR, sub_tag, x, y)
+		x: int, y: int, sprite_layer := 0) -> void:
+	_add_to_blueprint(scene, Game_MainTag.ACTOR, sub_tag, x, y, sprite_layer)
 
 
 func _init_floor(floor_sprite: PackedScene = _spr_Floor) -> void:

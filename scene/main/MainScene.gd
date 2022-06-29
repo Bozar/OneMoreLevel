@@ -26,7 +26,7 @@ const SIGNAL_BIND := [
 	[
 		"sprite_created", "_on_CreateObject_sprite_created",
 		CREATE_OBJECT,
-		PLAYER_INPUT, ENEMY_AI, SCHEDULE, DUNGEON, GAME_PROGRESS,
+		PLAYER_INPUT, ENEMY_AI, SCHEDULE, DUNGEON, GAME_PROGRESS, OBJECT_DATA,
 	],
 	[
 		"world_selected", "_on_InitWorld_world_selected",
