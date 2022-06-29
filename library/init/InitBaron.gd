@@ -9,12 +9,16 @@ const Y_STEP := 5
 const CHAR_TRUNK := "O"
 const CHAR_BRANCH := "+"
 
+enum TERRAIN {
+	BRANCH = DEFAULT_MARKER + 1, TRUNK, BANDIT, BIRD,
+}
+
 var _spr_TreeTrunk := preload("res://sprite/TreeTrunk.tscn")
 var _spr_TreeBranch := preload("res://sprite/TreeBranch.tscn")
 
 var _char_to_blueprint := {
-	CHAR_TRUNK: [_spr_TreeTrunk, Game_SubTag.TREE_TRUNK],
-	CHAR_BRANCH: [_spr_TreeBranch, Game_SubTag.TREE_BRANCH],
+	CHAR_TRUNK: [_spr_TreeTrunk, Game_SubTag.TREE_TRUNK, TERRAIN.TRUNK],
+	CHAR_BRANCH: [_spr_TreeBranch, Game_SubTag.TREE_BRANCH, TERRAIN.BRANCH],
 }
 
 
@@ -24,7 +28,7 @@ func _init(parent_node: Node2D).(parent_node) -> void:
 
 func get_blueprint() -> Array:
 	_init_tree()
-	_init_floor()
+	_create_floor()
 	_init_pc()
 
 	return _blueprint
@@ -49,6 +53,8 @@ func _init_tree() -> void:
 								_char_to_blueprint[this_char][0],
 								_char_to_blueprint[this_char][1],
 								x + start_x, y + start_y)
+						_set_terrain_marker(x + start_x, y + start_y,
+								_char_to_blueprint[this_char][2])
 
 
 func _load_prefabs() -> Array:
@@ -70,3 +76,11 @@ func _load_prefabs() -> Array:
 		packed_prefabs.push_back(Game_DungeonPrefab.get_prefab(i, edit_arg))
 
 	return packed_prefabs
+
+
+func _create_floor() -> void:
+	for x in range(Game_DungeonSize.MAX_X):
+		for y in range(Game_DungeonSize.MAX_Y):
+			if _get_terrain_marker(x, y) > DEFAULT_MARKER:
+				continue
+			_add_ground_to_blueprint(_spr_Floor, Game_SubTag.FLOOR, x, y)
