@@ -64,3 +64,4 @@ const SNOW := "snow"
 
 const TREE_TRUNK := "tree_trunk"
 const TREE_BRANCH := "tree_branch"
+const BIRD := "bird"
