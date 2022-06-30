@@ -37,9 +37,6 @@ func render_fov() -> void:
 	if _find_clock == null:
 		_find_clock = _ref_DungeonBoard.get_sprites_by_tag(Game_SubTag.ARROW)[0]
 
-	if show_full_map:
-		_render_without_fog_of_war()
-
 	Game_ShadowCastFOV.set_field_of_view(
 			Game_DungeonSize.MAX_X, Game_DungeonSize.MAX_Y,
 			_source_position.x, _source_position.y, Game_FactoryData.PC_SIGHT,
@@ -52,6 +49,7 @@ func render_fov() -> void:
 			_ref_ObjectData.set_state(i, Game_StateTag.ACTIVE)
 
 	if show_full_map:
+		_render_without_fog_of_war()
 		return
 
 	for mtag in RENDER_SPRITES:
