@@ -2,7 +2,7 @@ extends Game_PCActionTemplate
 
 
 func _init(parent_node: Node2D).(parent_node) -> void:
-	pass
+	_fov_render_range = Game_BaronData.FAR_SIGHT
 
 
 func is_npc() -> bool:
@@ -50,8 +50,8 @@ func render_fov() -> void:
 				sprite_layer = Game_BaronData.TREE_LAYER
 			else:
 				sprite_layer = 0
-			_set_sprite_color_with_memory(this_pos.x, this_pos.y,
-					mtag, true, Game_ShadowCastFOV, "is_in_sight", sprite_layer)
+			_set_sprite_color(this_pos.x, this_pos.y, mtag, Game_ShadowCastFOV,
+					"is_in_sight", sprite_layer)
 
 
 # Use interact_with_building() to move PC.
@@ -76,7 +76,7 @@ func _move_in_tree() -> void:
 			_target_position.x, _target_position.y, Game_BaronData.TREE_LAYER)
 
 
-func _sprite_is_visible(main_tag: String, x: int, y: int, use_memory: bool,
+func _sprite_is_visible(main_tag: String, x: int, y: int, _use_memory: bool,
 		sprite_layer := 0) -> bool:
 	var ground_actor := _ref_DungeonBoard.get_actor(x, y)
 
@@ -84,9 +84,7 @@ func _sprite_is_visible(main_tag: String, x: int, y: int, use_memory: bool,
 		Game_MainTag.GROUND:
 			if ground_actor == null:
 				return true
-			elif use_memory:
-				return not _has_sprite_memory(x, y, Game_MainTag.ACTOR)
-			return false
+			return not Game_ShadowCastFOV.is_in_sight(x, y)
 		Game_MainTag.BUILDING:
 			return not _ref_DungeonBoard.has_actor(x, y,
 					Game_BaronData.TREE_LAYER)
@@ -95,24 +93,8 @@ func _sprite_is_visible(main_tag: String, x: int, y: int, use_memory: bool,
 				return true
 			elif _ref_DungeonBoard.has_building(x, y):
 				return false
-			elif use_memory:
-				return _has_sprite_memory(x, y, Game_MainTag.ACTOR)
-			return true
+			return Game_ShadowCastFOV.is_in_sight(x, y)
 	return true
-
-
-func _has_sprite_memory(x: int, y: int, main_tag: String, sprite_layer := 0) \
-		-> bool:
-	var actor := _ref_DungeonBoard.get_actor(x, y)
-
-	if (main_tag == Game_MainTag.ACTOR) and (sprite_layer == 0):
-		return _ref_ObjectData.get_hit_point(actor) == Game_BaronData.MAX_HP
-	return true
-
-
-func _set_sprite_memory(_x: int, _y: int, _main_tag: String, \
-		_sprite_layer := 0) -> void:
-	pass
 
 
 func _block_line_of_sight(x: int, y: int, _opt_arg: Array) -> bool:
