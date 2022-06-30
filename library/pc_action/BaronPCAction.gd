@@ -1,6 +1,11 @@
 extends Game_PCActionTemplate
 
 
+var _spr_TreeTrunk := preload("res://sprite/TreeTrunk.tscn")
+
+var _count_bandits := 0
+
+
 func _init(parent_node: Node2D).(parent_node) -> void:
 	_fov_render_range = Game_BaronData.FAR_SIGHT
 
@@ -34,14 +39,14 @@ func render_fov() -> void:
 	var sprite_layer: int
 
 	_set_render_sprites()
-	if _ref_GameSetting.get_show_full_map():
-		_render_without_fog_of_war()
-		return
-
 	Game_ShadowCastFOV.set_field_of_view(
 			Game_DungeonSize.MAX_X, Game_DungeonSize.MAX_Y,
 			pc_pos.x, pc_pos.y, _fov_render_range,
 			self, "_block_line_of_sight", [])
+
+	if _ref_GameSetting.get_show_full_map():
+		_render_without_fog_of_war()
+		return
 
 	for mtag in RENDER_SPRITES:
 		for i in RENDER_SPRITES[mtag]:
@@ -53,6 +58,9 @@ func render_fov() -> void:
 			_set_sprite_color(this_pos.x, this_pos.y, mtag, Game_ShadowCastFOV,
 					"is_in_sight", sprite_layer)
 
+	for i in _ref_DungeonBoard.get_sprites_by_tag(Game_SubTag.COUNTER):
+		_ref_Palette.set_default_color(i, Game_MainTag.BUILDING)
+
 
 # Use interact_with_building() to move PC.
 func move() -> void:
@@ -62,13 +70,20 @@ func move() -> void:
 func attack() -> void:
 	_ref_RemoveObject.remove_actor(_target_position.x, _target_position.y,
 			Game_BaronData.TREE_LAYER)
-	_move_in_tree()
-	end_turn = true
+	interact_with_building()
 
 
 func interact_with_building() -> void:
 	_move_in_tree()
-	end_turn = true
+	_try_find_bandit()
+
+
+func wait() -> void:
+	if _ref_DungeonBoard.has_sprite_with_sub_tag(Game_SubTag.TREE_BRANCH,
+			_source_position.x, _source_position.y):
+		end_turn = false
+	else:
+		_try_find_bandit()
 
 
 func _move_in_tree() -> void:
@@ -119,3 +134,46 @@ func _render_without_fog_of_war() -> void:
 func _is_above_ground_actor(actor: Sprite) -> bool:
 	return actor.is_in_group(Game_SubTag.BIRD) \
 			or actor.is_in_group(Game_SubTag.PC)
+
+
+func _try_find_bandit() -> void:
+	var pos: Game_IntCoord
+	var has_minor_find := false
+	var has_major_find := false
+	var restore_turn := 0
+	var win := false
+
+	for i in _ref_DungeonBoard.get_sprites_by_tag(Game_SubTag.BANDIT):
+		pos = Game_ConvertCoord.vector_to_coord(i.position)
+		if Game_ShadowCastFOV.is_in_sight(pos.x, pos.y) \
+				and not _ref_DungeonBoard.has_building(pos.x, pos.y):
+			_ref_ObjectData.add_hit_point(i, 1)
+			if _ref_ObjectData.get_hit_point(i) == Game_BaronData.MAX_HP:
+				has_major_find = true
+				_count_bandits += 1
+				_ref_RemoveObject.remove_actor(pos.x, pos.y)
+			else:
+				has_minor_find = true
+
+	if has_major_find:
+		restore_turn = Game_BaronData.MAJOR_RESTORE
+	elif has_minor_find:
+		restore_turn = Game_BaronData.MINOR_RESTORE
+
+	for i in range(0, Game_BaronData.BANDIT_LEVEL.size()):
+		if _count_bandits > Game_BaronData.BANDIT_LEVEL[i]:
+			_fov_render_range = Game_BaronData.SIGHT_LEVEL[i]
+			break
+
+	if _count_bandits == Game_BaronData.MAX_BANDIT:
+		win = true
+	elif _ref_CountDown.get_count(false) == 1:
+		if _count_bandits >= Game_BaronData.MIN_BANDIT:
+			win = true
+
+	if win:
+		_ref_EndGame.player_win()
+		end_turn = false
+	else:
+		_ref_CountDown.add_count(restore_turn)
+		end_turn = true
