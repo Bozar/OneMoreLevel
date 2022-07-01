@@ -303,7 +303,7 @@ func _create_treasure(sub_tag: String, is_first_rare_treasure: bool,
 		retry += 1
 		x = _ref_RandomNumber.get_x_coord()
 		y = _ref_RandomNumber.get_y_coord()
-		if Game_CoordCalculator.is_inside_range_xy(x, y, pc_x, pc_y, pc_gap) \
+		if Game_CoordCalculator.is_in_range_xy(x, y, pc_x, pc_y, pc_gap) \
 				or _is_occupied(x, y) \
 				or _is_terrain_marker(x, y, marker):
 			continue

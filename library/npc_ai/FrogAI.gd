@@ -35,7 +35,7 @@ func _can_grapple() -> bool:
 
 	if _ref_ObjectData.verify_state(pc, Game_StateTag.PASSIVE):
 		return false
-	elif Game_CoordCalculator.is_inside_range_xy(self_x, self_y, pc_x, pc_y,
+	elif Game_CoordCalculator.is_in_range_xy(self_x, self_y, pc_x, pc_y,
 			Game_FrogData.ATTACK_RANGE):
 		return _path_is_clear()
 	return false
@@ -137,12 +137,12 @@ func _dup_rand_walk(source: Array, index: int, opt_arg: Array) -> int:
 			else 0
 
 	# If a frog is not too far away from PC, it favors swamp grids.
-	if Game_CoordCalculator.is_inside_range_xy(self_x, self_y, pc_x, pc_y,
+	if Game_CoordCalculator.is_in_range_xy(self_x, self_y, pc_x, pc_y,
 			Game_FrogData.MID_DISTANCE):
 		repeat += swamp
 	# If a frog is far away from PC, it favors grids that are closer to PC,
 	# especially when the grid is swamp.
-	elif Game_CoordCalculator.is_inside_range_xy(sor_x, sor_y, pc_x, pc_y,
+	elif Game_CoordCalculator.is_in_range_xy(sor_x, sor_y, pc_x, pc_y,
 			max_distance):
 		repeat += 1
 		repeat += swamp

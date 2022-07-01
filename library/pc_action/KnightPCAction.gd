@@ -95,7 +95,7 @@ func _hit_boss(boss: Sprite) -> void:
 			teleport_x = _ref_RandomNumber.get_x_coord()
 			teleport_y = _ref_RandomNumber.get_y_coord()
 			is_occupied = _is_occupied(teleport_x, teleport_y)
-			is_too_close = Game_CoordCalculator.is_inside_range_xy(
+			is_too_close = Game_CoordCalculator.is_in_range_xy(
 					teleport_x, teleport_y,
 					_source_position.x, _source_position.y,
 					Game_KnightData.ELITE_SIGHT)

@@ -136,7 +136,7 @@ func _filter_create_frog(source: Array, index: int, opt_arg: Array) -> bool:
 	var pc_x: int = opt_arg[0]
 	var pc_y: int = opt_arg[1]
 
-	if Game_CoordCalculator.is_inside_range_xy(x, y, pc_x, pc_y,
+	if Game_CoordCalculator.is_in_range_xy(x, y, pc_x, pc_y,
 			Game_FrogData.MIN_DISTANCE) \
 					or _ref_DungeonBoard.has_actor_xy(x, y):
 		return false

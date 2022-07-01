@@ -51,7 +51,7 @@ func _stop_move() -> bool:
 
 
 func _is_adjacent_to_pc() -> bool:
-	return Game_CoordCalculator.is_inside_range_xy(_self_pos.x, _self_pos.y,
+	return Game_CoordCalculator.is_in_range_xy(_self_pos.x, _self_pos.y,
 			_pc_pos.x, _pc_pos.y, 1)
 
 

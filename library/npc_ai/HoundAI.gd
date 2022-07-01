@@ -105,10 +105,10 @@ func _can_hit_pc(self_is_in_fog: bool, pc_is_in_fog: bool) -> bool:
 	if self_is_in_fog != pc_is_in_fog:
 		return false
 	elif self_is_in_fog:
-		return Game_CoordCalculator.is_inside_range_xy(_self_pos.x, _self_pos.y,
+		return Game_CoordCalculator.is_in_range_xy(_self_pos.x, _self_pos.y,
 				_pc_pos.x, _pc_pos.y, ONE_STEP_IN_FOG)
 	else:
-		return Game_CoordCalculator.is_inside_range_xy(_self_pos.x, _self_pos.y,
+		return Game_CoordCalculator.is_in_range_xy(_self_pos.x, _self_pos.y,
 				_pc_pos.x, _pc_pos.y, ONE_STEP_OUTSIDE_FOG) \
 						and (_self_pos.x != _pc_pos.x) \
 						and (_self_pos.y != _pc_pos.y)
@@ -117,7 +117,7 @@ func _can_hit_pc(self_is_in_fog: bool, pc_is_in_fog: bool) -> bool:
 func _can_see_pc(is_boss: bool) -> bool:
 	if is_boss:
 		return true
-	return Game_CoordCalculator.is_inside_range_xy(_self_pos.x, _self_pos.y,
+	return Game_CoordCalculator.is_in_range_xy(_self_pos.x, _self_pos.y,
 			_pc_pos.x, _pc_pos.y, Game_HoundData.HOUND_SIGHT)
 
 
@@ -151,10 +151,10 @@ func _is_passable_func(source_array: Array, current_index: int,
 	if _ref_DungeonBoard.has_actor_xy(x, y):
 		return false
 	elif self_is_in_fog:
-		return Game_CoordCalculator.is_inside_range_xy(x, y,
+		return Game_CoordCalculator.is_in_range_xy(x, y,
 				_self_pos.x, _self_pos.y, 1)
 	else:
-		if Game_CoordCalculator.is_inside_range_xy(x, y,
+		if Game_CoordCalculator.is_in_range_xy(x, y,
 				_self_pos.x, _self_pos.y, 1):
 			return true
 		return (x != _self_pos.x) and (y != _self_pos.y)
@@ -170,12 +170,12 @@ func _verify_and_get_start_point(source: Array, index: int, opt_arg: Array) \
 	if _ref_DungeonBoard.has_building_xy(x, y):
 		return false
 
-	if Game_CoordCalculator.is_inside_range_xy(x, y, _pc_pos.x, _pc_pos.y, 1) \
+	if Game_CoordCalculator.is_in_range_xy(x, y, _pc_pos.x, _pc_pos.y, 1) \
 			or ((x != _pc_pos.x) and (y != _pc_pos.y)):
 		alternative_start.push_back(Game_IntCoord.new(x, y))
 
 	if pc_is_in_fog:
-		return Game_CoordCalculator.is_inside_range_xy(x, y,
+		return Game_CoordCalculator.is_in_range_xy(x, y,
 				_pc_pos.x, _pc_pos.y, 1)
 	else:
 		return (x != _pc_pos.x) and (y != _pc_pos.y)
@@ -199,10 +199,10 @@ func _set_pc_hit_point(add_hit_point: int) -> void:
 				continue
 			elif _ref_DungeonBoard.has_actor_xy(x, y):
 				continue
-			elif Game_CoordCalculator.is_inside_range_xy(x, y,
+			elif Game_CoordCalculator.is_in_range_xy(x, y,
 					_pc_pos.x, _pc_pos.y, Game_HoundData.MIN_BOSS_DISTANCE):
 				continue
-			elif not Game_CoordCalculator.is_inside_range_xy(x, y,
+			elif not Game_CoordCalculator.is_in_range_xy(x, y,
 					_pc_pos.x, _pc_pos.y, Game_HoundData.MAX_BOSS_DISTANCE):
 				continue
 			else:

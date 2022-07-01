@@ -26,14 +26,26 @@ static func get_range(source: Game_IntCoord, target: Game_IntCoord) -> int:
 	return get_range_xy(source.x, source.y, target.x, target.y)
 
 
-static func is_inside_range_xy(source_x: int, source_y: int,
+static func is_in_range_xy(source_x: int, source_y: int,
 		target_x: int, target_y: int, max_range: int) -> bool:
 	return get_range_xy(source_x, source_y, target_x, target_y) <= max_range
 
 
-static func is_inside_range(source: Game_IntCoord, target: Game_IntCoord,
+static func is_in_range(source: Game_IntCoord, target: Game_IntCoord,
 		max_range: int) -> bool:
-	return is_inside_range_xy(source.x, source.y, target.x, target.y, max_range)
+	return is_in_range_xy(source.x, source.y, target.x, target.y, max_range)
+
+
+static func is_out_of_range_xy(source_x: int, source_y: int,
+		target_x: int, target_y: int, max_range: int) -> bool:
+	return not is_in_range_xy(source_x, source_y, target_x, target_y,
+			max_range)
+
+
+static func is_out_of_range(source: Game_IntCoord, target: Game_IntCoord,
+		max_range: int) -> bool:
+	return is_out_of_range_xy(source.x, source.y, target.x, target.y,
+			max_range)
 
 
 static func get_neighbor_xy(x: int, y: int, max_range: int,
@@ -45,7 +57,7 @@ static func get_neighbor_xy(x: int, y: int, max_range: int,
 			if (i == x) and (j == y):
 				continue
 			if is_inside_dungeon(i, j) \
-					and is_inside_range_xy(x, y, i, j, max_range):
+					and is_in_range_xy(x, y, i, j, max_range):
 				neighbor.push_back(Game_IntCoord.new(i, j))
 	if has_center:
 		neighbor.push_back(Game_IntCoord.new(x, y))

@@ -44,10 +44,10 @@ func _replenish_crystal() -> void:
 		x = _ref_RandomNumber.get_x_coord()
 		y = _ref_RandomNumber.get_y_coord()
 
-		if Game_CoordCalculator.is_inside_range_xy(x, y, pc_pos.x, pc_pos.y,
+		if Game_CoordCalculator.is_in_range_xy(x, y, pc_pos.x, pc_pos.y,
 				Game_MirrorData.CRYSTAL_DISTANCE):
 			continue
-		elif Game_CoordCalculator.is_inside_range_xy(x, y, mirror.x, mirror.y,
+		elif Game_CoordCalculator.is_in_range_xy(x, y, mirror.x, mirror.y,
 				Game_MirrorData.CRYSTAL_DISTANCE):
 			continue
 		elif _ref_DungeonBoard.has_building_xy(x, y):
