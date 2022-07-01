@@ -1,6 +1,9 @@
 extends Game_AITemplate
 
 
+const MAX_RETRY := 100
+
+
 func _init(parent_node: Node2D).(parent_node) -> void:
 	pass
 
@@ -64,13 +67,8 @@ func _is_obstacle(x: int, y: int) -> bool:
 
 
 func _teleport() -> void:
-	var pos: Game_IntCoord
-
-	while true:
-		pos = _get_teleport_coord()
-		if pos != null:
-			break
-	_ref_DungeonBoard.move_actor_xy(_self_pos.x, _self_pos.y, pos.x, pos.y)
+	var target_pos: Game_IntCoord = _get_teleport_coord()
+	_ref_DungeonBoard.move_actor(_self_pos, target_pos)
 
 
 func _switch_sprite(x: int, y: int) -> void:
@@ -87,19 +85,20 @@ func _switch_sprite(x: int, y: int) -> void:
 	_ref_SwitchSprite.set_sprite(_self, new_type)
 
 
-func _get_teleport_coord() -> Game_IntCoord:
-	var x: int = _ref_RandomNumber.get_x_coord()
-	var y: int = _ref_RandomNumber.get_y_coord()
+func _get_teleport_coord(retry := 0) -> Game_IntCoord:
+	var pos := _ref_RandomNumber.get_dungeon_coord()
 
-	if Game_ShadowCastFOV.is_in_sight(x, y):
-		return null
-	elif _ref_DungeonBoard.has_building_xy(x, y) \
-			and (not _ref_DungeonBoard.has_sprite_with_sub_tag_xy(
-					Game_SubTag.DOOR, x, y)):
-		return null
-	else:
-		for i in Game_CoordCalculator.get_neighbor_xy(x, y,
-				Game_FactoryData.SCP_GAP, true):
-			if _ref_DungeonBoard.has_actor_xy(i.x, i.y):
-				return null
-	return Game_IntCoord.new(x, y)
+	if Game_ShadowCastFOV.is_in_sight(pos.x, pos.y):
+		return _get_teleport_coord(retry)
+	elif _ref_DungeonBoard.has_building(pos) \
+			and (not _ref_DungeonBoard.has_sprite_with_sub_tag(Game_SubTag.DOOR,
+					pos)):
+		return _get_teleport_coord(retry)
+	elif _ref_DungeonBoard.has_actor(pos):
+		return _get_teleport_coord(retry)
+	elif retry < MAX_RETRY:
+		for i in Game_CoordCalculator.get_neighbor(pos,
+				Game_FactoryData.SCP_GAP):
+			if _ref_DungeonBoard.has_actor(pos):
+				return _get_teleport_coord(retry + 1)
+	return pos

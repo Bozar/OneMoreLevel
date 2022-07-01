@@ -98,7 +98,7 @@ func _try_random_walk(id: int) -> bool:
 
 	if _id_to_worm[id][1] != null:
 		neck = Game_ConvertCoord.vector_to_coord(_id_to_worm[id][1].position)
-		coord = Game_CoordCalculator.get_mirror_image(neck.x, neck.y, x, y)
+		coord = Game_CoordCalculator.get_mirror_image_xy(neck.x, neck.y, x, y)
 		if Game_CoordCalculator.is_inside_dungeon(coord.x, coord.y):
 			neighbor.push_back(coord)
 

@@ -139,35 +139,26 @@ func _respawn_boss(pc_x: int, pc_y: int) -> void:
 
 func _respawn_actor(pc_x: int, pc_y: int, min_distance: int, max_distance: int,
 		new_sprite: PackedScene, sub_tag: String) -> void:
-	var x: int
-	var y: int
-	var neighbor: Array
-	var next_loop: bool
+	var grounds := []
 
-	while true:
-		x = _ref_RandomNumber.get_x_coord()
-		y = _ref_RandomNumber.get_y_coord()
-		next_loop = false
-		if _ref_DungeonBoard.has_building_xy(x, y):
-			next_loop = true
-		elif _ref_DungeonBoard.has_actor_xy(x, y):
-			next_loop = true
-		elif Game_CoordCalculator.is_inside_range_xy(x, y, pc_x, pc_y,
-				min_distance):
-			next_loop = true
-		elif not Game_CoordCalculator.is_inside_range_xy(x, y, pc_x, pc_y,
-				max_distance):
-			next_loop = true
-		else:
-			neighbor = Game_CoordCalculator.get_neighbor_xy(x, y,
-					Game_HoundData.MIN_HOUND_GAP)
-			for i in neighbor:
-				if _ref_DungeonBoard.has_actor_xy(i.x, i.y):
-					next_loop = true
-					break
-		if not next_loop:
-			break
-	_ref_CreateObject.create_actor_xy(new_sprite, sub_tag, x, y)
+	for i in range(0, Game_DungeonSize.MAX_X):
+		for j in range(0, Game_DungeonSize.MAX_Y):
+			if _ref_DungeonBoard.has_building_xy(i, j) \
+					or _ref_DungeonBoard.has_actor_xy(i, j) \
+					or Game_CoordCalculator.is_in_range_xy(i, j, pc_x, pc_y,
+							min_distance) \
+					or Game_CoordCalculator.is_out_of_range_xy(i, j,
+							pc_x, pc_y, max_distance):
+				continue
+			else:
+				grounds.push_back(Game_IntCoord.new(i, j))
+	Game_ArrayHelper.filter_element(grounds, self, "_is_isolated", [])
+
+	if grounds.size() == 0:
+		print("No respawn point.")
+		return
+	Game_ArrayHelper.rand_picker(grounds, 1, _ref_RandomNumber)
+	_ref_CreateObject.create_actor(new_sprite, sub_tag, grounds[0])
 
 
 func _sort_counter(left: Sprite, right: Sprite) -> bool:
@@ -177,3 +168,13 @@ func _sort_counter(left: Sprite, right: Sprite) -> bool:
 	if right_pos.y > left_pos.y:
 		return true
 	return right_pos.x > left_pos.x
+
+
+func _is_isolated(source: Array, index: int, _opt_arg: Array) -> bool:
+	var neighbor := Game_CoordCalculator.get_neighbor(source[index],
+			Game_HoundData.MIN_HOUND_GAP)
+
+	for i in neighbor:
+		if _ref_DungeonBoard.has_actor(i):
+			return false
+	return true

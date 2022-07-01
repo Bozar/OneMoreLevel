@@ -84,7 +84,7 @@ func _init_wall() -> void:
 
 
 func _create_reflection(x: int, y: int) -> void:
-	var mirror := Game_CoordCalculator.get_mirror_image(x, y,
+	var mirror := Game_CoordCalculator.get_mirror_image_xy(x, y,
 			Game_DungeonSize.CENTER_X, y)
 	_create_mirror(mirror.x, mirror.y)
 
@@ -100,13 +100,14 @@ func _create_pc() -> void:
 	var coord: Game_IntCoord
 	var neighbor: Array
 
+	# PC can appear at anywhere that is not a building.
 	while true:
 		pc_x = _ref_RandomNumber.get_int(0, Game_DungeonSize.CENTER_X)
 		pc_y = _ref_RandomNumber.get_int(0, Game_DungeonSize.MAX_Y)
 		if not _is_occupied(pc_x, pc_y):
 			break
 
-	coord = Game_CoordCalculator.get_mirror_image(pc_x, pc_y,
+	coord = Game_CoordCalculator.get_mirror_image_xy(pc_x, pc_y,
 			Game_DungeonSize.CENTER_X, pc_y)
 	neighbor = Game_CoordCalculator.get_neighbor_xy(pc_x, pc_y,
 					Game_MirrorData.CRYSTAL_DISTANCE, true) \
@@ -125,6 +126,8 @@ func _init_crystal() -> void:
 	var x: int
 	var y: int
 
+	# The crystal can appear at anywhere that is not a building and not too
+	# close to PC.
 	while true:
 		x = _ref_RandomNumber.get_x_coord()
 		y = _ref_RandomNumber.get_y_coord()
@@ -138,29 +141,26 @@ func _init_crystal() -> void:
 
 
 func _init_phantom() -> void:
-	var count_phantom: int = 0
-	var retry: int = 0
-	var x: int
-	var y: int
-
-	while count_phantom < Game_MirrorData.MAX_PHANTOM:
-		if retry > 999:
-			break
-		retry += 1
-
-		x = _ref_RandomNumber.get_int(0, Game_DungeonSize.CENTER_X)
-		y = _ref_RandomNumber.get_int(0, Game_DungeonSize.MAX_Y)
-		if _is_occupied(x, y):
-			continue
-
-		_create_phantom(x, y)
-		count_phantom += 1
+	for _i in range(0, Game_MirrorData.MAX_PHANTOM):
+		_create_phantom()
 
 
-func _create_phantom(x: int, y: int) -> void:
-	var neighbor: Array = Game_CoordCalculator.get_neighbor_xy(x, y,
+func _create_phantom() -> void:
+	var grids := []
+	var neighbor: Array
+
+	for x in range(0, Game_DungeonSize.CENTER_X):
+		for y in range(0, Game_DungeonSize.MAX_Y):
+			if not _is_occupied(x, y):
+				grids.push_back(Game_IntCoord.new(x, y))
+
+	if grids.size() == 0:
+		return
+	Game_ArrayHelper.rand_picker(grids, 1, _ref_RandomNumber)
+
+	_add_actor_to_blueprint(_spr_Phantom, Game_SubTag.PHANTOM,
+			grids[0].x, grids[0].y)
+	neighbor = Game_CoordCalculator.get_neighbor(grids[0],
 			Game_MirrorData.PHANTOM_SIGHT, true)
-
-	_add_actor_to_blueprint(_spr_Phantom, Game_SubTag.PHANTOM, x, y)
 	for i in neighbor:
 		_occupy_position(i.x, i.y)

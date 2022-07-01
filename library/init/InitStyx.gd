@@ -54,6 +54,7 @@ func _init_harbor(pc_x: int, pc_y: int) -> void:
 		_set_terrain_marker(i.x, i.y, HARBOR_MARKER)
 
 	for _i in range(0, Game_StyxData.MAX_HARBOR):
+		# There are very few harbors so this should hardly fail.
 		while true:
 			harbor_x = _ref_RandomNumber.get_x_coord()
 			harbor_y = _ref_RandomNumber.get_y_coord()

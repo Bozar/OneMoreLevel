@@ -122,7 +122,7 @@ func _reach_destination(x: int, y: int) -> bool:
 
 
 func _bounce_off(pc_x: int, pc_y: int, wall_x: int, wall_y: int) -> void:
-	var mirror := Game_CoordCalculator.get_mirror_image(wall_x, wall_y,
+	var mirror := Game_CoordCalculator.get_mirror_image_xy(wall_x, wall_y,
 			pc_x, pc_y)
 	var new_position := _try_move_over_border(mirror.x, mirror.y)
 

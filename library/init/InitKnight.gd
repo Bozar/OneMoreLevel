@@ -161,6 +161,7 @@ func _create_actor(sub_tag: String) -> void:
 			new_actor = _spr_KnightCaptain
 			min_distance = Game_KnightData.KNIGHT_GAP
 
+	# There should not be too many knights.
 	while true:
 		x = _ref_RandomNumber.get_x_coord()
 		y = _ref_RandomNumber.get_y_coord()

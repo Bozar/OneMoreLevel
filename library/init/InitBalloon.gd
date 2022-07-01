@@ -82,6 +82,8 @@ func _get_position(min_x: int, max_x: int, min_y: int, max_y: int) -> Array:
 	var x: int
 	var y: int
 
+	# Only the top left corner is occupied by indicators. So this loop shall
+	# end rather quickly.
 	while true:
 		x = _ref_RandomNumber.get_int(min_x, max_x)
 		y = _ref_RandomNumber.get_int(min_y, max_y)

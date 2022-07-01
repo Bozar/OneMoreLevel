@@ -80,12 +80,17 @@ static func get_block(x_top_left: int, y_top_left: int, width: int,
 	return coord
 
 
-static func get_mirror_image(source_x: int, source_y: int,
+static func get_mirror_image_xy(source_x: int, source_y: int,
 		center_x: int, center_y: int) -> Game_IntCoord:
 	var x: int = center_x * 2 - source_x
 	var y: int = center_y * 2 - source_y
 
 	return Game_IntCoord.new(x, y)
+
+
+static func get_mirror_image(source: Game_IntCoord, center: Game_IntCoord) \
+		-> Game_IntCoord:
+	return get_mirror_image_xy(source.x, source.y, center.x, center.y)
 
 
 static func is_inside_dungeon(x: int, y: int) -> bool:

@@ -192,6 +192,7 @@ func _set_pc_hit_point(add_hit_point: int) -> void:
 	var new_sprite_type: String
 
 	if find_phantom.size() == 0:
+		# It should be farily easy to find an available location.
 		while true:
 			x = _ref_RandomNumber.get_x_coord()
 			y = _ref_RandomNumber.get_y_coord()
@@ -202,7 +203,7 @@ func _set_pc_hit_point(add_hit_point: int) -> void:
 			elif Game_CoordCalculator.is_in_range_xy(x, y,
 					_pc_pos.x, _pc_pos.y, Game_HoundData.MIN_BOSS_DISTANCE):
 				continue
-			elif not Game_CoordCalculator.is_in_range_xy(x, y,
+			elif Game_CoordCalculator.is_out_of_range_xy(x, y,
 					_pc_pos.x, _pc_pos.y, Game_HoundData.MAX_BOSS_DISTANCE):
 				continue
 			else:

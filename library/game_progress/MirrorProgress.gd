@@ -31,36 +31,37 @@ func remove_trap(_trap: Sprite, x: int, y: int) -> void:
 
 
 func _replenish_crystal() -> void:
-	var x: int
-	var y: int
 	var pc_pos := _ref_DungeonBoard.get_pc_coord()
-	var mirror := Game_CoordCalculator.get_mirror_image(
+	var mirror := Game_CoordCalculator.get_mirror_image_xy(
 			pc_pos.x, pc_pos.y, Game_DungeonSize.CENTER_X, pc_pos.y)
-	var has_npc: int = 0
+	var grids := []
 
-	while true:
-		# x = _ref_RandomNumber.get_int(
-		# 	Game_DungeonSize.CENTER_X, Game_DungeonSize.MAX_X)
-		x = _ref_RandomNumber.get_x_coord()
-		y = _ref_RandomNumber.get_y_coord()
+	_init_dungeon_grids()
+	for x in range(0, Game_DungeonSize.MAX_X):
+		for y in range(0, Game_DungeonSize.MAX_Y):
+			if _ref_DungeonBoard.has_building_xy(x, y) \
+					or _ref_DungeonBoard.has_actor_xy(x, y) \
+					or Game_CoordCalculator.is_in_range_xy(x, y,
+							pc_pos.x, pc_pos.y,
+							Game_MirrorData.CRYSTAL_DISTANCE) \
+					or Game_CoordCalculator.is_in_range_xy(x, y,
+							mirror.x, mirror.y,
+							Game_MirrorData.CRYSTAL_DISTANCE):
+				DUNGEON_GRIDS[x][y] = true
+			else:
+				DUNGEON_GRIDS[x][y] = false
 
-		if Game_CoordCalculator.is_in_range_xy(x, y, pc_pos.x, pc_pos.y,
-				Game_MirrorData.CRYSTAL_DISTANCE):
-			continue
-		elif Game_CoordCalculator.is_in_range_xy(x, y, mirror.x, mirror.y,
-				Game_MirrorData.CRYSTAL_DISTANCE):
-			continue
-		elif _ref_DungeonBoard.has_building_xy(x, y):
-			continue
-		elif _ref_DungeonBoard.has_actor_xy(x, y):
-			if has_npc < 100:
-				has_npc += 1
+	for x in range(0, Game_DungeonSize.MAX_X):
+		for y in range(0, Game_DungeonSize.MAX_Y):
+			if DUNGEON_GRIDS[x][y]:
 				continue
 			else:
-				_ref_RemoveObject.remove_actor_xy(x, y)
-				break
-		else:
-			break
+				grids.push_back(Game_IntCoord.new(x, y))
 
-	_ref_CreateObject.create_trap_xy(_spr_Crystal, Game_SubTag.CRYSTAL, x, y)
-	_ref_DangerZone.set_danger_zone(x, y, true)
+	if grids.size() == 0:
+		grids.push_back(pc_pos)
+	else:
+		Game_ArrayHelper.rand_picker(grids, 1, _ref_RandomNumber)
+
+	_ref_CreateObject.create_trap(_spr_Crystal, Game_SubTag.CRYSTAL, grids[0])
+	_ref_DangerZone.set_danger_zone(grids[0].x, grids[0].y, true)

@@ -76,6 +76,7 @@ func _create_pc() -> void:
 	var y: int
 	var neighbor: Array
 
+	# Grids are only occupied by walls at this moment.
 	while true:
 		x = _ref_RandomNumber.get_x_coord()
 		y = _ref_RandomNumber.get_y_coord()

@@ -72,7 +72,7 @@ func _is_checkmate() -> bool:
 
 
 func _get_mirror(x: int, y: int) -> Game_IntCoord:
-	return Game_CoordCalculator.get_mirror_image(x, y,
+	return Game_CoordCalculator.get_mirror_image_xy(x, y,
 			Game_DungeonSize.CENTER_X, y)
 
 
@@ -140,7 +140,7 @@ func _create_image_on_the_same_side(x: int, y: int) -> void:
 
 	for i in wall:
 		# Continue if the image is outside the dungeon.
-		mirror = Game_CoordCalculator.get_mirror_image(x, y, i[0], i[1])
+		mirror = Game_CoordCalculator.get_mirror_image_xy(x, y, i[0], i[1])
 		if not Game_CoordCalculator.is_inside_dungeon(mirror.x, mirror.y):
 			continue
 

@@ -45,17 +45,16 @@ func _melt_snow() -> void:
 
 func _replenish_snow() -> void:
 	var snow := _ref_DungeonBoard.get_sprites_by_tag(Game_SubTag.SNOW).size()
-	var this_index: int
-	var this_coord: Game_IntCoord
+	var index: int
+	var coord: Game_IntCoord
 
 	while snow < Game_SnowRunnerData.MAX_SNOW:
-		this_index = _ref_RandomNumber.get_int(0, _ground_coords.size())
-		this_coord = _ground_coords[this_index]
-		if _ref_DungeonBoard.has_trap_xy(this_coord.x, this_coord.y) \
-				or _ref_DungeonBoard.has_actor_xy(this_coord.x, this_coord.y):
+		index = _ref_RandomNumber.get_int(0, _ground_coords.size())
+		coord = _ground_coords[index]
+		if _ref_DungeonBoard.has_trap(coord) \
+				or _ref_DungeonBoard.has_actor(coord):
 			continue
-		_ref_CreateObject.create_trap_xy(_spr_Crystal, Game_SubTag.SNOW,
-				this_coord.x, this_coord.y)
+		_ref_CreateObject.create_trap(_spr_Crystal, Game_SubTag.SNOW, coord)
 		snow += 1
 
 

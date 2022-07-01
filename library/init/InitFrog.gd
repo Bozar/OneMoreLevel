@@ -45,6 +45,7 @@ func _init_path() -> int:
 	var neighbor: Array
 	var counter: int
 
+	# There should be far more unoccupied grids than occupied ones.
 	while true:
 		x = _ref_RandomNumber.get_x_coord()
 		y = _ref_RandomNumber.get_y_coord()

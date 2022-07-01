@@ -95,6 +95,8 @@ func _create_start_point(inner_floor: Array) -> Array:
 
 	Game_ArrayHelper.rand_picker(file_list, MAX_START_POINT, _ref_RandomNumber)
 	packed_prefab = _edit_prefab(file_list[0])
+	# The start point is created at the early stage of map generation. It should
+	# never fail.
 	while true:
 		build_result = _build_from_prefab(packed_prefab, inner_floor)
 		if build_result[0]:

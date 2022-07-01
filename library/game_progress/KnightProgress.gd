@@ -22,17 +22,17 @@ func _init(parent_node: Node2D).(parent_node) -> void:
 	pass
 
 
-func end_world(pc_x: int, pc_y: int) -> void:
+func end_world(_pc_x: int, _pc_y: int) -> void:
 	var count_captain: int
 	var count_boss: int
 	var count_knight: int
 
 	if _spawn_captain:
 		for _i in range(Game_KnightData.MAX_CAPTAIN - 1):
-			_spawn_npc(Game_SubTag.KNIGHT_CAPTAIN, pc_x, pc_y)
+			_spawn_npc(Game_SubTag.KNIGHT_CAPTAIN)
 		_spawn_captain = false
 	elif _spawn_boss:
-		_spawn_npc(Game_SubTag.KNIGHT_BOSS, pc_x, pc_y)
+		_spawn_npc(Game_SubTag.KNIGHT_BOSS)
 		_spawn_boss = false
 
 	count_captain = _ref_DungeonBoard.get_sprites_by_tag(
@@ -46,7 +46,7 @@ func end_world(pc_x: int, pc_y: int) -> void:
 	elif count_knight < Game_KnightData.START_RESPAWN:
 		_spawn_knight = true
 	if _spawn_knight:
-		_spawn_npc(Game_SubTag.KNIGHT, pc_x, pc_y)
+		_spawn_npc(Game_SubTag.KNIGHT)
 
 
 func remove_actor(actor: Sprite, _x: int, _y: int) -> void:
@@ -66,10 +66,9 @@ func remove_actor(actor: Sprite, _x: int, _y: int) -> void:
 	_ref_SwitchSprite.set_sprite(_counter, SWITCH_NUMBER[_dead_captain - 1])
 
 
-func _spawn_npc(sub_tag: String, pc_x: int, pc_y: int) -> void:
+func _spawn_npc(sub_tag: String) -> void:
 	var new_actor: PackedScene
-	var x: int
-	var y: int
+	var grids: Array
 
 	match sub_tag:
 		Game_SubTag.KNIGHT:
@@ -79,32 +78,49 @@ func _spawn_npc(sub_tag: String, pc_x: int, pc_y: int) -> void:
 		Game_SubTag.KNIGHT_BOSS:
 			new_actor = _spr_KnightBoss
 
-	while true:
-		x = _ref_RandomNumber.get_x_coord()
-		y = _ref_RandomNumber.get_y_coord()
-		if _is_occupied(x, y) \
-				or _is_close_to_pc(x, y, pc_x, pc_y) \
-				or _has_neighbor(x, y):
-			continue
-		break
-	_ref_CreateObject.create_actor_xy(new_actor, sub_tag, x, y)
+	_init_dungeon_grids()
+	_mark_buildings()
+	_mark_actors()
+	grids = _get_unoccupied_grids()
+
+	if grids.size() == 0:
+		print("No available respawn point.")
+		return
+	Game_ArrayHelper.rand_picker(grids, 1, _ref_RandomNumber)
+	_ref_CreateObject.create_actor(new_actor, sub_tag, grids[0])
 
 
-func _is_occupied(x: int, y: int) -> bool:
-	return _ref_DungeonBoard.has_actor_xy(x, y) \
-			or _ref_DungeonBoard.has_building_xy(x, y)
+func _mark_buildings() -> void:
+	for x in range(0, Game_DungeonSize.MAX_X):
+		for y in range(0, Game_DungeonSize.MAX_Y):
+			if _ref_DungeonBoard.has_building_xy(x, y):
+				DUNGEON_GRIDS[x][y] = true
+			else:
+				DUNGEON_GRIDS[x][y] = false
 
 
-func _is_close_to_pc(self_x: int, self_y: int, pc_x: int, pc_y: int) -> bool:
-	return Game_CoordCalculator.is_in_range_xy(self_x, self_y, pc_x, pc_y,
-			Game_KnightData.RENDER_RANGE)
+func _mark_actors() -> void:
+	var pos: Game_IntCoord
+	var min_gap: int
+	var neighbor: Array
+
+	for i in _ref_DungeonBoard.get_sprites_by_tag(Game_MainTag.ACTOR):
+		pos = Game_ConvertCoord.vector_to_coord(i.position)
+		if i.is_in_group(Game_SubTag.PC):
+			min_gap = Game_KnightData.RENDER_RANGE
+		else:
+			min_gap = Game_KnightData.KNIGHT_GAP
+		neighbor = Game_CoordCalculator.get_neighbor(pos, min_gap, true)
+		for j in neighbor:
+			DUNGEON_GRIDS[j.x][j.y] = true
 
 
-func _has_neighbor(x: int, y: int) -> bool:
-	var neighbor: Array = Game_CoordCalculator.get_neighbor_xy(x, y,
-			Game_KnightData.KNIGHT_GAP)
+func _get_unoccupied_grids() -> Array:
+	var grids := []
 
-	for i in neighbor:
-		if _ref_DungeonBoard.has_actor_xy(i.x, i.y):
-			return true
-	return false
+	for x in range(0, Game_DungeonSize.MAX_X):
+		for y in range(0, Game_DungeonSize.MAX_Y):
+			if DUNGEON_GRIDS[x][y]:
+				continue
+			grids.push_back(Game_IntCoord.new(x, y))
+	return grids

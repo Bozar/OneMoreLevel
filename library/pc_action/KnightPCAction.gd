@@ -71,7 +71,7 @@ func _is_checkmate() -> bool:
 		elif _ref_DungeonBoard.has_actor_xy(i.x, i.y):
 			actor = _ref_DungeonBoard.get_actor_xy(i.x, i.y)
 			if _ref_ObjectData.verify_state(actor, Game_StateTag.ACTIVE):
-				coord = Game_CoordCalculator.get_mirror_image(x, y, i.x, i.y)
+				coord = Game_CoordCalculator.get_mirror_image_xy(x, y, i.x, i.y)
 				if Game_CoordCalculator.is_inside_dungeon(coord.x, coord.y) \
 						and (not _is_occupied(coord.x, coord.y)):
 					return false

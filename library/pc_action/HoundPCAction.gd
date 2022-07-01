@@ -170,11 +170,11 @@ func _get_hit_position(hit_diagonally: bool) -> Game_IntCoord:
 
 	if hit_diagonally:
 		if shift_x * shift_y > 0:
-			coord = Game_CoordCalculator.get_mirror_image(
+			coord = Game_CoordCalculator.get_mirror_image_xy(
 					_source_position.x, _source_position.y,
 					_source_position.x, _target_position.y)
 		else:
-			coord = Game_CoordCalculator.get_mirror_image(
+			coord = Game_CoordCalculator.get_mirror_image_xy(
 					_source_position.x, _source_position.y,
 					_target_position.x, _source_position.y)
 		return coord
