@@ -1,7 +1,10 @@
 extends Game_AITemplate
 
 
+const MIN_TRAVEL_DISTANCE := Game_DungeonSize.CENTER_X
+
 var _destination := {}
+var _ground_coords := []
 
 
 func _init(parent_node: Node2D).(parent_node) -> void:
@@ -36,16 +39,45 @@ func _bandit_act() -> void:
 
 
 func _bird_act() -> void:
-	pass
+	var bandits := _ref_DungeonBoard.get_sprites_by_tag(Game_SubTag.BANDIT)
+	var pos: Game_IntCoord
+	var is_alert := false
+
+	for i in bandits:
+		pos = Game_ConvertCoord.vector_to_coord(i.position)
+		if Game_CoordCalculator.is_inside_range(pos.x, pos.y,
+				_self_pos.x, _self_pos.y, Game_BaronData.ALERT_RANGE):
+			is_alert = _ref_RandomNumber.get_percent_chance(
+					Game_BaronData.BANDIT_ALERT)
+			break
+	is_alert = is_alert or _ref_RandomNumber.get_percent_chance(
+			Game_BaronData.BASE_ALERT)
+
+	if is_alert:
+		_ref_RemoveObject.remove_actor(_self_pos.x, _self_pos.y,
+				Game_BaronData.TREE_LAYER)
 
 
 func _get_destination() -> Game_IntCoord:
-	var x := _ref_RandomNumber.get_x_coord()
-	var y := _ref_RandomNumber.get_y_coord()
+	var pos: Game_IntCoord
 
-	if _ref_DungeonBoard.has_sprite_with_sub_tag(Game_SubTag.TREE_TRUNK, x, y):
-		return _get_destination()
-	return Game_IntCoord.new(x, y)
+	if _ground_coords.size() == 0:
+		_ground_coords = _ref_DungeonBoard.get_sprites_by_tag(
+				Game_MainTag.GROUND) + _ref_DungeonBoard.get_sprites_by_tag(
+				Game_SubTag.TREE_BRANCH)
+		for i in range(0, _ground_coords.size()):
+			pos = Game_ConvertCoord.vector_to_coord(_ground_coords[i].position)
+			_ground_coords[i] = pos
+
+	Game_ArrayHelper.shuffle(_ground_coords, _ref_RandomNumber)
+	for i in _ground_coords:
+		if Game_CoordCalculator.get_range(_self_pos.x, _self_pos.y, i.x, i.y) \
+				> MIN_TRAVEL_DISTANCE:
+			pos = i
+			break
+		else:
+			pos = _self_pos
+	return pos
 
 
 func _reach_destination(id: int) -> bool:
