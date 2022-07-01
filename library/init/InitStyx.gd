@@ -33,7 +33,7 @@ func get_blueprint() -> Array:
 
 
 func _init_lighthouse() -> void:
-	var neighbor := Game_CoordCalculator.get_neighbor(
+	var neighbor := Game_CoordCalculator.get_neighbor_xy(
 			Game_DungeonSize.CENTER_X, Game_DungeonSize.CENTER_Y,
 			Game_StyxData.LIGHTHOUSE_GAP, true)
 
@@ -48,7 +48,7 @@ func _init_harbor(pc_x: int, pc_y: int) -> void:
 	var harbor_x: int
 	var harbor_y: int
 
-	neighbor = Game_CoordCalculator.get_neighbor(pc_x, pc_y,
+	neighbor = Game_CoordCalculator.get_neighbor_xy(pc_x, pc_y,
 			Game_StyxData.NORMAL_SIGHT, true)
 	for i in neighbor:
 		_set_terrain_marker(i.x, i.y, HARBOR_MARKER)
@@ -65,7 +65,7 @@ func _init_harbor(pc_x: int, pc_y: int) -> void:
 		_add_building_to_blueprint(_spr_Harbor, Game_SubTag.HARBOR,
 				harbor_x, harbor_y)
 		_occupy_position(harbor_x, harbor_y)
-		neighbor = Game_CoordCalculator.get_neighbor(harbor_x, harbor_y,
+		neighbor = Game_CoordCalculator.get_neighbor_xy(harbor_x, harbor_y,
 				Game_StyxData.NORMAL_SIGHT, false)
 		for j in neighbor:
 			if _is_terrain_marker(j.x, j.y, DEFAULT_MARKER):

@@ -37,11 +37,11 @@ func _respawn_npc(pc_x: int, pc_y: int) -> void:
 
 		if _ref_DungeonBoard.has_building(x, y):
 			continue
-		elif Game_CoordCalculator.is_inside_range(x, y, pc_x, pc_y,
+		elif Game_CoordCalculator.is_inside_range_xy(x, y, pc_x, pc_y,
 				Game_RailgunData.PC_FRONT_SIGHT):
 			continue
 		else:
-			neighbor = Game_CoordCalculator.get_neighbor(x, y,
+			neighbor = Game_CoordCalculator.get_neighbor_xy(x, y,
 					Game_RailgunData.NPC_GAP, true)
 			has_neighbor = false
 			for i in neighbor:

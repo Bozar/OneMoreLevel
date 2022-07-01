@@ -69,8 +69,8 @@ func remove_actor(actor: Sprite, _x: int, _y: int) -> void:
 
 
 func _create_frog(pc_x: int, pc_y: int) -> void:
-	var neighbor: Array = Game_CoordCalculator.get_neighbor(
-			pc_x, pc_y, Game_FrogData.MAX_DISTANCE)
+	var neighbor := Game_CoordCalculator.get_neighbor_xy(pc_x, pc_y,
+			Game_FrogData.MAX_DISTANCE)
 
 	Game_ArrayHelper.filter_element(neighbor, self, "_filter_create_frog",
 			[pc_x, pc_y])
@@ -82,8 +82,8 @@ func _create_frog(pc_x: int, pc_y: int) -> void:
 
 
 func _create_princess(pc_x: int, pc_y: int) -> void:
-	var neighbor: Array = Game_CoordCalculator.get_neighbor(
-			pc_x, pc_y, Game_FrogData.MAX_PRINCESS_DISTANCE)
+	var neighbor := Game_CoordCalculator.get_neighbor_xy(pc_x, pc_y,
+			Game_FrogData.MAX_PRINCESS_DISTANCE)
 
 	Game_ArrayHelper.filter_element(neighbor, self, "_filter_create_frog",
 			[pc_x, pc_y])
@@ -136,7 +136,7 @@ func _filter_create_frog(source: Array, index: int, opt_arg: Array) -> bool:
 	var pc_x: int = opt_arg[0]
 	var pc_y: int = opt_arg[1]
 
-	if Game_CoordCalculator.is_inside_range(x, y, pc_x, pc_y,
+	if Game_CoordCalculator.is_inside_range_xy(x, y, pc_x, pc_y,
 			Game_FrogData.MIN_DISTANCE) \
 					or _ref_DungeonBoard.has_actor(x, y):
 		return false

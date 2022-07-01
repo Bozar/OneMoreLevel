@@ -124,7 +124,7 @@ func _fill_hole() -> void:
 					and (y != 0) and (y != Game_DungeonSize.MAX_Y - 1):
 				continue
 
-			neighbor = Game_CoordCalculator.get_neighbor(x, y, 1)
+			neighbor = Game_CoordCalculator.get_neighbor_xy(x, y, 1)
 			fill_this = true
 			for i in neighbor:
 				if _get_terrain_marker(i.x, i.y) != WALL_MARKER:
@@ -167,7 +167,7 @@ func _create_actor(sub_tag: String) -> void:
 		if _get_terrain_marker(x, y) != WALL_MARKER:
 			break
 
-	neighbor = Game_CoordCalculator.get_neighbor(x, y, min_distance, true)
+	neighbor = Game_CoordCalculator.get_neighbor_xy(x, y, min_distance, true)
 	for i in neighbor:
 		_set_terrain_marker(i.x, i.y, WALL_MARKER)
 	_add_actor_to_blueprint(new_actor, sub_tag, x, y)

@@ -43,7 +43,7 @@ func _ninja_act() -> void:
 	var pc_hp: int
 
 	# Hit PC when inside attack range.
-	if Game_CoordCalculator.is_inside_range(_self_pos.x, _self_pos.y,
+	if Game_CoordCalculator.is_inside_range_xy(_self_pos.x, _self_pos.y,
 			_pc_pos.x, _pc_pos.y, Game_NinjaData.ATTACK_RANGE):
 		hit_pc = true
 	elif _self_pos.y == Game_NinjaData.GROUND_Y:

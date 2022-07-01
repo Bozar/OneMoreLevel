@@ -303,14 +303,14 @@ func _create_treasure(sub_tag: String, is_first_rare_treasure: bool,
 		retry += 1
 		x = _ref_RandomNumber.get_x_coord()
 		y = _ref_RandomNumber.get_y_coord()
-		if Game_CoordCalculator.is_inside_range(x, y, pc_x, pc_y, pc_gap) \
+		if Game_CoordCalculator.is_inside_range_xy(x, y, pc_x, pc_y, pc_gap) \
 				or _is_occupied(x, y) \
 				or _is_terrain_marker(x, y, marker):
 			continue
 		break
 
 	_add_trap_to_blueprint(new_sprite, sub_tag, x, y)
-	for i in Game_CoordCalculator.get_neighbor(x, y, gap):
+	for i in Game_CoordCalculator.get_neighbor_xy(x, y, gap):
 		if _is_occupied(i.x, i.y):
 			continue
 		_set_terrain_marker(i.x, i.y, marker)
@@ -322,7 +322,7 @@ func _create_treasure(sub_tag: String, is_first_rare_treasure: bool,
 
 func _reset_rare_treasure_gap(coord: Array) -> void:
 	for i in coord:
-		for j in Game_CoordCalculator.get_neighbor(i[0], i[1],
+		for j in Game_CoordCalculator.get_neighbor_xy(i[0], i[1],
 				Game_FactoryData.TREASURE_GAP, true):
 			if _is_occupied(j.x, j.y):
 				continue

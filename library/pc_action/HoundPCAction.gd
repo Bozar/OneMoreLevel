@@ -135,7 +135,7 @@ func _is_checkmate() -> bool:
 	if _move_diagonally:
 		return false
 
-	neighbor = Game_CoordCalculator.get_neighbor(
+	neighbor = Game_CoordCalculator.get_neighbor_xy(
 			_source_position.x, _source_position.y, 1)
 	for i in neighbor:
 		if not _ref_DungeonBoard.has_building(i.x, i.y):
@@ -235,7 +235,7 @@ func _reset_input_state() -> void:
 
 func _restore_in_cage() -> void:
 	var pos := _ref_DungeonBoard.get_pc_coord()
-	var neighbor := Game_CoordCalculator.get_neighbor(pos.x, pos.y, 1)
+	var neighbor := Game_CoordCalculator.get_neighbor_xy(pos.x, pos.y, 1)
 	var is_surrounded: bool = true
 
 	for i in neighbor:

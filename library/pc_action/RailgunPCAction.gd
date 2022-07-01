@@ -121,7 +121,7 @@ func attack() -> void:
 		_kill_count -= Game_RailgunData.ONE_KILL
 		if _ammo == 0:
 			_kill_count -= Game_RailgunData.ONE_KILL
-		if Game_CoordCalculator.is_inside_range(
+		if Game_CoordCalculator.is_inside_range_xy(
 				_source_position.x, _source_position.y, x, y,
 				Game_RailgunData.CLOSE_RANGE):
 			_kill_count -= Game_RailgunData.ONE_KILL
@@ -185,12 +185,12 @@ func _init_skull_pillar() -> void:
 
 	for i in building:
 		pos = Game_ConvertCoord.vector_to_coord(i.position)
-		if Game_CoordCalculator.is_inside_range(pos.x, pos.y,
+		if Game_CoordCalculator.is_inside_range_xy(pos.x, pos.y,
 				_source_position.x, _source_position.y,
 				Game_DungeonSize.CENTER_X):
 			continue
 
-		neighbor = Game_CoordCalculator.get_neighbor(pos.x, pos.y, 1, false)
+		neighbor = Game_CoordCalculator.get_neighbor_xy(pos.x, pos.y, 1, false)
 		for j in neighbor:
 			if _ref_DungeonBoard.has_ground(j.x, j.y):
 				_ref_RemoveObject.remove_building(pos.x, pos.y)
@@ -253,7 +253,7 @@ func _try_find_pillar() -> void:
 
 	if _has_found_pillar:
 		return
-	_has_found_pillar = Game_CoordCalculator.is_inside_range(
+	_has_found_pillar = Game_CoordCalculator.is_inside_range_xy(
 			_target_position.x, _target_position.y,
 			_plillar_position.x, _plillar_position.y,
 			Game_RailgunData.TOUCH_PILLAR)

@@ -167,7 +167,7 @@ func _init_move_direction() -> void:
 	if _move_direction != 0:
 		return
 
-	neighbor = Game_CoordCalculator.get_neighbor(
+	neighbor = Game_CoordCalculator.get_neighbor_xy(
 			_source_position.x, _source_position.y, 1)
 	for i in neighbor:
 		if _ref_DungeonBoard.has_building(i.x, i.y):

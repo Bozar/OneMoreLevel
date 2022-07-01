@@ -138,7 +138,7 @@ func _is_dying() -> bool:
 func _is_cornered() -> bool:
 	var building: Sprite
 
-	for i in Game_CoordCalculator.get_neighbor(
+	for i in Game_CoordCalculator.get_neighbor_xy(
 			_source_position.x, _source_position.y, 1):
 		if _ref_DungeonBoard.has_actor(i.x, i.y):
 			continue

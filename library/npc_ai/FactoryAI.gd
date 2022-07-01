@@ -51,7 +51,7 @@ func _stop_move() -> bool:
 
 
 func _is_adjacent_to_pc() -> bool:
-	return Game_CoordCalculator.is_inside_range(_self_pos.x, _self_pos.y,
+	return Game_CoordCalculator.is_inside_range_xy(_self_pos.x, _self_pos.y,
 			_pc_pos.x, _pc_pos.y, 1)
 
 
@@ -98,7 +98,7 @@ func _get_teleport_coord() -> Game_IntCoord:
 					x, y)):
 		return null
 	else:
-		for i in Game_CoordCalculator.get_neighbor(x, y,
+		for i in Game_CoordCalculator.get_neighbor_xy(x, y,
 				Game_FactoryData.SCP_GAP, true):
 			if _ref_DungeonBoard.has_actor(i.x, i.y):
 				return null

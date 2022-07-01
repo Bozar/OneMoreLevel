@@ -89,7 +89,7 @@ func _create_body(id: int, index: int, x: int, y: int) -> void:
 func _try_random_walk(id: int) -> bool:
 	var x: int = _self_pos.x
 	var y: int = _self_pos.y
-	var neighbor: Array = Game_CoordCalculator.get_neighbor(x, y, 1)
+	var neighbor: Array = Game_CoordCalculator.get_neighbor_xy(x, y, 1)
 	var candidate: Array = []
 	var neck: Game_IntCoord
 	var coord: Game_IntCoord
@@ -187,7 +187,7 @@ func _can_bury_worm(id: int) -> bool:
 
 func _set_danger_zone(head: Sprite, is_danger: bool) -> void:
 	var pos := Game_ConvertCoord.vector_to_coord(head.position)
-	var neighbor: Array = Game_CoordCalculator.get_neighbor(pos.x, pos.y, 1)
+	var neighbor: Array = Game_CoordCalculator.get_neighbor_xy(pos.x, pos.y, 1)
 
 	for i in neighbor:
 		_ref_DangerZone.set_danger_zone(i.x, i.y, is_danger)

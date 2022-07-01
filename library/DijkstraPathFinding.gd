@@ -8,12 +8,12 @@ class_name Game_DijkstraPathFinding
 static func get_path(dungeon: Dictionary, start_x: int, start_y: int,
 		step_length: int, func_host: Object, is_passable_func: String,
 		opt_arg: Array) -> Array:
-	var neighbor: Array = Game_CoordCalculator.get_neighbor(start_x, start_y,
+	var neighbor := Game_CoordCalculator.get_neighbor_xy(start_x, start_y,
 			step_length)
-	var min_distance: int = Game_PathFindingData.OBSTACLE
+	var min_distance := Game_PathFindingData.OBSTACLE
 	var x: int
 	var y: int
-	var current_index: int = 0
+	var current_index := 0
 
 	Game_ArrayHelper.filter_element(neighbor, func_host, is_passable_func,
 			opt_arg)
@@ -40,7 +40,7 @@ static func get_map(dungeon: Dictionary, end_point: Array) -> Dictionary:
 		return dungeon
 
 	var check: Game_IntCoord = end_point.pop_front()
-	var neighbor: Array = Game_CoordCalculator.get_neighbor(check.x, check.y, 1)
+	var neighbor := Game_CoordCalculator.get_neighbor_xy(check.x, check.y, 1)
 	var x: int
 	var y: int
 
@@ -55,8 +55,7 @@ static func get_map(dungeon: Dictionary, end_point: Array) -> Dictionary:
 
 static func _get_distance(dungeon: Dictionary, center_x: int, center_y: int) \
 		-> int:
-	var neighbor: Array = Game_CoordCalculator.get_neighbor(
-			center_x, center_y, 1)
+	var neighbor := Game_CoordCalculator.get_neighbor_xy(center_x, center_y, 1)
 	var min_distance: int = Game_PathFindingData.OBSTACLE
 	var x: int
 	var y: int

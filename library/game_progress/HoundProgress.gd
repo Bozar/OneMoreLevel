@@ -72,7 +72,8 @@ func _add_or_remove_fog() -> void:
 		fog_range = _fog_source[i][2]
 		if fog_range < Game_HoundData.MAX_FOG_SIZE:
 			_fog_source[i][2] += 1
-			neighbor = Game_CoordCalculator.get_neighbor(x, y, fog_range, true)
+			neighbor = Game_CoordCalculator.get_neighbor_xy(x, y, fog_range,
+					true)
 			for j in neighbor:
 				ground = _ref_DungeonBoard.get_ground(j.x, j.y)
 				if ground != null:
@@ -151,14 +152,14 @@ func _respawn_actor(pc_x: int, pc_y: int, min_distance: int, max_distance: int,
 			next_loop = true
 		elif _ref_DungeonBoard.has_actor(x, y):
 			next_loop = true
-		elif Game_CoordCalculator.is_inside_range(x, y, pc_x, pc_y,
+		elif Game_CoordCalculator.is_inside_range_xy(x, y, pc_x, pc_y,
 				min_distance):
 			next_loop = true
-		elif not Game_CoordCalculator.is_inside_range(x, y, pc_x, pc_y,
+		elif not Game_CoordCalculator.is_inside_range_xy(x, y, pc_x, pc_y,
 				max_distance):
 			next_loop = true
 		else:
-			neighbor = Game_CoordCalculator.get_neighbor(x, y,
+			neighbor = Game_CoordCalculator.get_neighbor_xy(x, y,
 					Game_HoundData.MIN_HOUND_GAP)
 			for i in neighbor:
 				if _ref_DungeonBoard.has_actor(i.x, i.y):

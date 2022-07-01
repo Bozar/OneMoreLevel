@@ -22,7 +22,7 @@ func take_action() -> void:
 	elif _is_in_close_range():
 		_switch_mode(true)
 	elif _detect_pc():
-		# if Game_CoordCalculator.get_range(_self_pos.x, _self_pos.y,
+		# if Game_CoordCalculator.get_range_xy(_self_pos.x, _self_pos.y,
 		# 		_pc_pos.x, _pc_pos.y) > Game_RailgunData.NPC_SIGHT:
 		# 	_self.modulate = _ref_Palette.DEBUG
 		# 	print("gunshot")
@@ -83,7 +83,7 @@ func _is_in_close_range() -> bool:
 
 	if (self_x != pc_x) and (self_y != pc_y):
 		return false
-	elif not Game_CoordCalculator.is_inside_range(self_x, self_y, pc_x, pc_y,
+	elif not Game_CoordCalculator.is_inside_range_xy(self_x, self_y, pc_x, pc_y,
 			Game_RailgunData.PC_SIDE_SIGHT):
 		return false
 
@@ -134,5 +134,5 @@ func _detect_pc() -> bool:
 		detect_distance = Game_RailgunData.NPC_EAR_SHOT
 	else:
 		detect_distance = Game_RailgunData.NPC_SIGHT
-	return Game_CoordCalculator.is_inside_range(_self_pos.x, _self_pos.y,
+	return Game_CoordCalculator.is_inside_range_xy(_self_pos.x, _self_pos.y,
 			_pc_pos.x, _pc_pos.y, detect_distance)

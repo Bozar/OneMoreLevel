@@ -135,7 +135,7 @@ func _init_actor(min_distance: int, x: int, y: int, max_actor: int,
 		x = _ref_RandomNumber.get_x_coord()
 		y = _ref_RandomNumber.get_y_coord()
 
-	neighbor = Game_CoordCalculator.get_neighbor(x, y, min_distance, true)
+	neighbor = Game_CoordCalculator.get_neighbor_xy(x, y, min_distance, true)
 	for i in neighbor:
 		_occupy_position(i.x, i.y)
 	_add_to_blueprint(actor_scene, Game_MainTag.ACTOR, sub_tag, x, y)

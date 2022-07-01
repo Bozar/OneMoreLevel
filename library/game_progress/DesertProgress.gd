@@ -42,7 +42,7 @@ func _try_add_new_worm() -> void:
 func _create_worm_head(retry: int) -> void:
 	var x: int = _ref_RandomNumber.get_x_coord()
 	var y: int = _ref_RandomNumber.get_y_coord()
-	var neighbor: Array = Game_CoordCalculator.get_neighbor(x, y,
+	var neighbor: Array = Game_CoordCalculator.get_neighbor_xy(x, y,
 			Game_DesertData.WORM_DISTANCE, true)
 	var head: Sprite
 

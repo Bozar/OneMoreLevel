@@ -58,7 +58,7 @@ func wait() -> void:
 func _is_checkmate() -> bool:
 	var x: int = _source_position.x
 	var y: int = _source_position.y
-	var neighbor: Array = Game_CoordCalculator.get_neighbor(x, y, 1)
+	var neighbor: Array = Game_CoordCalculator.get_neighbor_xy(x, y, 1)
 	var actor: Sprite
 	var coord: Game_IntCoord
 
@@ -95,7 +95,7 @@ func _hit_boss(boss: Sprite) -> void:
 			teleport_x = _ref_RandomNumber.get_x_coord()
 			teleport_y = _ref_RandomNumber.get_y_coord()
 			is_occupied = _is_occupied(teleport_x, teleport_y)
-			is_too_close = Game_CoordCalculator.is_inside_range(
+			is_too_close = Game_CoordCalculator.is_inside_range_xy(
 					teleport_x, teleport_y,
 					_source_position.x, _source_position.y,
 					Game_KnightData.ELITE_SIGHT)
@@ -108,7 +108,7 @@ func _hit_boss(boss: Sprite) -> void:
 
 
 func _roll() -> bool:
-	var neighbor: Array = Game_CoordCalculator.get_neighbor(
+	var neighbor: Array = Game_CoordCalculator.get_neighbor_xy(
 			_target_position.x, _target_position.y, 1)
 	var roll_over := Game_IntCoord.new(-1, -1)
 	var pc: Sprite = _ref_DungeonBoard.get_pc()

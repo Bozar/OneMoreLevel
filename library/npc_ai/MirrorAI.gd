@@ -19,7 +19,7 @@ func take_action() -> void:
 
 	_trap_pos = null
 	pc = _ref_DungeonBoard.get_pc()
-	distance = Game_CoordCalculator.get_range(_self_pos.x, _self_pos.y,
+	distance = Game_CoordCalculator.get_range_xy(_self_pos.x, _self_pos.y,
 			_pc_pos.x, _pc_pos.y)
 
 	if distance > Game_MirrorData.PHANTOM_SIGHT:

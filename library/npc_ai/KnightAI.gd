@@ -23,7 +23,7 @@ func take_action() -> void:
 	elif _ref_ObjectData.verify_state(_self, Game_StateTag.PASSIVE):
 		_recover()
 	# Default -> Active.
-	elif Game_CoordCalculator.is_inside_range(_self_pos.x, _self_pos.y,
+	elif Game_CoordCalculator.is_inside_range_xy(_self_pos.x, _self_pos.y,
 			_pc_pos.x, _pc_pos.y, Game_KnightData.RANGE):
 		_alert()
 	# Approach.
@@ -97,8 +97,8 @@ func _switch_ground(danger_zone: Array) -> void:
 
 
 func _get_danger_zone() -> Array:
-	var neighbor: Array = Game_CoordCalculator.get_neighbor(
-			_pc_pos.x, _pc_pos.y, 1, true)
+	var neighbor := Game_CoordCalculator.get_neighbor_xy(_pc_pos.x, _pc_pos.y,
+			1, true)
 	var candidate: Array = [_pc_pos]
 	var one_grid: Array = []
 	var two_grids: Array = []
@@ -142,7 +142,7 @@ func _can_attack_twice() -> bool:
 		return false
 	if _boss_attack_count > 0:
 		return false
-	if not Game_CoordCalculator.is_inside_range(_pc_pos.x, _pc_pos.y,
+	if not Game_CoordCalculator.is_inside_range_xy(_pc_pos.x, _pc_pos.y,
 			_self_pos.x, _self_pos.y, Game_KnightData.RANGE):
 		return false
 	return true
@@ -190,5 +190,5 @@ func _is_ready_to_move() -> bool:
 	else:
 		sight = Game_KnightData.ELITE_SIGHT
 
-	return Game_CoordCalculator.is_inside_range(_self_pos.x, _self_pos.y,
+	return Game_CoordCalculator.is_inside_range_xy(_self_pos.x, _self_pos.y,
 			_pc_pos.x, _pc_pos.y, sight)

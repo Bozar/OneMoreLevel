@@ -27,6 +27,10 @@ func get_y_coord() -> int:
 	return get_int(0, Game_DungeonSize.MAX_Y)
 
 
+func get_dungeon_coord() -> Game_IntCoord:
+	return Game_IntCoord.new(get_x_coord(), get_y_coord())
+
+
 func shuffle(repeat: int) -> void:
 	var __
 	for _i in range(repeat):

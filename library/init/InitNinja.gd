@@ -74,7 +74,7 @@ func _create_actor_in_one_region(min_y: int, max_y: int, count: int) -> void:
 		_create_actor_in_one_region(min_y, max_y, count)
 	else:
 		_add_actor_to_blueprint(_spr_Ninja, Game_SubTag.NINJA, x, y)
-		neighbor = Game_CoordCalculator.get_neighbor(x, y, 1, true)
+		neighbor = Game_CoordCalculator.get_neighbor_xy(x, y, 1, true)
 		for i in neighbor:
 			_occupy_position(i.x, i.y)
 		_create_actor_in_one_region(min_y, max_y, count - 1)

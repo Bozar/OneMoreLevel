@@ -35,14 +35,14 @@ func _can_grapple() -> bool:
 
 	if _ref_ObjectData.verify_state(pc, Game_StateTag.PASSIVE):
 		return false
-	elif Game_CoordCalculator.is_inside_range(self_x, self_y, pc_x, pc_y,
+	elif Game_CoordCalculator.is_inside_range_xy(self_x, self_y, pc_x, pc_y,
 			Game_FrogData.ATTACK_RANGE):
 		return _path_is_clear()
 	return false
 
 
 func _grapple() -> void:
-	var neighbor: Array = Game_CoordCalculator.get_neighbor(
+	var neighbor: Array = Game_CoordCalculator.get_neighbor_xy(
 			_self_pos.x, _self_pos.y, Game_FrogData.ATTACK_RANGE)
 
 	Game_ArrayHelper.filter_element(neighbor, self, "_filter_grapple", [])
@@ -55,9 +55,9 @@ func _grapple() -> void:
 func _random_walk() -> void:
 	var x: int = _self_pos.x
 	var y: int = _self_pos.y
-	var max_distance: int = Game_CoordCalculator.get_range(
-			x, y, _pc_pos.x, _pc_pos.y)
-	var neighbor: Array = Game_CoordCalculator.get_neighbor(x, y, 2, false)
+	var max_distance := Game_CoordCalculator.get_range_xy(x, y,
+			_pc_pos.x, _pc_pos.y)
+	var neighbor := Game_CoordCalculator.get_neighbor_xy(x, y, 2, false)
 
 	Game_ArrayHelper.filter_element(neighbor, self, "_filter_rand_walk", [])
 	Game_ArrayHelper.duplicate_element(neighbor, self, "_dup_rand_walk",
@@ -105,7 +105,7 @@ func _path_is_clear() -> bool:
 
 
 func _filter_grapple(source: Array, index: int, _opt_arg: Array) -> bool:
-	return Game_CoordCalculator.get_range(_pc_pos.x, _pc_pos.y,
+	return Game_CoordCalculator.get_range_xy(_pc_pos.x, _pc_pos.y,
 			source[index].x, source[index].y) == 1
 
 
@@ -136,12 +136,12 @@ func _dup_rand_walk(source: Array, index: int, opt_arg: Array) -> int:
 			else 0
 
 	# If a frog is not too far away from PC, it favors swamp grids.
-	if Game_CoordCalculator.is_inside_range(self_x, self_y, pc_x, pc_y,
+	if Game_CoordCalculator.is_inside_range_xy(self_x, self_y, pc_x, pc_y,
 			Game_FrogData.MID_DISTANCE):
 		repeat += swamp
 	# If a frog is far away from PC, it favors grids that are closer to PC,
 	# especially when the grid is swamp.
-	elif Game_CoordCalculator.is_inside_range(sor_x, sor_y, pc_x, pc_y,
+	elif Game_CoordCalculator.is_inside_range_xy(sor_x, sor_y, pc_x, pc_y,
 			max_distance):
 		repeat += 1
 		repeat += swamp

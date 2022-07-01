@@ -96,12 +96,12 @@ func _is_occupied(x: int, y: int) -> bool:
 
 
 func _is_close_to_pc(self_x: int, self_y: int, pc_x: int, pc_y: int) -> bool:
-	return Game_CoordCalculator.is_inside_range(self_x, self_y, pc_x, pc_y,
+	return Game_CoordCalculator.is_inside_range_xy(self_x, self_y, pc_x, pc_y,
 			Game_KnightData.RENDER_RANGE)
 
 
 func _has_neighbor(x: int, y: int) -> bool:
-	var neighbor: Array = Game_CoordCalculator.get_neighbor(x, y,
+	var neighbor: Array = Game_CoordCalculator.get_neighbor_xy(x, y,
 			Game_KnightData.KNIGHT_GAP)
 
 	for i in neighbor:

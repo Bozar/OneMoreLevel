@@ -108,9 +108,9 @@ func _create_pc() -> void:
 
 	coord = Game_CoordCalculator.get_mirror_image(pc_x, pc_y,
 			Game_DungeonSize.CENTER_X, pc_y)
-	neighbor = Game_CoordCalculator.get_neighbor(pc_x, pc_y,
+	neighbor = Game_CoordCalculator.get_neighbor_xy(pc_x, pc_y,
 					Game_MirrorData.CRYSTAL_DISTANCE, true) \
-			+ Game_CoordCalculator.get_neighbor(coord.x, coord.y,
+			+ Game_CoordCalculator.get_neighbor_xy(coord.x, coord.y,
 					Game_MirrorData.CRYSTAL_DISTANCE, true)
 
 	_add_actor_to_blueprint(_spr_PC, Game_SubTag.PC, pc_x, pc_y)
@@ -158,7 +158,7 @@ func _init_phantom() -> void:
 
 
 func _create_phantom(x: int, y: int) -> void:
-	var neighbor: Array = Game_CoordCalculator.get_neighbor(x, y,
+	var neighbor: Array = Game_CoordCalculator.get_neighbor_xy(x, y,
 			Game_MirrorData.PHANTOM_SIGHT, true)
 
 	_add_actor_to_blueprint(_spr_Phantom, Game_SubTag.PHANTOM, x, y)

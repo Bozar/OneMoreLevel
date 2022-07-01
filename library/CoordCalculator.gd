@@ -14,21 +14,30 @@ const DIRECTION_TO_SHIFT := {
 }
 
 
-static func get_range(x_source: int, y_source: int,
-		x_target: int, y_target: int) -> int:
-	var delta_x: int = abs(x_source - x_target) as int
-	var delta_y: int = abs(y_source - y_target) as int
+static func get_range_xy(source_x: int, source_y: int,
+		target_x: int, target_y: int) -> int:
+	var delta_x: int = abs(source_x - target_x) as int
+	var delta_y: int = abs(source_y - target_y) as int
 
 	return delta_x + delta_y
 
 
-static func is_inside_range(x_source: int, y_source: int,
-		x_target: int, y_target: int, max_range: int) -> bool:
-	return get_range(x_source, y_source, x_target, y_target) <= max_range
+static func get_range(source: Game_IntCoord, target: Game_IntCoord) -> int:
+	return get_range_xy(source.x, source.y, target.x, target.y)
 
 
-static func get_neighbor(x: int, y: int, max_range: int,
-		has_center: bool = false) -> Array:
+static func is_inside_range_xy(source_x: int, source_y: int,
+		target_x: int, target_y: int, max_range: int) -> bool:
+	return get_range_xy(source_x, source_y, target_x, target_y) <= max_range
+
+
+static func is_inside_range(source: Game_IntCoord, target: Game_IntCoord,
+		max_range: int) -> bool:
+	return is_inside_range_xy(source.x, source.y, target.x, target.y, max_range)
+
+
+static func get_neighbor_xy(x: int, y: int, max_range: int,
+		has_center := false) -> Array:
 	var neighbor := []
 
 	for i in range(x - max_range, x + max_range + 1):
@@ -36,11 +45,16 @@ static func get_neighbor(x: int, y: int, max_range: int,
 			if (i == x) and (j == y):
 				continue
 			if is_inside_dungeon(i, j) \
-					and is_inside_range(x, y, i, j, max_range):
+					and is_inside_range_xy(x, y, i, j, max_range):
 				neighbor.push_back(Game_IntCoord.new(i, j))
 	if has_center:
 		neighbor.push_back(Game_IntCoord.new(x, y))
 	return neighbor
+
+
+static func get_neighbor(center: Game_IntCoord, max_range: int,
+		has_center := false) -> Array:
+	return get_neighbor_xy(center.x, center.y, max_range, has_center)
 
 
 static func get_block(x_top_left: int, y_top_left: int, width: int,
