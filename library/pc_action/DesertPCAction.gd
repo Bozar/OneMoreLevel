@@ -65,8 +65,8 @@ func _remove_building_or_trap() -> void:
 	var x: int = _target_position.x
 	var y: int = _target_position.y
 
-	_ref_RemoveObject.remove_building(x, y)
-	_ref_RemoveObject.remove_trap(x, y)
+	_ref_RemoveObject.remove_building_xy(x, y)
+	_ref_RemoveObject.remove_trap_xy(x, y)
 	end_turn = true
 
 

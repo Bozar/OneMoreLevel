@@ -175,7 +175,7 @@ func _try_hit_pc(danger_zone: Array) -> void:
 			# print("pc dead")
 		elif victim.is_in_group(Game_SubTag.KNIGHT) \
 				and _ref_ObjectData.verify_state(victim, Game_StateTag.PASSIVE):
-			_ref_RemoveObject.remove_actor(i.x, i.y)
+			_ref_RemoveObject.remove_actor_xy(i.x, i.y)
 			_ref_CountDown.add_count(Game_KnightData.RESTORE_TURN)
 
 

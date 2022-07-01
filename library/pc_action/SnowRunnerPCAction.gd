@@ -347,7 +347,7 @@ func _try_offload_goods(door: Sprite) -> bool:
 			_ref_ObjectData.set_hit_point(i, SLOT.DEFAULT)
 			_ref_SwitchSprite.set_sprite(i, Game_SpriteTypeTag.DEFAULT)
 			# Replace sprite: offload -> door.
-			_ref_RemoveObject.remove_building(pos.x, pos.y)
+			_ref_RemoveObject.remove_building_xy(pos.x, pos.y)
 			_ref_CreateObject.create_building(_spr_DoorTruck, Game_SubTag.DOOR,
 					pos.x, pos.y)
 			# Update progress.
@@ -403,5 +403,5 @@ func _turn_slowly() -> void:
 
 func _clear_snow(x: int, y: int) -> void:
 	if _ref_DungeonBoard.has_trap_xy(x, y):
-		_ref_RemoveObject.remove_trap(x, y)
+		_ref_RemoveObject.remove_trap_xy(x, y)
 		_ref_CountDown.subtract_count(Game_SnowRunnerData.SNOW_COST_TURN)

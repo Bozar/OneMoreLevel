@@ -27,7 +27,7 @@ func take_action() -> void:
 		# 	_self.modulate = _ref_Palette.DEBUG
 		# 	print("gunshot")
 		_approach_pc()
-		_ref_RemoveObject.remove_trap(_self_pos.x, _self_pos.y)
+		_ref_RemoveObject.remove_trap_xy(_self_pos.x, _self_pos.y)
 
 
 func _switch_mode(aim_mode: bool) -> void:
@@ -67,7 +67,7 @@ func _attack() -> void:
 						Game_SpriteTypeTag.ACTIVE_1)
 				_self.visible = true
 			else:
-				_ref_RemoveObject.remove_actor(self_x, self_y)
+				_ref_RemoveObject.remove_actor_xy(self_x, self_y)
 				_ref_CreateObject.create_trap(_spr_Treasure,
 						Game_SubTag.TREASURE, self_x, self_y)
 			return

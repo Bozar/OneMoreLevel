@@ -79,7 +79,7 @@ func _is_checkmate() -> bool:
 
 
 func _hit_knight() -> void:
-	_ref_RemoveObject.remove_actor(_target_position.x, _target_position.y)
+	_ref_RemoveObject.remove_actor_xy(_target_position.x, _target_position.y)
 
 
 func _hit_boss(boss: Sprite) -> void:

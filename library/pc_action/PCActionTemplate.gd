@@ -107,7 +107,7 @@ func move() -> void:
 
 
 func attack() -> void:
-	_ref_RemoveObject.remove_actor(_target_position.x, _target_position.y)
+	_ref_RemoveObject.remove_actor_xy(_target_position.x, _target_position.y)
 	end_turn = true
 
 

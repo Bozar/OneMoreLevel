@@ -107,7 +107,7 @@ func _submerge_land(submerge: int) -> void:
 		land_pos = Game_ConvertCoord.vector_to_coord(i.position)
 		x = land_pos.x
 		y = land_pos.y
-		_ref_RemoveObject.remove_ground(x, y)
+		_ref_RemoveObject.remove_ground_xy(x, y)
 		_ref_CreateObject.create_ground(_spr_Floor, Game_SubTag.SWAMP, x, y)
 
 
@@ -117,7 +117,7 @@ func _remove_frog() -> void:
 
 	for i in frog:
 		pos = Game_ConvertCoord.vector_to_coord(i.position)
-		_ref_RemoveObject.remove_actor(pos.x, pos.y)
+		_ref_RemoveObject.remove_actor_xy(pos.x, pos.y)
 
 
 func _refresh_counter() -> void:

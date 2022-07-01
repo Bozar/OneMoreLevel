@@ -38,7 +38,7 @@ func _melt_snow() -> void:
 				_ref_ObjectData.add_hit_point(i, hp)
 			Game_SnowRunnerData.SNOW_MELT:
 				pos = Game_ConvertCoord.vector_to_coord(i.position)
-				_ref_RemoveObject.remove_trap(pos.x, pos.y)
+				_ref_RemoveObject.remove_trap_xy(pos.x, pos.y)
 			_:
 				_ref_ObjectData.add_hit_point(i, 1)
 
@@ -96,7 +96,7 @@ func _init_offload_goods() -> void:
 	Game_ArrayHelper.shuffle(offloads, _ref_RandomNumber)
 	for i in range(0, offloads.size()):
 		pos = Game_ConvertCoord.vector_to_coord(offloads[i].position)
-		_ref_RemoveObject.remove_building(pos.x, pos.y)
+		_ref_RemoveObject.remove_building_xy(pos.x, pos.y)
 		if i < Game_SnowRunnerData.MAX_OFFLOAD:
 			new_sprite = _spr_OffloadGoods
 			new_sub_tag = Game_SubTag.OFFLOAD_GOODS
@@ -115,6 +115,6 @@ func _replenish_offload() -> void:
 
 	if (offload < Game_SnowRunnerData.MAX_OFFLOAD) and (fake_door > 0):
 		pos = _fake_door_coords.pop_back()
-		_ref_RemoveObject.remove_building(pos.x, pos.y)
+		_ref_RemoveObject.remove_building_xy(pos.x, pos.y)
 		_ref_CreateObject.create_building(_spr_OffloadGoods,
 				Game_SubTag.OFFLOAD_GOODS, pos.x, pos.y)

@@ -221,7 +221,7 @@ func _try_attack(attack_diagonally: bool) -> void:
 
 	_try_hit_phantom(hit_pos.x, hit_pos.y)
 	hit_point = _try_set_and_get_boss_hit_point(hit_pos.x, hit_pos.y)
-	_ref_RemoveObject.remove_actor(hit_pos.x, hit_pos.y)
+	_ref_RemoveObject.remove_actor_xy(hit_pos.x, hit_pos.y)
 
 	if hit_point == Game_HoundData.MAX_BOSS_HIT_POINT:
 		_ref_EndGame.player_win()

@@ -84,4 +84,4 @@ func _set_npc_state() -> void:
 
 func _try_remove_trap() -> void:
 	if _trap_pos != null:
-		_ref_RemoveObject.remove_trap(_trap_pos.x, _trap_pos.y)
+		_ref_RemoveObject.remove_trap_xy(_trap_pos.x, _trap_pos.y)

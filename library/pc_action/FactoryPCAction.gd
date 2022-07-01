@@ -87,7 +87,7 @@ func interact_with_trap() -> void:
 		_treasure += 1
 		_treasure = min(_treasure, Game_FactoryData.MAX_TREASURE_SLOT) as int
 
-	_ref_RemoveObject.remove_trap(_target_position.x, _target_position.y)
+	_ref_RemoveObject.remove_trap_xy(_target_position.x, _target_position.y)
 	._move_pc_sprite()
 
 	if win:

@@ -94,7 +94,7 @@ func _boss_countdown() -> bool:
 		# Otherwise add hit point by 1 in HoundProgress.
 		# HoundPCAction._try_set_and_get_boss_hit_point().
 		# HoundProgress.remove_actor().
-		_ref_RemoveObject.remove_actor(_self_pos.x, _self_pos.y)
+		_ref_RemoveObject.remove_actor_xy(_self_pos.x, _self_pos.y)
 		# Player wins if boss leaves the third time.
 		if hit_point + 1 == Game_HoundData.MAX_BOSS_HIT_POINT:
 			_ref_EndGame.player_win()

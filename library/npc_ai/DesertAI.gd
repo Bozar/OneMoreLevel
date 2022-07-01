@@ -118,8 +118,8 @@ func _try_random_walk(id: int) -> bool:
 		_ref_EndGame.player_lose()
 		return false
 
-	_ref_RemoveObject.remove_building(move_to.x, move_to.y)
-	_ref_RemoveObject.remove_trap(move_to.x, move_to.y)
+	_ref_RemoveObject.remove_building_xy(move_to.x, move_to.y)
+	_ref_RemoveObject.remove_trap_xy(move_to.x, move_to.y)
 
 	_set_danger_zone(_self, false)
 	_ref_DungeonBoard.move_actor_xy(_self_pos.x, _self_pos.y,
@@ -163,7 +163,7 @@ func _bury_worm(id: int) -> void:
 		if i == null:
 			break
 		pos = Game_ConvertCoord.vector_to_coord(i.position)
-		_ref_RemoveObject.remove_actor(pos.x, pos.y)
+		_ref_RemoveObject.remove_actor_xy(pos.x, pos.y)
 		if _ref_RandomNumber.get_percent_chance(create_spice):
 			_ref_CreateObject.create_trap(_spr_Treasure, Game_SubTag.TREASURE,
 					pos.x, pos.y)

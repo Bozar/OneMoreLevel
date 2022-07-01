@@ -40,7 +40,7 @@ func attack() -> void:
 		_ref_CountDown.add_count(Game_MirrorData.RESTORE_TURN)
 	else:
 		mirror = _get_mirror(_target_position.x, _target_position.y)
-		_ref_RemoveObject.remove_actor(mirror.x, mirror.y)
+		_ref_RemoveObject.remove_actor_xy(mirror.x, mirror.y)
 	end_turn = true
 
 
@@ -50,7 +50,7 @@ func interact_with_trap() -> void:
 
 	if not _pc_hit_target:
 		mirror = _get_mirror(_target_position.x, _target_position.y)
-		_ref_RemoveObject.remove_trap(mirror.x, mirror.y)
+		_ref_RemoveObject.remove_trap_xy(mirror.x, mirror.y)
 
 	_move_pc_and_image()
 	if _ref_ObjectData.get_hit_point(pc) == Game_MirrorData.MAX_CRYSTAL:
@@ -102,14 +102,14 @@ func _create_image_on_the_other_side(x: int, y: int) -> void:
 		_ref_SwitchSprite.set_sprite(actor, Game_SpriteTypeTag.DEFAULT)
 
 	# On the other side: Remove an existing phantom.
-	_ref_RemoveObject.remove_actor(mirror.x, mirror.y)
+	_ref_RemoveObject.remove_actor_xy(mirror.x, mirror.y)
 
 	# Move the phantom to the other side. State: passive. Color: grey.
 	_ref_DungeonBoard.move_actor_xy(x, y, mirror.x, mirror.y)
 	_ref_ObjectData.set_state(actor, Game_StateTag.PASSIVE)
 
 	# On the other side: Remove a trap.
-	_ref_RemoveObject.remove_trap(mirror.x, mirror.y)
+	_ref_RemoveObject.remove_trap_xy(mirror.x, mirror.y)
 
 	# There can be at most (5 - crystal) phantom images.
 	images = _ref_DungeonBoard.get_sprites_by_tag(Game_SubTag.PHANTOM)
@@ -121,7 +121,7 @@ func _create_image_on_the_other_side(x: int, y: int) -> void:
 		Game_ArrayHelper.rand_picker(images, remove, _ref_RandomNumber)
 		for i in images:
 			pos = Game_ConvertCoord.vector_to_coord(i.position)
-			_ref_RemoveObject.remove_actor(pos.x, pos.y)
+			_ref_RemoveObject.remove_actor_xy(pos.x, pos.y)
 
 
 func _create_image_on_the_same_side(x: int, y: int) -> void:

@@ -28,7 +28,7 @@ func _try_remove_npc() -> int:
 		if _ref_ObjectData.get_hit_point(i) < Game_NinjaData.MAX_NINJA_HP:
 			continue
 		pos = Game_ConvertCoord.vector_to_coord(i.position)
-		_ref_RemoveObject.remove_actor(pos.x, pos.y)
+		_ref_RemoveObject.remove_actor_xy(pos.x, pos.y)
 		count_npc -= 1
 	return count_npc
 

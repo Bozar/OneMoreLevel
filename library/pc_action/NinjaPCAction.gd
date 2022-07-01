@@ -223,8 +223,8 @@ func _hit_actor(x: int, y: int) -> void:
 		_ref_CreateObject.create_trap(_spr_SoulFragment, Game_SubTag.TREASURE,
 				x, y)
 	else:
-		_ref_RemoveObject.remove_trap(x, y)
-	_ref_RemoveObject.remove_actor(x, y)
+		_ref_RemoveObject.remove_trap_xy(x, y)
+	_ref_RemoveObject.remove_actor_xy(x, y)
 
 
 func _try_end_game() -> void:

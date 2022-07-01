@@ -57,7 +57,7 @@ func _replenish_crystal() -> void:
 				has_npc += 1
 				continue
 			else:
-				_ref_RemoveObject.remove_actor(x, y)
+				_ref_RemoveObject.remove_actor_xy(x, y)
 				break
 		else:
 			break

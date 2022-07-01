@@ -83,7 +83,7 @@ func _shadow_ninja_act() -> void:
 	var has_moved := false
 	var move_result: Array
 
-	_ref_RemoveObject.remove_trap(_self_pos.x, _self_pos.y)
+	_ref_RemoveObject.remove_trap_xy(_self_pos.x, _self_pos.y)
 
 	if _self_pos.y == Game_NinjaData.GROUND_Y:
 		has_moved = _try_move_horizontally()
