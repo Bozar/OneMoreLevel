@@ -8,7 +8,7 @@ var _ref_DungeonBoard: Game_DungeonBoard
 
 
 func remove(main_tag: String, x: int, y: int, sprite_layer := 0) -> void:
-	var remove_this: Sprite = _ref_DungeonBoard.get_sprite(main_tag, x, y,
+	var remove_this: Sprite = _ref_DungeonBoard.get_sprite_xy(main_tag, x, y,
 			sprite_layer)
 	if remove_this == null:
 		return

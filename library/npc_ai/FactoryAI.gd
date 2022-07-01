@@ -56,7 +56,7 @@ func _is_adjacent_to_pc() -> bool:
 
 
 func _is_obstacle(x: int, y: int) -> bool:
-	var building: Sprite = _ref_DungeonBoard.get_building(x, y)
+	var building: Sprite = _ref_DungeonBoard.get_building_xy(x, y)
 
 	if building == null:
 		return false
@@ -70,11 +70,11 @@ func _teleport() -> void:
 		pos = _get_teleport_coord()
 		if pos != null:
 			break
-	_ref_DungeonBoard.move_actor(_self_pos.x, _self_pos.y, pos.x, pos.y)
+	_ref_DungeonBoard.move_actor_xy(_self_pos.x, _self_pos.y, pos.x, pos.y)
 
 
 func _switch_sprite(x: int, y: int) -> void:
-	var trap: Sprite = _ref_DungeonBoard.get_trap(x, y)
+	var trap: Sprite = _ref_DungeonBoard.get_trap_xy(x, y)
 	var new_type: String
 
 	if trap == null:
@@ -93,13 +93,13 @@ func _get_teleport_coord() -> Game_IntCoord:
 
 	if Game_ShadowCastFOV.is_in_sight(x, y):
 		return null
-	elif _ref_DungeonBoard.has_building(x, y) \
-			and (not _ref_DungeonBoard.has_sprite_with_sub_tag(Game_SubTag.DOOR,
-					x, y)):
+	elif _ref_DungeonBoard.has_building_xy(x, y) \
+			and (not _ref_DungeonBoard.has_sprite_with_sub_tag_xy(
+					Game_SubTag.DOOR, x, y)):
 		return null
 	else:
 		for i in Game_CoordCalculator.get_neighbor_xy(x, y,
 				Game_FactoryData.SCP_GAP, true):
-			if _ref_DungeonBoard.has_actor(i.x, i.y):
+			if _ref_DungeonBoard.has_actor_xy(i.x, i.y):
 				return null
 	return Game_IntCoord.new(x, y)

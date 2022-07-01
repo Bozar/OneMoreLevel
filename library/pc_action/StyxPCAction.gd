@@ -94,7 +94,8 @@ func move() -> void:
 			x -= Game_StateTag.DIRECTION_TO_COORD[i][0]
 			y -= Game_StateTag.DIRECTION_TO_COORD[i][1]
 			break
-	_ref_DungeonBoard.move_actor(_source_position.x, _source_position.y, x, y)
+	_ref_DungeonBoard.move_actor_xy(_source_position.x, _source_position.y,
+			x, y)
 
 	_set_sight_counter(_sight_counter + 1)
 	_try_discover_harbor(x, y)
@@ -108,7 +109,7 @@ func _is_opposite_direction(source: int, target: int) -> bool:
 
 
 func _get_ground_direction(x: int, y: int) -> int:
-	var ground := _ref_DungeonBoard.get_ground(x, y)
+	var ground := _ref_DungeonBoard.get_ground_xy(x, y)
 
 	if ground == null:
 		return INVALID_DIRECTION
@@ -116,8 +117,8 @@ func _get_ground_direction(x: int, y: int) -> int:
 
 
 func _set_lighthouse_color() -> void:
-	var lighthouse := _ref_DungeonBoard.get_building(Game_DungeonSize.CENTER_X,
-			Game_DungeonSize.CENTER_Y)
+	var lighthouse := _ref_DungeonBoard.get_building_xy(
+			Game_DungeonSize.CENTER_X, Game_DungeonSize.CENTER_Y)
 
 	if _reached_harbor > Game_StyxData.MIN_REACHED_HARBOR:
 		_ref_Palette.set_default_color(lighthouse, Game_MainTag.BUILDING)
@@ -173,7 +174,7 @@ func _try_end_game() -> void:
 
 
 func _set_sight_counter(counter: int) -> void:
-	var lighthouse := _ref_DungeonBoard.get_building(
+	var lighthouse := _ref_DungeonBoard.get_building_xy(
 			Game_DungeonSize.CENTER_X, Game_DungeonSize.CENTER_Y)
 	var delta_counter: int
 	var new_type: String

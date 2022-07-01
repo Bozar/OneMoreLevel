@@ -17,22 +17,33 @@ func _ready() -> void:
 	pass
 
 
-func has_sprite(main_tag: String, x: int, y: int, sprite_layer := 0) -> bool:
-	return get_sprite(main_tag, x, y, sprite_layer) != null
+func has_sprite_xy(main_tag: String, x: int, y: int, sprite_layer := 0) -> bool:
+	return get_sprite_xy(main_tag, x, y, sprite_layer) != null
 
 
-func has_sprite_with_sub_tag(sub_tag: String, x: int, y: int,
+func has_sprite(main_tag: String, coord: Game_IntCoord, sprite_layer := 0) \
+		-> bool:
+	return has_sprite_xy(main_tag, coord.x, coord.y, sprite_layer)
+
+
+func has_sprite_with_sub_tag_xy(sub_tag: String, x: int, y: int,
 		sprite_layer := 0) -> bool:
 	var find_sprite: Sprite
 
 	for i in Game_MainTag.DUNGEON_OBJECT:
-		find_sprite = get_sprite(i, x, y, sprite_layer)
+		find_sprite = get_sprite_xy(i, x, y, sprite_layer)
 		if (find_sprite != null) and find_sprite.is_in_group(sub_tag):
 			return true
 	return false
 
 
-func get_sprite(main_tag: String, x: int, y: int, sprite_layer := 0) -> Sprite:
+func has_sprite_with_sub_tag(sub_tag: String, coord: Game_IntCoord,
+		sprite_layer := 0) -> bool:
+	return has_sprite_with_sub_tag_xy(sub_tag, coord.x, coord.y, sprite_layer)
+
+
+func get_sprite_xy(main_tag: String, x: int, y: int, sprite_layer := 0) \
+		-> Sprite:
 	main_tag = _try_convert_main_tag(main_tag, sprite_layer)
 
 	if not Game_CoordCalculator.is_inside_dungeon(x, y):
@@ -42,6 +53,11 @@ func get_sprite(main_tag: String, x: int, y: int, sprite_layer := 0) -> Sprite:
 	elif not _sprite_dict[main_tag].has(x):
 		return null
 	return _sprite_dict[main_tag][x][y]
+
+
+func get_sprite(main_tag: String, coord: Game_IntCoord, sprite_layer := 0) \
+		-> Sprite:
+	return get_sprite_xy(main_tag, coord.x, coord.y, sprite_layer)
 
 
 # There should be only one sprite in the group `Game_SubTag.PC`.
@@ -106,41 +122,73 @@ func get_sprites_by_tag(tag: String) -> Array:
 	# return get_tree().get_nodes_in_group(tag)
 
 
-func get_actor(x: int, y: int, sprite_layer := 0) -> Sprite:
-	return get_sprite(Game_MainTag.ACTOR, x, y, sprite_layer)
+func get_actor_xy(x: int, y: int, sprite_layer := 0) -> Sprite:
+	return get_sprite_xy(Game_MainTag.ACTOR, x, y, sprite_layer)
 
 
-func has_actor(x: int, y: int, sprite_layer := 0) -> bool:
-	return has_sprite(Game_MainTag.ACTOR, x, y, sprite_layer)
+func has_actor_xy(x: int, y: int, sprite_layer := 0) -> bool:
+	return has_sprite_xy(Game_MainTag.ACTOR, x, y, sprite_layer)
 
 
-func get_building(x: int, y: int) -> Sprite:
-	return get_sprite(Game_MainTag.BUILDING, x, y)
+func get_actor(coord: Game_IntCoord, sprite_layer := 0) -> Sprite:
+	return get_actor_xy(coord.x, coord.y, sprite_layer)
 
 
-func has_building(x: int, y: int) -> bool:
-	return has_sprite(Game_MainTag.BUILDING, x, y)
+func has_actor(coord: Game_IntCoord, sprite_layer := 0) -> bool:
+	return has_actor_xy(coord.x, coord.y, sprite_layer)
 
 
-func get_trap(x: int, y: int) -> Sprite:
-	return get_sprite(Game_MainTag.TRAP, x, y)
+func get_building_xy(x: int, y: int) -> Sprite:
+	return get_sprite_xy(Game_MainTag.BUILDING, x, y)
 
 
-func has_trap(x: int, y: int) -> bool:
-	return has_sprite(Game_MainTag.TRAP, x, y)
+func has_building_xy(x: int, y: int) -> bool:
+	return has_sprite_xy(Game_MainTag.BUILDING, x, y)
 
 
-func get_ground(x: int, y: int) -> Sprite:
-	return get_sprite(Game_MainTag.GROUND, x, y)
+func get_building(coord: Game_IntCoord) -> Sprite:
+	return get_building_xy(coord.x, coord.y)
 
 
-func has_ground(x: int, y: int) -> bool:
-	return has_sprite(Game_MainTag.GROUND, x, y)
+func has_building(coord: Game_IntCoord) -> bool:
+	return has_building_xy(coord.x, coord.y)
 
 
-func move_sprite(main_tag: String, source_x: int, source_y: int,
+func get_trap_xy(x: int, y: int) -> Sprite:
+	return get_sprite_xy(Game_MainTag.TRAP, x, y)
+
+
+func has_trap_xy(x: int, y: int) -> bool:
+	return has_sprite_xy(Game_MainTag.TRAP, x, y)
+
+
+func get_trap(coord: Game_IntCoord) -> Sprite:
+	return get_trap_xy(coord.x, coord.y)
+
+
+func has_trap(coord: Game_IntCoord) -> bool:
+	return has_trap_xy(coord.x, coord.y)
+
+
+func get_ground_xy(x: int, y: int) -> Sprite:
+	return get_sprite_xy(Game_MainTag.GROUND, x, y)
+
+
+func has_ground_xy(x: int, y: int) -> bool:
+	return has_sprite_xy(Game_MainTag.GROUND, x, y)
+
+
+func get_ground(coord: Game_IntCoord) -> Sprite:
+	return get_ground_xy(coord.x, coord.y)
+
+
+func has_ground(coord: Game_IntCoord) -> bool:
+	return has_ground_xy(coord.x, coord.y)
+
+
+func move_sprite_xy(main_tag: String, source_x: int, source_y: int,
 		target_x: int, target_y: int, sprite_layer := 0) -> void:
-	var move_this := get_sprite(main_tag, source_x, source_y, sprite_layer)
+	var move_this := get_sprite_xy(main_tag, source_x, source_y, sprite_layer)
 	if move_this == null:
 		return
 
@@ -152,16 +200,29 @@ func move_sprite(main_tag: String, source_x: int, source_y: int,
 	_try_move_arrow(move_this)
 
 
-func move_actor(source_x: int, source_y: int, target_x: int, target_y: int,
+func move_sprite(main_tag: String, source: Game_IntCoord, target: Game_IntCoord,
 		sprite_layer := 0) -> void:
-	move_sprite(Game_MainTag.ACTOR, source_x, source_y, target_x, target_y,
+	move_sprite_xy(main_tag, source.x, source.y, target.x, target.y,
 			sprite_layer)
 
 
-func swap_sprite(main_tag: String, source_x: int, source_y: int,
+func move_actor_xy(source_x: int, source_y: int, target_x: int, target_y: int,
+		sprite_layer := 0) -> void:
+	move_sprite_xy(Game_MainTag.ACTOR, source_x, source_y, target_x, target_y,
+			sprite_layer)
+
+
+func move_actor(source: Game_IntCoord, target: Game_IntCoord,
+		sprite_layer := 0) -> void:
+	move_actor_xy(source.x, source.y, target.x, target.y, sprite_layer)
+
+
+func swap_sprite_xy(main_tag: String, source_x: int, source_y: int,
 		target_x: int, target_y: int, sprite_layer := 0) -> void:
-	var source_sprite := get_sprite(main_tag, source_x, source_y, sprite_layer)
-	var target_sprite := get_sprite(main_tag, target_x, target_y, sprite_layer)
+	var source_sprite := get_sprite_xy(main_tag, source_x, source_y,
+			sprite_layer)
+	var target_sprite := get_sprite_xy(main_tag, target_x, target_y,
+			sprite_layer)
 
 	if (source_sprite == null) or (target_sprite == null):
 		return
@@ -177,6 +238,12 @@ func swap_sprite(main_tag: String, source_x: int, source_y: int,
 
 	_try_move_arrow(source_sprite)
 	_try_move_arrow(target_sprite)
+
+
+func swap_sprite(main_tag: String, source: Game_IntCoord, target: Game_IntCoord,
+		 sprite_layer := 0) -> void:
+	swap_sprite_xy(main_tag, source.x, source.y, target.x, target.y,
+			sprite_layer)
 
 
 func _on_CreateObject_sprite_created(new_sprite: Sprite, main_tag: String,

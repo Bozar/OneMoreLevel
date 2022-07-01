@@ -119,11 +119,11 @@ func _get_hit_point(shift_x: int, shift_y: int) -> int:
 
 func _block_ray(x: int, y: int) -> bool:
 	return (not Game_CoordCalculator.is_inside_dungeon(x, y)) \
-			or _ref_DungeonBoard.has_building(x, y)
+			or _ref_DungeonBoard.has_building_xy(x, y)
 
 
 func _is_actor(x: int, y: int) -> bool:
-	return _ref_DungeonBoard.has_actor(x, y)
+	return _ref_DungeonBoard.has_actor_xy(x, y)
 
 
 func _detect_pc() -> bool:

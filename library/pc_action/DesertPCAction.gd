@@ -28,7 +28,7 @@ func wait() -> void:
 
 
 func attack() -> void:
-	var worm: Sprite = _ref_DungeonBoard.get_actor(
+	var worm: Sprite = _ref_DungeonBoard.get_actor_xy(
 			_target_position.x, _target_position.y)
 	var is_active_spice: bool = _ref_ObjectData.verify_state(worm,
 			Game_StateTag.ACTIVE)
@@ -84,7 +84,7 @@ func _is_checkmate() -> bool:
 	var is_passive: bool
 
 	for i in neighbor:
-		actor = _ref_DungeonBoard.get_actor(i.x, i.y)
+		actor = _ref_DungeonBoard.get_actor_xy(i.x, i.y)
 		if actor == null:
 			continue
 
@@ -114,6 +114,6 @@ func _switch_to_number(is_number: bool) -> void:
 
 func _block_line_of_sight(x: int, y: int, _opt_arg: Array) -> bool:
 	for i in Game_MainTag.ABOVE_GROUND_OBJECT:
-		if _ref_DungeonBoard.has_sprite(i, x, y):
+		if _ref_DungeonBoard.has_sprite_xy(i, x, y):
 			return true
 	return false

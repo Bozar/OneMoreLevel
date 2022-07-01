@@ -88,7 +88,7 @@ func _switch_ground(danger_zone: Array) -> void:
 	var sprite_type: String
 
 	for i in danger_zone:
-		ground_sprite= _ref_DungeonBoard.get_ground(i.x, i.y)
+		ground_sprite= _ref_DungeonBoard.get_ground_xy(i.x, i.y)
 		if _ref_DangerZone.is_in_danger(i.x, i.y):
 			sprite_type = Game_SpriteTypeTag.ACTIVE
 		else:
@@ -106,7 +106,7 @@ func _get_danger_zone() -> Array:
 	var danger_zone: Array
 
 	for i in neighbor:
-		if _ref_DungeonBoard.has_building(i.x, i.y):
+		if _ref_DungeonBoard.has_building_xy(i.x, i.y):
 			continue
 		elif (i.x == _self_pos.x) and (i.y == _self_pos.y):
 			continue
@@ -167,7 +167,7 @@ func _try_hit_pc(danger_zone: Array) -> void:
 	var victim: Sprite
 
 	for i in danger_zone:
-		victim = _ref_DungeonBoard.get_actor(i.x, i.y)
+		victim = _ref_DungeonBoard.get_actor_xy(i.x, i.y)
 		if victim == null:
 			continue
 		if victim.is_in_group(Game_SubTag.PC):

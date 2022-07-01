@@ -31,7 +31,7 @@ func take_action() -> void:
 			return
 
 	for i in [_self_pos, _pc_pos]:
-		ground = _ref_DungeonBoard.get_ground(i.x, i.y)
+		ground = _ref_DungeonBoard.get_ground_xy(i.x, i.y)
 		is_in_fog.push_back(_ref_ObjectData.verify_state(ground,
 				Game_StateTag.ACTIVE))
 	self_is_in_fog = is_in_fog[0]
@@ -62,7 +62,7 @@ func remove_data(actor: Sprite) -> void:
 
 func _switch_sprite() -> void:
 	var pos := Game_ConvertCoord.vector_to_coord(_self.position)
-	var ground: Sprite = _ref_DungeonBoard.get_ground(pos.x, pos.y)
+	var ground: Sprite = _ref_DungeonBoard.get_ground_xy(pos.x, pos.y)
 	var sprite_type: String
 
 	if _ref_ObjectData.verify_state(ground, Game_StateTag.ACTIVE):
@@ -148,7 +148,7 @@ func _is_passable_func(source_array: Array, current_index: int,
 	var y: int = source_array[current_index].y
 	var self_is_in_fog: bool = opt_arg[0]
 
-	if _ref_DungeonBoard.has_actor(x, y):
+	if _ref_DungeonBoard.has_actor_xy(x, y):
 		return false
 	elif self_is_in_fog:
 		return Game_CoordCalculator.is_inside_range_xy(x, y,
@@ -167,7 +167,7 @@ func _verify_and_get_start_point(source: Array, index: int, opt_arg: Array) \
 	var pc_is_in_fog: bool = opt_arg[0]
 	var alternative_start: Array = opt_arg[1]
 
-	if _ref_DungeonBoard.has_building(x, y):
+	if _ref_DungeonBoard.has_building_xy(x, y):
 		return false
 
 	if Game_CoordCalculator.is_inside_range_xy(x, y, _pc_pos.x, _pc_pos.y, 1) \
@@ -195,9 +195,9 @@ func _set_pc_hit_point(add_hit_point: int) -> void:
 		while true:
 			x = _ref_RandomNumber.get_x_coord()
 			y = _ref_RandomNumber.get_y_coord()
-			if _ref_DungeonBoard.has_building(x, y):
+			if _ref_DungeonBoard.has_building_xy(x, y):
 				continue
-			elif _ref_DungeonBoard.has_actor(x, y):
+			elif _ref_DungeonBoard.has_actor_xy(x, y):
 				continue
 			elif Game_CoordCalculator.is_inside_range_xy(x, y,
 					_pc_pos.x, _pc_pos.y, Game_HoundData.MIN_BOSS_DISTANCE):
@@ -233,7 +233,7 @@ func _boss_absorb_fog() -> void:
 	var ground: Sprite
 
 	for i in neighbor:
-		ground = _ref_DungeonBoard.get_ground(i.x, i.y)
+		ground = _ref_DungeonBoard.get_ground_xy(i.x, i.y)
 		# Change ground hit point but leave state unchanged. Update state in
 		# HoundProgress._add_or_remove_fog().
 		if (ground == null) or (_ref_ObjectData.verify_state(ground,

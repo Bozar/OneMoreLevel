@@ -20,7 +20,7 @@ func switch_sprite() -> void:
 
 
 func attack() -> void:
-	var npc: Sprite = _ref_DungeonBoard.get_actor(
+	var npc: Sprite = _ref_DungeonBoard.get_actor_xy(
 			_target_position.x, _target_position.y)
 	var pc: Sprite = _ref_DungeonBoard.get_pc()
 
@@ -68,8 +68,8 @@ func _is_checkmate() -> bool:
 		if not (_ref_DangerZone.is_in_danger(i.x, i.y) \
 				or _is_occupied(i.x, i.y)):
 			return false
-		elif _ref_DungeonBoard.has_actor(i.x, i.y):
-			actor = _ref_DungeonBoard.get_actor(i.x, i.y)
+		elif _ref_DungeonBoard.has_actor_xy(i.x, i.y):
+			actor = _ref_DungeonBoard.get_actor_xy(i.x, i.y)
 			if _ref_ObjectData.verify_state(actor, Game_StateTag.ACTIVE):
 				coord = Game_CoordCalculator.get_mirror_image(x, y, i.x, i.y)
 				if Game_CoordCalculator.is_inside_dungeon(coord.x, coord.y) \
@@ -100,7 +100,7 @@ func _hit_boss(boss: Sprite) -> void:
 					_source_position.x, _source_position.y,
 					Game_KnightData.ELITE_SIGHT)
 
-		_ref_DungeonBoard.move_actor(_target_position.x, _target_position.y,
+		_ref_DungeonBoard.move_actor_xy(_target_position.x, _target_position.y,
 				teleport_x, teleport_y)
 	else:
 		_hit_knight()
@@ -123,7 +123,7 @@ func _roll() -> bool:
 	if _is_occupied(roll_over.x, roll_over.y):
 		return false
 
-	_ref_DungeonBoard.move_actor(_source_position.x, _source_position.y,
+	_ref_DungeonBoard.move_actor_xy(_source_position.x, _source_position.y,
 			roll_over.x, roll_over.y)
 	_ref_ObjectData.set_state(pc, Game_StateTag.PASSIVE)
 	return true

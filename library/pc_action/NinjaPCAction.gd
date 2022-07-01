@@ -139,14 +139,14 @@ func _charge_and_try_hit(direction: int, can_hit_npc: bool) -> bool:
 	var grid_pos: Game_IntCoord = path[path.size() - 1]
 	var hit_npc := false
 
-	if _ref_DungeonBoard.has_building(grid_pos.x, grid_pos.y):
+	if _ref_DungeonBoard.has_building_xy(grid_pos.x, grid_pos.y):
 		grid_pos = path[path.size() - 2]
-	elif _ref_DungeonBoard.has_actor(grid_pos.x, grid_pos.y):
+	elif _ref_DungeonBoard.has_actor_xy(grid_pos.x, grid_pos.y):
 		if can_hit_npc:
 			_hit_actor(grid_pos.x, grid_pos.y)
 		grid_pos = path[path.size() - 2]
 		hit_npc = can_hit_npc
-	_ref_DungeonBoard.move_actor(pc_pos.x, pc_pos.y, grid_pos.x, grid_pos.y)
+	_ref_DungeonBoard.move_actor_xy(pc_pos.x, pc_pos.y, grid_pos.x, grid_pos.y)
 	return hit_npc
 
 
@@ -198,14 +198,14 @@ func _set_trajectory_type(id: int, sprite_type_tag: String) -> void:
 
 	for i in ACTOR_TRAJECTORY[id]:
 		for j in TRAJECTORY_MAIN_TAG:
-			this_sprite = _ref_DungeonBoard.get_sprite(j, i.x, i.y)
+			this_sprite = _ref_DungeonBoard.get_sprite_xy(j, i.x, i.y)
 			if this_sprite != null:
 				_ref_SwitchSprite.set_sprite(this_sprite, sprite_type_tag)
 
 
 func _is_obstacle(x: int, y: int, _opt_art: Array) -> bool:
-	return _ref_DungeonBoard.has_actor(x, y) \
-			or _ref_DungeonBoard.has_building(x, y)
+	return _ref_DungeonBoard.has_actor_xy(x, y) \
+			or _ref_DungeonBoard.has_building_xy(x, y)
 
 
 func _hit_actor(x: int, y: int) -> void:
@@ -236,7 +236,7 @@ func _try_end_game() -> void:
 
 func _update_indicator() -> void:
 	var pos := _ref_DungeonBoard.get_pc_coord()
-	var has_trap := _ref_DungeonBoard.has_trap(pos.x, pos.y)
+	var has_trap := _ref_DungeonBoard.has_trap_xy(pos.x, pos.y)
 	var default_type := Game_SpriteTypeTag.DEFAULT
 	var new_type := Game_SpriteTypeTag.ACTIVE \
 			if has_trap \
@@ -246,10 +246,10 @@ func _update_indicator() -> void:
 	for i in WALL_COORD:
 		for x in range(i[0], i[1]):
 			# Reset the previous line.
-			wall = _ref_DungeonBoard.get_building(x, _previous_pc_y)
+			wall = _ref_DungeonBoard.get_building_xy(x, _previous_pc_y)
 			_ref_SwitchSprite.set_sprite(wall, default_type)
 			# Set the current line.
-			wall = _ref_DungeonBoard.get_building(x, pos.y)
+			wall = _ref_DungeonBoard.get_building_xy(x, pos.y)
 			_ref_SwitchSprite.set_sprite(wall, new_type)
 	_previous_pc_y = pos.y
 
@@ -259,7 +259,7 @@ func _post_process_fov(_pc_x: int, pc_y: int) -> void:
 
 	for i in WALL_COORD:
 		for x in range(i[0], i[1]):
-			wall = _ref_DungeonBoard.get_building(x, pc_y)
+			wall = _ref_DungeonBoard.get_building_xy(x, pc_y)
 			_ref_Palette.set_default_color(wall, Game_MainTag.BUILDING)
 
 

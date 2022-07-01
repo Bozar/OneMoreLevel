@@ -48,7 +48,7 @@ func _change_water_flow() -> void:
 		for _j in range(Game_StyxData.FLOW_LENGTH):
 			x += Game_StateTag.DIRECTION_TO_COORD[direction][0]
 			y += Game_StateTag.DIRECTION_TO_COORD[direction][1]
-			flow = _ref_DungeonBoard.get_ground(x, y)
+			flow = _ref_DungeonBoard.get_ground_xy(x, y)
 			if (flow != null) and _ref_ObjectData.verify_state(flow,
 					Game_StateTag.DEFAULT):
 				_rotate_sprite(flow, direction)

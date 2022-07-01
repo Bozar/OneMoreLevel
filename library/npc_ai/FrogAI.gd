@@ -68,11 +68,11 @@ func _random_walk() -> void:
 	Game_ArrayHelper.rand_picker(neighbor, 1, _ref_RandomNumber)
 	x = neighbor[0].x
 	y = neighbor[0].y
-	_ref_DungeonBoard.move_actor(_self_pos.x, _self_pos.y, x, y)
+	_ref_DungeonBoard.move_actor_xy(_self_pos.x, _self_pos.y, x, y)
 
 
 func _set_danger_zone(x: int, y: int, danger: bool) -> void:
-	var ground: Sprite = _ref_DungeonBoard.get_ground(x, y)
+	var ground: Sprite = _ref_DungeonBoard.get_ground_xy(x, y)
 
 	_ref_DangerZone.set_danger_zone(x, y, danger)
 	if _ref_DangerZone.is_in_danger(x, y):
@@ -95,11 +95,12 @@ func _path_is_clear() -> bool:
 			y += i[1]
 			if not Game_CoordCalculator.is_inside_dungeon(x, y):
 				break
-			if _ref_DungeonBoard.has_sprite_with_sub_tag(Game_SubTag.PC, x, y):
+			if _ref_DungeonBoard.has_sprite_with_sub_tag_xy(Game_SubTag.PC,
+					x, y):
 				if counter > 0:
 					return false
 				break
-			if _ref_DungeonBoard.has_actor(x, y):
+			if _ref_DungeonBoard.has_actor_xy(x, y):
 				counter += 1
 	return true
 
@@ -117,7 +118,7 @@ func _filter_rand_walk(source: Array, index: int, _opt_arg: Array) -> bool:
 
 	if (self_x == sor_x) or (self_y == sor_y) \
 			or _ref_DangerZone.is_in_danger(sor_x, sor_y) \
-			or _ref_DungeonBoard.has_actor(sor_x, sor_y):
+			or _ref_DungeonBoard.has_actor_xy(sor_x, sor_y):
 		return false
 	return true
 
@@ -131,7 +132,7 @@ func _dup_rand_walk(source: Array, index: int, opt_arg: Array) -> int:
 	var pc_y: int = _pc_pos.y
 	var max_distance: int = opt_arg[0]
 	var repeat: int = 1
-	var swamp: int = 1 if _ref_DungeonBoard.has_sprite_with_sub_tag(
+	var swamp: int = 1 if _ref_DungeonBoard.has_sprite_with_sub_tag_xy(
 			Game_SubTag.SWAMP, sor_x, sor_y) \
 			else 0
 

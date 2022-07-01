@@ -138,7 +138,7 @@ func _filter_create_frog(source: Array, index: int, opt_arg: Array) -> bool:
 
 	if Game_CoordCalculator.is_inside_range_xy(x, y, pc_x, pc_y,
 			Game_FrogData.MIN_DISTANCE) \
-					or _ref_DungeonBoard.has_actor(x, y):
+					or _ref_DungeonBoard.has_actor_xy(x, y):
 		return false
 	return true
 
@@ -147,6 +147,6 @@ func _dup_create_princess(source: Array, index: int, _opt_arg: Array) -> int:
 	var x: int = source[index].x
 	var y: int = source[index].y
 
-	if _ref_DungeonBoard.has_sprite_with_sub_tag(Game_SubTag.SWAMP, x, y):
+	if _ref_DungeonBoard.has_sprite_with_sub_tag_xy(Game_SubTag.SWAMP, x, y):
 		return 2
 	return 1

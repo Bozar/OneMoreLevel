@@ -82,16 +82,17 @@ func is_inside_dungeon() -> bool:
 
 
 func is_npc() -> bool:
-	return _ref_DungeonBoard.has_actor(_target_position.x, _target_position.y)
+	return _ref_DungeonBoard.has_actor_xy(
+			_target_position.x, _target_position.y)
 
 
 func is_building() -> bool:
-	return _ref_DungeonBoard.has_building(
+	return _ref_DungeonBoard.has_building_xy(
 			_target_position.x, _target_position.y)
 
 
 func is_trap() -> bool:
-	return _ref_DungeonBoard.has_trap(_target_position.x, _target_position.y)
+	return _ref_DungeonBoard.has_trap_xy(_target_position.x, _target_position.y)
 
 # 1. An action, (move or attack, for example) might call
 # EndGame.player_[win|lose]() implicitly. Therefore we need to decide whether
@@ -187,7 +188,7 @@ func _is_occupied(x: int, y: int) -> bool:
 	if not Game_CoordCalculator.is_inside_dungeon(x, y):
 		return true
 	for i in Game_MainTag.ABOVE_GROUND_OBJECT:
-		if _ref_DungeonBoard.has_sprite(i, x, y):
+		if _ref_DungeonBoard.has_sprite_xy(i, x, y):
 			return true
 	return false
 
@@ -218,7 +219,8 @@ func _render_without_fog_of_war() -> void:
 # is_in_sight_func(x: int, y: int) -> bool
 func _set_sprite_color(x: int, y: int, main_tag: String, func_host: Object,
 		is_in_sight_func: String, sprite_layer := 0) -> void:
-	var set_this := _ref_DungeonBoard.get_sprite(main_tag, x, y, sprite_layer)
+	var set_this := _ref_DungeonBoard.get_sprite_xy(main_tag, x, y,
+			sprite_layer)
 	var is_in_sight := funcref(func_host, is_in_sight_func)
 
 	if set_this == null:
@@ -234,7 +236,8 @@ func _set_sprite_color(x: int, y: int, main_tag: String, func_host: Object,
 func _set_sprite_color_with_memory(x: int, y: int, main_tag: String,
 		ues_memory: bool, func_host: Object, is_in_sight_func: String,
 		sprite_layer := 0) -> void:
-	var set_this := _ref_DungeonBoard.get_sprite(main_tag, x, y, sprite_layer)
+	var set_this := _ref_DungeonBoard.get_sprite_xy(main_tag, x, y,
+			sprite_layer)
 	var is_in_sight := funcref(func_host, is_in_sight_func)
 
 	if set_this == null:
@@ -267,7 +270,7 @@ func _sprite_is_visible(main_tag: String, x: int, y: int, use_memory: bool,
 	for i in range(start_index, max_index):
 		current_tag = Game_ZIndex.LAYERED_MAIN_TAG[i]
 		# There is a sprite on a certian layer.
-		if _ref_DungeonBoard.has_sprite(current_tag, x, y, sprite_layer):
+		if _ref_DungeonBoard.has_sprite_xy(current_tag, x, y, sprite_layer):
 			# Show or hide sprites based on memory and stacking layers.
 			if use_memory:
 				# There is a sprite on a higher layer and we remember it.
@@ -285,26 +288,26 @@ func _sprite_is_visible(main_tag: String, x: int, y: int, use_memory: bool,
 
 
 func _block_line_of_sight(x: int, y: int, _opt_arg: Array) -> bool:
-	return _ref_DungeonBoard.has_building(x, y) \
-			or _ref_DungeonBoard.has_actor(x, y)
+	return _ref_DungeonBoard.has_building_xy(x, y) \
+			or _ref_DungeonBoard.has_actor_xy(x, y)
 
 
 func _has_sprite_memory(x: int, y: int, main_tag: String, sprite_layer := 0) \
 		-> bool:
-	var this_sprite := _ref_DungeonBoard.get_sprite(main_tag, x, y,
+	var this_sprite := _ref_DungeonBoard.get_sprite_xy(main_tag, x, y,
 			sprite_layer)
 	return _ref_ObjectData.get_bool(this_sprite)
 
 
 func _set_sprite_memory(x: int, y: int, main_tag: String, sprite_layer := 0) \
 		-> void:
-	var this_sprite := _ref_DungeonBoard.get_sprite(main_tag, x, y,
+	var this_sprite := _ref_DungeonBoard.get_sprite_xy(main_tag, x, y,
 			sprite_layer)
 	_ref_ObjectData.set_bool(this_sprite, true)
 
 
 func _move_pc_sprite() -> void:
-	_ref_DungeonBoard.move_actor(_source_position.x, _source_position.y,
+	_ref_DungeonBoard.move_actor_xy(_source_position.x, _source_position.y,
 			_target_position.x, _target_position.y)
 
 

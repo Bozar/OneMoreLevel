@@ -109,8 +109,8 @@ func attack() -> void:
 	_switch_mode(false)
 
 	while Game_CoordCalculator.is_inside_dungeon(x, y) \
-			and (not _ref_DungeonBoard.has_building(x, y)):
-		if not _ref_DungeonBoard.has_actor(x, y):
+			and (not _ref_DungeonBoard.has_building_xy(x, y)):
+		if not _ref_DungeonBoard.has_actor_xy(x, y):
 			x += _face_direction[0]
 			y += _face_direction[1]
 			continue
@@ -137,7 +137,7 @@ func attack() -> void:
 func move() -> void:
 	if _is_under_attack():
 		return
-	elif _ref_DungeonBoard.has_actor(_target_position.x, _target_position.y):
+	elif _ref_DungeonBoard.has_actor_xy(_target_position.x, _target_position.y):
 		return
 	_pc_move()
 
@@ -169,7 +169,7 @@ func _is_checkmate() -> bool:
 
 
 func _block_line_of_sight(x: int, y: int, _opt_arg: Array) -> bool:
-	return _ref_DungeonBoard.has_building(x, y)
+	return _ref_DungeonBoard.has_building_xy(x, y)
 
 
 func _init_skull_pillar() -> void:
@@ -192,7 +192,7 @@ func _init_skull_pillar() -> void:
 
 		neighbor = Game_CoordCalculator.get_neighbor_xy(pos.x, pos.y, 1, false)
 		for j in neighbor:
-			if _ref_DungeonBoard.has_ground(j.x, j.y):
+			if _ref_DungeonBoard.has_ground_xy(j.x, j.y):
 				_ref_RemoveObject.remove_building(pos.x, pos.y)
 				_ref_CreateObject.create_building(_spr_Portal,
 						Game_SubTag.PILLAR, pos.x, pos.y)
@@ -204,7 +204,7 @@ func _init_counter() -> void:
 	if _counter_sprite.size() == 0:
 		for x in range(Game_DungeonSize.MAX_X - Game_RailgunData.COUNTER_WIDTH,
 				Game_DungeonSize.MAX_X):
-			_counter_sprite.push_back(_ref_DungeonBoard.get_building(
+			_counter_sprite.push_back(_ref_DungeonBoard.get_building_xy(
 					x, Game_DungeonSize.MAX_Y - 1))
 			_ref_Palette.set_dark_color(_counter_sprite.back(),
 					Game_MainTag.BUILDING)
@@ -258,7 +258,7 @@ func _try_find_pillar() -> void:
 			_plillar_position.x, _plillar_position.y,
 			Game_RailgunData.TOUCH_PILLAR)
 	if _has_found_pillar:
-		pillar = _ref_DungeonBoard.get_building(
+		pillar = _ref_DungeonBoard.get_building_xy(
 				_plillar_position.x, _plillar_position.y)
 		_ref_SwitchSprite.set_sprite(pillar, Game_SpriteTypeTag.ACTIVE)
 
@@ -271,7 +271,7 @@ func _set_move_hit_point() -> void:
 
 
 func _do_not_render_building(x: int, y: int) -> bool:
-	var building: Sprite = _ref_DungeonBoard.get_building(x, y)
+	var building: Sprite = _ref_DungeonBoard.get_building_xy(x, y)
 
 	if (building != null) and building.is_in_group(Game_SubTag.COUNTER):
 		return true
@@ -296,7 +296,7 @@ func _is_under_attack() -> bool:
 			if not Game_CrossShapedFOV.is_in_sight(x, y):
 				break
 			else:
-				npc = _ref_DungeonBoard.get_sprite(Game_MainTag.ACTOR, x, y)
+				npc = _ref_DungeonBoard.get_sprite_xy(Game_MainTag.ACTOR, x, y)
 				if npc == null:
 					continue
 				elif _ref_ObjectData.verify_state(npc, Game_StateTag.ACTIVE):
@@ -336,8 +336,8 @@ func _is_passable(direction: int) -> bool:
 		x = _source_position.x + i[0]
 		y = _source_position.y + i[1]
 		if (not Game_CoordCalculator.is_inside_dungeon(x, y)) \
-				or _ref_DungeonBoard.has_building(x, y) \
-				or _ref_DungeonBoard.has_actor(x, y):
+				or _ref_DungeonBoard.has_building_xy(x, y) \
+				or _ref_DungeonBoard.has_actor_xy(x, y):
 			continue
 		return true
 	return false

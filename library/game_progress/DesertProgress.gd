@@ -47,7 +47,7 @@ func _create_worm_head(retry: int) -> void:
 	var head: Sprite
 
 	for i in neighbor:
-		if _ref_DungeonBoard.has_actor(i.x, i.y):
+		if _ref_DungeonBoard.has_actor_xy(i.x, i.y):
 			_create_worm_head(retry)
 			return
 	if _has_building_or_trap(x, y) and (retry < MAX_RETRY):
@@ -62,5 +62,5 @@ func _create_worm_head(retry: int) -> void:
 
 
 func _has_building_or_trap(x: int, y: int) -> bool:
-	return _ref_DungeonBoard.has_building(x, y) \
-			or _ref_DungeonBoard.has_trap(x, y)
+	return _ref_DungeonBoard.has_building_xy(x, y) \
+			or _ref_DungeonBoard.has_trap_xy(x, y)

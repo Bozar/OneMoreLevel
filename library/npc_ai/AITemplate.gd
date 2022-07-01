@@ -84,7 +84,7 @@ func _approach_pc(start_point := [_pc_pos], step_length := 1, step_count := 1,
 
 		if destination.size() > 0:
 			Game_ArrayHelper.rand_picker(destination, 1, _ref_RandomNumber)
-			_ref_DungeonBoard.move_actor(_self_pos.x, _self_pos.y,
+			_ref_DungeonBoard.move_actor_xy(_self_pos.x, _self_pos.y,
 					destination[0].x, destination[0].y)
 			_self_pos = destination[0]
 
@@ -104,14 +104,14 @@ func _init_dungeon() -> void:
 
 
 func _is_obstacle(x: int, y: int) -> bool:
-	return _ref_DungeonBoard.has_building(x, y)
+	return _ref_DungeonBoard.has_building_xy(x, y)
 
 
 func _is_passable_func(source_array: Array, current_index: int,
 		_opt_arg: Array) -> bool:
 	var x: int = source_array[current_index].x
 	var y: int = source_array[current_index].y
-	return not _ref_DungeonBoard.has_actor(x, y)
+	return not _ref_DungeonBoard.has_actor_xy(x, y)
 
 
 func _stop_move() -> bool:

@@ -35,7 +35,7 @@ func _respawn_npc(pc_x: int, pc_y: int) -> void:
 		x = _ref_RandomNumber.get_x_coord()
 		y = _ref_RandomNumber.get_y_coord()
 
-		if _ref_DungeonBoard.has_building(x, y):
+		if _ref_DungeonBoard.has_building_xy(x, y):
 			continue
 		elif Game_CoordCalculator.is_inside_range_xy(x, y, pc_x, pc_y,
 				Game_RailgunData.PC_FRONT_SIGHT):
@@ -45,7 +45,7 @@ func _respawn_npc(pc_x: int, pc_y: int) -> void:
 					Game_RailgunData.NPC_GAP, true)
 			has_neighbor = false
 			for i in neighbor:
-				if _ref_DungeonBoard.has_actor(i.x, i.y):
+				if _ref_DungeonBoard.has_actor_xy(i.x, i.y):
 					has_neighbor = true
 					break
 			if has_neighbor:

@@ -48,7 +48,7 @@ func _try_respawn_npc(count_npc: int, respawn_shadow: bool) -> void:
 
 	for x in range(Game_NinjaData.MIN_X, Game_NinjaData.MAX_X):
 		for y in range(Game_NinjaData.MIN_Y, Game_NinjaData.LEVEL_1_Y):
-			if _ref_DungeonBoard.has_actor(x, y):
+			if _ref_DungeonBoard.has_actor_xy(x, y):
 				continue
 			region.push_back(Game_IntCoord.new(x, y))
 

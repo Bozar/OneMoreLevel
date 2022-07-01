@@ -63,13 +63,13 @@ func render_fov() -> void:
 
 
 func interact_with_building() -> void:
-	if _ref_DungeonBoard.has_sprite_with_sub_tag(Game_SubTag.DOOR,
+	if _ref_DungeonBoard.has_sprite_with_sub_tag_xy(Game_SubTag.DOOR,
 			_target_position.x, _target_position.y):
 		move()
 
 
 func interact_with_trap() -> void:
-	var trap: Sprite = _ref_DungeonBoard.get_sprite(Game_MainTag.TRAP,
+	var trap: Sprite = _ref_DungeonBoard.get_sprite_xy(Game_MainTag.TRAP,
 			_target_position.x, _target_position.y)
 	var win: bool
 	var __
@@ -124,7 +124,7 @@ func _show_or_hide_sprite(sprites: Array, auto_reset: bool) -> void:
 
 	for i in sprites:
 		pos = Game_ConvertCoord.vector_to_coord(i.position)
-		if _ref_DungeonBoard.has_actor(pos.x, pos.y):
+		if _ref_DungeonBoard.has_actor_xy(pos.x, pos.y):
 			if auto_reset or Game_ShadowCastFOV.is_in_sight(pos.x, pos.y):
 				i.visible = false
 		elif auto_reset:
@@ -140,10 +140,10 @@ func _is_cornered() -> bool:
 
 	for i in Game_CoordCalculator.get_neighbor_xy(
 			_source_position.x, _source_position.y, 1):
-		if _ref_DungeonBoard.has_actor(i.x, i.y):
+		if _ref_DungeonBoard.has_actor_xy(i.x, i.y):
 			continue
 		else:
-			building = _ref_DungeonBoard.get_building(i.x, i.y)
+			building = _ref_DungeonBoard.get_building_xy(i.x, i.y)
 			if (building == null) or building.is_in_group(Game_SubTag.DOOR):
 				return false
 			continue

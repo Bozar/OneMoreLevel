@@ -62,11 +62,11 @@ func allow_input() -> bool:
 	right_x = source_x + Game_StateTag.DIRECTION_TO_COORD[right_direct][0]
 	right_y = source_y + Game_StateTag.DIRECTION_TO_COORD[right_direct][1]
 
-	if _ref_DungeonBoard.has_building(target_x, target_y):
+	if _ref_DungeonBoard.has_building_xy(target_x, target_y):
 		_keep_moving = false
 	else:
-		source_ground = _ref_DungeonBoard.get_ground(source_x, source_y)
-		right_door = _ref_DungeonBoard.get_building(right_x, right_y)
+		source_ground = _ref_DungeonBoard.get_ground_xy(source_x, source_y)
+		right_door = _ref_DungeonBoard.get_building_xy(right_x, right_y)
 		if source_ground.is_in_group(Game_SubTag.CROSSROAD):
 			_keep_moving = false
 		elif right_door.is_in_group(Game_SubTag.ONLOAD_GOODS):
@@ -119,7 +119,7 @@ func attack() -> void:
 
 
 func interact_with_building() -> void:
-	var door := _ref_DungeonBoard.get_building(
+	var door := _ref_DungeonBoard.get_building_xy(
 			_target_position.x, _target_position.y)
 
 	end_turn = false
@@ -155,7 +155,7 @@ func pass_turn() -> void:
 
 
 func _block_line_of_sight(x: int, y: int, _opt_arg: Array) -> bool:
-	return _ref_DungeonBoard.has_building(x, y)
+	return _ref_DungeonBoard.has_building_xy(x, y)
 
 
 func _init_move_direction() -> void:
@@ -170,7 +170,7 @@ func _init_move_direction() -> void:
 	neighbor = Game_CoordCalculator.get_neighbor_xy(
 			_source_position.x, _source_position.y, 1)
 	for i in neighbor:
-		if _ref_DungeonBoard.has_building(i.x, i.y):
+		if _ref_DungeonBoard.has_building_xy(i.x, i.y):
 			door_pos = i
 			break
 
@@ -235,7 +235,7 @@ func _can_turn_right(new_direct: int) -> bool:
 	var shift: Array = Game_StateTag.DIRECTION_TO_COORD[_move_direction]
 	var x: int = _source_position.x + shift[0]
 	var y: int = _source_position.y + shift[1]
-	var ground_ahead := _ref_DungeonBoard.get_ground(x, y)
+	var ground_ahead := _ref_DungeonBoard.get_ground_xy(x, y)
 
 	# Verify traffic rule.
 	return (ground_ahead != null) \
@@ -247,12 +247,12 @@ func _can_turn_left(new_direct: int) -> bool:
 	if new_direct != Game_StateTag.TURN_LEFT[_move_direction]:
 		return false
 
-	var source_ground := _ref_DungeonBoard.get_ground(
+	var source_ground := _ref_DungeonBoard.get_ground_xy(
 			_source_position.x, _source_position.y)
 	var shift: Array = Game_StateTag.DIRECTION_TO_COORD[_get_opposite_direct()]
 	var x: int = _source_position.x + shift[0]
 	var y: int = _source_position.y + shift[1]
-	var ground_behind := _ref_DungeonBoard.get_ground(x, y)
+	var ground_behind := _ref_DungeonBoard.get_ground_xy(x, y)
 
 	# Verify traffic rule.
 	return source_ground.is_in_group(Game_SubTag.CROSSROAD) \
@@ -297,7 +297,7 @@ func _move_truck() -> void:
 	new_pos = _source_position
 	for i in _truck_slot:
 		self_pos = Game_ConvertCoord.vector_to_coord(i.position)
-		_ref_DungeonBoard.move_actor(self_pos.x, self_pos.y,
+		_ref_DungeonBoard.move_actor_xy(self_pos.x, self_pos.y,
 				new_pos.x, new_pos.y)
 		new_pos = self_pos
 
@@ -402,6 +402,6 @@ func _turn_slowly() -> void:
 
 
 func _clear_snow(x: int, y: int) -> void:
-	if _ref_DungeonBoard.has_trap(x, y):
+	if _ref_DungeonBoard.has_trap_xy(x, y):
 		_ref_RemoveObject.remove_trap(x, y)
 		_ref_CountDown.subtract_count(Game_SnowRunnerData.SNOW_COST_TURN)

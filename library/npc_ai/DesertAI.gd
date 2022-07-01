@@ -103,7 +103,8 @@ func _try_random_walk(id: int) -> bool:
 			neighbor.push_back(coord)
 
 	for i in neighbor:
-		if _ref_DungeonBoard.has_actor(i.x, i.y) and (not _is_pc_pos(i.x, i.y)):
+		if _ref_DungeonBoard.has_actor_xy(i.x, i.y) and (not _is_pc_pos(
+				i.x, i.y)):
 			continue
 		candidate.push_back(i)
 
@@ -121,7 +122,8 @@ func _try_random_walk(id: int) -> bool:
 	_ref_RemoveObject.remove_trap(move_to.x, move_to.y)
 
 	_set_danger_zone(_self, false)
-	_ref_DungeonBoard.move_actor(_self_pos.x, _self_pos.y, move_to.x, move_to.y)
+	_ref_DungeonBoard.move_actor_xy(_self_pos.x, _self_pos.y,
+			move_to.x, move_to.y)
 	_set_danger_zone(_self, true)
 	return true
 
@@ -141,7 +143,7 @@ func _move_body(id: int) -> void:
 			return
 
 		save_position = Game_ConvertCoord.vector_to_coord(worm[i].position)
-		_ref_DungeonBoard.move_actor(save_position.x, save_position.y,
+		_ref_DungeonBoard.move_actor_xy(save_position.x, save_position.y,
 				current_position.x, current_position.y)
 		current_position = save_position
 

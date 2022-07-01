@@ -51,8 +51,8 @@ func _replenish_snow() -> void:
 	while snow < Game_SnowRunnerData.MAX_SNOW:
 		this_index = _ref_RandomNumber.get_int(0, _ground_coords.size())
 		this_coord = _ground_coords[this_index]
-		if _ref_DungeonBoard.has_trap(this_coord.x, this_coord.y) \
-				or _ref_DungeonBoard.has_actor(this_coord.x, this_coord.y):
+		if _ref_DungeonBoard.has_trap_xy(this_coord.x, this_coord.y) \
+				or _ref_DungeonBoard.has_actor_xy(this_coord.x, this_coord.y):
 			continue
 		_ref_CreateObject.create_trap(_spr_Crystal, Game_SubTag.SNOW,
 				this_coord.x, this_coord.y)

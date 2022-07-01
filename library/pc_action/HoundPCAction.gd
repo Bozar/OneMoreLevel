@@ -16,7 +16,7 @@ func _init(parent_node: Node2D).(parent_node) -> void:
 func switch_sprite() -> void:
 	var pc: Sprite = _ref_DungeonBoard.get_pc()
 	var pc_pos := _ref_DungeonBoard.get_pc_coord()
-	var ground := _ref_DungeonBoard.get_ground(pc_pos.x, pc_pos.y)
+	var ground := _ref_DungeonBoard.get_ground_xy(pc_pos.x, pc_pos.y)
 	var new_sprite_type: String
 
 	if _ground_is_active(pc_pos.x, pc_pos.y):
@@ -138,7 +138,7 @@ func _is_checkmate() -> bool:
 	neighbor = Game_CoordCalculator.get_neighbor_xy(
 			_source_position.x, _source_position.y, 1)
 	for i in neighbor:
-		if not _ref_DungeonBoard.has_building(i.x, i.y):
+		if not _ref_DungeonBoard.has_building_xy(i.x, i.y):
 			return false
 	return true
 
@@ -153,14 +153,14 @@ func _set_diagonal_position(direction: String) -> void:
 
 func _block_line_of_sight(x: int, y: int, _opt_arg: Array) -> bool:
 	# Building.
-	if _ref_DungeonBoard.has_building(x, y):
+	if _ref_DungeonBoard.has_building_xy(x, y):
 		return true
 	# Fog.
 	elif _ground_is_active(x, y) != _move_diagonally:
 		return true
 	# Actor.
 	else:
-		return _ref_DungeonBoard.has_actor(x, y)
+		return _ref_DungeonBoard.has_actor_xy(x, y)
 
 
 func _get_hit_position(hit_diagonally: bool) -> Game_IntCoord:
@@ -191,11 +191,11 @@ func _can_hit_target(x: int, y: int, hit_diagonally: bool) -> bool:
 	var actor: Sprite
 
 	if not (Game_CoordCalculator.is_inside_dungeon(x, y) \
-			and _ref_DungeonBoard.has_actor(x, y)):
+			and _ref_DungeonBoard.has_actor_xy(x, y)):
 		return false
 
 	if _ground_is_active(x, y) == hit_diagonally:
-		actor = _ref_DungeonBoard.get_actor(x, y)
+		actor = _ref_DungeonBoard.get_actor_xy(x, y)
 		if actor.is_in_group(Game_SubTag.HOUND_BOSS):
 			return hit_diagonally
 		return true
@@ -203,7 +203,7 @@ func _can_hit_target(x: int, y: int, hit_diagonally: bool) -> bool:
 
 
 func _try_set_and_get_boss_hit_point(x: int, y: int) -> int:
-	var actor: Sprite = _ref_DungeonBoard.get_actor(x, y)
+	var actor: Sprite = _ref_DungeonBoard.get_actor_xy(x, y)
 
 	if actor.is_in_group(Game_SubTag.HOUND_BOSS):
 		_ref_ObjectData.add_hit_point(actor, 1)
@@ -239,7 +239,7 @@ func _restore_in_cage() -> void:
 	var is_surrounded: bool = true
 
 	for i in neighbor:
-		if not _ref_DungeonBoard.has_building(i.x, i.y):
+		if not _ref_DungeonBoard.has_building_xy(i.x, i.y):
 			is_surrounded = false
 			break
 	if is_surrounded:
@@ -247,7 +247,7 @@ func _restore_in_cage() -> void:
 
 
 func _try_hit_phantom(x: int, y: int) -> void:
-	var actor: Sprite = _ref_DungeonBoard.get_actor(x, y)
+	var actor: Sprite = _ref_DungeonBoard.get_actor_xy(x, y)
 	var pc: Sprite = _ref_DungeonBoard.get_pc()
 
 	if actor.is_in_group(Game_SubTag.PHANTOM):
@@ -255,5 +255,5 @@ func _try_hit_phantom(x: int, y: int) -> void:
 
 
 func _ground_is_active(x: int, y: int) -> bool:
-	var ground: Sprite = _ref_DungeonBoard.get_ground(x, y)
+	var ground: Sprite = _ref_DungeonBoard.get_ground_xy(x, y)
 	return _ref_ObjectData.verify_state(ground, Game_StateTag.ACTIVE)

@@ -24,9 +24,9 @@ func is_npc() -> bool:
 	var reach_y: int = (_target_position.y - _source_position.y) * 2 \
 			+ _source_position.y
 
-	if _ref_DungeonBoard.has_actor(_target_position.x, _target_position.y):
+	if _ref_DungeonBoard.has_actor_xy(_target_position.x, _target_position.y):
 		return true
-	elif _ref_DungeonBoard.has_actor(reach_x, reach_y):
+	elif _ref_DungeonBoard.has_actor_xy(reach_x, reach_y):
 		_target_position.x = reach_x
 		_target_position.y = reach_y
 		return true
@@ -89,7 +89,7 @@ func switch_sprite() -> void:
 
 
 func _is_in_swamp(x: int, y: int) -> bool:
-	return _ref_DungeonBoard.has_sprite_with_sub_tag(Game_SubTag.SWAMP, x, y)
+	return _ref_DungeonBoard.has_sprite_with_sub_tag_xy(Game_SubTag.SWAMP, x, y)
 
 
 func _set_pc_state(state_tag: int) -> void:
@@ -105,7 +105,7 @@ func _set_visible_counter() -> void:
 
 
 func _block_line_of_sight(x: int, y: int, _opt_arg: Array) -> bool:
-	return _ref_DungeonBoard.has_actor(x, y)
+	return _ref_DungeonBoard.has_actor_xy(x, y)
 
 
 func _post_process_fov(_pc_x: int, _pc_y: int) -> void:
@@ -121,7 +121,7 @@ func _post_process_fov(_pc_x: int, _pc_y: int) -> void:
 				or Game_ShadowCastFOV.is_in_sight(pos.x, pos.y):
 			continue
 		i.visible = false
-		find_floor = _ref_DungeonBoard.get_ground(pos.x, pos.y)
+		find_floor = _ref_DungeonBoard.get_ground_xy(pos.x, pos.y)
 		find_floor.visible = true
 
 

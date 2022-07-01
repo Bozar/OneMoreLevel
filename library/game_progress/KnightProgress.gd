@@ -91,8 +91,8 @@ func _spawn_npc(sub_tag: String, pc_x: int, pc_y: int) -> void:
 
 
 func _is_occupied(x: int, y: int) -> bool:
-	return _ref_DungeonBoard.has_actor(x, y) \
-			or _ref_DungeonBoard.has_building(x, y)
+	return _ref_DungeonBoard.has_actor_xy(x, y) \
+			or _ref_DungeonBoard.has_building_xy(x, y)
 
 
 func _is_close_to_pc(self_x: int, self_y: int, pc_x: int, pc_y: int) -> bool:
@@ -105,6 +105,6 @@ func _has_neighbor(x: int, y: int) -> bool:
 			Game_KnightData.KNIGHT_GAP)
 
 	for i in neighbor:
-		if _ref_DungeonBoard.has_actor(i.x, i.y):
+		if _ref_DungeonBoard.has_actor_xy(i.x, i.y):
 			return true
 	return false

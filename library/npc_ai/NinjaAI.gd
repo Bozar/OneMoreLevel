@@ -100,7 +100,7 @@ func _shadow_ninja_act() -> void:
 
 func _switch_sprite(hit_pc: bool) -> void:
 	var pos := Game_ConvertCoord.vector_to_coord(_self.position)
-	var has_trap := _ref_DungeonBoard.has_trap(pos.x, pos.y)
+	var has_trap := _ref_DungeonBoard.has_trap_xy(pos.x, pos.y)
 	var int_key := (hit_pc as int) * 10 + (has_trap as int)
 	var new_sprite: String = STATE_TO_SPRITE_TYPE[int_key]
 
@@ -129,7 +129,7 @@ func _try_move_vertically(direction: int) -> Array:
 			return [false, is_pc]
 	else:
 		last_grid = path[path.size() - 1]
-	_ref_DungeonBoard.move_actor(pos.x, pos.y, last_grid.x, last_grid.y)
+	_ref_DungeonBoard.move_actor_xy(pos.x, pos.y, last_grid.x, last_grid.y)
 	return [true, is_pc]
 
 
@@ -144,9 +144,9 @@ func _try_move_horizontally() -> bool:
 	else:
 		return false
 
-	if _ref_DungeonBoard.has_actor(move_to.x, move_to.y):
+	if _ref_DungeonBoard.has_actor_xy(move_to.x, move_to.y):
 		return false
-	_ref_DungeonBoard.move_actor(pos.x, pos.y, move_to.x, move_to.y)
+	_ref_DungeonBoard.move_actor_xy(pos.x, pos.y, move_to.x, move_to.y)
 	return true
 
 
@@ -155,9 +155,9 @@ func _ray_is_blocked(x: int, y: int, opt_arg: Array) -> bool:
 	opt_arg[0] = true
 	if not Game_CoordCalculator.is_inside_dungeon(x, y):
 		return true
-	elif _ref_DungeonBoard.has_building(x, y):
+	elif _ref_DungeonBoard.has_building_xy(x, y):
 		return true
-	elif _ref_DungeonBoard.has_actor(x, y):
+	elif _ref_DungeonBoard.has_actor_xy(x, y):
 		if (x == _pc_pos.x) and (y == _pc_pos.y):
 			opt_arg[1] = true
 		return true
@@ -174,5 +174,6 @@ func _update_health_bar(hit_point: int) -> void:
 
 	bar = HP_BAR[hit_point - 1]
 	for x in range(bar[0], bar[1]):
-		this_floor = _ref_DungeonBoard.get_ground(x, Game_DungeonSize.MAX_Y - 1)
+		this_floor = _ref_DungeonBoard.get_ground_xy(
+				x, Game_DungeonSize.MAX_Y - 1)
 		_ref_SwitchSprite.set_sprite(this_floor, Game_SpriteTypeTag.PASSIVE)

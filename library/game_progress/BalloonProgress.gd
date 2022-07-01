@@ -16,7 +16,7 @@ func renew_world(_pc_x: int, _pc_y: int) -> void:
 		_set_wind_direction()
 		_wind_duration = Game_BalloonData.WIND_DURATION
 	else:
-		ground = _ref_DungeonBoard.get_ground(0, _wind_duration)
+		ground = _ref_DungeonBoard.get_ground_xy(0, _wind_duration)
 		_ref_SwitchSprite.set_sprite(ground, Game_SpriteTypeTag.DEFAULT)
 		_wind_duration -= 1
 
@@ -47,11 +47,11 @@ func _set_wind_direction() -> void:
 			_wind_forecast[0]])
 
 	for x in range(0, 2):
-		ground = _ref_DungeonBoard.get_ground(x, 0)
+		ground = _ref_DungeonBoard.get_ground_xy(x, 0)
 		_ref_SwitchSprite.set_sprite(ground, Game_StateTag.STATE_TO_SPRITE[
 				_wind_forecast[x]])
 	for y in range(1, 3):
-		ground = _ref_DungeonBoard.get_ground(0, y)
+		ground = _ref_DungeonBoard.get_ground_xy(0, y)
 		_ref_SwitchSprite.set_sprite(ground, Game_StateTag.STATE_TO_SPRITE[
 				_wind_forecast[0]])
 
