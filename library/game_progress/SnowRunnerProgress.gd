@@ -54,7 +54,7 @@ func _replenish_snow() -> void:
 		if _ref_DungeonBoard.has_trap_xy(this_coord.x, this_coord.y) \
 				or _ref_DungeonBoard.has_actor_xy(this_coord.x, this_coord.y):
 			continue
-		_ref_CreateObject.create_trap(_spr_Crystal, Game_SubTag.SNOW,
+		_ref_CreateObject.create_trap_xy(_spr_Crystal, Game_SubTag.SNOW,
 				this_coord.x, this_coord.y)
 		snow += 1
 
@@ -104,7 +104,7 @@ func _init_offload_goods() -> void:
 			_fake_door_coords.push_back(pos)
 			new_sprite = _spr_DoorTruck
 			new_sub_tag = Game_SubTag.DOOR
-		_ref_CreateObject.create_building(new_sprite, new_sub_tag, pos.x, pos.y)
+		_ref_CreateObject.create_building_xy(new_sprite, new_sub_tag, pos.x, pos.y)
 
 
 func _replenish_offload() -> void:
@@ -116,5 +116,5 @@ func _replenish_offload() -> void:
 	if (offload < Game_SnowRunnerData.MAX_OFFLOAD) and (fake_door > 0):
 		pos = _fake_door_coords.pop_back()
 		_ref_RemoveObject.remove_building_xy(pos.x, pos.y)
-		_ref_CreateObject.create_building(_spr_OffloadGoods,
+		_ref_CreateObject.create_building_xy(_spr_OffloadGoods,
 				Game_SubTag.OFFLOAD_GOODS, pos.x, pos.y)

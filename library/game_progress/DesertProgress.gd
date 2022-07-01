@@ -56,7 +56,7 @@ func _create_worm_head(retry: int) -> void:
 
 	_ref_RemoveObject.remove_building_xy(x, y)
 	_ref_RemoveObject.remove_trap_xy(x, y)
-	head = _ref_CreateObject.create_and_fetch_actor(_spr_WormHead,
+	head = _ref_CreateObject.create_and_fetch_actor_xy(_spr_WormHead,
 			Game_SubTag.WORM_HEAD, x, y)
 	_ref_ObjectData.set_state(head, Game_StateTag.PASSIVE)
 

@@ -220,7 +220,7 @@ func _hit_actor(x: int, y: int) -> void:
 			create_trap = false
 			break
 	if create_trap:
-		_ref_CreateObject.create_trap(_spr_SoulFragment, Game_SubTag.TREASURE,
+		_ref_CreateObject.create_trap_xy(_spr_SoulFragment, Game_SubTag.TREASURE,
 				x, y)
 	else:
 		_ref_RemoveObject.remove_trap_xy(x, y)

@@ -87,7 +87,7 @@ func _spawn_npc(sub_tag: String, pc_x: int, pc_y: int) -> void:
 				or _has_neighbor(x, y):
 			continue
 		break
-	_ref_CreateObject.create_actor(new_actor, sub_tag, x, y)
+	_ref_CreateObject.create_actor_xy(new_actor, sub_tag, x, y)
 
 
 func _is_occupied(x: int, y: int) -> bool:

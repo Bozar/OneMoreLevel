@@ -62,5 +62,5 @@ func _replenish_crystal() -> void:
 		else:
 			break
 
-	_ref_CreateObject.create_trap(_spr_Crystal, Game_SubTag.CRYSTAL, x, y)
+	_ref_CreateObject.create_trap_xy(_spr_Crystal, Game_SubTag.CRYSTAL, x, y)
 	_ref_DangerZone.set_danger_zone(x, y, true)

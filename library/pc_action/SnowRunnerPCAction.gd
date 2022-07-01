@@ -199,7 +199,7 @@ func _init_truck() -> void:
 	for _i in range(0, Game_SnowRunnerData.MAX_SLOT):
 		x += slot_shift[0]
 		y += slot_shift[1]
-		new_sprite = _ref_CreateObject.create_and_fetch_actor(_spr_TruckSlot,
+		new_sprite = _ref_CreateObject.create_and_fetch_actor_xy(_spr_TruckSlot,
 				Game_SubTag.TRUCK_SLOT, x, y)
 		_truck_slot.push_back(new_sprite)
 
@@ -348,7 +348,7 @@ func _try_offload_goods(door: Sprite) -> bool:
 			_ref_SwitchSprite.set_sprite(i, Game_SpriteTypeTag.DEFAULT)
 			# Replace sprite: offload -> door.
 			_ref_RemoveObject.remove_building_xy(pos.x, pos.y)
-			_ref_CreateObject.create_building(_spr_DoorTruck, Game_SubTag.DOOR,
+			_ref_CreateObject.create_building_xy(_spr_DoorTruck, Game_SubTag.DOOR,
 					pos.x, pos.y)
 			# Update progress.
 			_deliveries += 1

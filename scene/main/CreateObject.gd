@@ -2,13 +2,13 @@ extends Node2D
 class_name Game_CreateObject
 
 
-signal sprite_created(new_sprite, main_tag, sub_tag, x, y, layer)
+signal sprite_created(new_sprite, main_tag, sub_tag, x, y, sprite_layer)
 
 var _ref_Palette: Game_Palette
 
 
-func create_and_fetch(prefab: PackedScene, main_tag: String, sub_tag: String,
-		x: int, y: int, layer := 0,
+func create_and_fetch_xy(prefab: PackedScene, main_tag: String, sub_tag: String,
+		x: int, y: int, sprite_layer := 0,
 		x_offset := 0, y_offset := 0) -> Sprite:
 	var new_sprite: Sprite = prefab.instance() as Sprite
 	var sprite_color: String = _ref_Palette.get_default_color(main_tag, sub_tag)
@@ -22,55 +22,82 @@ func create_and_fetch(prefab: PackedScene, main_tag: String, sub_tag: String,
 	new_sprite.modulate = sprite_color
 
 	add_child(new_sprite)
-	emit_signal("sprite_created", new_sprite, main_tag, sub_tag, x, y, layer)
+	emit_signal("sprite_created", new_sprite, main_tag, sub_tag, x, y,
+			sprite_layer)
 	return new_sprite
 
 
-func create(prefab: PackedScene, main_tag: String, sub_tag: String,
-		x: int, y: int, layer := 0,
+func create_and_fetch(prefab: PackedScene, main_tag: String, sub_tag: String,
+		coord: Game_IntCoord, sprite_layer := 0,
+		x_offset := 0, y_offset := 0) -> Sprite:
+	return create_and_fetch_xy(prefab, main_tag, sub_tag, coord.x, coord.y,
+			sprite_layer, x_offset, y_offset)
+
+
+func create_xy(prefab: PackedScene, main_tag: String, sub_tag: String,
+		x: int, y: int, sprite_layer := 0,
 		x_offset := 0, y_offset := 0) -> void:
-	var __ = create_and_fetch(prefab, main_tag, sub_tag, x, y, layer,
+	var __ = create_and_fetch_xy(prefab, main_tag, sub_tag, x, y, sprite_layer,
 			x_offset, y_offset)
 
 
-func create_ground(prefab: PackedScene, sub_tag: String, x: int, y: int,
-		layer := 0) -> void:
-	create(prefab, Game_MainTag.GROUND, sub_tag, x, y, layer)
+func create(prefab: PackedScene, main_tag: String, sub_tag: String,
+		coord: Game_IntCoord, sprite_layer := 0,
+		x_offset := 0, y_offset := 0) -> void:
+	create_xy(prefab, main_tag, sub_tag, coord.x, coord.y, sprite_layer,
+			x_offset, y_offset)
 
 
-func create_trap(prefab: PackedScene, sub_tag: String, x: int, y: int,
-		layer := 0) -> void:
-	create(prefab, Game_MainTag.TRAP, sub_tag, x, y, layer)
+func create_ground_xy(prefab: PackedScene, sub_tag: String, x: int, y: int,
+		sprite_layer := 0) -> void:
+	create_xy(prefab, Game_MainTag.GROUND, sub_tag, x, y, sprite_layer)
 
 
-func create_building(prefab: PackedScene, sub_tag: String, x: int, y: int,
-		layer := 0) -> void:
-	create(prefab, Game_MainTag.BUILDING, sub_tag, x, y, layer)
+func create_ground(prefab: PackedScene, sub_tag: String,
+		coord: Game_IntCoord, sprite_layer := 0) -> void:
+	create_ground_xy(prefab, sub_tag, coord.x, coord.y, sprite_layer)
 
 
-func create_actor(prefab: PackedScene, sub_tag: String, x: int, y: int,
-		layer := 0) -> void:
-	create(prefab, Game_MainTag.ACTOR, sub_tag, x, y, layer)
+func create_trap_xy(prefab: PackedScene, sub_tag: String, x: int, y: int,
+		sprite_layer := 0) -> void:
+	create_xy(prefab, Game_MainTag.TRAP, sub_tag, x, y, sprite_layer)
 
 
-func create_and_fetch_ground(prefab: PackedScene, sub_tag: String,
-		x: int, y: int, layer := 0) -> Sprite:
-	return create_and_fetch(prefab, Game_MainTag.GROUND, sub_tag, x, y, layer)
+func create_trap(prefab: PackedScene, sub_tag: String,
+		coord: Game_IntCoord, sprite_layer := 0) -> void:
+	create_trap_xy(prefab, sub_tag, coord.x, coord.y, sprite_layer)
 
 
-func create_and_fetch_trap(prefab: PackedScene, sub_tag: String, x: int, y: int,
-		layer := 0) -> Sprite:
-	return create_and_fetch(prefab, Game_MainTag.TRAP, sub_tag, x, y, layer)
+func create_building_xy(prefab: PackedScene, sub_tag: String, x: int, y: int,
+		sprite_layer := 0) -> void:
+	create_xy(prefab, Game_MainTag.BUILDING, sub_tag, x, y, sprite_layer)
 
 
-func create_and_fetch_building(prefab: PackedScene, sub_tag: String,
-		x: int, y: int, layer := 0) -> Sprite:
-	return create_and_fetch(prefab, Game_MainTag.BUILDING, sub_tag, x, y, layer)
+func create_building(prefab: PackedScene, sub_tag: String,
+		coord: Game_IntCoord, sprite_layer := 0) -> void:
+	create_building_xy(prefab, sub_tag, coord.x, coord.y, sprite_layer)
+
+
+func create_actor_xy(prefab: PackedScene, sub_tag: String, x: int, y: int,
+		sprite_layer := 0) -> void:
+	create_xy(prefab, Game_MainTag.ACTOR, sub_tag, x, y, sprite_layer)
+
+
+func create_actor(prefab: PackedScene, sub_tag: String,
+		coord: Game_IntCoord, sprite_layer := 0) -> void:
+	create_actor_xy(prefab, sub_tag, coord.x, coord.y, sprite_layer)
+
+
+func create_and_fetch_actor_xy(prefab: PackedScene, sub_tag: String,
+		x: int, y: int, sprite_layer := 0) -> Sprite:
+	return create_and_fetch_xy(prefab, Game_MainTag.ACTOR, sub_tag, x, y,
+			sprite_layer)
 
 
 func create_and_fetch_actor(prefab: PackedScene, sub_tag: String,
-		x: int, y: int, layer := 0) -> Sprite:
-	return create_and_fetch(prefab, Game_MainTag.ACTOR, sub_tag, x, y, layer)
+		coord: Game_IntCoord, sprite_layer := 0) -> Sprite:
+	return create_and_fetch_actor_xy(prefab, sub_tag, coord.x, coord.y,
+			sprite_layer)
 
 
 func _on_SwitchScreen_screen_switched(screen_tag: int) -> void:

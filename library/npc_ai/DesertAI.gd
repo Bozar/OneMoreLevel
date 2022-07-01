@@ -64,18 +64,18 @@ func _create_body(id: int, index: int, x: int, y: int) -> void:
 
 	# Create tail.
 	if index == worm_length - 1:
-		worm_body = _ref_CreateObject.create_and_fetch_actor(_spr_WormTail,
+		worm_body = _ref_CreateObject.create_and_fetch_actor_xy(_spr_WormTail,
 				Game_SubTag.WORM_BODY, x, y)
 	# Create spice.
 	elif (index >= Game_DesertData.SPICE_START) \
 			and (index < Game_DesertData.SPICE_END):
 		is_active = (not _id_to_has_active_spice[id]) \
 				and _ref_RandomNumber.get_percent_chance(_quality_spice_chance)
-		worm_body = _ref_CreateObject.create_and_fetch_actor(_spr_WormSpice,
+		worm_body = _ref_CreateObject.create_and_fetch_actor_xy(_spr_WormSpice,
 				Game_SubTag.WORM_SPICE, x, y)
 	# Create body.
 	else:
-		worm_body = _ref_CreateObject.create_and_fetch_actor(_spr_WormBody,
+		worm_body = _ref_CreateObject.create_and_fetch_actor_xy(_spr_WormBody,
 				Game_SubTag.WORM_BODY, x, y)
 	_id_to_worm[id][index] = worm_body
 
@@ -165,10 +165,10 @@ func _bury_worm(id: int) -> void:
 		pos = Game_ConvertCoord.vector_to_coord(i.position)
 		_ref_RemoveObject.remove_actor_xy(pos.x, pos.y)
 		if _ref_RandomNumber.get_percent_chance(create_spice):
-			_ref_CreateObject.create_trap(_spr_Treasure, Game_SubTag.TREASURE,
+			_ref_CreateObject.create_trap_xy(_spr_Treasure, Game_SubTag.TREASURE,
 					pos.x, pos.y)
 		else:
-			_ref_CreateObject.create_building(_spr_Wall, Game_SubTag.WALL,
+			_ref_CreateObject.create_building_xy(_spr_Wall, Game_SubTag.WALL,
 					pos.x, pos.y)
 
 	_clear_worm_data(id)

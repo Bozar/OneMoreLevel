@@ -167,7 +167,7 @@ func _respawn_actor(pc_x: int, pc_y: int, min_distance: int, max_distance: int,
 					break
 		if not next_loop:
 			break
-	_ref_CreateObject.create_actor(new_sprite, sub_tag, x, y)
+	_ref_CreateObject.create_actor_xy(new_sprite, sub_tag, x, y)
 
 
 func _sort_counter(left: Sprite, right: Sprite) -> bool:

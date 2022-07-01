@@ -66,6 +66,6 @@ func _try_respawn_npc(count_npc: int, respawn_shadow: bool) -> void:
 		else:
 			new_scene = _spr_Ninja
 			sub_tag = Game_SubTag.NINJA
-		actor = _ref_CreateObject.create_and_fetch_actor(new_scene,
+		actor = _ref_CreateObject.create_and_fetch_actor_xy(new_scene,
 				sub_tag, region[i].x, region[i].y)
 		_ref_ObjectData.set_bool(actor, true)

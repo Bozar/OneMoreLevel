@@ -207,7 +207,7 @@ func _set_pc_hit_point(add_hit_point: int) -> void:
 				continue
 			else:
 				break
-		phantom = _ref_CreateObject.create_and_fetch_actor(_spr_Counter,
+		phantom = _ref_CreateObject.create_and_fetch_actor_xy(_spr_Counter,
 				Game_SubTag.PHANTOM, x, y)
 		add_hit_point = 0
 	else:

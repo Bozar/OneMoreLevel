@@ -78,7 +78,7 @@ func _create_frog(pc_x: int, pc_y: int) -> void:
 			_ref_RandomNumber)
 
 	for i in neighbor:
-		_ref_CreateObject.create_actor(_spr_Frog, Game_SubTag.FROG, i.x, i.y)
+		_ref_CreateObject.create_actor_xy(_spr_Frog, Game_SubTag.FROG, i.x, i.y)
 
 
 func _create_princess(pc_x: int, pc_y: int) -> void:
@@ -91,8 +91,8 @@ func _create_princess(pc_x: int, pc_y: int) -> void:
 			[])
 	Game_ArrayHelper.rand_picker(neighbor, 1, _ref_RandomNumber)
 
-	_ref_CreateObject.create_actor(_spr_FrogPrincess, Game_SubTag.FROG_PRINCESS,
-			neighbor[0].x, neighbor[0].y)
+	_ref_CreateObject.create_actor_xy(_spr_FrogPrincess,
+			Game_SubTag.FROG_PRINCESS, neighbor[0].x, neighbor[0].y)
 
 
 func _submerge_land(submerge: int) -> void:
@@ -108,7 +108,7 @@ func _submerge_land(submerge: int) -> void:
 		x = land_pos.x
 		y = land_pos.y
 		_ref_RemoveObject.remove_ground_xy(x, y)
-		_ref_CreateObject.create_ground(_spr_Floor, Game_SubTag.SWAMP, x, y)
+		_ref_CreateObject.create_ground_xy(_spr_Floor, Game_SubTag.SWAMP, x, y)
 
 
 func _remove_frog() -> void:
