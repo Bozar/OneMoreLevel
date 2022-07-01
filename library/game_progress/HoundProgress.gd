@@ -162,8 +162,8 @@ func _respawn_actor(pc_x: int, pc_y: int, min_distance: int, max_distance: int,
 
 
 func _sort_counter(left: Sprite, right: Sprite) -> bool:
-	var left_pos := Game_ConvertCoord.vector_to_coord(left.position)
-	var right_pos := Game_ConvertCoord.vector_to_coord(right.position)
+	var left_pos := Game_ConvertCoord.sprite_to_coord(left)
+	var right_pos := Game_ConvertCoord.sprite_to_coord(right)
 
 	if right_pos.y > left_pos.y:
 		return true

@@ -37,7 +37,7 @@ func render_fov() -> void:
 	for mtag in RENDER_SPRITES:
 		for i in RENDER_SPRITES[mtag]:
 			if mtag != Game_MainTag.TRAP:
-				pos = Game_ConvertCoord.vector_to_coord(i.position)
+				pos = Game_ConvertCoord.sprite_to_coord(i)
 				_set_sprite_color(pos.x, pos.y, mtag, Game_ShadowCastFOV,
 						"is_in_sight")
 
@@ -95,7 +95,7 @@ func _wind_blow() -> void:
 	else:
 		_ref_DungeonBoard.move_actor_xy(_source_position.x, _source_position.y,
 				new_position.x, new_position.y)
-	_source_position = Game_ConvertCoord.vector_to_coord(pc.position)
+	_source_position = Game_ConvertCoord.sprite_to_coord(pc)
 
 
 func _try_move_over_border(x: int, y: int) -> Game_IntCoord:

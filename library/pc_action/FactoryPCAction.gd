@@ -44,7 +44,7 @@ func render_fov() -> void:
 
 	# Refer to FactoryAI.gd.
 	for i in _ref_DungeonBoard.get_npc():
-		pos = Game_ConvertCoord.vector_to_coord(i.position)
+		pos = Game_ConvertCoord.sprite_to_coord(i)
 		if Game_ShadowCastFOV.is_in_sight(pos.x, pos.y):
 			_ref_ObjectData.set_state(i, Game_StateTag.ACTIVE)
 
@@ -54,7 +54,7 @@ func render_fov() -> void:
 
 	for mtag in RENDER_SPRITES:
 		for i in RENDER_SPRITES[mtag]:
-			pos = Game_ConvertCoord.vector_to_coord(i.position)
+			pos = Game_ConvertCoord.sprite_to_coord(i)
 			_set_sprite_color_with_memory(pos.x, pos.y, mtag,
 					mtag != Game_MainTag.ACTOR, Game_ShadowCastFOV,
 					"is_in_sight")
@@ -123,7 +123,7 @@ func _show_or_hide_sprite(sprites: Array, auto_reset: bool) -> void:
 	var pos: Game_IntCoord
 
 	for i in sprites:
-		pos = Game_ConvertCoord.vector_to_coord(i.position)
+		pos = Game_ConvertCoord.sprite_to_coord(i)
 		if _ref_DungeonBoard.has_actor_xy(pos.x, pos.y):
 			if auto_reset or Game_ShadowCastFOV.is_in_sight(pos.x, pos.y):
 				i.visible = false

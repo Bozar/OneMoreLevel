@@ -105,7 +105,7 @@ func _mark_actors() -> void:
 	var neighbor: Array
 
 	for i in _ref_DungeonBoard.get_sprites_by_tag(Game_MainTag.ACTOR):
-		pos = Game_ConvertCoord.vector_to_coord(i.position)
+		pos = Game_ConvertCoord.sprite_to_coord(i)
 		if i.is_in_group(Game_SubTag.PC):
 			min_gap = Game_KnightData.RENDER_RANGE
 		else:

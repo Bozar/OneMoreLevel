@@ -58,7 +58,7 @@ func set_print_text(_text: String) -> void:
 
 func set_local_var(actor: Sprite) -> void:
 	_self = actor
-	_self_pos = Game_ConvertCoord.vector_to_coord(_self.position)
+	_self_pos = Game_ConvertCoord.sprite_to_coord(_self)
 	_pc_pos = _ref_DungeonBoard.get_pc_coord()
 
 

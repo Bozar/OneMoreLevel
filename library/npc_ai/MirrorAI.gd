@@ -47,7 +47,7 @@ func _move() -> void:
 
 	_approach_pc()
 
-	new_position = Game_ConvertCoord.vector_to_coord(_self.position)
+	new_position = Game_ConvertCoord.sprite_to_coord(_self)
 	if _ref_DungeonBoard.has_trap_xy(new_position.x, new_position.y):
 		_ref_SwitchSprite.set_sprite(_self, Game_SpriteTypeTag.ACTIVE)
 
@@ -74,7 +74,7 @@ func _set_npc_state() -> void:
 			continue
 		elif _ref_ObjectData.verify_state(i, Game_StateTag.DEFAULT):
 			_ref_ObjectData.set_state(i, Game_StateTag.PASSIVE)
-			npc_pos = Game_ConvertCoord.vector_to_coord(i.position)
+			npc_pos = Game_ConvertCoord.sprite_to_coord(i)
 			if _ref_DungeonBoard.has_trap_xy(npc_pos.x, npc_pos.y):
 				_ref_SwitchSprite.set_sprite(i, Game_SpriteTypeTag.DEFAULT)
 				_trap_pos = npc_pos

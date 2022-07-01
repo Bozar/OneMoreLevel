@@ -215,7 +215,7 @@ func _init_door_coord() -> void:
 
 	for i in tags:
 		for j in _ref_DungeonBoard.get_sprites_by_tag(i):
-			pos = Game_ConvertCoord.vector_to_coord(j.position)
+			pos = Game_ConvertCoord.sprite_to_coord(j)
 			_door_coord.push_back(pos)
 
 
@@ -296,9 +296,8 @@ func _move_truck() -> void:
 
 	new_pos = _source_position
 	for i in _truck_slot:
-		self_pos = Game_ConvertCoord.vector_to_coord(i.position)
-		_ref_DungeonBoard.move_actor_xy(self_pos.x, self_pos.y,
-				new_pos.x, new_pos.y)
+		self_pos = Game_ConvertCoord.sprite_to_coord(i)
+		_ref_DungeonBoard.move_actor(self_pos, new_pos)
 		new_pos = self_pos
 
 
@@ -339,7 +338,7 @@ func _try_onload_goods() -> bool:
 
 
 func _try_offload_goods(door: Sprite) -> bool:
-	var pos := Game_ConvertCoord.vector_to_coord(door.position)
+	var pos := Game_ConvertCoord.sprite_to_coord(door)
 
 	for i in _truck_slot:
 		if _ref_ObjectData.get_hit_point(i) == SLOT.GOODS:

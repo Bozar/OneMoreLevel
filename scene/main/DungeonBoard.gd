@@ -73,8 +73,7 @@ func get_pc() -> Sprite:
 
 
 func get_pc_coord() -> Game_IntCoord:
-	var pc := get_pc()
-	return Game_ConvertCoord.vector_to_coord(pc.position)
+	return Game_ConvertCoord.sprite_to_coord(get_pc())
 
 
 func get_npc() -> Array:
@@ -264,7 +263,7 @@ func _on_CreateObject_sprite_created(new_sprite: Sprite, main_tag: String,
 			new_tag = _try_convert_main_tag(i, sprite_layer)
 			if not _sprite_dict.has(new_tag):
 				_init_dict(new_tag)
-			pos = Game_ConvertCoord.vector_to_coord(new_sprite.position)
+			pos = Game_ConvertCoord.sprite_to_coord(new_sprite)
 			_sprite_dict[new_tag][pos.x][pos.y] = new_sprite
 
 

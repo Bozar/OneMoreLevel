@@ -19,7 +19,7 @@ func take_action() -> void:
 		Game_StateTag.ACTIVE:
 			_try_approach()
 
-	pos = Game_ConvertCoord.vector_to_coord(_self.position)
+	pos = Game_ConvertCoord.sprite_to_coord(_self)
 	_switch_sprite(pos.x, pos.y)
 
 

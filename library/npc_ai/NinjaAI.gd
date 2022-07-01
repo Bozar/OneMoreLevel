@@ -99,7 +99,7 @@ func _shadow_ninja_act() -> void:
 
 
 func _switch_sprite(hit_pc: bool) -> void:
-	var pos := Game_ConvertCoord.vector_to_coord(_self.position)
+	var pos := Game_ConvertCoord.sprite_to_coord(_self)
 	var has_trap := _ref_DungeonBoard.has_trap_xy(pos.x, pos.y)
 	var int_key := (hit_pc as int) * 10 + (has_trap as int)
 	var new_sprite: String = STATE_TO_SPRITE_TYPE[int_key]
@@ -109,7 +109,7 @@ func _switch_sprite(hit_pc: bool) -> void:
 
 # [has_moved, hit_pc]
 func _try_move_vertically(direction: int) -> Array:
-	var pos := Game_ConvertCoord.vector_to_coord(_self.position)
+	var pos := Game_ConvertCoord.sprite_to_coord(_self)
 	var path: Array
 	var is_blocked := false
 	var is_pc := false
@@ -134,7 +134,7 @@ func _try_move_vertically(direction: int) -> Array:
 
 
 func _try_move_horizontally() -> bool:
-	var pos := Game_ConvertCoord.vector_to_coord(_self.position)
+	var pos := Game_ConvertCoord.sprite_to_coord(_self)
 	var move_to: Game_IntCoord
 
 	if pos.x < _pc_pos.x:

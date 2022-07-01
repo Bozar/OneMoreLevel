@@ -43,9 +43,8 @@ func render_fov() -> void:
 	for mtags in RENDER_THIS:
 		for i in RENDER_SPRITES[mtags]:
 			i.visible = true
-			pos = Game_ConvertCoord.vector_to_coord(i.position)
-			distance = Game_CoordCalculator.get_range_xy(pos.x, pos.y,
-					_source_position.x, _source_position.y)
+			pos = Game_ConvertCoord.sprite_to_coord(i)
+			distance = Game_CoordCalculator.get_range(pos, _source_position)
 			if distance > sight:
 				i.visible = false
 			elif distance == sight:
@@ -148,7 +147,7 @@ func _try_discover_harbor(pc_x: int, pc_y: int) -> void:
 	var harbor_hp: int
 
 	for i in _ref_DungeonBoard.get_sprites_by_tag(Game_SubTag.HARBOR):
-		harbor_pos = Game_ConvertCoord.vector_to_coord(i.position)
+		harbor_pos = Game_ConvertCoord.sprite_to_coord(i)
 		pc_to_harbor = Game_CoordCalculator.get_range_xy(pc_x, pc_y,
 				harbor_pos.x, harbor_pos.y)
 		harbor_hp = _ref_ObjectData.get_hit_point(i)

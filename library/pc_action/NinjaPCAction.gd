@@ -182,7 +182,7 @@ func _update_trajectory() -> void:
 	# Show new trajectories.
 	for i in actors:
 		id = i.get_instance_id()
-		pos = Game_ConvertCoord.vector_to_coord(i.position)
+		pos = Game_ConvertCoord.sprite_to_coord(i)
 		if i.is_in_group(Game_SubTag.PC):
 			speed = Game_NinjaData.PC_SPEED
 		else:
@@ -215,7 +215,7 @@ func _hit_actor(x: int, y: int) -> void:
 	var create_trap := true
 
 	for i in shadows:
-		shadow_pos = Game_ConvertCoord.vector_to_coord(i.position)
+		shadow_pos = Game_ConvertCoord.sprite_to_coord(i)
 		if (x == shadow_pos.x) or (y == shadow_pos.y):
 			create_trap = false
 			break

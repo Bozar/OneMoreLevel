@@ -116,7 +116,7 @@ func _post_process_fov(_pc_x: int, _pc_y: int) -> void:
 		return
 
 	for i in _ref_DungeonBoard.get_npc():
-		pos = Game_ConvertCoord.vector_to_coord(i.position)
+		pos = Game_ConvertCoord.sprite_to_coord(i)
 		if i.is_in_group(Game_SubTag.FROG_PRINCESS) \
 				or Game_ShadowCastFOV.is_in_sight(pos.x, pos.y):
 			continue

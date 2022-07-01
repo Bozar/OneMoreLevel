@@ -97,7 +97,7 @@ func _try_random_walk(id: int) -> bool:
 	var pc: Sprite = _ref_DungeonBoard.get_pc()
 
 	if _id_to_worm[id][1] != null:
-		neck = Game_ConvertCoord.vector_to_coord(_id_to_worm[id][1].position)
+		neck = Game_ConvertCoord.sprite_to_coord(_id_to_worm[id][1])
 		coord = Game_CoordCalculator.get_mirror_image_xy(neck.x, neck.y, x, y)
 		if Game_CoordCalculator.is_inside_dungeon(coord.x, coord.y):
 			neighbor.push_back(coord)
@@ -142,7 +142,7 @@ func _move_body(id: int) -> void:
 			_create_body(id, i, current_position.x, current_position.y)
 			return
 
-		save_position = Game_ConvertCoord.vector_to_coord(worm[i].position)
+		save_position = Game_ConvertCoord.sprite_to_coord(worm[i])
 		_ref_DungeonBoard.move_actor_xy(save_position.x, save_position.y,
 				current_position.x, current_position.y)
 		current_position = save_position
@@ -162,7 +162,7 @@ func _bury_worm(id: int) -> void:
 	for i in worm:
 		if i == null:
 			break
-		pos = Game_ConvertCoord.vector_to_coord(i.position)
+		pos = Game_ConvertCoord.sprite_to_coord(i)
 		_ref_RemoveObject.remove_actor_xy(pos.x, pos.y)
 		if _ref_RandomNumber.get_percent_chance(create_spice):
 			_ref_CreateObject.create_trap_xy(_spr_Treasure, Game_SubTag.TREASURE,
@@ -188,7 +188,7 @@ func _can_bury_worm(id: int) -> bool:
 
 
 func _set_danger_zone(head: Sprite, is_danger: bool) -> void:
-	var pos := Game_ConvertCoord.vector_to_coord(head.position)
+	var pos := Game_ConvertCoord.sprite_to_coord(head)
 	var neighbor: Array = Game_CoordCalculator.get_neighbor_xy(pos.x, pos.y, 1)
 
 	for i in neighbor:

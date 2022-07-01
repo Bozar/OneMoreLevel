@@ -158,7 +158,7 @@ func render_fov() -> void:
 
 	for mtag in RENDER_SPRITES:
 		for i in RENDER_SPRITES[mtag]:
-			this_pos = Game_ConvertCoord.vector_to_coord(i.position)
+			this_pos = Game_ConvertCoord.sprite_to_coord(i)
 			_set_sprite_color(this_pos.x, this_pos.y, mtag, Game_ShadowCastFOV,
 					"is_in_sight")
 
@@ -210,7 +210,7 @@ func _render_without_fog_of_war() -> void:
 
 	for mtag in RENDER_SPRITES:
 		for i in RENDER_SPRITES[mtag]:
-			pos = Game_ConvertCoord.vector_to_coord(i.position)
+			pos = Game_ConvertCoord.sprite_to_coord(i)
 			i.visible = _sprite_is_visible(mtag, pos.x, pos.y, false)
 			if mtag == Game_MainTag.GROUND:
 				_ref_Palette.set_dark_color(i, mtag)

@@ -64,7 +64,7 @@ func render_fov() -> void:
 
 	for mtag in RENDER_SPRITES:
 		for i in RENDER_SPRITES[mtag]:
-			pos = Game_ConvertCoord.vector_to_coord(i.position)
+			pos = Game_ConvertCoord.sprite_to_coord(i)
 			match mtag:
 				Game_MainTag.ACTOR:
 					_set_sprite_color_with_memory(pos.x, pos.y, mtag, false,
@@ -185,9 +185,8 @@ func _init_skull_pillar() -> void:
 	Game_ArrayHelper.shuffle(building, _ref_RandomNumber)
 
 	for i in building:
-		pos = Game_ConvertCoord.vector_to_coord(i.position)
-		if Game_CoordCalculator.is_in_range_xy(pos.x, pos.y,
-				_source_position.x, _source_position.y,
+		pos = Game_ConvertCoord.sprite_to_coord(i)
+		if Game_CoordCalculator.is_in_range(pos, _source_position,
 				Game_DungeonSize.CENTER_X):
 			continue
 
