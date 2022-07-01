@@ -33,8 +33,7 @@ func _bandit_act() -> void:
 	_approach_pc([_destination[id]])
 
 	# print(String(_destination[id].x) + "," + String(_destination[id].y))
-	# print(Game_CoordCalculator.get_range(_self_pos.x, _self_pos.y,
-	# 		_destination[id].x, _destination[id].y))
+	# print(Game_CoordCalculator.get_range(_self_pos, _destination[id]))
 	# print("==========")
 
 
@@ -44,18 +43,21 @@ func _bird_act() -> void:
 	var is_alert := false
 
 	for i in bandits:
-		pos = Game_ConvertCoord.vector_to_coord(i.position)
-		if Game_CoordCalculator.is_inside_range(pos.x, pos.y,
-				_self_pos.x, _self_pos.y, Game_BaronData.ALERT_RANGE):
+		# One of the previous bandits has already alerted the bird.
+		if is_alert:
+			break
+		# The bird might be alerted by a nearby bandit.
+		pos = Game_ConvertCoord.sprite_to_coord(i)
+		if Game_CoordCalculator.is_in_range(pos, _self_pos,
+				Game_BaronData.ALERT_RANGE):
 			is_alert = _ref_RandomNumber.get_percent_chance(
 					Game_BaronData.BANDIT_ALERT)
-			break
+	# The bird has a small chance to be alerted when being alone.
 	is_alert = is_alert or _ref_RandomNumber.get_percent_chance(
 			Game_BaronData.BASE_ALERT)
 
 	if is_alert:
-		_ref_RemoveObject.remove_actor(_self_pos.x, _self_pos.y,
-				Game_BaronData.TREE_LAYER)
+		_ref_RemoveObject.remove_actor(_self_pos, Game_BaronData.TREE_LAYER)
 
 
 func _get_destination() -> Game_IntCoord:
@@ -66,17 +68,16 @@ func _get_destination() -> Game_IntCoord:
 				Game_MainTag.GROUND) + _ref_DungeonBoard.get_sprites_by_tag(
 				Game_SubTag.TREE_BRANCH)
 		for i in range(0, _ground_coords.size()):
-			pos = Game_ConvertCoord.vector_to_coord(_ground_coords[i].position)
+			pos = Game_ConvertCoord.sprite_to_coord(_ground_coords[i])
 			_ground_coords[i] = pos
 
+	pos = _self_pos
 	Game_ArrayHelper.shuffle(_ground_coords, _ref_RandomNumber)
 	for i in _ground_coords:
-		if Game_CoordCalculator.get_range(_self_pos.x, _self_pos.y, i.x, i.y) \
-				> MIN_TRAVEL_DISTANCE:
+		if Game_CoordCalculator.is_out_of_range(_self_pos, i,
+				MIN_TRAVEL_DISTANCE):
 			pos = i
 			break
-		else:
-			pos = _self_pos
 	return pos
 
 
@@ -86,7 +87,7 @@ func _reach_destination(id: int) -> bool:
 
 
 func _is_obstacle(x: int, y: int) -> bool:
-	return _ref_DungeonBoard.has_sprite_with_sub_tag(Game_SubTag.TREE_TRUNK,
+	return _ref_DungeonBoard.has_sprite_with_sub_tag_xy(Game_SubTag.TREE_TRUNK,
 		x, y)
 
 
@@ -94,4 +95,4 @@ func _is_passable_func(source_array: Array, current_index: int,
 		_opt_arg: Array) -> bool:
 	var x: int = source_array[current_index].x
 	var y: int = source_array[current_index].y
-	return not _ref_DungeonBoard.has_actor(x, y)
+	return not _ref_DungeonBoard.has_actor_xy(x, y)
