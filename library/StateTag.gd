@@ -48,3 +48,9 @@ const TURN_LEFT := {
 	DOWN: RIGHT,
 	LEFT: DOWN,
 }
+
+
+static func is_opposite_direction(this_dir: int, that_dir: int) -> bool:
+	if OPPOSITE_DIRECTION.has(this_dir) and OPPOSITE_DIRECTION.has(that_dir):
+		return this_dir == OPPOSITE_DIRECTION[that_dir]
+	return false
