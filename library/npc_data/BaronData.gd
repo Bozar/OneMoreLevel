@@ -15,7 +15,7 @@ const MAX_HP := 9
 
 const BASE_SIGHT := 4
 const NEAR_SIGHT := 3
-const SIGHT_THRESHOLD := 1
+const SIGHT_THRESHOLD := 0
 
 const MAJOR_RESTORE := 7
 const MINOR_RESTORE := 2

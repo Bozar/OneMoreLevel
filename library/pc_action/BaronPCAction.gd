@@ -1,6 +1,12 @@
 extends Game_PCActionTemplate
 
 
+enum {
+	MAJOR_FIND,
+	MINOR_FIND,
+	NO_FIND,
+}
+
 var _spr_TreeTrunk := preload("res://sprite/TreeTrunk.tscn")
 
 var _count_bandits := 0
@@ -74,7 +80,7 @@ func attack() -> void:
 
 func interact_with_building() -> void:
 	_move_in_tree()
-	_try_find_bandit()
+	_try_end_turn(_try_find_bandit())
 
 
 func wait() -> void:
@@ -82,7 +88,7 @@ func wait() -> void:
 			_source_position):
 		end_turn = false
 	else:
-		_try_find_bandit()
+		_try_end_turn(_try_find_bandit())
 
 
 func _move_in_tree() -> void:
@@ -135,46 +141,81 @@ func _is_above_ground_actor(actor: Sprite) -> bool:
 			or actor.is_in_group(Game_SubTag.PC)
 
 
-func _try_find_bandit() -> void:
+func _try_find_bandit() -> int:
 	var pos: Game_IntCoord
+	var bandits := []
+	var max_hp: int
+	var this_bandit: Sprite
 	var hp: int
 	var new_tag: String
-	var major_find := false
-	var minor_find := false
-	var restore_turn := 0
-	var win := false
 
+	# Find bandits in sight who are not under tree branches.
 	for i in _ref_DungeonBoard.get_sprites_by_tag(Game_SubTag.BANDIT):
 		pos = Game_ConvertCoord.sprite_to_coord(i)
 		if Game_ShadowCastFOV.is_in_sight(pos.x, pos.y) \
 				and not _ref_DungeonBoard.has_building(pos):
-			_ref_ObjectData.add_hit_point(i, 1)
-			hp = _ref_ObjectData.get_hit_point(i)
-			if hp >= Game_BaronData.MAX_HP:
-				major_find = true
-				_count_bandits += 1
-				_ref_RemoveObject.remove_actor(pos)
-			else:
-				minor_find = true
-				new_tag = Game_SpriteTypeTag.convert_digit_to_tag(
-						Game_BaronData.MAX_HP - hp)
-				_ref_SwitchSprite.set_sprite(i, new_tag)
+			bandits.push_back(i)
+	if bandits.size() < 1:
+		return NO_FIND
 
-	if major_find:
-		restore_turn = Game_BaronData.MAJOR_RESTORE
-		# Reduce sight range when PC has found (SIGHT_THRESHOLD + 1) bandits.
-		if _count_bandits > Game_BaronData.SIGHT_THRESHOLD:
-			_fov_render_range = Game_BaronData.NEAR_SIGHT
-	elif minor_find:
-		restore_turn = Game_BaronData.MINOR_RESTORE
+	# Select a bandit with the most hit points.
+	bandits.sort_custom(self, "_sort_by_hp")
+	max_hp = _ref_ObjectData.get_hit_point(bandits[0])
+	Game_ArrayHelper.filter_element(bandits, self, "_filter_by_hp", [max_hp])
+	Game_ArrayHelper.rand_picker(bandits, 1, _ref_RandomNumber)
 
-	if _count_bandits == Game_BaronData.MAX_BANDIT:
+	# Add the bandit's hit point by 1.
+	this_bandit = bandits[0]
+	_ref_ObjectData.add_hit_point(this_bandit, 1)
+	hp = _ref_ObjectData.get_hit_point(this_bandit)
+
+	# Remove the bandit if he is fully revealed.
+	if hp >= Game_BaronData.MAX_HP:
+		_count_bandits += 1
+		pos = Game_ConvertCoord.sprite_to_coord(this_bandit)
+		_ref_RemoveObject.remove_actor(pos)
+		return MAJOR_FIND
+
+	# Otherwise, update the bandit's sprite according to his remaining hp.
+	hp = Game_BaronData.MAX_HP - hp
+	new_tag = Game_SpriteTypeTag.convert_digit_to_tag(hp)
+	_ref_SwitchSprite.set_sprite(this_bandit, new_tag)
+	return MINOR_FIND
+
+
+# [max_hp, ..., min_hp]
+func _sort_by_hp(left: Sprite, right: Sprite) -> bool:
+	return _ref_ObjectData.get_hit_point(right) \
+			< _ref_ObjectData.get_hit_point(left)
+
+
+func _filter_by_hp(source: Array, index: int, opt_arg: Array) -> bool:
+	var max_hp: int = opt_arg[0]
+	return _ref_ObjectData.get_hit_point(source[index]) == max_hp
+
+
+func _try_end_turn(find_result: int) -> void:
+	var restore_turn := 0
+	var win := false
+
+	# Set PC's turn restoration and fov range.
+	match find_result:
+		MINOR_FIND:
+			restore_turn = Game_BaronData.MINOR_RESTORE
+		MAJOR_FIND:
+			restore_turn = Game_BaronData.MAJOR_RESTORE
+			# Reduce sight range if PC has found (SIGHT_THRESHOLD + 1) bandits.
+			if _count_bandits > Game_BaronData.SIGHT_THRESHOLD:
+				_fov_render_range = Game_BaronData.NEAR_SIGHT
+
+	# Decide if PC has won the game.
+	if _count_bandits >= Game_BaronData.MAX_BANDIT:
 		win = true
 	elif _ref_CountDown.get_count(false) == 1:
 		# Does not see any bandits on the last turn AND has already found enough
 		# bandits.
-		if (not (major_find or minor_find)) \
-				and (_count_bandits >= Game_BaronData.MIN_BANDIT):
+		if (find_result == NO_FIND) and (_count_bandits \
+				>= Game_BaronData.MIN_BANDIT):
 			win = true
 
 	if win:
