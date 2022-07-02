@@ -1,12 +1,6 @@
 extends Game_PCActionTemplate
 
 
-enum {
-	MAJOR_FIND,
-	MINOR_FIND,
-	NO_FIND,
-}
-
 var _spr_TreeTrunk := preload("res://sprite/TreeTrunk.tscn")
 
 var _count_bandits := 0
@@ -147,6 +141,7 @@ func _try_find_bandit() -> int:
 	var max_hp: int
 	var this_bandit: Sprite
 	var hp: int
+	var remaining_hp: int
 	var new_tag: String
 
 	# Find bandits in sight who are not under tree branches.
@@ -156,7 +151,7 @@ func _try_find_bandit() -> int:
 				and not _ref_DungeonBoard.has_building(pos):
 			bandits.push_back(i)
 	if bandits.size() < 1:
-		return NO_FIND
+		return 0
 
 	# Select a bandit with the most hit points.
 	bandits.sort_custom(self, "_sort_by_hp")
@@ -174,13 +169,12 @@ func _try_find_bandit() -> int:
 		_count_bandits += 1
 		pos = Game_ConvertCoord.sprite_to_coord(this_bandit)
 		_ref_RemoveObject.remove_actor(pos)
-		return MAJOR_FIND
-
 	# Otherwise, update the bandit's sprite according to his remaining hp.
-	hp = Game_BaronData.MAX_HP - hp
-	new_tag = Game_SpriteTypeTag.convert_digit_to_tag(hp)
-	_ref_SwitchSprite.set_sprite(this_bandit, new_tag)
-	return MINOR_FIND
+	else:
+		remaining_hp = Game_BaronData.MAX_HP - hp
+		new_tag = Game_SpriteTypeTag.convert_digit_to_tag(remaining_hp)
+		_ref_SwitchSprite.set_sprite(this_bandit, new_tag)
+	return hp
 
 
 # [max_hp, ..., min_hp]
@@ -194,19 +188,23 @@ func _filter_by_hp(source: Array, index: int, opt_arg: Array) -> bool:
 	return _ref_ObjectData.get_hit_point(source[index]) == max_hp
 
 
-func _try_end_turn(find_result: int) -> void:
+func _try_end_turn(bandit_hp: int) -> void:
 	var restore_turn := 0
 	var win := false
 
 	# Set PC's turn restoration and fov range.
-	match find_result:
-		MINOR_FIND:
-			restore_turn = Game_BaronData.MINOR_RESTORE
-		MAJOR_FIND:
-			restore_turn = Game_BaronData.MAJOR_RESTORE
-			# Reduce sight range if PC has found (SIGHT_THRESHOLD + 1) bandits.
-			if _count_bandits > Game_BaronData.SIGHT_THRESHOLD:
-				_fov_render_range = Game_BaronData.NEAR_SIGHT
+	if bandit_hp >= Game_BaronData.MAX_HP:
+		restore_turn = Game_BaronData.FINAL_RESTORE
+		# Reduce sight range if PC has found (SIGHT_THRESHOLD + 1) bandits.
+		if _count_bandits > Game_BaronData.SIGHT_THRESHOLD:
+			_fov_render_range = Game_BaronData.NEAR_SIGHT
+	elif bandit_hp > 0:
+		# Previously, the bandit's hit point is even and his sprite digit is
+		# odd. Note that `sprite_digit = 9 - hp`.
+		if bandit_hp % 2 == 1:
+			restore_turn = Game_BaronData.THRESHOLD_RESTORE
+		else:
+			restore_turn = Game_BaronData.BASE_RESTORE
 
 	# Decide if PC has won the game.
 	if _count_bandits >= Game_BaronData.MAX_BANDIT:
@@ -214,8 +212,7 @@ func _try_end_turn(find_result: int) -> void:
 	elif _ref_CountDown.get_count(false) == 1:
 		# Does not see any bandits on the last turn AND has already found enough
 		# bandits.
-		if (find_result == NO_FIND) and (_count_bandits \
-				>= Game_BaronData.MIN_BANDIT):
+		if (bandit_hp == 0) and (_count_bandits >= Game_BaronData.MIN_BANDIT):
 			win = true
 
 	if win:

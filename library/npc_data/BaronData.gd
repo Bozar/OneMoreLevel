@@ -17,5 +17,6 @@ const BASE_SIGHT := 4
 const NEAR_SIGHT := 3
 const SIGHT_THRESHOLD := 0
 
-const MAJOR_RESTORE := 7
-const MINOR_RESTORE := 2
+const FINAL_RESTORE := 7
+const BASE_RESTORE := 1
+const THRESHOLD_RESTORE := 2
