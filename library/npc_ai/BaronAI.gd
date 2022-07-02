@@ -38,11 +38,15 @@ func _bandit_act() -> void:
 
 
 func _bird_act() -> void:
-	var bandits := _ref_DungeonBoard.get_sprites_by_tag(Game_SubTag.BANDIT)
 	var pos: Game_IntCoord
 	var is_alert := false
 
-	for i in bandits:
+	# The default value is false. Set it to true at the end of PC's turn:
+	# BaronProgress._respawn_bird(). Let PC see the bird for at least one turn.
+	if not _ref_ObjectData.get_bool(_self):
+		return
+
+	for i in _ref_DungeonBoard.get_sprites_by_tag(Game_SubTag.BANDIT):
 		# One of the previous bandits has already alerted the bird.
 		if is_alert:
 			break

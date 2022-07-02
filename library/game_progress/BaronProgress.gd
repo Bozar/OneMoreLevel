@@ -93,12 +93,20 @@ func _mark_tree_trunk() -> void:
 
 
 func _respawn_bird() -> void:
-	var trees := _ref_DungeonBoard.get_sprites_by_tag(Game_MainTag.BUILDING)
-	var count_bird := _ref_DungeonBoard.get_sprites_by_tag(Game_SubTag.BIRD) \
-			.size()
+	var birds := _ref_DungeonBoard.get_sprites_by_tag(Game_SubTag.BIRD)
+	var count_bird := birds.size()
+	var trees: Array
 	var pos: Game_IntCoord
 	var has_neighbor: bool
 
+	# PC has seen all the birds. Refer: BaronAI._bird_act().
+	for i in birds:
+		_ref_ObjectData.set_bool(i, true)
+	# Do not respawn if there are enough birds.
+	if count_bird >= Game_BaronData.MAX_BIRD:
+		return
+
+	trees = _ref_DungeonBoard.get_sprites_by_tag(Game_MainTag.BUILDING)
 	Game_ArrayHelper.shuffle(trees, _ref_RandomNumber)
 	for i in trees:
 		# There are enough birds.
