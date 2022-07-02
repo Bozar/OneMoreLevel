@@ -91,12 +91,10 @@ func _parse_prefab(this_prefab: Game_DungeonPrefab.PackedPrefab,
 				CHAR_TRUNK:
 					_add_building_to_blueprint(_spr_TreeTrunk,
 							Game_SubTag.TREE_TRUNK, this_x, this_y)
-					_set_terrain_marker(this_x, this_y, TRUNK)
 					is_ground = false
 				CHAR_BRANCH:
 					_add_building_to_blueprint(_spr_TreeBranch,
 							Game_SubTag.TREE_BRANCH, this_x, this_y)
-					_set_terrain_marker(this_x, this_y, BRANCH)
 				_:
 					_add_ground_to_blueprint(_spr_Floor,
 							Game_SubTag.FLOOR, this_x, this_y)
@@ -121,10 +119,20 @@ func _create_pc(terrain_map: Array) -> void:
 
 
 func _create_bird(terrain_map: Array) -> void:
-	terrain_map.resize(Game_BaronData.MAX_BIRD)
+	var count_bird := 0
+
 	for i in terrain_map:
+		if count_bird >= Game_BaronData.MAX_BIRD:
+			break
+		if _is_terrain_marker(i.x, i.y, BIRD):
+			continue
+
+		count_bird += 1
 		_add_actor_to_blueprint(_spr_Bird, Game_SubTag.BIRD, i.x, i.y,
 				Game_BaronData.TREE_LAYER)
+		for j in Game_CoordCalculator.get_neighbor(i,
+				Game_BaronData.MIN_BIRD_GAP, true):
+			_set_terrain_marker(j.x, j.y, BIRD)
 
 
 func _create_bandit(terrain_map: Array) -> void:

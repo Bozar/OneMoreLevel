@@ -3,7 +3,7 @@ class_name Game_BaronData
 
 const TREE_LAYER := 1
 const MAX_BIRD := 20
-const MIN_BIRD_GAP := 2
+const MIN_BIRD_GAP := 3
 
 const ALERT_RANGE := 3
 const BASE_ALERT := 10
