@@ -1,7 +1,8 @@
 extends Game_AITemplate
 
 
-const MIN_TRAVEL_DISTANCE := Game_DungeonSize.CENTER_X
+const MAX_TRAVEL_DISTANCE := Game_DungeonSize.CENTER_X
+const MIN_TRAVEL_DISTANCE := 3
 
 var _destination := {}
 var _ground_coords := []
@@ -78,8 +79,9 @@ func _get_destination() -> Game_IntCoord:
 	pos = _self_pos
 	Game_ArrayHelper.shuffle(_ground_coords, _ref_RandomNumber)
 	for i in _ground_coords:
-		if Game_CoordCalculator.is_out_of_range(_self_pos, i,
-				MIN_TRAVEL_DISTANCE):
+		if Game_CoordCalculator.is_in_range(_self_pos, i, MAX_TRAVEL_DISTANCE) \
+				and Game_CoordCalculator.is_out_of_range(_self_pos, i,
+						MIN_TRAVEL_DISTANCE):
 			pos = i
 			break
 	return pos

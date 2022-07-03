@@ -199,12 +199,7 @@ func _try_end_turn(bandit_hp: int) -> void:
 		if _count_bandits > Game_BaronData.SIGHT_THRESHOLD:
 			_fov_render_range = Game_BaronData.NEAR_SIGHT
 	elif bandit_hp > 0:
-		# Previously, the bandit's hit point is even and his sprite digit is
-		# odd. Note that `sprite_digit = 9 - hp`.
-		if bandit_hp % 2 == 1:
-			restore_turn = Game_BaronData.THRESHOLD_RESTORE
-		else:
-			restore_turn = Game_BaronData.BASE_RESTORE
+		restore_turn = Game_BaronData.BASE_RESTORE
 
 	# Decide if PC has won the game.
 	if _count_bandits >= Game_BaronData.MAX_BANDIT:
@@ -212,7 +207,7 @@ func _try_end_turn(bandit_hp: int) -> void:
 	elif _ref_CountDown.get_count(false) == 1:
 		# Does not see any bandits on the last turn AND has already found enough
 		# bandits.
-		if (bandit_hp == 0) and (_count_bandits >= Game_BaronData.MIN_BANDIT):
+		if (bandit_hp < 1) and (_count_bandits >= Game_BaronData.MIN_BANDIT):
 			win = true
 
 	if win:
