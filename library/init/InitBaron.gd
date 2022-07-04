@@ -27,9 +27,9 @@ func _init(parent_node: Node2D).(parent_node) -> void:
 func get_blueprint() -> Array:
 	var terrain_map := _create_tree_floor()
 
-	_create_pc(terrain_map[BIRD])
-	_create_bird(terrain_map[BIRD])
 	_create_bandit(terrain_map[BANDIT])
+	_create_pc(terrain_map[BIRD], terrain_map[BANDIT])
+	_create_bird(terrain_map[BIRD])
 
 	return _blueprint
 
@@ -109,10 +109,24 @@ func _parse_prefab(this_prefab: Game_DungeonPrefab.PackedPrefab,
 	terrain[BANDIT].push_back(grounds.pop_back())
 
 
-func _create_pc(terrain_map: Array) -> void:
+func _create_pc(terrain_map: Array, bandit_map: Array) -> void:
+	var goto_next: bool
 	var pc_pos: Game_IntCoord
 
 	Game_ArrayHelper.shuffle(terrain_map, _ref_RandomNumber)
+	for i in range(0, terrain_map.size()):
+		goto_next = false
+		for j in bandit_map:
+			if Game_CoordCalculator.is_in_range(j, terrain_map[i],
+					Game_BaronData.BASE_SIGHT):
+				goto_next = true
+				break
+		if goto_next:
+			continue
+		Game_ArrayHelper.swap_element(terrain_map, i, terrain_map.size() - 1)
+		break
+	# Even if all grids are within Y_STEP to bandits, the last element in
+	# terrain_map is still a tree grid and therefore is available.
 	pc_pos = terrain_map.pop_back()
 	_add_actor_to_blueprint(_spr_PCBaron, Game_SubTag.PC, pc_pos.x, pc_pos.y,
 			Game_BaronData.TREE_LAYER)

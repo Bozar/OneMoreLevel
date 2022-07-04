@@ -54,8 +54,8 @@ static func duplicate_element(source_array: Array, func_host: Object,
 	merge(source_array, tmp)
 
 
-static func swap_element(source_array: Array,
-		left_index: int, right_index: int) -> void:
+static func swap_element(source_array: Array, left_index: int,
+		right_index: int) -> void:
 	var tmp
 
 	tmp = source_array[left_index]
