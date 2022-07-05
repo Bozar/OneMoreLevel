@@ -6,11 +6,11 @@
 >
 > -- The Baron in the Trees, Chapter 17
 
-There are 5 bandits lunking in the woods. In order to protect his village, the baron in the trees needs to find out at least 2 of them in 24 turns.
+There are 5 bandits lurking in the woods. In order to protect his village, the baron in the trees needs to find out at least 2 of them in 24 turns.
 
 ## Ground Layer and Canopy Layer
 
-The dungeon map has two layers: ground layer and canopy layer. Bandits walk on the ground. The baron and birds stay on the canopy. Trees are rooted in the ground and stretch themselves into the higher layer.
+The dungeon map has two layers: ground layer and canopy layer. Bandits walk on the ground. The baron and birds stay in the canopy. Trees are rooted in the ground and stretch themselves into the higher layer.
 
 An unoccupied and uncovered ground grid is shown as a minus sign (-). An unoccupied ground grid that is covered by a tree branch is shown as a plus sign (+). A ground grid that is occupied by a tree trunk is shown as an uppercase O. A marked tree trunk (see *Search Bandits*) is shown as an exclamation mark (!).
 
@@ -45,7 +45,7 @@ When PC's turn starts, if he can see only one bandit, the bandit loses 1 hit poi
 
 If the bandit has one or more hit points left, PC restores 1 turn.
 
-If the bandit has no hit points left, PC restores 10 turns. The bandit is removed from the game forever. A random tree trunk turns from a letter O to an exclamation mark. It means that PC has fully revealed the bandit's secrets and has found out a point of interest. The marked trunk acts as an indicator of the number of bandits you have discovered and it behaves the same as an unmarked one in other aspects.
+If the bandit has no hit points left, PC restores 10 turns. The bandit is removed from the game forever. A random tree trunk turns from a letter O to an exclamation mark. It means that PC has fully revealed the bandit's secrets and has found out a point of interest. The marked trunk acts as an indicator of the number of bandits you have discovered. It behaves the same as an unmarked one in other aspects.
 
 A bandit has 9 hit points. PC has at most 24 turns. As mentioned above, PC needs to reveal at least 2 of the 5 bandits to beat the game. When the last turn ends and PC has only found zero or one bandit, he loses.
 
