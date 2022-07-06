@@ -2,8 +2,9 @@ extends Node2D
 class_name Game_AutoStart
 
 
-var _started: bool = false
-var _path_to_init: String = "../InitWorld"
+const PATH_TO_INIT := "../InitWorld"
+
+var _started := false
 
 
 func _process(_delta) -> void:
@@ -11,5 +12,5 @@ func _process(_delta) -> void:
 		queue_free()
 		return
 
-	get_node(_path_to_init).init_world()
+	get_node(PATH_TO_INIT).init_world()
 	_started = true

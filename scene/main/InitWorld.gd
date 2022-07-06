@@ -36,15 +36,15 @@ func init_world() -> void:
 	for sb in _world_template.get_blueprint():
 		if _is_pc(sb.sub_tag):
 			_init_indicator(sb.x, sb.y)
-		_ref_CreateObject.create_xy(sb.scene, sb.main_tag, sb.sub_tag, sb.x, sb.y,
-				sb.sprite_layer)
+		_ref_CreateObject.create_xy(sb.scene, sb.main_tag, sb.sub_tag,
+				sb.x, sb.y, sb.sprite_layer)
 	_ref_Schedule.init_schedule()
 	_world_template.clear_blueprint()
 
 
 func _on_GameSetting_setting_saved(save_data: Game_TransferData,
 		_save_tag: int) -> void:
-	save_data.world_tag = _world_tag
+	save_data.overwrite_include_world = [_world_tag]
 
 
 func _get_world() -> Game_WorldTemplate:

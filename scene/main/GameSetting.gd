@@ -32,11 +32,12 @@ var _json_parse_error: bool
 
 
 func load_setting() -> void:
-	var setting_data: Dictionary = {}
+	var setting_data := {}
 	var __
 	var transfer: Game_TransferData
 	var json_parser: Game_FileParser
 
+	# Load settings from setting.json.
 	_json_parse_error = false
 	for i in [SETTING_EXE_PATH, SETTING_RES_PATH]:
 		if not Game_FileIOHelper.has_file(i):
@@ -47,6 +48,20 @@ func load_setting() -> void:
 			setting_data = json_parser.output_json
 			break
 
+	# Use settings from previous game if available. However, PALETTE is always
+	# loaded from setting.json.
+	if get_tree().root.has_node(TRANSFER_NODE):
+		transfer = get_tree().root.get_node(TRANSFER_NODE)
+		if transfer.overwrite_setting:
+			setting_data[INCLUDE_WORLD] = transfer.overwrite_include_world
+			setting_data[SEED] = transfer.rng_seed
+		else:
+			setting_data[INCLUDE_WORLD] = transfer.include_world
+			setting_data[SEED] = 0
+		setting_data[WIZARD] = transfer.wizard_mode
+		setting_data[EXCLUDE_WORLD] = transfer.exclude_world
+		setting_data[SHOW_FULL_MAP] = transfer.show_full_map
+
 	_wizard_mode = _set_wizard_mode(setting_data)
 	_rng_seed = _set_rng_seed(setting_data)
 	_include_world = _set_include_world(setting_data)
@@ -54,25 +69,27 @@ func load_setting() -> void:
 	_show_full_map = _set_show_full_map(setting_data)
 	_palette = _set_palette(setting_data)
 
-	if get_tree().root.has_node(TRANSFER_NODE):
-		transfer = get_tree().root.get_node(TRANSFER_NODE)
-		_rng_seed = transfer.rng_seed
-		_include_world = [transfer.world_tag]
-
-		get_tree().root.remove_child(transfer)
-		transfer.queue_free()
+	if not get_tree().root.has_node(TRANSFER_NODE):
+		# Create TRANSFER_NODE.
+		transfer = load(TRANSFER_SCENE).instance()
+		get_tree().root.add_child(transfer)
+		# Initialize data.
+		transfer.rng_seed = get_rng_seed()
+		transfer.include_world = get_include_world()
+		transfer.wizard_mode = get_wizard_mode()
+		transfer.exclude_world = get_exclude_world()
+		transfer.show_full_map = get_show_full_map()
+	# Set overwrite_setting to true in save_setting(). Reset it to false
+	# otherwise.
+	transfer.overwrite_setting = false
 
 	emit_signal("setting_loaded")
 
 
 func save_setting(save_tag: int) -> void:
-	var transfer: Game_TransferData
+	var transfer: Game_TransferData = get_tree().root.get_node(TRANSFER_NODE)
 
-	if get_tree().root.has_node(TRANSFER_NODE):
-		transfer = get_tree().root.get_node(TRANSFER_NODE)
-	else:
-		transfer = load(TRANSFER_SCENE).instance()
-		get_tree().root.add_child(transfer)
+	transfer.overwrite_setting = true
 	emit_signal("setting_saved", transfer, save_tag)
 
 
