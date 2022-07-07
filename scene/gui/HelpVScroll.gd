@@ -4,7 +4,7 @@ class_name Game_HelpVScroll
 
 const SCROLL_LINE: int = 20
 const SCROLL_PAGE: int = 300
-const DUNGEON: String = "HelpHBox/Dungeon"
+const DUNGEON: String = "Dungeon"
 
 var _ref_Palette: Game_Palette
 

@@ -6,25 +6,15 @@
 [node name="HelpGUI" type="MarginContainer"]
 margin_right = 800.0
 margin_bottom = 600.0
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
 [node name="HelpVScroll" type="ScrollContainer" parent="."]
 margin_right = 800.0
 margin_bottom = 600.0
 script = ExtResource( 2 )
 
-[node name="HelpHBox" type="HBoxContainer" parent="HelpVScroll"]
+[node name="Dungeon" parent="HelpVScroll" instance=ExtResource( 1 )]
 margin_right = 800.0
 margin_bottom = 600.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
-
-[node name="Dungeon" parent="HelpVScroll/HelpHBox" instance=ExtResource( 1 )]
-margin_right = 800.0
-margin_bottom = 600.0
-size_flags_horizontal = 3
-size_flags_vertical = 3
-text = "Left: Dungeon"
 autowrap = true

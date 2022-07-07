@@ -21,8 +21,9 @@ General gameplay:
 
 Menu keys:
 
-* Help: Esc, Slash (/), [B].
-* Debug: V.
+* Open Help menu: Esc, Ctrl + [, Slash (/), [B].
+* Open Debug menu: V.
+* Exit menu: Esc, Ctrl + [, [B].
 
 Function keys:
 
@@ -37,7 +38,7 @@ Force reload and two replay keys start a new game in different ways.
 * Replay dungeon: The same seed and world tag.
 * Replay world: A random seed and the same world tag.
 
-Following keys are available only in help menu.
+Following keys are available in Help menu.
 
 * Move down: Down, J, S, [Direction pad down].
 * Move up: Up, K, W, [Direction pad up].
@@ -45,13 +46,8 @@ Following keys are available only in help menu.
 * Page up: PgUp, B, P, [LB].
 * Scroll to bottom: End, Shift + G, [RT].
 * Scroll to top: Home, G, [LT].
-* Exit help: Esc, Slash (/), [B].
 * Switch to next help: Enter, Right, L, D, [A], [Direction pad right].
 * Switch to previous help: Left, H, A, [Direction pad left].
-
-Following keys are available in debug menu.
-
-* Exit debug: Esc.
 
 These keys are available in wizard mode (see below).
 

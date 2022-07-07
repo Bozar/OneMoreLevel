@@ -6,7 +6,7 @@ var _ref_SwitchScreen: Game_SwitchScreen
 
 
 func _unhandled_input(event: InputEvent) -> void:
-	if _verify_input(event, Game_InputTag.LEAVE_DEBUG):
+	if _verify_input(event, Game_InputTag.CLOSE_MENU):
 		_ref_SwitchScreen.set_screen(Game_ScreenTag.DEBUG, Game_ScreenTag.MAIN)
 
 

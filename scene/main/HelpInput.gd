@@ -13,7 +13,7 @@ func _on_InitWorld_world_selected(_new_world: String) -> void:
 		return
 
 	_input_to_funcref = {
-		Game_InputTag.HELP:
+		Game_InputTag.CLOSE_MENU:
 			[_ref_SwitchScreen, "set_screen", [Game_ScreenTag.HELP,
 					Game_ScreenTag.MAIN]],
 		Game_InputTag.MOVE_DOWN:

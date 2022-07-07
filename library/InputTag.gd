@@ -12,7 +12,7 @@ const RELOAD := "reload"
 const REPLAY_DUNGEON := "replay_dungeon"
 const REPLAY_WORLD := "replay_world"
 const QUIT := "quit"
-const HELP := "help"
+const OPEN_HELP := "open_help"
 const COPY_SEED := "copy_seed"
 
 const INIT_WORLD := "init_world"
@@ -27,8 +27,8 @@ const SCROLL_TO_BOTTOM := "scroll_to_bottom"
 const NEXT_HELP := "next_help"
 const PREVIOUS_HELP := "previous_help"
 
-const ENTER_DEBUG := "enter_debug"
-const LEAVE_DEBUG := "leave_debug"
+const OPEN_DEBUG := "open_debug"
+const CLOSE_MENU := "close_menu"
 
 const DIRECTION_TO_COORD := {
 	MOVE_UP: [0, -1],

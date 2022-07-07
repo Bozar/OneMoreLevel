@@ -30,7 +30,7 @@ const EXCLUDE_PLACEHOLDER := "INITIAL VALUE: DEMO"
 const SHOW_TEXT := "ShowMap"
 const SHOW_PLACEHOLDER := "DEFAULT VALUE: FALSE"
 
-const TRUE_PATTERN := ["true", "1"]
+const TRUE_PATTERN := "true"
 const VERSION_PREFIX := "Version: "
 const SEPARATOR := ","
 const TRAILING_SPACE := " "
@@ -147,7 +147,7 @@ func _save_as_array(source: String) -> Array:
 func _save_as_bool(source: String) -> bool:
 	var tmp: String = get_node(source).text.to_lower().strip_edges()
 
-	if tmp in TRUE_PATTERN:
+	if (tmp == TRUE_PATTERN) or (int(tmp) > 0):
 		return true
 	return false
 
