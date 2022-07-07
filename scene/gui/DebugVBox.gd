@@ -5,6 +5,8 @@ class_name Game_DebugVBox
 const TRANSFER_NODE := "/root/TransferData"
 
 const HEADER := "Header"
+const SETTING := "SettingVBox"
+const FOOTER := "Footer"
 const SEED_LABEL := "SettingVBox/Seed/GUIText"
 const SEED_INPUT := "SettingVBox/Seed/GUIInput"
 const INCLUDE_LABEL := "SettingVBox/IncludeWorld/GUIText"
@@ -29,6 +31,7 @@ const SHOW_TEXT := "ShowMap"
 const SHOW_PLACEHOLDER := "DEFAULT VALUE: FALSE"
 
 const TRUE_PATTERN := ["true", "1"]
+const VERSION_PREFIX := "Version: "
 const SEPARATOR := ","
 const TRAILING_SPACE := " "
 
@@ -40,7 +43,7 @@ func _ready() -> void:
 
 
 func _on_InitWorld_world_selected(_new_world: String) -> void:
-	modulate = _ref_Palette.get_text_color(true)
+	_init_text_color()
 	_init_label_text()
 	_init_input_placeholder()
 
@@ -58,6 +61,7 @@ func _on_SwitchScreen_screen_switched(source: int, target: int) -> void:
 func _init_label_text() -> void:
 	var label_to_text := {
 		HEADER: HEADER_TEXT,
+		FOOTER: Game_SidebarText.VERSION.format([VERSION_PREFIX]),
 		SEED_LABEL: SEED_TEXT,
 		INCLUDE_LABEL: INCLUDE_TEXT,
 		WIZARD_LABEL: WIZARD_TEXT,
@@ -80,6 +84,17 @@ func _init_input_placeholder() -> void:
 
 	for i in input_to_placeholder.keys():
 		get_node(i).placeholder_text = input_to_placeholder[i]
+
+
+func _init_text_color() -> void:
+	var node_to_color := {
+		HEADER: true,
+		SETTING: true,
+		FOOTER: false,
+	}
+
+	for i in node_to_color:
+		get_node(i).modulate = _ref_Palette.get_text_color(node_to_color[i])
 
 
 func _load_settings() -> void:
