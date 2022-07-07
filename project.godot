@@ -69,6 +69,16 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://scene/main/DangerZone.gd"
 }, {
+"base": "Game_InputTemplate",
+"class": "Game_DebugInput",
+"language": "GDScript",
+"path": "res://scene/main/DebugInput.gd"
+}, {
+"base": "VBoxContainer",
+"class": "Game_DebugVBox",
+"language": "GDScript",
+"path": "res://scene/gui/DebugVBox.gd"
+}, {
 "base": "Reference",
 "class": "Game_DemoData",
 "language": "GDScript",
@@ -377,6 +387,8 @@ _global_script_class_icons={
 "Game_CreateObject": "",
 "Game_CrossShapedFOV": "",
 "Game_DangerZone": "",
+"Game_DebugInput": "",
+"Game_DebugVBox": "",
 "Game_DemoData": "",
 "Game_DesertData": "",
 "Game_DijkstraPathFinding": "",
@@ -600,6 +612,16 @@ replay_world={
 "deadzone": 0.5,
 "events": [ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":85,"physical_scancode":0,"unicode":0,"echo":false,"script":null)
 , Object(InputEventJoypadButton,"resource_local_to_scene":false,"resource_name":"","device":0,"button_index":11,"pressure":0.0,"pressed":false,"script":null)
+ ]
+}
+enter_debug={
+"deadzone": 0.5,
+"events": [ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":86,"physical_scancode":0,"unicode":0,"echo":false,"script":null)
+ ]
+}
+leave_debug={
+"deadzone": 0.5,
+"events": [ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":16777217,"physical_scancode":0,"unicode":0,"echo":false,"script":null)
  ]
 }
 

@@ -5,6 +5,7 @@ class_name Game_TransferData
 # Press R or U to replay a game.
 var overwrite_setting: bool
 var overwrite_include_world: Array
+var overwrite_rng_seed: float
 
 var wizard_mode: bool
 var rng_seed: float

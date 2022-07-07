@@ -1,4 +1,4 @@
-[gd_scene load_steps=29 format=2]
+[gd_scene load_steps=31 format=2]
 
 [ext_resource path="res://scene/main/InitWorld.gd" type="Script" id=1]
 [ext_resource path="res://scene/gui/MainGUI.tscn" type="PackedScene" id=2]
@@ -28,6 +28,8 @@
 [ext_resource path="res://scene/main/Palette.gd" type="Script" id=26]
 [ext_resource path="res://scene/main/BoolState.gd" type="Script" id=27]
 [ext_resource path="res://scene/main/ObjectLayer.gd" type="Script" id=28]
+[ext_resource path="res://scene/gui/DebugGUI.tscn" type="PackedScene" id=29]
+[ext_resource path="res://scene/main/DebugInput.gd" type="Script" id=30]
 
 [node name="MainScene" type="Node2D"]
 script = ExtResource( 4 )
@@ -43,6 +45,8 @@ margin_left = 40.0
 margin_top = 40.0
 margin_right = 760.0
 margin_bottom = 560.0
+
+[node name="DebugGUI" parent="." instance=ExtResource( 29 )]
 
 [node name="AutoStart" type="Node2D" parent="."]
 script = ExtResource( 18 )
@@ -61,6 +65,9 @@ script = ExtResource( 10 )
 
 [node name="HelpInput" type="Node2D" parent="."]
 script = ExtResource( 24 )
+
+[node name="DebugInput" type="Node2D" parent="."]
+script = ExtResource( 30 )
 
 [node name="Schedule" type="Node2D" parent="."]
 script = ExtResource( 5 )

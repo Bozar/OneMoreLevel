@@ -52,8 +52,8 @@ func _on_EndGame_game_over(win: bool) -> void:
 		get_node(MESSAGE).text = Game_SidebarText.LOSE
 
 
-func _on_SwitchScreen_screen_switched(screen_tag: int) -> void:
-	visible = (screen_tag == Game_ScreenTag.MAIN)
+func _on_SwitchScreen_screen_switched(_source: int, target: int) -> void:
+	visible = (target == Game_ScreenTag.MAIN)
 
 
 func _set_color() -> void:

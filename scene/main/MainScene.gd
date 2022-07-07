@@ -21,6 +21,8 @@ const GAME_SETTING := "GameSetting"
 const PALETTE := "Palette"
 const SIDEBAR_GUI := "MainGUI/SidebarVBox"
 const HELP_GUI := "HelpGUI/HelpVScroll"
+const DEBUG_GUI := "DebugGUI/DebugVBox"
+const DEBUG_INPUT := "DebugInput"
 
 const SIGNAL_BIND := [
 	[
@@ -32,7 +34,7 @@ const SIGNAL_BIND := [
 		"world_selected", "_on_InitWorld_world_selected",
 		INIT_WORLD,
 		PLAYER_INPUT, ENEMY_AI, SIDEBAR_GUI, GAME_PROGRESS, HELP_GUI,
-		HELP_INPUT,
+		HELP_INPUT, DEBUG_GUI,
 	],
 	[
 		"turn_started", "_on_Schedule_turn_started",
@@ -68,6 +70,7 @@ const SIGNAL_BIND := [
 		"screen_switched", "_on_SwitchScreen_screen_switched",
 		SWITCH_SCREEN,
 		PLAYER_INPUT, CREATE_OBJECT, SIDEBAR_GUI, HELP_INPUT, HELP_GUI,
+		DEBUG_GUI, DEBUG_INPUT,
 	],
 	# [
 	# 	"enemy_warned", "_on_EnemyAI_enemy_warned",
@@ -135,7 +138,7 @@ const NODE_REF := [
 	[
 		"_ref_SwitchScreen",
 		SWITCH_SCREEN,
-		PLAYER_INPUT, HELP_INPUT,
+		PLAYER_INPUT, HELP_INPUT, DEBUG_INPUT,
 	],
 	[
 		"_ref_HelpVScroll",
@@ -146,7 +149,7 @@ const NODE_REF := [
 		"_ref_Palette",
 		PALETTE,
 		PLAYER_INPUT, SIDEBAR_GUI, CREATE_OBJECT, HELP_GUI, ENEMY_AI,
-		GAME_PROGRESS,
+		GAME_PROGRESS, DEBUG_GUI,
 	],
 ]
 

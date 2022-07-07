@@ -55,6 +55,9 @@ func _get_world() -> Game_WorldTemplate:
 	for i in [include_world, exclude_world]:
 		Game_ArrayHelper.filter_element(i, self, "_verify_world_tag", [])
 	if include_world.size() > 0:
+		# Do not modify _ref_GameSetting.get_include_world(), which returns
+		# TransferData.include_world.
+		include_world = include_world.duplicate()
 		Game_ArrayHelper.rand_picker(include_world, 1, _ref_RandomNumber)
 		_world_tag = include_world[0]
 	else:

@@ -54,10 +54,10 @@ func load_setting() -> void:
 		transfer = get_tree().root.get_node(TRANSFER_NODE)
 		if transfer.overwrite_setting:
 			setting_data[INCLUDE_WORLD] = transfer.overwrite_include_world
-			setting_data[SEED] = transfer.rng_seed
+			setting_data[SEED] = transfer.overwrite_rng_seed
 		else:
 			setting_data[INCLUDE_WORLD] = transfer.include_world
-			setting_data[SEED] = 0
+			setting_data[SEED] = transfer.rng_seed
 		setting_data[WIZARD] = transfer.wizard_mode
 		setting_data[EXCLUDE_WORLD] = transfer.exclude_world
 		setting_data[SHOW_FULL_MAP] = transfer.show_full_map

@@ -27,6 +27,9 @@ const SCROLL_TO_BOTTOM := "scroll_to_bottom"
 const NEXT_HELP := "next_help"
 const PREVIOUS_HELP := "previous_help"
 
+const ENTER_DEBUG := "enter_debug"
+const LEAVE_DEBUG := "leave_debug"
+
 const DIRECTION_TO_COORD := {
 	MOVE_UP: [0, -1],
 	MOVE_DOWN: [0, 1],

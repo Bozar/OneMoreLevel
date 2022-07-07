@@ -18,7 +18,7 @@ Press `Help` key to read these mechanics. The help text is also available in `do
 
 ## Change Game Settings
 
-Edit `data/setting.json` for play testing.
+Edit `data/setting.json` for play testing. You can also change settings in debug menu by pressing `V`. Debug settings overwrite their counterparts in json files.
 
 Set `wizard_mode` to `true` to enable wizard keys. When in wizard mode, there is a plus sign (+) on the left side of version number. If you see a question mark (?) instead, it means your `setting.json` is broken.
 

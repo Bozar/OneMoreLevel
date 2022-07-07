@@ -14,7 +14,8 @@ func _on_InitWorld_world_selected(_new_world: String) -> void:
 
 	_input_to_funcref = {
 		Game_InputTag.HELP:
-			[_ref_SwitchScreen, "switch_to_screen", [Game_ScreenTag.MAIN]],
+			[_ref_SwitchScreen, "set_screen", [Game_ScreenTag.HELP,
+					Game_ScreenTag.MAIN]],
 		Game_InputTag.MOVE_DOWN:
 			[_ref_HelpVScroll, "slide_scroll_bar", [true, true]],
 		Game_InputTag.MOVE_UP:
@@ -42,5 +43,5 @@ func _unhandled_input(event: InputEvent) -> void:
 			break
 
 
-func _on_SwitchScreen_screen_switched(screen_tag: int) -> void:
-	set_process_unhandled_input(screen_tag == Game_ScreenTag.HELP)
+func _on_SwitchScreen_screen_switched(_source: int, target: int) -> void:
+	set_process_unhandled_input(target == Game_ScreenTag.HELP)

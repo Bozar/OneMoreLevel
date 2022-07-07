@@ -39,7 +39,9 @@ func _unhandled_input(event: InputEvent) -> void:
 	elif _verify_input(event, Game_InputTag.COPY_SEED):
 		OS.set_clipboard(_ref_RandomNumber.get_rng_seed() as String)
 	elif _verify_input(event, Game_InputTag.HELP):
-		_ref_SwitchScreen.switch_to_screen(Game_ScreenTag.HELP)
+		_ref_SwitchScreen.set_screen(Game_ScreenTag.MAIN, Game_ScreenTag.HELP)
+	elif _verify_input(event, Game_InputTag.ENTER_DEBUG):
+		_ref_SwitchScreen.set_screen(Game_ScreenTag.MAIN, Game_ScreenTag.DEBUG)
 	elif _end_game:
 		if _verify_input(event, Game_InputTag.RELOAD):
 			get_node(RELOAD_GAME).reload()
@@ -106,8 +108,8 @@ func _on_EndGame_game_over(win: bool) -> void:
 	set_process_unhandled_input(true)
 
 
-func _on_SwitchScreen_screen_switched(screen_tag: int) -> void:
-	set_process_unhandled_input(screen_tag == Game_ScreenTag.MAIN)
+func _on_SwitchScreen_screen_switched(_source: int, target: int) -> void:
+	set_process_unhandled_input(target == Game_ScreenTag.MAIN)
 
 
 func _is_move_input(event: InputEvent) -> bool:
