@@ -21,7 +21,7 @@ General gameplay:
 
 Menu keys:
 
-* Open Help menu: Esc, Ctrl + [, Slash (/), [B].
+* Open Help menu: C, [B].
 * Open Debug menu: V.
 * Exit menu: Esc, Ctrl + [, [B].
 
@@ -30,7 +30,7 @@ Function keys:
 * Force reload: O, [Y].
 * Replay dungeon: R, [X].
 * Replay world: U, [Start].
-* Copy RNG seed to clipboard: Ctrl + C, Ctrl + Y.
+* Copy RNG seed to clipboard: Ctrl + C.
 
 Force reload and two replay keys start a new game in different ways.
 
@@ -48,6 +48,18 @@ Following keys are available in Help menu.
 * Scroll to top: Home, G, [LT].
 * Switch to next help: Enter, Right, L, D, [A], [Direction pad right].
 * Switch to previous help: Left, H, A, [Direction pad left].
+
+Following keys are available in Debug menu. Quote from `Godot Docs` with slight modification.
+
+* Copy: Ctrl + C.
+* Cut: Ctrl + X.
+* Paste/"yank": Ctrl + V, Ctrl + Y.
+* Undo: Ctrl + Z.
+* Redo: Ctrl + Shift + Z.
+* Delete text from the cursor position to the beginning of the line: Ctrl + U.
+* Delete text from the cursor position to the end of the line: Ctrl + K.
+* Select all text: Ctrl + A.
+* Move the cursor to the beginning/end of the line: Up/Down arrow.
 
 These keys are available in wizard mode (see below).
 

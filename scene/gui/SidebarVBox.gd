@@ -2,12 +2,12 @@ extends VBoxContainer
 class_name Game_SidebarVBox
 
 
-const TURN: String = "Upper/Turn"
-const MESSAGE: String = "Upper/Message"
-const WORLD: String = "Lower/World"
-const HELP: String = "Lower/Help"
-const VERSION: String = "Lower/Version"
-const SEED: String = "Lower/Seed"
+const TURN := "Upper/Turn"
+const MESSAGE := "Upper/Message"
+const WORLD := "Lower/World"
+const HELP := "Lower/Help"
+const VERSION := "Lower/Version"
+const SEED := "Lower/Seed"
 
 var _ref_RandomNumber: Game_RandomNumber
 var _ref_CountDown: Game_CountDown

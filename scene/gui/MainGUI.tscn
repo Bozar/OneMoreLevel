@@ -6,9 +6,6 @@
 [node name="MainGUI" type="MarginContainer"]
 margin_right = 800.0
 margin_bottom = 600.0
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
 [node name="SidebarVBox" type="VBoxContainer" parent="."]
 margin_left = 590.0
@@ -27,7 +24,6 @@ custom_constants/separation = 20
 
 [node name="Turn" parent="SidebarVBox/Upper" instance=ExtResource( 1 )]
 margin_right = 210.0
-size_flags_vertical = 1
 text = "Turn: 14"
 
 [node name="Message" parent="SidebarVBox/Upper" instance=ExtResource( 1 )]
@@ -42,32 +38,29 @@ margin_top = 464.0
 margin_right = 210.0
 margin_bottom = 600.0
 
-[node name="World" parent="SidebarVBox/Lower" instance=ExtResource( 1 )]
+[node name="Version" parent="SidebarVBox/Lower" instance=ExtResource( 1 )]
 margin_right = 210.0
-size_flags_vertical = 1
-text = "World Name"
+text = "Version: 1.2.3"
 align = 2
 
 [node name="Help" parent="SidebarVBox/Lower" instance=ExtResource( 1 )]
 margin_top = 35.0
 margin_right = 210.0
 margin_bottom = 66.0
-size_flags_vertical = 1
 text = "Help"
 align = 2
 
-[node name="Version" parent="SidebarVBox/Lower" instance=ExtResource( 1 )]
+[node name="World" parent="SidebarVBox/Lower" instance=ExtResource( 1 )]
 margin_top = 70.0
 margin_right = 210.0
 margin_bottom = 101.0
-size_flags_vertical = 1
-text = "Version: 1.2.3"
+size_flags_vertical = 3
+text = "World Name"
 align = 2
 
 [node name="Seed" parent="SidebarVBox/Lower" instance=ExtResource( 1 )]
 margin_top = 105.0
 margin_right = 210.0
 margin_bottom = 136.0
-size_flags_vertical = 1
 text = "123456"
 align = 2
