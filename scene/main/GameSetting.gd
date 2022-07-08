@@ -11,6 +11,7 @@ const INCLUDE_WORLD := "include_world"
 const EXCLUDE_WORLD := "exclude_world"
 const SHOW_FULL_MAP := "show_full_map"
 const PALETTE := "palette"
+const MOUSE_INPUT := "mouse_input"
 
 const SETTING_EXE_PATH := "data/setting.json"
 const SETTING_RES_PATH := "res://bin/setting.json"
@@ -22,7 +23,10 @@ const JSON_EXTENSION := ".json"
 const TRANSFER_SCENE := "res://scene/transfer_data/TransferData.tscn"
 const TRANSFER_NODE := "/root/TransferData"
 
+const DEFAULT_EXCLUDE := [Game_WorldTag.DEMO]
+
 var _wizard_mode: bool
+var _mouse_input: bool
 var _rng_seed: int
 var _include_world: Array
 var _exclude_world: Array
@@ -59,14 +63,17 @@ func load_setting() -> void:
 			setting_data[INCLUDE_WORLD] = transfer.include_world
 			setting_data[SEED] = transfer.rng_seed
 		setting_data[WIZARD] = transfer.wizard_mode
+		setting_data[MOUSE_INPUT] = transfer.mouse_input
 		setting_data[EXCLUDE_WORLD] = transfer.exclude_world
 		setting_data[SHOW_FULL_MAP] = transfer.show_full_map
 
-	_wizard_mode = _set_wizard_mode(setting_data)
+	# Set options for the current playthrough.
+	_wizard_mode = _set_bool(setting_data, WIZARD)
+	_mouse_input = _set_bool(setting_data, MOUSE_INPUT)
+	_include_world = _set_array(setting_data, INCLUDE_WORLD)
+	_exclude_world = _set_array(setting_data, EXCLUDE_WORLD, DEFAULT_EXCLUDE)
+	_show_full_map = _set_bool(setting_data, SHOW_FULL_MAP)
 	_rng_seed = _set_rng_seed(setting_data)
-	_include_world = _set_include_world(setting_data)
-	_exclude_world = _set_exclude_world(setting_data)
-	_show_full_map = _set_show_full_map(setting_data)
 	_palette = _set_palette(setting_data)
 
 	if not get_tree().root.has_node(TRANSFER_NODE):
@@ -77,6 +84,7 @@ func load_setting() -> void:
 		transfer.rng_seed = get_rng_seed()
 		transfer.include_world = get_include_world()
 		transfer.wizard_mode = get_wizard_mode()
+		transfer.mouse_input = get_mouse_input()
 		transfer.exclude_world = get_exclude_world()
 		transfer.show_full_map = get_show_full_map()
 	# Set overwrite_setting to true in save_setting(). Reset it to false
@@ -95,6 +103,10 @@ func save_setting(save_tag: int) -> void:
 
 func get_wizard_mode() -> bool:
 	return _wizard_mode
+
+
+func get_mouse_input() -> bool:
+	return _mouse_input
 
 
 func get_rng_seed() -> int:
@@ -121,10 +133,6 @@ func get_json_parse_error() -> bool:
 	return _json_parse_error
 
 
-func _set_wizard_mode(setting: Dictionary) -> bool:
-	return _try_convert_real_to_bool(setting, WIZARD)
-
-
 func _set_rng_seed(setting: Dictionary) -> int:
 	var random: int
 
@@ -134,24 +142,11 @@ func _set_rng_seed(setting: Dictionary) -> int:
 	return 0
 
 
-func _set_include_world(setting: Dictionary) -> Array:
-	var include: Array = []
-
-	if setting.has(INCLUDE_WORLD) and (setting[INCLUDE_WORLD] is Array):
-		include = setting[INCLUDE_WORLD]
-	return include
-
-
-func _set_exclude_world(setting: Dictionary) -> Array:
-	var exclude: Array = [Game_WorldTag.DEMO]
-
-	if setting.has(EXCLUDE_WORLD) and (setting[EXCLUDE_WORLD] is Array):
-		exclude = setting[EXCLUDE_WORLD]
-	return exclude
-
-
-func _set_show_full_map(setting: Dictionary) -> bool:
-	return _try_convert_real_to_bool(setting, SHOW_FULL_MAP)
+func _set_array(setting: Dictionary, option: String, default_array := []) \
+		-> Array:
+	if setting.has(option) and (setting[option] is Array):
+		return setting[option]
+	return default_array
 
 
 func _set_palette(setting: Dictionary) -> Dictionary:
@@ -170,7 +165,7 @@ func _set_palette(setting: Dictionary) -> Dictionary:
 	return {}
 
 
-func _try_convert_real_to_bool(setting: Dictionary, option: String) -> bool:
+func _set_bool(setting: Dictionary, option: String) -> bool:
 	if setting.has(option):
 		match typeof(setting[option]):
 			TYPE_BOOL:

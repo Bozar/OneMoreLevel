@@ -44,10 +44,6 @@ valign = 1
 margin_left = 123.0
 margin_right = 720.0
 margin_bottom = 41.0
-focus_neighbour_top = NodePath("../../ShowFullMap/GUIInput")
-focus_neighbour_bottom = NodePath("../../IncludeWorld/GUIInput")
-focus_next = NodePath("../../IncludeWorld/GUIInput")
-focus_previous = NodePath("../../ShowFullMap/GUIInput")
 size_flags_horizontal = 3
 size_flags_stretch_ratio = 5.0
 
@@ -67,8 +63,6 @@ valign = 1
 margin_left = 123.0
 margin_right = 720.0
 margin_bottom = 41.0
-focus_neighbour_bottom = NodePath("../../WizardMode/GUIInput")
-focus_next = NodePath("../../WizardMode/GUIInput")
 size_flags_horizontal = 3
 size_flags_stretch_ratio = 5.0
 
@@ -88,10 +82,6 @@ valign = 1
 margin_left = 123.0
 margin_right = 720.0
 margin_bottom = 41.0
-focus_neighbour_top = NodePath("../../IncludeWorld/GUIInput")
-focus_neighbour_bottom = NodePath("../../ExcludeWorld/GUIInput")
-focus_next = NodePath("../../ExcludeWorld/GUIInput")
-focus_previous = NodePath("../../IncludeWorld/GUIInput")
 size_flags_horizontal = 3
 size_flags_stretch_ratio = 5.0
 
@@ -111,9 +101,6 @@ valign = 1
 margin_left = 123.0
 margin_right = 720.0
 margin_bottom = 41.0
-focus_neighbour_top = NodePath("../../WizardMode/GUIInput")
-focus_neighbour_bottom = NodePath("../../ShowFullMap/GUIInput")
-focus_next = NodePath("../../ShowFullMap/GUIInput")
 focus_previous = NodePath("../../WizardMode/GUIInput")
 size_flags_horizontal = 3
 size_flags_stretch_ratio = 5.0
@@ -134,10 +121,25 @@ valign = 1
 margin_left = 123.0
 margin_right = 720.0
 margin_bottom = 41.0
-focus_neighbour_top = NodePath("../../ExcludeWorld/GUIInput")
-focus_neighbour_bottom = NodePath("../../Seed/GUIInput")
-focus_next = NodePath("../../Seed/GUIInput")
-focus_previous = NodePath("../../ExcludeWorld/GUIInput")
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 5.0
+
+[node name="MouseInput" type="HBoxContainer" parent="DebugVBox/SettingVBox"]
+margin_top = 225.0
+margin_right = 720.0
+margin_bottom = 266.0
+
+[node name="GUIText" parent="DebugVBox/SettingVBox/MouseInput" instance=ExtResource( 2 )]
+margin_right = 119.0
+margin_bottom = 41.0
+size_flags_horizontal = 3
+text = "Mouse"
+valign = 1
+
+[node name="GUIInput" parent="DebugVBox/SettingVBox/MouseInput" instance=ExtResource( 4 )]
+margin_left = 123.0
+margin_right = 720.0
+margin_bottom = 41.0
 size_flags_horizontal = 3
 size_flags_stretch_ratio = 5.0
 

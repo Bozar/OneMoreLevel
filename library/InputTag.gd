@@ -30,6 +30,10 @@ const PREVIOUS_HELP := "previous_help"
 const OPEN_DEBUG := "open_debug"
 const CLOSE_MENU := "close_menu"
 
+const MOVE_BY_MOUSE := "move_by_mouse"
+const WAIT_BY_MOUSE := "wait_by_mouse"
+const RELOAD_BY_MOUSE := "reload_by_mouse"
+
 const DIRECTION_TO_COORD := {
 	MOVE_UP: [0, -1],
 	MOVE_DOWN: [0, 1],

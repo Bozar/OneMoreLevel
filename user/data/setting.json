@@ -3,6 +3,7 @@
     "rng_seed": 0,
     "include_world": [],
     "show_full_map": false,
+    "mouse_input": false,
     "palette": "",
     "exclude_world": [
         "demo"

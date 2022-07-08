@@ -12,3 +12,4 @@ var rng_seed: float
 var include_world: Array
 var exclude_world: Array
 var show_full_map: bool
+var mouse_input: bool

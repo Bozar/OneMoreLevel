@@ -43,7 +43,8 @@ func _unhandled_input(event: InputEvent) -> void:
 	elif _verify_input(event, Game_InputTag.OPEN_DEBUG):
 		_ref_SwitchScreen.set_screen(Game_ScreenTag.MAIN, Game_ScreenTag.DEBUG)
 	elif _end_game:
-		if _verify_input(event, Game_InputTag.RELOAD):
+		if _verify_input(event, Game_InputTag.RELOAD) \
+				or _is_mouse_action(event, Game_InputTag.RELOAD_BY_MOUSE):
 			get_node(RELOAD_GAME).reload()
 	else:
 		may_have_conflict = false
@@ -56,9 +57,10 @@ func _unhandled_input(event: InputEvent) -> void:
 		elif _verify_input(event, Game_InputTag.FULLY_RESTORE_TURN):
 			_ref_CountDown.add_count(99)
 
-	if _is_move_input(event):
+	if _is_move_input(event) or _is_mouse_move_input(event):
 		_handle_move_input()
-	elif _verify_input(event, Game_InputTag.WAIT):
+	elif _verify_input(event, Game_InputTag.WAIT) \
+			or _is_mouse_action(event, Game_InputTag.WAIT_BY_MOUSE):
 		_handle_wait_input()
 
 	# Do not end PC's turn if game ends.
@@ -121,6 +123,33 @@ func _is_move_input(event: InputEvent) -> bool:
 	return false
 
 
+func _is_mouse_move_input(event: InputEvent) -> bool:
+	var mouse_pos: Game_IntCoord
+	var pc_pos: Game_IntCoord
+
+	if not _ref_GameSetting.get_mouse_input():
+		return false
+	elif not _verify_input(event, Game_InputTag.MOVE_BY_MOUSE):
+		return false
+
+	mouse_pos = Game_ConvertCoord.mouse_to_coord(event)
+	pc_pos = Game_ConvertCoord.sprite_to_coord(_ref_DungeonBoard.get_pc())
+	_direction = ""
+
+	if mouse_pos.x == pc_pos.x:
+		if mouse_pos.y < pc_pos.y:
+			_direction = Game_InputTag.MOVE_UP
+		elif mouse_pos.y > pc_pos.y:
+			_direction = Game_InputTag.MOVE_DOWN
+	elif mouse_pos.y == pc_pos.y:
+		if mouse_pos.x < pc_pos.x:
+			_direction = Game_InputTag.MOVE_LEFT
+		elif mouse_pos.x > pc_pos.x:
+			_direction = Game_InputTag.MOVE_RIGHT
+
+	return _direction != ""
+
+
 func _handle_move_input() -> void:
 	# PC may move more than once in his turn, therefore we need to update his
 	# position accordingly.
@@ -144,3 +173,9 @@ func _handle_wait_input() -> void:
 	# to update his position accordingly.
 	_pc_action.set_source_position()
 	_pc_action.wait()
+
+
+func _is_mouse_action(event: InputEvent, input_tag: String) -> bool:
+	if not _ref_GameSetting.get_mouse_input():
+		return false
+	return _verify_input(event, input_tag)

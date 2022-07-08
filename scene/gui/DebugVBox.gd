@@ -17,6 +17,8 @@ const EXCLUDE_LABEL := "SettingVBox/ExcludeWorld/GUIText"
 const EXCLUDE_INPUT := "SettingVBox/ExcludeWorld/GUIInput"
 const SHOW_LABEL := "SettingVBox/ShowFullMap/GUIText"
 const SHOW_INPUT := "SettingVBox/ShowFullMap/GUIInput"
+const MOUSE_LABEL := "SettingVBox/MouseInput/GUIText"
+const MOUSE_INPUT := "SettingVBox/MouseInput/GUIInput"
 
 const HEADER_TEXT := "# Debug Menu\n\n[Esc: Exit debug]"
 const SEED_TEXT := "Seed"
@@ -24,11 +26,11 @@ const SEED_PLACEHOLDER := "DEFAULT VALUE: 0"
 const INCLUDE_TEXT := "Include"
 const INCLUDE_PLACEHOLDER := "EXAMPLE: BARON, FACTORY, RAILGUN"
 const WIZARD_TEXT := "Wizard"
-const WIZARD_PLACEHOLDER := "DEFAULT VALUE: FALSE"
+const DEFAULT_FALSE_PLACEHOLDER := "DEFAULT VALUE: FALSE"
 const EXCLUDE_TEXT := "Exclude"
 const EXCLUDE_PLACEHOLDER := "INITIAL VALUE: DEMO"
 const SHOW_TEXT := "ShowMap"
-const SHOW_PLACEHOLDER := "DEFAULT VALUE: FALSE"
+const MOUSE_TEXT := "Mouse"
 
 const TRUE_PATTERN := "true"
 const VERSION_PREFIX := "Version: "
@@ -71,6 +73,7 @@ func _init_label_text() -> void:
 		WIZARD_LABEL: WIZARD_TEXT,
 		EXCLUDE_LABEL: EXCLUDE_TEXT,
 		SHOW_LABEL: SHOW_TEXT,
+		MOUSE_LABEL: MOUSE_TEXT,
 	}
 
 	for i in label_to_text.keys():
@@ -81,9 +84,10 @@ func _init_input_placeholder() -> void:
 	var input_to_placeholder := {
 		SEED_INPUT: SEED_PLACEHOLDER,
 		INCLUDE_INPUT: INCLUDE_PLACEHOLDER,
-		WIZARD_INPUT: WIZARD_PLACEHOLDER,
+		WIZARD_INPUT: DEFAULT_FALSE_PLACEHOLDER,
 		EXCLUDE_INPUT: EXCLUDE_PLACEHOLDER,
-		SHOW_INPUT: SHOW_PLACEHOLDER,
+		SHOW_INPUT: DEFAULT_FALSE_PLACEHOLDER,
+		MOUSE_INPUT: DEFAULT_FALSE_PLACEHOLDER,
 	}
 
 	for i in input_to_placeholder.keys():
@@ -107,6 +111,7 @@ func _load_settings() -> void:
 	_load_as_string(transfer.rng_seed, SEED_INPUT)
 	_load_as_string(transfer.wizard_mode, WIZARD_INPUT)
 	_load_as_string(transfer.show_full_map, SHOW_INPUT)
+	_load_as_string(transfer.mouse_input, MOUSE_INPUT)
 
 	_load_from_array(transfer.include_world, INCLUDE_INPUT)
 	_load_from_array(transfer.exclude_world, EXCLUDE_INPUT)
@@ -122,6 +127,7 @@ func _save_settings() -> void:
 
 	transfer.wizard_mode = _save_as_bool(WIZARD_INPUT)
 	transfer.show_full_map = _save_as_bool(SHOW_INPUT)
+	transfer.mouse_input = _save_as_bool(MOUSE_INPUT)
 
 
 func _load_from_array(source: Array, target: String) -> void:

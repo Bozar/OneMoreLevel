@@ -14,9 +14,9 @@ Godot engine natively supports keyboards and gamepads (Xbox, DualShock and Ninte
 
 General gameplay:
 
-* Move: Arrow keys, Vi keys, ASDW, [Direction pad].
-* Wait: Space, Enter, Z, Period (.), [A].
-* Reload after defeat: Space, [A].
+* Move: Arrow keys, Vi keys, ASDW, Left-click, [Direction pad].
+* Wait: Space, Enter, Z, Period (.), Right-click, [A].
+* Reload after win/lose: Space, Right-click, [A].
 * Quit: Ctrl + W, [Select].
 
 Menu keys:
@@ -83,6 +83,8 @@ Set `rng_seed` to a positive integer as a random number generator seed. When in 
 Add world names from `data/world_list.md` to `include_world` or `exclude_world` to customize your world rotation list.
 
 Set `show_full_map` to `true` to disable fog of war.
+
+Set `mouse_input` to `true` to move, wait and reload game by mouse.
 
 Leave `palette` blank to use the default color theme. If you want to use another theme, copy a json file (for example, `blue.json`) from `palette/` to `data/`, and then feed `palette` with a file name with or without the json file extension (both `blue` and `blue.json` works). You can also create your own theme based on `default.json`.
 

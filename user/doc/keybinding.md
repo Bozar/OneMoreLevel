@@ -6,9 +6,9 @@ One More Level is made with Godot engine, which natively supports keyboards and 
 
 General gameplay:
 
-* Move: Arrow keys, Vi keys, ASDW, [Direction pad].
-* Wait: Space, Enter, Z, Period (.), [A].
-* Reload after defeat: Space, [A].
+* Move: Arrow keys, Vi keys, ASDW, Left-click, [Direction pad].
+* Wait: Space, Enter, Z, Period (.), Right-click, [A].
+* Reload after win/lose: Space, Right-click, [A].
 * Quit: Ctrl + W, [Select].
 
 Menu keys:
