@@ -1,7 +1,7 @@
 extends Game_PCActionTemplate
 
 
-const HALF_WIDTH: int = 1
+const HALF_WIDTH := 1
 
 
 func _init(parent_node: Node2D).(parent_node) -> void:
@@ -20,9 +20,8 @@ func switch_sprite() -> void:
 
 
 func attack() -> void:
-	var npc: Sprite = _ref_DungeonBoard.get_actor_xy(
-			_target_position.x, _target_position.y)
-	var pc: Sprite = _ref_DungeonBoard.get_pc()
+	var npc := _ref_DungeonBoard.get_actor(_target_position)
+	var pc := _ref_DungeonBoard.get_pc()
 
 	if _ref_ObjectData.verify_state(npc, Game_StateTag.DEFAULT):
 		end_turn = false
@@ -56,9 +55,9 @@ func wait() -> void:
 
 
 func _is_checkmate() -> bool:
-	var x: int = _source_position.x
-	var y: int = _source_position.y
-	var neighbor: Array = Game_CoordCalculator.get_neighbor_xy(x, y, 1)
+	var x := _source_position.x
+	var y := _source_position.y
+	var neighbor := Game_CoordCalculator.get_neighbor(_source_position, 1)
 	var actor: Sprite
 	var coord: Game_IntCoord
 
@@ -68,8 +67,8 @@ func _is_checkmate() -> bool:
 		if not (_ref_DangerZone.is_in_danger(i.x, i.y) \
 				or _is_occupied(i.x, i.y)):
 			return false
-		elif _ref_DungeonBoard.has_actor_xy(i.x, i.y):
-			actor = _ref_DungeonBoard.get_actor_xy(i.x, i.y)
+		elif _ref_DungeonBoard.has_actor(i):
+			actor = _ref_DungeonBoard.get_actor(i)
 			if _ref_ObjectData.verify_state(actor, Game_StateTag.ACTIVE):
 				coord = Game_CoordCalculator.get_mirror_image_xy(x, y, i.x, i.y)
 				if Game_CoordCalculator.is_inside_dungeon(coord.x, coord.y) \
@@ -79,39 +78,33 @@ func _is_checkmate() -> bool:
 
 
 func _hit_knight() -> void:
-	_ref_RemoveObject.remove_actor_xy(_target_position.x, _target_position.y)
+	_ref_RemoveObject.remove_actor(_target_position)
 
 
 func _hit_boss(boss: Sprite) -> void:
 	var is_occupied: bool = true
 	var is_too_close: bool = true
-	var teleport_x: int
-	var teleport_y: int
+	var teleport: Game_IntCoord
 
 	if _ref_ObjectData.get_hit_point(boss) < Game_KnightData.MAX_BOSS_HP:
 		_ref_ObjectData.add_hit_point(boss, 1)
 
 		while is_occupied or is_too_close:
-			teleport_x = _ref_RandomNumber.get_x_coord()
-			teleport_y = _ref_RandomNumber.get_y_coord()
-			is_occupied = _is_occupied(teleport_x, teleport_y)
-			is_too_close = Game_CoordCalculator.is_in_range_xy(
-					teleport_x, teleport_y,
-					_source_position.x, _source_position.y,
-					Game_KnightData.ELITE_SIGHT)
+			teleport = _ref_RandomNumber.get_dungeon_coord()
+			is_occupied = _is_occupied(teleport.x, teleport.y)
+			is_too_close = Game_CoordCalculator.is_in_range(
+					teleport, _source_position, Game_KnightData.ELITE_SIGHT)
 
-		_ref_DungeonBoard.move_actor_xy(_target_position.x, _target_position.y,
-				teleport_x, teleport_y)
+		_ref_DungeonBoard.move_actor(_target_position, teleport)
 	else:
 		_hit_knight()
 		_ref_EndGame.player_win()
 
 
 func _roll() -> bool:
-	var neighbor: Array = Game_CoordCalculator.get_neighbor_xy(
-			_target_position.x, _target_position.y, 1)
+	var neighbor := Game_CoordCalculator.get_neighbor(_target_position, 1)
 	var roll_over := Game_IntCoord.new(-1, -1)
-	var pc: Sprite = _ref_DungeonBoard.get_pc()
+	var pc := _ref_DungeonBoard.get_pc()
 
 	for i in neighbor:
 		if (i.x == _source_position.x) and (i.y == _source_position.y):
@@ -123,7 +116,6 @@ func _roll() -> bool:
 	if _is_occupied(roll_over.x, roll_over.y):
 		return false
 
-	_ref_DungeonBoard.move_actor_xy(_source_position.x, _source_position.y,
-			roll_over.x, roll_over.y)
+	_ref_DungeonBoard.move_actor(_source_position, roll_over)
 	_ref_ObjectData.set_state(pc, Game_StateTag.PASSIVE)
 	return true

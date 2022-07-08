@@ -7,7 +7,9 @@ const HIT_TO_SPRITE := {
 	2: Game_SpriteTypeTag.DEFAULT_3,
 }
 
-var _id_to_danger_zone := {}
+const ID_TO_DANGER_ZONE := {}
+const ID_TO_WAIT := {}
+
 var _boss_attack_count := 0
 
 
@@ -23,24 +25,28 @@ func take_action() -> void:
 	elif _ref_ObjectData.verify_state(_self, Game_StateTag.PASSIVE):
 		_recover()
 	# Default -> Active.
-	elif Game_CoordCalculator.is_in_range_xy(_self_pos.x, _self_pos.y,
-			_pc_pos.x, _pc_pos.y, Game_KnightData.RANGE):
+	elif Game_CoordCalculator.is_in_range(_self_pos, _pc_pos,
+			Game_KnightData.ATTACK_RANGE):
 		_alert()
-	# Approach.
+	# Approach PC.
 	elif _is_ready_to_move():
 		_approach_pc()
+	# Approach captain or boss.
+	elif _self.is_in_group(Game_SubTag.KNIGHT):
+		_approach_commander()
 
 
 func remove_data(actor: Sprite) -> void:
 	var id: int = actor.get_instance_id()
 	var __
 
-	__ = _id_to_danger_zone.erase(id)
+	__ = ID_TO_DANGER_ZONE.erase(id)
+	__ = ID_TO_WAIT.erase(id)
 
 
 func _attack() -> void:
-	var id: int = _self.get_instance_id()
-	var danger_zone: Array = _id_to_danger_zone[id]
+	var id := _self.get_instance_id()
+	var danger_zone: Array = ID_TO_DANGER_ZONE[id]
 
 	_try_hit_pc(danger_zone)
 	_set_danger_zone(danger_zone, false)
@@ -71,7 +77,7 @@ func _alert() -> void:
 	_ref_ObjectData.set_state(_self, Game_StateTag.ACTIVE)
 	_ref_SwitchSprite.set_sprite(_self, Game_SpriteTypeTag.ACTIVE)
 
-	_id_to_danger_zone[id] = danger_zone
+	ID_TO_DANGER_ZONE[id] = danger_zone
 	_set_danger_zone(danger_zone, true)
 	_switch_ground(danger_zone)
 
@@ -88,7 +94,7 @@ func _switch_ground(danger_zone: Array) -> void:
 	var sprite_type: String
 
 	for i in danger_zone:
-		ground_sprite= _ref_DungeonBoard.get_ground_xy(i.x, i.y)
+		ground_sprite = _ref_DungeonBoard.get_ground(i)
 		if _ref_DangerZone.is_in_danger(i.x, i.y):
 			sprite_type = Game_SpriteTypeTag.ACTIVE
 		else:
@@ -97,8 +103,7 @@ func _switch_ground(danger_zone: Array) -> void:
 
 
 func _get_danger_zone() -> Array:
-	var neighbor := Game_CoordCalculator.get_neighbor_xy(_pc_pos.x, _pc_pos.y,
-			1, true)
+	var neighbor := Game_CoordCalculator.get_neighbor(_pc_pos, 1, true)
 	var candidate: Array = [_pc_pos]
 	var one_grid: Array = []
 	var two_grids: Array = []
@@ -106,7 +111,7 @@ func _get_danger_zone() -> Array:
 	var danger_zone: Array
 
 	for i in neighbor:
-		if _ref_DungeonBoard.has_building_xy(i.x, i.y):
+		if _ref_DungeonBoard.has_building(i):
 			continue
 		elif (i.x == _self_pos.x) and (i.y == _self_pos.y):
 			continue
@@ -142,8 +147,8 @@ func _can_attack_twice() -> bool:
 		return false
 	if _boss_attack_count > 0:
 		return false
-	if not Game_CoordCalculator.is_in_range_xy(_pc_pos.x, _pc_pos.y,
-			_self_pos.x, _self_pos.y, Game_KnightData.RANGE):
+	if Game_CoordCalculator.is_out_of_range(_pc_pos, _self_pos,
+			Game_KnightData.ATTACK_RANGE):
 		return false
 	return true
 
@@ -151,7 +156,7 @@ func _can_attack_twice() -> bool:
 func _prepare_second_attack(id: int) -> void:
 	var danger_zone: Array = _get_danger_zone()
 
-	_id_to_danger_zone[id] = danger_zone
+	ID_TO_DANGER_ZONE[id] = danger_zone
 	_set_danger_zone(danger_zone, true)
 	_switch_ground(danger_zone)
 
@@ -167,7 +172,7 @@ func _try_hit_pc(danger_zone: Array) -> void:
 	var victim: Sprite
 
 	for i in danger_zone:
-		victim = _ref_DungeonBoard.get_actor_xy(i.x, i.y)
+		victim = _ref_DungeonBoard.get_actor(i)
 		if victim == null:
 			continue
 		if victim.is_in_group(Game_SubTag.PC):
@@ -175,7 +180,7 @@ func _try_hit_pc(danger_zone: Array) -> void:
 			# print("pc dead")
 		elif victim.is_in_group(Game_SubTag.KNIGHT) \
 				and _ref_ObjectData.verify_state(victim, Game_StateTag.PASSIVE):
-			_ref_RemoveObject.remove_actor_xy(i.x, i.y)
+			_ref_RemoveObject.remove_actor(i)
 			_ref_CountDown.add_count(Game_KnightData.RESTORE_TURN)
 
 
@@ -186,9 +191,35 @@ func _is_ready_to_move() -> bool:
 	if _ref_ObjectData.verify_state(pc, Game_StateTag.PASSIVE):
 		sight = Game_KnightData.SNEAK_SIGHT
 	elif _self.is_in_group(Game_SubTag.KNIGHT):
-		sight = Game_KnightData.SIGHT
+		sight = Game_KnightData.GRUNT_SIGHT
 	else:
 		sight = Game_KnightData.ELITE_SIGHT
 
-	return Game_CoordCalculator.is_in_range_xy(_self_pos.x, _self_pos.y,
-			_pc_pos.x, _pc_pos.y, sight)
+	return Game_CoordCalculator.is_in_range(_self_pos, _pc_pos, sight)
+
+
+func _approach_commander() -> void:
+	var id := _self.get_instance_id()
+	var commanders := []
+	var pos: Game_IntCoord
+
+	for i in [Game_SubTag.KNIGHT_CAPTAIN, Game_SubTag.KNIGHT_BOSS]:
+		commanders += _ref_DungeonBoard.get_sprites_by_tag(i)
+	if commanders.size() < 1:
+		return
+	else:
+		Game_ArrayHelper.rand_picker(commanders, 1, _ref_RandomNumber)
+
+	if not ID_TO_WAIT.has(id):
+		ID_TO_WAIT[id] = _get_wait_duration()
+	elif ID_TO_WAIT[id] > 0:
+		ID_TO_WAIT[id] -= 1
+	else:
+		pos = Game_ConvertCoord.sprite_to_coord(commanders[0])
+		_approach_pc([pos])
+		ID_TO_WAIT[id] = _get_wait_duration()
+
+
+func _get_wait_duration() -> int:
+	return _ref_RandomNumber.get_int(Game_KnightData.MIN_WAIT,
+			Game_KnightData.MAX_WAIT)

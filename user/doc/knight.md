@@ -4,9 +4,13 @@
 
 Your mission is to sneak into the Silent Knight Hall and assassinate the knight boss. However, the boss will not show up until you have killed three captains (C). There is a counter that behaves like a wall (#) and shows the number of dead captains. Whether or not to kill knights (k) is your own choice.
 
-Press arrow keys to move, roll over or attack. Press Space to wait. Every action (move, roll over, attack and wait) costs exactly 1 turn. When an enemy dies, you gain 8 turns. You have at most 24 turns. You lose the game either because of running out of time or being killed by an enemy.
+Press arrow keys to move, roll over or attack. Press Space to wait. Every action (move, roll over, attack and wait) costs exactly 1 turn. When an enemy dies, you gain 6 turns. You have at most 24 turns. You lose the game either because of running out of time or being killed by an enemy.
 
-An enemy has three states: normal, alert and fatigued. In normal state, his symbol is an alphabet. He either waits one turn or approaches you if you are in sight. Such an enemy acts like a wall. You cannot bump attack or pass through him.
+An enemy has three states: normal, alert and fatigued. In normal state, his symbol is an alphabet. Such an enemy acts like a wall. You cannot bump attack or pass through him. He might take one of three actions.
+
+* Approach you if he can see you.
+* High chance: Wait one turn.
+* Low chance: Approach a knight captain or boss.
 
 If an enemy starts his turn being adjacent to you, he becomes alert (!) and waits one turn. An upside-down exclamation mark means an alert elite (captains or the boss). Such an enemy will attack grids marked by double excmamation marks (danger zone) the next turn and kills everyone in the zone. Your symbol turns into a solid rectangle if you are in danger. The game prevents you from staying inside if possible, otherwise it ends automatically. Bump an alert enemy and roll over to the other side if the destination is not occupied.
 
