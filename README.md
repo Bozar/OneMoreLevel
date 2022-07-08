@@ -66,7 +66,7 @@ Edit `data/setting.json` for play testing. You can also change settings in debug
 
 Set `wizard_mode` to `true` to enable wizard keys. When in wizard mode, there is a plus sign (+) on the left side of version number. If you see a question mark (?) instead, it means your `setting.json` is broken.
 
-Set `rng_seed` to a positive integer as a random number generator seed.
+Set `rng_seed` to a positive integer as a random number generator seed. When in debug mode, seed digits can be separated by characters: `[-,.\s]`. For example: `12-3,4.5 6` is the same as `123456`.
 
 Add world names from `data/world_list.md` to `include_world` or `exclude_world` to customize your world rotation list.
 

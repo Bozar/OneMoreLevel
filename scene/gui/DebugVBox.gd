@@ -32,13 +32,17 @@ const SHOW_PLACEHOLDER := "DEFAULT VALUE: FALSE"
 
 const TRUE_PATTERN := "true"
 const VERSION_PREFIX := "Version: "
-const SEPARATOR := ","
+const ARRAY_SEPARATOR := ","
 const TRAILING_SPACE := " "
+const SEED_SEPARATOR := "[-,.\\s]"
 
 var _ref_Palette: Game_Palette
 
+var _seed_reg := RegEx.new()
+
 
 func _ready() -> void:
+	var __ = _seed_reg.compile(SEED_SEPARATOR)
 	visible = false
 
 
@@ -125,7 +129,7 @@ func _load_from_array(source: Array, target: String) -> void:
 
 	for i in range(0, source.size()):
 		if i < source.size() - 1:
-			tmp += source[i] + SEPARATOR + TRAILING_SPACE
+			tmp += source[i] + ARRAY_SEPARATOR + TRAILING_SPACE
 		else:
 			tmp += source[i]
 	get_node(target).text = tmp
@@ -138,7 +142,7 @@ func _load_as_string(source, target: String) -> void:
 func _save_as_array(source: String) -> Array:
 	var tmp = get_node(source).text.to_lower()
 
-	tmp = tmp.split(SEPARATOR)
+	tmp = tmp.split(ARRAY_SEPARATOR)
 	for i in range(0, tmp.size()):
 		tmp[i] = tmp[i].strip_edges()
 	return tmp
@@ -153,4 +157,5 @@ func _save_as_bool(source: String) -> bool:
 
 
 func _save_as_float(source: String) -> float:
-	return float(get_node(source).text)
+	var str_digit: String = get_node(source).text
+	return float(_seed_reg.sub(str_digit, "", true))
