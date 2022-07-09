@@ -75,10 +75,14 @@ func _get_seed() -> String:
 
 
 func _get_version() -> String:
-	var version: String = Game_SidebarText.VERSION
+	var version := Game_SidebarText.VERSION
+	var check_status := [
+		_ref_GameSetting.get_json_parse_error(),
+		_ref_GameSetting.get_wizard_mode(),
+		_ref_GameSetting.get_mouse_input(),
+	]
+	var postfix := Game_SidebarText.VERSION_BAR
 
-	if _ref_GameSetting.get_json_parse_error():
-		return version.format([Game_SidebarText.PARSE_ERROR])
-	elif _ref_GameSetting.get_wizard_mode():
-		return version.format([Game_SidebarText.WIZARD])
-	return version.format([""])
+	for i in check_status:
+		postfix += Game_SidebarText.BOOL_TO_PREFIX[i]
+	return version + postfix

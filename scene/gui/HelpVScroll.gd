@@ -2,9 +2,9 @@ extends ScrollContainer
 class_name Game_HelpVScroll
 
 
-const SCROLL_LINE: int = 20
-const SCROLL_PAGE: int = 300
-const DUNGEON: String = "Dungeon"
+const SCROLL_LINE := 20
+const SCROLL_PAGE := 300
+const DUNGEON := "Dungeon"
 
 var _ref_Palette: Game_Palette
 
