@@ -24,7 +24,7 @@ When in a fog, PC has one of six symbols:
 * A dotted rectangle: You stand in a fog which might disappear the next turn.
 * One of four arrows: You have pressed an arrow key. Press another valid key to move into a diagonal grid.
 
-A valid key refers to an arrow key that is vertical to your last input direction (for example: Right and Up, Down and Left). An invalid key includes an arrow key that is the same as or opposite to your previous input (for example: Up and Up, Left and Right) or Space. An invalid input resets PC to his normal state: three lines or a rectangle. Press Space in normal state to wait.
+A valid key is an arrow key that is vertical to your last input direction (for example: Right and Up, Down and Left). An invalid key includes an arrow key that is the same as or opposite to your previous input (for example: Up and Up, Left and Right) or Space. An invalid input resets PC to his normal state: three lines or a rectangle. Press Space in normal state to wait.
 
 You cannot enter or leave a fog actively. The boundary of a fog acts like a wall. You either have to wait until a fog engulfs or spits you, or enter a grid that is about to change the next turn.
 
@@ -54,7 +54,7 @@ A hound (z, t) and the boss (Z, T) have two symbols based on its position.
 * z, Z: The NPC is outside a fog.
 * t, T: The NPC is inside a fog.
 
-When outside a fog, an NPC moves in eight directions and bites PC diagonally. When inside a fog, an NPC acts cardinally. A hound can see PC 6 steps away. The boss always knows PC's position.
+When outside a fog, an NPC moves in eight directions and bites PC diagonally. When inside a fog, an NPC moves and bites cardinally. A hound can see PC from 6 steps away. The boss always knows PC's position.
 
 When an NPC hits PC, a PC's doppleganger is created if there isn't one already. The doppleganger is shown as a number. A newly created doppleganger has 9 hit points. Further bites reduce its hit point. You lose the game when the hit point decreases to 0. You can destroy the doppleganger as if it is a hound.
 
