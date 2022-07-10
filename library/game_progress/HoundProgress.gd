@@ -4,13 +4,12 @@ extends Game_ProgressTemplate
 var _spr_Hound := preload("res://sprite/Hound.tscn")
 var _spr_HoundBoss := preload("res://sprite/HoundBoss.tscn")
 
-var _fog_source: Array = []
-var _all_grounds: Array = []
-var _current_hound: int = Game_HoundData.MAX_HOUND
-var _minion_trigger: bool = false
-var _boss_trigger: bool = true
-var _boss_hit_point: int = 0
-var _all_counters: Array = []
+var _fog_source := []
+var _ground_sprites := []
+var _ground_coords := []
+var _current_hound := Game_HoundData.MAX_HOUND
+var _minion_trigger := false
+var _has_boss := false
 
 
 func _init(parent_node: Node2D).(parent_node) -> void:
@@ -19,43 +18,20 @@ func _init(parent_node: Node2D).(parent_node) -> void:
 
 
 func end_world(pc_x: int, pc_y: int) -> void:
+	_init_grounds()
 	_respawn_boss(pc_x, pc_y)
 	_respawn_minion(pc_x, pc_y)
 	_add_or_remove_fog()
 
 
-func create_actor(actor: Sprite, sub_tag: String, _x: int, _y: int) -> void:
-	if sub_tag != Game_SubTag.HOUND_BOSS:
+func remove_actor(actor: Sprite, x: int, y: int) -> void:
+	if not actor.is_in_group(Game_SubTag.HOUND):
 		return
 
-	_ref_ObjectData.set_hit_point(actor, _boss_hit_point)
-
-	if _all_counters.size() == 0:
-		_all_counters = _ref_DungeonBoard.get_sprites_by_tag(
-				Game_SubTag.COUNTER)
-		_all_counters.sort_custom(self, "_sort_counter")
-	_ref_SwitchSprite.set_sprite(_all_counters[_boss_hit_point],
-			Game_SpriteTypeTag.PASSIVE)
-
-
-func remove_actor(actor: Sprite, x: int, y: int) -> void:
-	if actor.is_in_group(Game_SubTag.HOUND):
-		_fog_source.push_back([x, y, Game_HoundData.MIN_FOG_SIZE])
-		_current_hound -= 1
-		if _current_hound <= Game_HoundData.START_RESPAWN:
-			_minion_trigger = true
-	elif actor.is_in_group(Game_SubTag.HOUND_BOSS):
-		_boss_trigger = true
-		# The boss is hit by PC.
-		# HoundPCAction._try_set_and_get_boss_hit_point().
-		if _ref_ObjectData.get_hit_point(actor) > _boss_hit_point:
-			_ref_SwitchSprite.set_sprite(_all_counters[_boss_hit_point],
-					Game_SpriteTypeTag.ACTIVE)
-			_boss_hit_point = _ref_ObjectData.get_hit_point(actor)
-		# The boss is removed due to running out of time.
-		# HoundAI._boss_countdown().
-		else:
-			_boss_hit_point += 1
+	_fog_source.push_back([x, y, Game_HoundData.MIN_FOG_SIZE])
+	_current_hound -= 1
+	if _current_hound <= Game_HoundData.START_RESPAWN:
+		_minion_trigger = true
 
 
 func _add_or_remove_fog() -> void:
@@ -85,9 +61,7 @@ func _add_or_remove_fog() -> void:
 	for i in remove_index:
 		Game_ArrayHelper.remove_by_index(_fog_source, i)
 
-	if _all_grounds.size() == 0:
-		_all_grounds = _ref_DungeonBoard.get_sprites_by_tag(Game_MainTag.GROUND)
-	for i in _all_grounds:
+	for i in _ground_sprites:
 		if _ref_ObjectData.get_hit_point(i) > 0:
 			_ref_ObjectData.subtract_hit_point(i, 1)
 			_set_ground_state(i, true)
@@ -127,54 +101,44 @@ func _respawn_minion(pc_x: int, pc_y: int) -> void:
 
 
 func _respawn_boss(pc_x: int, pc_y: int) -> void:
-	if (not _boss_trigger) or (_current_hound < Game_HoundData.MAX_HOUND):
+	if _has_boss:
 		return
 
-	_boss_trigger = false
+	_has_boss = true
 	_respawn_actor(pc_x, pc_y,
 			Game_HoundData.MIN_BOSS_DISTANCE,
 			Game_HoundData.MAX_BOSS_DISTANCE,
 			_spr_HoundBoss, Game_SubTag.HOUND_BOSS)
 
 
-func _respawn_actor(pc_x: int, pc_y: int, min_distance: int, max_distance: int,
+func _respawn_actor(pc_x: int, pc_y: int, min_range: int, max_range: int,
 		new_sprite: PackedScene, sub_tag: String) -> void:
-	var grounds := []
+	var pc_pos := Game_IntCoord.new(pc_x, pc_y)
 
-	for i in range(0, Game_DungeonSize.MAX_X):
-		for j in range(0, Game_DungeonSize.MAX_Y):
-			if _ref_DungeonBoard.has_building_xy(i, j) \
-					or _ref_DungeonBoard.has_actor_xy(i, j) \
-					or Game_CoordCalculator.is_in_range_xy(i, j, pc_x, pc_y,
-							min_distance) \
-					or Game_CoordCalculator.is_out_of_range_xy(i, j,
-							pc_x, pc_y, max_distance):
-				continue
-			else:
-				grounds.push_back(Game_IntCoord.new(i, j))
-	Game_ArrayHelper.filter_element(grounds, self, "_is_isolated", [])
-
-	if grounds.size() == 0:
-		print("No respawn point.")
-		return
-	Game_ArrayHelper.rand_picker(grounds, 1, _ref_RandomNumber)
-	_ref_CreateObject.create_actor(new_sprite, sub_tag, grounds[0])
+	Game_ArrayHelper.shuffle(_ground_coords, _ref_RandomNumber)
+	for i in _ground_coords:
+		if Game_CoordCalculator.is_in_range(i, pc_pos, min_range) \
+				or Game_CoordCalculator.is_out_of_range(i, pc_pos, max_range) \
+				or _is_close_to_hound(i):
+			continue
+		_ref_CreateObject.create_actor(new_sprite, sub_tag, i)
+		break
 
 
-func _sort_counter(left: Sprite, right: Sprite) -> bool:
-	var left_pos := Game_ConvertCoord.sprite_to_coord(left)
-	var right_pos := Game_ConvertCoord.sprite_to_coord(right)
+func _is_close_to_hound(coord: Game_IntCoord) -> bool:
+	var this_npc: Game_IntCoord
 
-	if right_pos.y > left_pos.y:
-		return true
-	return right_pos.x > left_pos.x
+	for i in _ref_DungeonBoard.get_npc():
+		this_npc = Game_ConvertCoord.sprite_to_coord(i)
+		if Game_CoordCalculator.is_in_range(coord, this_npc,
+				Game_HoundData.MIN_HOUND_GAP):
+			return true
+	return false
 
 
-func _is_isolated(source: Array, index: int, _opt_arg: Array) -> bool:
-	var neighbor := Game_CoordCalculator.get_neighbor(source[index],
-			Game_HoundData.MIN_HOUND_GAP)
-
-	for i in neighbor:
-		if _ref_DungeonBoard.has_actor(i):
-			return false
-	return true
+func _init_grounds() -> void:
+	if _ground_sprites.size() == 0:
+		_ground_sprites = _ref_DungeonBoard.get_sprites_by_tag(
+				Game_MainTag.GROUND)
+		for i in _ground_sprites:
+			_ground_coords.push_back(Game_ConvertCoord.sprite_to_coord(i))

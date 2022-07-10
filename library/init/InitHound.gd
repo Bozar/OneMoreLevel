@@ -1,13 +1,13 @@
 extends Game_WorldTemplate
 
 
-const ROOM_SIZE: int = 4
-const CORRIDOR_WIDTH: int = 1
-const PICK_ROOM: int = 11
-const MIN_X: int = 1
-const MIN_Y: int = 0
-const MIN_SHIFT: int = 1
-const MAX_SHIFT: int = 3
+const ROOM_SIZE := 4
+const CORRIDOR_WIDTH := 1
+const PICK_ROOM := 11
+const MIN_X := 1
+const MIN_Y := 0
+const MIN_SHIFT := 1
+const MAX_SHIFT := 3
 
 var _spr_FloorHound := preload("res://sprite/FloorHound.tscn")
 var _spr_PCHound := preload("res://sprite/PCHound.tscn")
@@ -50,17 +50,13 @@ func _init_wall() -> void:
 			x = neighbor[j].x
 			y = neighbor[j].y
 			_occupy_position(x, y)
-			if counter_index == 0:
-				_add_building_to_blueprint(_spr_WallHound, Game_SubTag.COUNTER,
-						x, y)
-			else:
-				_add_building_to_blueprint(_spr_Wall, Game_SubTag.WALL, x, y)
+			_add_building_to_blueprint(_spr_Wall, Game_SubTag.WALL, x, y)
 		counter_index -= 1
 
 
 func _get_top_left_position() -> Array:
-	var valid_position: Array = []
-	var step: int = ROOM_SIZE + CORRIDOR_WIDTH
+	var valid_position := []
+	var step := ROOM_SIZE + CORRIDOR_WIDTH
 
 	# By setting MIN_X to 1, it is guarantted that every grid is reachable.
 	for x in range(MIN_X, Game_DungeonSize.MAX_X, step):
@@ -72,23 +68,21 @@ func _get_top_left_position() -> Array:
 
 
 func _create_pc() -> void:
-	var x: int
-	var y: int
+	var pos: Game_IntCoord
 	var neighbor: Array
 
 	# Grids are only occupied by walls at this moment.
 	while true:
-		x = _ref_RandomNumber.get_x_coord()
-		y = _ref_RandomNumber.get_y_coord()
-		if _is_occupied(x, y):
+		pos = _ref_RandomNumber.get_dungeon_coord()
+		if _is_occupied(pos.x, pos.y):
 			continue
-		neighbor = Game_CoordCalculator.get_neighbor_xy(x, y, 1)
+		neighbor = Game_CoordCalculator.get_neighbor(pos, 1)
 		for i in neighbor:
 			if _is_occupied(i.x, i.y):
 				continue
-			neighbor = Game_CoordCalculator.get_neighbor_xy(x, y,
+			neighbor = Game_CoordCalculator.get_neighbor(pos,
 					Game_HoundData.PC_SIGHT, true)
 			for j in neighbor:
 				_occupy_position(j.x, j.y)
-			_add_actor_to_blueprint(_spr_PCHound, Game_SubTag.PC, x, y)
+			_add_actor_to_blueprint(_spr_PCHound, Game_SubTag.PC, pos.x, pos.y)
 			return

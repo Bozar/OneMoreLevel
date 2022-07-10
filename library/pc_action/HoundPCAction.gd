@@ -1,12 +1,13 @@
 extends Game_PCActionTemplate
 
 
-const NO_INPUT: int = 0
-const INPUT_ONCE: int = 1
-const INPUT_TWICE: int = 2
+const ONE_TURN := 1
+const NO_INPUT := 0
+const INPUT_ONCE := 1
+const INPUT_TWICE := 2
 
 var _move_diagonally: bool
-var _count_input: int = NO_INPUT
+var _count_input := NO_INPUT
 
 
 func _init(parent_node: Node2D).(parent_node) -> void:
@@ -14,35 +15,24 @@ func _init(parent_node: Node2D).(parent_node) -> void:
 
 
 func switch_sprite() -> void:
-	var pc: Sprite = _ref_DungeonBoard.get_pc()
-	var pc_pos := _ref_DungeonBoard.get_pc_coord()
-	var ground := _ref_DungeonBoard.get_ground_xy(pc_pos.x, pc_pos.y)
-	var new_sprite_type: String
-
-	if _ground_is_active(pc_pos.x, pc_pos.y):
-		if _ref_ObjectData.get_hit_point(ground) == 0:
-			new_sprite_type = Game_SpriteTypeTag.ACTIVE_1
-		else:
-			new_sprite_type = Game_SpriteTypeTag.ACTIVE
-	else:
-		new_sprite_type = Game_SpriteTypeTag.DEFAULT
-	_ref_SwitchSprite.set_sprite(pc, new_sprite_type)
+	_set_pc_sprite()
+	_set_phantom_sprite()
 
 
 func set_source_position() -> void:
 	.set_source_position()
-	_move_diagonally = _ground_is_active(
-			_source_position.x, _source_position.y)
+	_move_diagonally = _ground_is_active(_source_position)
 
 
 func set_target_position(direction: String) -> void:
-	var pc: Sprite = _ref_DungeonBoard.get_pc()
+	var pc := _ref_DungeonBoard.get_pc()
+	var new_type: String
 
 	if _move_diagonally:
 		if _count_input == NO_INPUT:
 			.set_target_position(direction)
-			_ref_SwitchSprite.set_sprite(pc,
-					Game_InputTag.INPUT_TO_SPRITE[direction])
+			new_type = Game_InputTag.INPUT_TO_SPRITE[direction]
+			_ref_SwitchSprite.set_sprite(pc, new_type)
 			_count_input += 1
 		elif _count_input == INPUT_ONCE:
 			_set_diagonal_position(direction)
@@ -104,14 +94,13 @@ func move() -> void:
 		if _count_input == INPUT_TWICE:
 			if (_source_position.x != _target_position.x) \
 					and (_source_position.y != _target_position.y) \
-					and _ground_is_active(
-							_target_position.x, _target_position.y):
+					and _ground_is_active(_target_position):
 				.move()
 				_restore_in_cage()
 				_try_attack(_move_diagonally)
 			_reset_input_state()
 	else:
-		if not _ground_is_active(_target_position.x, _target_position.y):
+		if not _ground_is_active(_target_position):
 			.move()
 			_restore_in_cage()
 			_try_attack(_move_diagonally)
@@ -129,16 +118,20 @@ func wait() -> void:
 		_restore_in_cage()
 
 
+func reset_state() -> void:
+	.reset_state()
+	_ref_CountDown.add_count(ONE_TURN)
+
+
 func _is_checkmate() -> bool:
 	var neighbor: Array
 
 	if _move_diagonally:
 		return false
 
-	neighbor = Game_CoordCalculator.get_neighbor_xy(
-			_source_position.x, _source_position.y, 1)
+	neighbor = Game_CoordCalculator.get_neighbor(_source_position, 1)
 	for i in neighbor:
-		if not _ref_DungeonBoard.has_building_xy(i.x, i.y):
+		if not _ref_DungeonBoard.has_building(i):
 			return false
 	return true
 
@@ -152,15 +145,17 @@ func _set_diagonal_position(direction: String) -> void:
 
 
 func _block_line_of_sight(x: int, y: int, _opt_arg: Array) -> bool:
+	var pos := Game_IntCoord.new(x, y)
+
 	# Building.
-	if _ref_DungeonBoard.has_building_xy(x, y):
+	if _ref_DungeonBoard.has_building(pos):
 		return true
 	# Fog.
-	elif _ground_is_active(x, y) != _move_diagonally:
+	elif _ground_is_active(pos) != _move_diagonally:
 		return true
 	# Actor.
 	else:
-		return _ref_DungeonBoard.has_actor_xy(x, y)
+		return _ref_DungeonBoard.has_actor(pos)
 
 
 func _get_hit_position(hit_diagonally: bool) -> Game_IntCoord:
@@ -187,45 +182,45 @@ func _get_hit_position(hit_diagonally: bool) -> Game_IntCoord:
 		)
 
 
-func _can_hit_target(x: int, y: int, hit_diagonally: bool) -> bool:
-	var actor: Sprite
-
-	if not (Game_CoordCalculator.is_inside_dungeon(x, y) \
-			and _ref_DungeonBoard.has_actor_xy(x, y)):
+func _can_hit_target(coord: Game_IntCoord, hit_diagonally: bool) -> bool:
+	if not Game_CoordCalculator.is_inside_dungeon(coord.x, coord.y):
+		return false
+	elif not _ref_DungeonBoard.has_actor(coord):
 		return false
 
-	if _ground_is_active(x, y) == hit_diagonally:
-		actor = _ref_DungeonBoard.get_actor_xy(x, y)
-		if actor.is_in_group(Game_SubTag.HOUND_BOSS):
+	if _ground_is_active(coord) == hit_diagonally:
+		if _ref_DungeonBoard.has_sprite_with_sub_tag(Game_SubTag.HOUND_BOSS,
+				coord):
 			return hit_diagonally
 		return true
 	return false
 
 
-func _try_set_and_get_boss_hit_point(x: int, y: int) -> int:
-	var actor: Sprite = _ref_DungeonBoard.get_actor_xy(x, y)
-
-	if actor.is_in_group(Game_SubTag.HOUND_BOSS):
-		_ref_ObjectData.add_hit_point(actor, 1)
-		return _ref_ObjectData.get_hit_point(actor)
-	return 0
-
-
 func _try_attack(attack_diagonally: bool) -> void:
 	var hit_pos: Game_IntCoord
-	var hit_point: int
+	var hit_actor: Sprite
+	var pc := _ref_DungeonBoard.get_pc()
+	var remove_this := true
+	var win := false
 
 	hit_pos = _get_hit_position(attack_diagonally)
-	if not _can_hit_target(hit_pos.x, hit_pos.y, attack_diagonally):
+	if not _can_hit_target(hit_pos, attack_diagonally):
 		return
 
-	_try_hit_phantom(hit_pos.x, hit_pos.y)
-	hit_point = _try_set_and_get_boss_hit_point(hit_pos.x, hit_pos.y)
-	_ref_RemoveObject.remove_actor_xy(hit_pos.x, hit_pos.y)
+	_ref_CountDown.subtract_count(ONE_TURN)
+	hit_actor = _ref_DungeonBoard.get_actor(hit_pos)
+	if hit_actor.is_in_group(Game_SubTag.PHANTOM):
+		_ref_ObjectData.set_hit_point(pc, 0)
+	elif hit_actor.is_in_group(Game_SubTag.HOUND_BOSS):
+		_ref_ObjectData.subtract_hit_point(hit_actor,
+				Game_HoundData.PC_HIT_BOSS)
+		remove_this = _ref_ObjectData.get_hit_point(hit_actor) < 1
+		win = remove_this
 
-	if hit_point == Game_HoundData.MAX_BOSS_HIT_POINT:
+	if remove_this:
+		_ref_RemoveObject.remove_actor(hit_pos)
+	if win:
 		_ref_EndGame.player_win()
-	_ref_CountDown.add_count(Game_HoundData.RESTORE_TURN)
 
 
 func _reset_input_state() -> void:
@@ -235,25 +230,53 @@ func _reset_input_state() -> void:
 
 func _restore_in_cage() -> void:
 	var pos := _ref_DungeonBoard.get_pc_coord()
-	var neighbor := Game_CoordCalculator.get_neighbor_xy(pos.x, pos.y, 1)
-	var is_surrounded: bool = true
+	var neighbor := Game_CoordCalculator.get_neighbor(pos, 1)
+	var is_surrounded := true
+	var phantoms := _ref_DungeonBoard.get_sprites_by_tag(Game_SubTag.PHANTOM)
+	var pc := _ref_DungeonBoard.get_pc()
+	var hp := _ref_ObjectData.get_hit_point(pc)
 
 	for i in neighbor:
-		if not _ref_DungeonBoard.has_building_xy(i.x, i.y):
+		if not _ref_DungeonBoard.has_building(i):
 			is_surrounded = false
 			break
 	if is_surrounded:
-		_ref_CountDown.add_count(Game_HoundData.RESTORE_TURN_IN_CAGE)
+		if phantoms.size() > 0:
+			hp -= Game_HoundData.SUBTRACT_HIT_POINT_IN_CAGE
+			hp = max(hp, 0) as int
+			_ref_ObjectData.set_hit_point(pc, hp)
 
 
-func _try_hit_phantom(x: int, y: int) -> void:
-	var actor: Sprite = _ref_DungeonBoard.get_actor_xy(x, y)
-	var pc: Sprite = _ref_DungeonBoard.get_pc()
-
-	if actor.is_in_group(Game_SubTag.PHANTOM):
-		_ref_ObjectData.set_hit_point(pc, 0)
-
-
-func _ground_is_active(x: int, y: int) -> bool:
-	var ground: Sprite = _ref_DungeonBoard.get_ground_xy(x, y)
+func _ground_is_active(coord: Game_IntCoord) -> bool:
+	var ground := _ref_DungeonBoard.get_ground(coord)
 	return _ref_ObjectData.verify_state(ground, Game_StateTag.ACTIVE)
+
+
+func _set_pc_sprite() -> void:
+	var pc := _ref_DungeonBoard.get_pc()
+	var pc_pos := _ref_DungeonBoard.get_pc_coord()
+	var ground := _ref_DungeonBoard.get_ground(pc_pos)
+	var new_sprite_type: String
+
+	if _ground_is_active(pc_pos):
+		if _ref_ObjectData.get_hit_point(ground) == 0:
+			new_sprite_type = Game_SpriteTypeTag.ACTIVE_1
+		else:
+			new_sprite_type = Game_SpriteTypeTag.ACTIVE
+	else:
+		new_sprite_type = Game_SpriteTypeTag.DEFAULT
+	_ref_SwitchSprite.set_sprite(pc, new_sprite_type)
+
+
+func _set_phantom_sprite() -> void:
+	var pc := _ref_DungeonBoard.get_pc()
+	var hp := _ref_ObjectData.get_hit_point(pc)
+	var new_sprite_type: String
+	var phantoms := _ref_DungeonBoard.get_sprites_by_tag(Game_SubTag.PHANTOM)
+
+	if phantoms.size() < 1:
+		return
+
+	new_sprite_type = Game_SpriteTypeTag.convert_digit_to_tag(
+			Game_HoundData.MAX_PC_HIT_POINT - hp)
+	_ref_SwitchSprite.set_sprite(phantoms[0], new_sprite_type)
