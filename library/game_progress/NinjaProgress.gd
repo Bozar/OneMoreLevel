@@ -1,6 +1,9 @@
 extends Game_ProgressTemplate
 
 
+const MIN_TRAP := -99
+const SHADOW_AS_TRAP := 5
+
 var _spr_Ninja := preload("res://sprite/Ninja.tscn")
 var _spr_NinjaShadow := preload("res://sprite/NinjaShadow.tscn")
 
@@ -36,7 +39,6 @@ func _try_remove_npc() -> int:
 func _try_respawn_npc(count_npc: int, respawn_shadow: bool) -> void:
 	var respawn: int
 	var region := []
-	var shadow_index := -1
 	var new_scene: PackedScene
 	var sub_tag: String
 	var actor: Sprite
@@ -55,12 +57,12 @@ func _try_respawn_npc(count_npc: int, respawn_shadow: bool) -> void:
 	respawn = min(respawn, region.size()) as int
 	if respawn < 1:
 		return
-	Game_ArrayHelper.rand_picker(region, respawn, _ref_RandomNumber)
+	Game_ArrayHelper.shuffle(region, _ref_RandomNumber)
 
 	if respawn_shadow:
-		shadow_index = _ref_RandomNumber.get_int(0, region.size())
-	for i in region.size():
-		if i == shadow_index:
+		_move_shadow_to_start(region)
+	for i in range(0, respawn):
+		if (i == 0) and respawn_shadow:
 			new_scene = _spr_NinjaShadow
 			sub_tag = Game_SubTag.NINJA_SHADOW
 		else:
@@ -69,3 +71,39 @@ func _try_respawn_npc(count_npc: int, respawn_shadow: bool) -> void:
 		actor = _ref_CreateObject.create_and_fetch_actor_xy(new_scene,
 				sub_tag, region[i].x, region[i].y)
 		_ref_ObjectData.set_bool(actor, true)
+
+
+func _move_shadow_to_start(respawn_coords: Array) -> void:
+	var coord: Game_IntCoord
+	var has_trap: int
+	var max_trap := MIN_TRAP
+	var x_to_trap := {}
+	var save_index := []
+
+	for i in range(0, respawn_coords.size()):
+		coord = respawn_coords[i]
+		if not x_to_trap.has(coord.x):
+			x_to_trap[coord.x] = _count_traps(coord.x)
+		has_trap = x_to_trap[coord.x]
+		if has_trap > max_trap:
+			max_trap = has_trap
+			save_index.clear()
+			save_index.push_back(i)
+		elif has_trap == max_trap:
+			save_index.push_back(i)
+
+	Game_ArrayHelper.rand_picker(save_index, 1, _ref_RandomNumber)
+	Game_ArrayHelper.swap_element(respawn_coords, 0, save_index[0])
+
+
+func _count_traps(this_x: int) -> int:
+	var count := 0
+
+	for y in range(0, Game_NinjaData.MAX_Y):
+		if _ref_DungeonBoard.has_trap_xy(this_x, y):
+			count += 1
+		# Prevent shadow ninjas from stacking on each other.
+		elif _ref_DungeonBoard.has_sprite_with_sub_tag_xy(
+				Game_SubTag.NINJA_SHADOW, this_x, y):
+			count -= SHADOW_AS_TRAP
+	return count

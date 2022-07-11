@@ -43,8 +43,8 @@ func _ninja_act() -> void:
 	var pc_hp: int
 
 	# Hit PC when inside attack range.
-	if Game_CoordCalculator.is_in_range_xy(_self_pos.x, _self_pos.y,
-			_pc_pos.x, _pc_pos.y, Game_NinjaData.ATTACK_RANGE):
+	if Game_CoordCalculator.is_in_range(_self_pos, _pc_pos,
+			Game_NinjaData.ATTACK_RANGE):
 		hit_pc = true
 	elif _self_pos.y == Game_NinjaData.GROUND_Y:
 		# Try to jump and hit PC when standing on ground.
@@ -83,7 +83,7 @@ func _shadow_ninja_act() -> void:
 	var has_moved := false
 	var move_result: Array
 
-	_ref_RemoveObject.remove_trap_xy(_self_pos.x, _self_pos.y)
+	_ref_RemoveObject.remove_trap(_self_pos)
 
 	if _self_pos.y == Game_NinjaData.GROUND_Y:
 		has_moved = _try_move_horizontally()
@@ -100,7 +100,7 @@ func _shadow_ninja_act() -> void:
 
 func _switch_sprite(hit_pc: bool) -> void:
 	var pos := Game_ConvertCoord.sprite_to_coord(_self)
-	var has_trap := _ref_DungeonBoard.has_trap_xy(pos.x, pos.y)
+	var has_trap := _ref_DungeonBoard.has_trap(pos)
 	var int_key := (hit_pc as int) * 10 + (has_trap as int)
 	var new_sprite: String = STATE_TO_SPRITE_TYPE[int_key]
 
@@ -129,7 +129,7 @@ func _try_move_vertically(direction: int) -> Array:
 			return [false, is_pc]
 	else:
 		last_grid = path[path.size() - 1]
-	_ref_DungeonBoard.move_actor_xy(pos.x, pos.y, last_grid.x, last_grid.y)
+	_ref_DungeonBoard.move_actor(pos, last_grid)
 	return [true, is_pc]
 
 
@@ -144,9 +144,9 @@ func _try_move_horizontally() -> bool:
 	else:
 		return false
 
-	if _ref_DungeonBoard.has_actor_xy(move_to.x, move_to.y):
+	if _ref_DungeonBoard.has_actor(move_to):
 		return false
-	_ref_DungeonBoard.move_actor_xy(pos.x, pos.y, move_to.x, move_to.y)
+	_ref_DungeonBoard.move_actor(pos, move_to)
 	return true
 
 
