@@ -14,7 +14,7 @@ const MAX_PRINCESS := 1
 
 const MIN_DISTANCE := 4
 const MID_DISTANCE := 8
-const MAX_DISTANCE := 24
+const MAX_DISTANCE := 14
 
 const ATTACK_RANGE := 2
 const MIN_WAIT := 1
