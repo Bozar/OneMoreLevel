@@ -2,7 +2,7 @@ extends Game_WorldTemplate
 
 
 var _spr_PCFrog := preload("res://sprite/PCFrog.tscn")
-var _spr_Frog := preload("res://sprite/Frog.tscn")
+# var _spr_Frog := preload("res://sprite/Frog.tscn")
 var _spr_Counter := preload("res://sprite/Counter.tscn")
 
 
@@ -14,14 +14,14 @@ func get_blueprint() -> Array:
 	_init_swamp()
 	_init_pc(Game_FrogData.MIN_DISTANCE, INVALID_COORD, INVALID_COORD,
 			_spr_PCFrog)
-	_init_actor(0, INVALID_COORD, INVALID_COORD,
-			Game_FrogData.MAX_FROG, _spr_Frog, Game_SubTag.FROG)
+	# _init_actor(0, INVALID_COORD, INVALID_COORD,
+	# 		Game_FrogData.MAX_FROG, _spr_Frog, Game_SubTag.FROG)
 
 	return _blueprint
 
 
 func _init_swamp() -> void:
-	var counter: int = 0
+	var counter := 0
 
 	while counter < Game_FrogData.MAX_LAND:
 		counter += _init_path()
@@ -39,7 +39,7 @@ func _init_swamp() -> void:
 
 
 func _init_path() -> int:
-	var current_length: int = 0
+	var current_length := 0
 	var x: int
 	var y: int
 	var neighbor: Array

@@ -20,14 +20,16 @@ Press Space to wait 1 turn.
 
 ## Hit a Frog
 
-Frog knight (f) and frog princess (P) follow the same rules most of the time. We use the word frog to refer to both of them from now on unless specified otherwise. You hit a frog (instead of moving) by pressing arrow keys if it is the closest target that is on a straight line with you and no more than 2 steps away. In the digraph below, you can either move to grid 1 or hit frog A, B or C, but not D or E.
+Frog knight (f) and frog princess (P) follow the same rules most of the time. We use the word frog to refer to both of them from now on unless specified otherwise. You hit a frog (instead of moving) by pressing arrow keys if it is the closest target that is on a straight line with you and is no more than 2 steps away. In the digraph below, you can either move to grid 1 or hit frog A, B or C, but not D or E.
 
     . D 1 . .
     . A @ B E
     . . . . .
     . . C . .
 
-Hitting a frog costs 1 turn and restores 8 turns. You have at most 24 turns. Actions (move, wait, hit and break free) take time. You lose the game if running out of turns.
+Hitting a frog restores 8 turns. You have at most 24 turns. Actions (move, wait, and hit) take time. You lose the game if running out of turns.
+
+You can only see frogs that are within 3 steps. After hitting a frog knight, a small area around it becomes visible permanently. Lands in this area will never be submerged by swamp (see *Five Waves of Frogs*).
 
 ## Frog AI
 
@@ -35,22 +37,20 @@ A frog has three sets of actions.
 
 * Wait 1 to 3 turns. After waiting, take an action below if possible. Then wait again.
 * Grapple and swallow PC.
-* Move to a diagonal grid that is 2 steps away.
+* Move to a diagonal grid.
 
-A frog grapples and swallows PC if: (1) He does not wait last turn by pressing Space. (2) He is within 2 steps. (3) If the frog and PC are on a straight line, it also requires that there are no other frogs between them. In the digraph below, frog A, B, C and D can grapple PC, but not E, as it is blocked by D.
+A frog grapples and swallows PC if: (1) PC does not wait last turn by pressing Space. (2) PC is within 2 steps from the frog. (3) If the frog and PC are on a straight line, it also requires that there are no other frogs between them. In the digraph below, frog A, B, C and D can grapple PC, but not E, as it is blocked by D.
 
     . A . .
     B . . .
     C @ D E
     . . . .
 
-If a frog cannot grapple PC, it moves diagonally to a grid exactly 2 steps away. If it is far away from PC, it tends to move closer. Otherwise it moves randomly. A frog prefers moving into a swamp grid rather than land.
+If a frog cannot grapple PC, it jumps diagonally to a grid exactly 2 steps away. If it is far away from PC, it tends to move closer. Otherwise it moves randomly.
 
 ## Five Waves of Frogs
 
 Frogs emerge in five waves. There is a counter in the bottom right corner of the map which shows the current wave number. The counter acts as a land grid and it cannot be submerged.
-
-Frogs that are out of PC's sight are visible once every few turns. Hitting a frog reveal all of them for one turn. Frog princess is always visible.
 
 Wave 1. This is the initial wave. There are 8 frog knights. When 4 of them disappear due to being hit, enter wave 2.
 
@@ -58,6 +58,6 @@ Wave 2. Some land is submerged by swamp. The remaining frog knights disappear. P
 
 Wave 3. Once again there are 8 knights. Hit 4 of them to enter wave 4.
 
-Wave 4. More land is submerged. The princess reappears. Hit the remaining 4 knights to enter wave 5. If you hit the princess when there are still knights in the dungeon, she reappears somewhere close to PC.
+Wave 4. More land is submerged. The princess reappears. Hit the remaining 4 knights to enter wave 5. If you hit the princess when there are still knights in the dungeon, she reappears the next turn.
 
 Wave 5. This is the final wave. Hit the frog princess to beat the game.

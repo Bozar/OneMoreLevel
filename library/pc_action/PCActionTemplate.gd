@@ -82,17 +82,15 @@ func is_inside_dungeon() -> bool:
 
 
 func is_npc() -> bool:
-	return _ref_DungeonBoard.has_actor_xy(
-			_target_position.x, _target_position.y)
+	return _ref_DungeonBoard.has_actor(_target_position)
 
 
 func is_building() -> bool:
-	return _ref_DungeonBoard.has_building_xy(
-			_target_position.x, _target_position.y)
+	return _ref_DungeonBoard.has_building(_target_position)
 
 
 func is_trap() -> bool:
-	return _ref_DungeonBoard.has_trap_xy(_target_position.x, _target_position.y)
+	return _ref_DungeonBoard.has_trap(_target_position)
 
 # 1. An action, (move or attack, for example) might call
 # EndGame.player_[win|lose]() implicitly. Therefore we need to decide whether
@@ -107,7 +105,7 @@ func move() -> void:
 
 
 func attack() -> void:
-	_ref_RemoveObject.remove_actor_xy(_target_position.x, _target_position.y)
+	_ref_RemoveObject.remove_actor(_target_position)
 	end_turn = true
 
 
@@ -307,8 +305,7 @@ func _set_sprite_memory(x: int, y: int, main_tag: String, sprite_layer := 0) \
 
 
 func _move_pc_sprite() -> void:
-	_ref_DungeonBoard.move_actor_xy(_source_position.x, _source_position.y,
-			_target_position.x, _target_position.y)
+	_ref_DungeonBoard.move_actor(_source_position, _target_position)
 
 
 # Render dungeon objects at the end of the default render_fov().

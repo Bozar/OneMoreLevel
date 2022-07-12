@@ -1,8 +1,8 @@
 extends Game_AITemplate
 
 
-const WAIT_HIT_POINT: int = 1
-const CAST_RAY: Array = [[0, 1], [0, -1], [1, 0], [-1, 0]]
+const WAIT_HIT_POINT := 1
+const CAST_RAY := [[0, 1], [0, -1], [1, 0], [-1, 0]]
 
 
 func _init(parent_node: Node2D).(parent_node) -> void:
@@ -21,29 +21,25 @@ func take_action() -> void:
 
 
 func _reset_hit_point() -> void:
-	var hp: int = _ref_RandomNumber.get_int(
-			Game_FrogData.MIN_WAIT, Game_FrogData.MAX_WAIT)
+	var hp := _ref_RandomNumber.get_int(Game_FrogData.MIN_WAIT,
+			Game_FrogData.MAX_WAIT)
 	_ref_ObjectData.set_hit_point(_self, hp)
 
 
 func _can_grapple() -> bool:
-	var self_x: int = _self_pos.x
-	var self_y: int = _self_pos.y
-	var pc_x: int = _pc_pos.x
-	var pc_y: int = _pc_pos.y
-	var pc: Sprite = _ref_DungeonBoard.get_pc()
+	var pc := _ref_DungeonBoard.get_pc()
 
 	if _ref_ObjectData.verify_state(pc, Game_StateTag.PASSIVE):
 		return false
-	elif Game_CoordCalculator.is_in_range_xy(self_x, self_y, pc_x, pc_y,
+	elif Game_CoordCalculator.is_in_range(_self_pos, _pc_pos,
 			Game_FrogData.ATTACK_RANGE):
 		return _path_is_clear()
 	return false
 
 
 func _grapple() -> void:
-	var neighbor: Array = Game_CoordCalculator.get_neighbor_xy(
-			_self_pos.x, _self_pos.y, Game_FrogData.ATTACK_RANGE)
+	var neighbor := Game_CoordCalculator.get_neighbor(_self_pos,
+			Game_FrogData.ATTACK_RANGE)
 
 	Game_ArrayHelper.filter_element(neighbor, self, "_filter_grapple", [])
 	_ref_SwitchSprite.set_sprite(_self, Game_SpriteTypeTag.ACTIVE)
@@ -53,26 +49,25 @@ func _grapple() -> void:
 
 
 func _random_walk() -> void:
-	var x: int = _self_pos.x
-	var y: int = _self_pos.y
-	var max_distance := Game_CoordCalculator.get_range_xy(x, y,
-			_pc_pos.x, _pc_pos.y)
-	var neighbor := Game_CoordCalculator.get_neighbor_xy(x, y, 2, false)
+	var neighbor := Game_CoordCalculator.get_neighbor(_self_pos,
+			Game_FrogData.ATTACK_RANGE, false)
+	var max_distance := Game_CoordCalculator.get_range(_self_pos, _pc_pos)
+	var target_pos: Game_IntCoord
 
 	Game_ArrayHelper.filter_element(neighbor, self, "_filter_rand_walk", [])
-	Game_ArrayHelper.duplicate_element(neighbor, self, "_dup_rand_walk",
-			[max_distance])
+	if max_distance > Game_FrogData.MID_DISTANCE:
+		Game_ArrayHelper.filter_element(neighbor, self,"_filter_by_distance",
+				[max_distance])
 	if neighbor.size() < 1:
 		return
 
 	Game_ArrayHelper.rand_picker(neighbor, 1, _ref_RandomNumber)
-	x = neighbor[0].x
-	y = neighbor[0].y
-	_ref_DungeonBoard.move_actor_xy(_self_pos.x, _self_pos.y, x, y)
+	target_pos = neighbor.pop_back()
+	_ref_DungeonBoard.move_actor(_self_pos, target_pos)
 
 
 func _set_danger_zone(x: int, y: int, danger: bool) -> void:
-	var ground: Sprite = _ref_DungeonBoard.get_ground_xy(x, y)
+	var ground := _ref_DungeonBoard.get_ground_xy(x, y)
 
 	_ref_DangerZone.set_danger_zone(x, y, danger)
 	if _ref_DangerZone.is_in_danger(x, y):
@@ -106,8 +101,7 @@ func _path_is_clear() -> bool:
 
 
 func _filter_grapple(source: Array, index: int, _opt_arg: Array) -> bool:
-	return Game_CoordCalculator.get_range_xy(_pc_pos.x, _pc_pos.y,
-			source[index].x, source[index].y) == 1
+	return Game_CoordCalculator.get_range(_pc_pos, source[index]) == 1
 
 
 func _filter_rand_walk(source: Array, index: int, _opt_arg: Array) -> bool:
@@ -118,32 +112,11 @@ func _filter_rand_walk(source: Array, index: int, _opt_arg: Array) -> bool:
 
 	if (self_x == sor_x) or (self_y == sor_y) \
 			or _ref_DangerZone.is_in_danger(sor_x, sor_y) \
-			or _ref_DungeonBoard.has_actor_xy(sor_x, sor_y):
+			or _ref_DungeonBoard.has_actor(source[index]):
 		return false
 	return true
 
 
-func _dup_rand_walk(source: Array, index: int, opt_arg: Array) -> int:
-	var self_x: int = _self_pos.x
-	var self_y: int = _self_pos.y
-	var sor_x: int = source[index].x
-	var sor_y: int = source[index].y
-	var pc_x: int = _pc_pos.x
-	var pc_y: int = _pc_pos.y
-	var max_distance: int = opt_arg[0]
-	var repeat: int = 1
-	var swamp: int = 1 if _ref_DungeonBoard.has_sprite_with_sub_tag_xy(
-			Game_SubTag.SWAMP, sor_x, sor_y) \
-			else 0
-
-	# If a frog is not too far away from PC, it favors swamp grids.
-	if Game_CoordCalculator.is_in_range_xy(self_x, self_y, pc_x, pc_y,
-			Game_FrogData.MID_DISTANCE):
-		repeat += swamp
-	# If a frog is far away from PC, it favors grids that are closer to PC,
-	# especially when the grid is swamp.
-	elif Game_CoordCalculator.is_in_range_xy(sor_x, sor_y, pc_x, pc_y,
-			max_distance):
-		repeat += 1
-		repeat += swamp
-	return repeat
+func _filter_by_distance(source: Array, index: int, opt_arg: Array) -> bool:
+	var max_range: int = opt_arg[0]
+	return Game_CoordCalculator.is_in_range(source[index], _pc_pos, max_range)
