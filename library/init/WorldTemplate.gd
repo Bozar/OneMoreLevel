@@ -108,9 +108,10 @@ func _init_floor(floor_sprite: PackedScene = _spr_Floor) -> void:
 func _init_actor(min_distance: int, x: int, y: int, max_actor: int,
 		actor_scene: PackedScene, sub_tag: String) -> void:
 	var coords := Game_DungeonSize.get_all_coords()
+	var init_coord := Game_IntCoord.new(x, y)
 
-	if _is_valid_coord(Game_IntCoord.new(x, y), 0, []):
-		_add_actor_to_blueprint(actor_scene, sub_tag, x, y)
+	if _is_valid_coord(init_coord, 0, []):
+		_create_here(init_coord, [min_distance, actor_scene, sub_tag])
 	else:
 		Game_WorldGenerator.create_by_coord(coords,
 				max_actor, _ref_RandomNumber, self,

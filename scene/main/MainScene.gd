@@ -84,6 +84,7 @@ const NODE_REF := [
 		"_ref_DungeonBoard",
 		DUNGEON,
 		PLAYER_INPUT, REMOVE_OBJECT, ENEMY_AI, GAME_PROGRESS, SIDEBAR_GUI,
+		CREATE_OBJECT,
 	],
 	[
 		"_ref_Schedule",

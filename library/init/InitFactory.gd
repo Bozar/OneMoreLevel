@@ -39,8 +39,7 @@ const FIRST_BIG_ROOM := [
 	[Game_DungeonSize.MAX_X - 11, Game_DungeonSize.MAX_X - 6],
 ]
 
-const MARKER_TREASURE:= 2
-const MARKER_RARE_TREASURE := 3
+const TREASURE_MARKER := 2
 
 var _spr_Door := preload("res://sprite/Door.tscn")
 var _spr_FactoryClock := preload("res://sprite/FactoryClock.tscn")
@@ -57,11 +56,11 @@ func _init(parent_node: Node2D).(parent_node) -> void:
 
 func get_blueprint() -> Array:
 	var pos := []
-	var pc := []
+	var pc_coord: Game_IntCoord
 	var __
 
 	_create_room(PATH_TO_BIG_ROOM, MAX_BIG_ROOM, pos)
-	pc = _create_start_point(pos)
+	pc_coord = _create_start_point(pos)
 	_create_room(PATH_TO_SMALL_ROOM, MAX_SMALL_ROOM, pos)
 	_init_floor()
 	# Floors in a room are marked as occupied so as not to be replaced by
@@ -69,25 +68,17 @@ func get_blueprint() -> Array:
 	for i in pos:
 		_reverse_occupy(i[0], i[1])
 
-	# The first rare treasure should be far away from PC. Others can be close to
-	# PC, but not too close to each other.
-	pos.resize(0)
-	for i in range(0, Game_FactoryData.MAX_RARE_TREASURE):
-		pos.push_back(_create_treasure(Game_SubTag.RARE_TREASURE, i == 0,
-				pc[0], pc[1]))
-	# Common treasure can be close to rare treasure.
-	_reset_rare_treasure_gap(pos)
-	for _i in range(0, Game_FactoryData.MAX_TREASURE):
-		__ = _create_treasure(Game_SubTag.TREASURE, false, pc[0], pc[1])
+	_create_treasure(Game_SubTag.RARE_TREASURE, pc_coord)
+	_create_treasure(Game_SubTag.TREASURE, pc_coord)
 
-	_init_pc(Game_FactoryData.PC_GAP, pc[0], pc[1], _spr_Counter)
+	_init_pc(Game_FactoryData.PC_GAP, pc_coord.x, pc_coord.y, _spr_Counter)
 	_init_actor(Game_FactoryData.SCP_GAP, INVALID_COORD, INVALID_COORD,
 			Game_FactoryData.MAX_SCP, _spr_SCP_173, Game_SubTag.SCP_173)
 
 	return BLUEPRINT
 
 
-func _create_start_point(inner_floor: Array) -> Array:
+func _create_start_point(inner_floor: Array) -> Game_IntCoord:
 	var file_list: Array = Game_FileIOHelper.get_file_list(PATH_TO_FACTORY
 			+ PATH_TO_START_POINT)
 	var packed_prefab: Game_DungeonPrefab.PackedPrefab
@@ -102,7 +93,7 @@ func _create_start_point(inner_floor: Array) -> Array:
 		if build_result[0]:
 			break
 	# PC is in the center of the room.
-	return ([build_result[1] + 1, build_result[2] + 1])
+	return Game_IntCoord.new(build_result[1] + 1, build_result[2] + 1)
 
 
 func _create_room(path_to_prefab: String, max_room: int, inner_floor: Array) \
@@ -259,11 +250,14 @@ func _build_building(x: int, y: int, new_sprite: PackedScene, sub_tag: String) \
 	_add_building_to_blueprint(new_sprite, sub_tag, x, y)
 
 
-func _get_coord(packed_prefab: Game_DungeonPrefab.PackedPrefab,
-		is_x: bool) -> int:
-	var max_coord: int = Game_DungeonSize.MAX_X - packed_prefab.max_x if is_x \
-			else Game_DungeonSize.MAX_Y - packed_prefab.max_y
+func _get_coord(packed_prefab: Game_DungeonPrefab.PackedPrefab, is_x: bool) \
+		-> int:
+	var max_coord: int
 
+	if is_x:
+		max_coord = Game_DungeonSize.MAX_X - packed_prefab.max_x
+	else:
+		max_coord = Game_DungeonSize.MAX_Y - packed_prefab.max_y
 	return _ref_RandomNumber.get_int(0, max_coord)
 
 
@@ -275,61 +269,70 @@ func _is_on_border(coord: int, is_x: int) -> bool:
 	return coord == Game_DungeonSize.MAX_Y - 1
 
 
-func _create_treasure(sub_tag: String, is_first_rare_treasure: bool,
-		pc_x: int, pc_y: int) -> Array:
-	var x: int
-	var y: int
-	var marker: int
+func _create_treasure(sub_tag: String, pc_pos: Game_IntCoord) -> void:
 	var new_sprite: PackedScene
-	var gap: int
-	var pc_gap: int = Game_DungeonSize.MAX_Y if is_first_rare_treasure \
-			else Game_FactoryData.TREASURE_GAP
-	var retry := 0
+	var max_treasure: int
+	var is_rare := (sub_tag == Game_SubTag.RARE_TREASURE)
+	var all_coords := Game_DungeonSize.get_all_coords()
+	var rare_coords := []
 
 	match sub_tag:
 		Game_SubTag.TREASURE:
-			marker = MARKER_TREASURE
 			new_sprite = _spr_Treasure
-			gap = Game_FactoryData.TREASURE_GAP
+			max_treasure = Game_FactoryData.MAX_TREASURE
 		Game_SubTag.RARE_TREASURE:
-			marker = MARKER_RARE_TREASURE
 			new_sprite = _spr_RareTreasure
-			gap = Game_FactoryData.RARE_TREASURE_GAP
+			max_treasure = Game_FactoryData.MAX_RARE_TREASURE
 		_:
-			return []
+			return
 
-	while true:
-		if retry > 999:
-		# if retry > MAX_WHILE_TRUE_RETRY:
-			print("Factory: Too many retries.")
-			return []
-		retry += 1
-		x = _ref_RandomNumber.get_x_coord()
-		y = _ref_RandomNumber.get_y_coord()
-		if Game_CoordCalculator.is_in_range_xy(x, y, pc_x, pc_y, pc_gap) \
-				or _is_occupied(x, y) \
-				or _is_terrain_marker(x, y, marker):
-			continue
-		break
+	Game_WorldGenerator.create_by_coord(all_coords,
+			max_treasure, _ref_RandomNumber, self,
+			"_is_valid_treasure_coord", [pc_pos, is_rare, rare_coords],
+			"_create_treasure_here", [new_sprite, sub_tag, rare_coords])
 
-	_add_trap_to_blueprint(new_sprite, sub_tag, x, y)
-	for i in Game_CoordCalculator.get_neighbor_xy(x, y, gap):
+
+func _is_valid_treasure_coord(coord: Game_IntCoord, _retry: int, opt_arg) \
+		-> bool:
+	var pc_pos: Game_IntCoord = opt_arg[0]
+	var is_rare: bool = opt_arg[1]
+	var rare_coords: Array = opt_arg[2]
+	var gap_to_pc := Game_FactoryData.TREASURE_GAP
+
+	if _is_occupied(coord.x, coord.y) \
+			or _is_terrain_marker(coord.x, coord.y, TREASURE_MARKER):
+		return false
+
+	if is_rare:
+		# Rare gadgets are away from each other.
+		for i in rare_coords:
+			if Game_CoordCalculator.is_in_range(i, coord,
+					Game_FactoryData.RARE_TREASURE_GAP):
+				return false
+		# The first rare gadget is far away from PC.
+		if rare_coords.size() < 1:
+			gap_to_pc = Game_FactoryData.RARE_TREASURE_GAP
+	return Game_CoordCalculator.is_out_of_range(coord, pc_pos, gap_to_pc)
+
+
+func _create_treasure_here(coord: Game_IntCoord, opt_arg: Array) -> void:
+	var new_sprite: PackedScene = opt_arg[0]
+	var sub_tag: String = opt_arg[1]
+	var rare_coords: Array = opt_arg[2]
+
+	_add_trap_to_blueprint(new_sprite, sub_tag, coord.x, coord.y)
+	for i in Game_CoordCalculator.get_neighbor(coord,
+			Game_FactoryData.TREASURE_GAP):
+		# Do not change building markers.
 		if _is_occupied(i.x, i.y):
 			continue
-		_set_terrain_marker(i.x, i.y, marker)
+		_set_terrain_marker(i.x, i.y, TREASURE_MARKER)
 	# Occupy trap grids so that NPCs cannot stand on them and show a default
 	# sprite when game starts.
-	_occupy_position(x, y)
-	return [x, y]
+	_occupy_position(coord.x, coord.y)
 
-
-func _reset_rare_treasure_gap(coord: Array) -> void:
-	for i in coord:
-		for j in Game_CoordCalculator.get_neighbor_xy(i[0], i[1],
-				Game_FactoryData.TREASURE_GAP, true):
-			if _is_occupied(j.x, j.y):
-				continue
-			_set_terrain_marker(j.x, j.y, MARKER_TREASURE)
+	if sub_tag == Game_SubTag.RARE_TREASURE:
+		rare_coords.push_back(coord)
 
 
 func _is_in_between(x: int, min_x: int, max_x: int) -> bool:
