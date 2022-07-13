@@ -30,6 +30,7 @@ const RESPAWN := "respawn"
 
 const TREASURE := "treasure"
 const RARE_TREASURE := "rare_treasure"
+const FAKE_RARE_TREASURE := "fake_rare_treasure"
 
 const ARROW := "arrow"
 const ARROW_LEFT := "arrow_left"

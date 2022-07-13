@@ -63,14 +63,13 @@ func render_fov() -> void:
 
 
 func interact_with_building() -> void:
-	if _ref_DungeonBoard.has_sprite_with_sub_tag_xy(Game_SubTag.DOOR,
-			_target_position.x, _target_position.y):
+	if _ref_DungeonBoard.has_sprite_with_sub_tag(Game_SubTag.DOOR,
+			_target_position):
 		move()
 
 
 func interact_with_trap() -> void:
-	var trap: Sprite = _ref_DungeonBoard.get_sprite_xy(Game_MainTag.TRAP,
-			_target_position.x, _target_position.y)
+	var trap := _ref_DungeonBoard.get_trap(_target_position)
 	var win: bool
 	var __
 
@@ -87,7 +86,7 @@ func interact_with_trap() -> void:
 		_treasure += 1
 		_treasure = min(_treasure, Game_FactoryData.MAX_TREASURE_SLOT) as int
 
-	_ref_RemoveObject.remove_trap_xy(_target_position.x, _target_position.y)
+	_ref_RemoveObject.remove_trap(_target_position)
 	._move_pc_sprite()
 
 	if win:
@@ -124,7 +123,7 @@ func _show_or_hide_sprite(sprites: Array, auto_reset: bool) -> void:
 
 	for i in sprites:
 		pos = Game_ConvertCoord.sprite_to_coord(i)
-		if _ref_DungeonBoard.has_actor_xy(pos.x, pos.y):
+		if _ref_DungeonBoard.has_actor(pos):
 			if auto_reset or Game_ShadowCastFOV.is_in_sight(pos.x, pos.y):
 				i.visible = false
 		elif auto_reset:
@@ -138,12 +137,11 @@ func _is_dying() -> bool:
 func _is_cornered() -> bool:
 	var building: Sprite
 
-	for i in Game_CoordCalculator.get_neighbor_xy(
-			_source_position.x, _source_position.y, 1):
-		if _ref_DungeonBoard.has_actor_xy(i.x, i.y):
+	for i in Game_CoordCalculator.get_neighbor(_source_position, 1):
+		if _ref_DungeonBoard.has_actor(i):
 			continue
 		else:
-			building = _ref_DungeonBoard.get_building_xy(i.x, i.y)
+			building = _ref_DungeonBoard.get_building(i)
 			if (building == null) or building.is_in_group(Game_SubTag.DOOR):
 				return false
 			continue

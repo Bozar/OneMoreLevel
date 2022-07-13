@@ -68,8 +68,12 @@ func get_blueprint() -> Array:
 	for i in pos:
 		_reverse_occupy(i[0], i[1])
 
-	_create_treasure(Game_SubTag.RARE_TREASURE, pc_coord)
-	_create_treasure(Game_SubTag.TREASURE, pc_coord)
+	for i in [
+		Game_SubTag.FAKE_RARE_TREASURE,
+		Game_SubTag.RARE_TREASURE,
+		Game_SubTag.TREASURE,
+	]:
+		_create_treasure(i, pc_coord)
 
 	_init_pc(Game_FactoryData.PC_GAP, pc_coord.x, pc_coord.y, _spr_Counter)
 	_init_actor(Game_FactoryData.SCP_GAP, INVALID_COORD, INVALID_COORD,
@@ -272,7 +276,6 @@ func _is_on_border(coord: int, is_x: int) -> bool:
 func _create_treasure(sub_tag: String, pc_pos: Game_IntCoord) -> void:
 	var new_sprite: PackedScene
 	var max_treasure: int
-	var is_rare := (sub_tag == Game_SubTag.RARE_TREASURE)
 	var all_coords := Game_DungeonSize.get_all_coords()
 	var rare_coords := []
 
@@ -283,19 +286,22 @@ func _create_treasure(sub_tag: String, pc_pos: Game_IntCoord) -> void:
 		Game_SubTag.RARE_TREASURE:
 			new_sprite = _spr_RareTreasure
 			max_treasure = Game_FactoryData.MAX_RARE_TREASURE
+		Game_SubTag.FAKE_RARE_TREASURE:
+			new_sprite = _spr_RareTreasure
+			max_treasure = Game_FactoryData.MAX_RARE_TREASURE
 		_:
 			return
 
 	Game_WorldGenerator.create_by_coord(all_coords,
 			max_treasure, _ref_RandomNumber, self,
-			"_is_valid_treasure_coord", [pc_pos, is_rare, rare_coords],
+			"_is_valid_treasure_coord", [pc_pos, sub_tag, rare_coords],
 			"_create_treasure_here", [new_sprite, sub_tag, rare_coords])
 
 
 func _is_valid_treasure_coord(coord: Game_IntCoord, _retry: int, opt_arg) \
 		-> bool:
 	var pc_pos: Game_IntCoord = opt_arg[0]
-	var is_rare: bool = opt_arg[1]
+	var sub_tag: String = opt_arg[1]
 	var rare_coords: Array = opt_arg[2]
 	var gap_to_pc := Game_FactoryData.TREASURE_GAP
 
@@ -303,7 +309,7 @@ func _is_valid_treasure_coord(coord: Game_IntCoord, _retry: int, opt_arg) \
 			or _is_terrain_marker(coord.x, coord.y, TREASURE_MARKER):
 		return false
 
-	if is_rare:
+	if sub_tag != Game_SubTag.TREASURE:
 		# Rare gadgets are away from each other.
 		for i in rare_coords:
 			if Game_CoordCalculator.is_in_range(i, coord,
@@ -331,7 +337,7 @@ func _create_treasure_here(coord: Game_IntCoord, opt_arg: Array) -> void:
 	# sprite when game starts.
 	_occupy_position(coord.x, coord.y)
 
-	if sub_tag == Game_SubTag.RARE_TREASURE:
+	if sub_tag != Game_SubTag.TREASURE:
 		rare_coords.push_back(coord)
 
 

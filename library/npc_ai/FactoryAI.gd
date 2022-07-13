@@ -79,7 +79,8 @@ func _switch_sprite(x: int, y: int) -> void:
 		new_type = Game_SpriteTypeTag.DEFAULT
 	elif trap.is_in_group(Game_SubTag.TREASURE):
 		new_type = Game_SpriteTypeTag.ACTIVE
-	elif trap.is_in_group(Game_SubTag.RARE_TREASURE):
+	# elif trap.is_in_group(Game_SubTag.RARE_TREASURE):
+	else:
 		new_type = Game_SpriteTypeTag.ACTIVE_1
 
 	_ref_SwitchSprite.set_sprite(_self, new_type)
