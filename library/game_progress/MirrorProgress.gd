@@ -13,7 +13,7 @@ var _spr_Crystal := preload("res://sprite/Crystal.tscn")
 
 
 func _init(parent_node: Node2D).(parent_node) -> void:
-	pass
+	Game_DungeonSize.init_dungeon_grids(DUNGEON_GRIDS)
 
 
 func remove_trap(_trap: Sprite, x: int, y: int) -> void:
@@ -36,7 +36,6 @@ func _replenish_crystal() -> void:
 			pc_pos.x, pc_pos.y, Game_DungeonSize.CENTER_X, pc_pos.y)
 	var grids := []
 
-	_init_dungeon_grids()
 	for x in range(0, Game_DungeonSize.MAX_X):
 		for y in range(0, Game_DungeonSize.MAX_Y):
 			if _ref_DungeonBoard.has_building_xy(x, y) \

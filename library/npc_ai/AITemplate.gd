@@ -66,7 +66,8 @@ func _approach_pc(start_point := [_pc_pos], step_length := 1, step_count := 1,
 		opt_passable_arg := []) -> void:
 	var destination: Array
 
-	_init_dungeon()
+	Game_DungeonSize.init_dungeon_grids_by_func(_dungeon, self,
+			"_get_init_value", [], false)
 	for i in start_point:
 		if _dungeon[i.x][i.y] == Game_PathFindingData.UNKNOWN:
 			_dungeon[i.x][i.y] = Game_PathFindingData.DESTINATION
@@ -89,18 +90,11 @@ func _approach_pc(start_point := [_pc_pos], step_length := 1, step_count := 1,
 			_self_pos = destination[0]
 
 
-func _init_dungeon() -> void:
-	if _dungeon.size() < 1:
-		for x in range(Game_DungeonSize.MAX_X):
-			_dungeon[x] = []
-			_dungeon[x].resize(Game_DungeonSize.MAX_Y)
-
-	for x in range(Game_DungeonSize.MAX_X):
-		for y in range(Game_DungeonSize.MAX_Y):
-			if _is_obstacle(x, y):
-				_dungeon[x][y] = Game_PathFindingData.OBSTACLE
-			else:
-				_dungeon[x][y] = Game_PathFindingData.UNKNOWN
+func _get_init_value(x: int, y: int, _opt_arg: Array) -> int:
+	if _is_obstacle(x, y):
+		return Game_PathFindingData.OBSTACLE
+	else:
+		return Game_PathFindingData.UNKNOWN
 
 
 func _is_obstacle(x: int, y: int) -> bool:

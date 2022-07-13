@@ -84,7 +84,7 @@ func get_blueprint() -> Array:
 	_init_actor(Game_FactoryData.SCP_GAP, INVALID_COORD, INVALID_COORD,
 			Game_FactoryData.MAX_SCP, _spr_SCP_173, Game_SubTag.SCP_173)
 
-	return _blueprint
+	return BLUEPRINT
 
 
 func _create_start_point(inner_floor: Array) -> Array:

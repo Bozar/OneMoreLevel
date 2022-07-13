@@ -22,7 +22,7 @@ func get_blueprint() -> Array:
 			Game_RailgunData.MAX_NPC,
 			_spr_Devil, Game_SubTag.DEVIL)
 
-	return _blueprint
+	return BLUEPRINT
 
 
 func _init_wall() -> void:

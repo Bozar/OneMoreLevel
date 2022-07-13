@@ -8,7 +8,7 @@ var _lighted_dungeon := {}
 
 func _init(parent_node: Node2D).(parent_node) -> void:
 	_fov_render_range = Game_FrogData.RENDER_RANGE
-	Game_DungeonSize.init_dungeon_board(_lighted_dungeon, false)
+	Game_DungeonSize.init_dungeon_grids(_lighted_dungeon, false)
 
 
 func allow_input() -> bool:

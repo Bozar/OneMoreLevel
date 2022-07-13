@@ -31,7 +31,7 @@ func get_blueprint() -> Array:
 	_create_pc(terrain_map[BIRD], terrain_map[BANDIT])
 	_create_bird(terrain_map[BIRD])
 
-	return _blueprint
+	return BLUEPRINT
 
 
 func _create_tree_floor() -> Dictionary:

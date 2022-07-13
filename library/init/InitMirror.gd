@@ -20,7 +20,7 @@ func get_blueprint() -> Array:
 	_init_crystal()
 	_init_phantom()
 
-	return _blueprint
+	return BLUEPRINT
 
 
 func _init_middle_border() -> void:

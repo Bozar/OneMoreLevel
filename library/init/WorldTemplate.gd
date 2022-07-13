@@ -1,6 +1,6 @@
 class_name Game_WorldTemplate
 # Scripts such as Init[DungeonType].gd inherit this script.
-# Override get_blueprint() and _init_dungeon_board().
+# Override get_blueprint() and Game_DungeonSize.init_dungeon_grids().
 # The child should also implement _init() to pass arguments.
 
 
@@ -10,6 +10,11 @@ const OCCUPIED_MARKER := 1
 
 const MAX_WHILE_TRUE_RETRY := 1000
 
+# {0: [0, ...], 1: [0, ...], ...}
+const DUNGEON_BOARD := {}
+# [SpriteBlueprint, ...]
+const BLUEPRINT := []
+
 var _spr_Floor := preload("res://sprite/Floor.tscn")
 var _spr_Wall := preload("res://sprite/Wall.tscn")
 var _spr_PC := preload("res://sprite/PC.tscn")
@@ -17,17 +22,12 @@ var _spr_PC := preload("res://sprite/PC.tscn")
 var _ref_RandomNumber: Game_RandomNumber
 var _ref_DangerZone: Game_DangerZone
 
-# {0: [0, ...], 1: [0, ...], ...}
-var _dungeon_board := {}
-# [SpriteBlueprint, ...]
-var _blueprint := []
-
 
 func _init(parent_node: Node2D) -> void:
 	_ref_RandomNumber = parent_node._ref_RandomNumber
 	_ref_DangerZone = parent_node._ref_DangerZone
 
-	_init_dungeon_board()
+	Game_DungeonSize.init_dungeon_grids(DUNGEON_BOARD, DEFAULT_MARKER)
 
 
 # Child scripts should implement _init() to pass arguments.
@@ -37,52 +37,44 @@ func _init(parent_node: Node2D) -> void:
 
 # Override.
 func get_blueprint() -> Array:
-	return _blueprint
+	return BLUEPRINT
 
 
 func clear_blueprint() -> void:
-	_dungeon_board.clear()
-	_blueprint.clear()
-
-
-func _init_dungeon_board() -> void:
-	for i in range(Game_DungeonSize.MAX_X):
-		_dungeon_board[i] = []
-		_dungeon_board[i].resize(Game_DungeonSize.MAX_Y)
-		for j in range(Game_DungeonSize.MAX_Y):
-			_dungeon_board[i][j] = DEFAULT_MARKER
+	DUNGEON_BOARD.clear()
+	BLUEPRINT.clear()
 
 
 func _occupy_position(x: int, y: int) -> void:
-	_dungeon_board[x][y] = OCCUPIED_MARKER
+	DUNGEON_BOARD[x][y] = OCCUPIED_MARKER
 
 
 func _reverse_occupy(x: int, y: int) -> void:
 	var new_marker: int = DEFAULT_MARKER \
-			if _dungeon_board[x][y] == OCCUPIED_MARKER \
+			if DUNGEON_BOARD[x][y] == OCCUPIED_MARKER \
 			else OCCUPIED_MARKER
-	_dungeon_board[x][y] = new_marker
+	DUNGEON_BOARD[x][y] = new_marker
 
 
 func _is_occupied(x: int, y: int) -> bool:
-	return _dungeon_board[x][y] == OCCUPIED_MARKER
+	return DUNGEON_BOARD[x][y] == OCCUPIED_MARKER
 
 
 func _set_terrain_marker(x: int, y: int, marker: int) -> void:
-	_dungeon_board[x][y] = marker
+	DUNGEON_BOARD[x][y] = marker
 
 
 func _get_terrain_marker(x: int, y: int) -> int:
-	return _dungeon_board[x][y]
+	return DUNGEON_BOARD[x][y]
 
 
 func _is_terrain_marker(x: int, y: int, marker: int) -> bool:
-	return _dungeon_board[x][y] == marker
+	return DUNGEON_BOARD[x][y] == marker
 
 
 func _add_to_blueprint(scene: PackedScene, main_tag: String, sub_tag: String,
 		x: int, y: int, sprite_layer := 0) -> void:
-	_blueprint.push_back(Game_SpriteBlueprint.new(scene, main_tag, sub_tag,
+	BLUEPRINT.push_back(Game_SpriteBlueprint.new(scene, main_tag, sub_tag,
 			x, y, sprite_layer))
 
 

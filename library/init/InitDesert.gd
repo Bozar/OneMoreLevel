@@ -21,7 +21,7 @@ func get_blueprint() -> Array:
 			_spr_WormHead, Game_SubTag.WORM_HEAD)
 	_init_pc(0, INVALID_COORD, INVALID_COORD, _spr_PCDesert)
 
-	return _blueprint
+	return BLUEPRINT
 
 
 func _init_wall(count: int = 0) -> void:

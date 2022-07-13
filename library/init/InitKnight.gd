@@ -33,7 +33,7 @@ func get_blueprint() -> Array:
 	for _i in range(Game_KnightData.MAX_KNIGHT):
 		_create_actor(Game_SubTag.KNIGHT)
 
-	return _blueprint
+	return BLUEPRINT
 
 
 func _init_wall() -> void:

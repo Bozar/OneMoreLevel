@@ -29,7 +29,7 @@ func get_blueprint() -> Array:
 	# _init_actor(1, INVALID_COORD, INVALID_COORD,
 	# 		1, _spr_HoundBoss, Game_SubTag.HOUND_BOSS)
 
-	return _blueprint
+	return BLUEPRINT
 
 
 func _init_wall() -> void:

@@ -75,10 +75,3 @@ func create_ground(_ground: Sprite, _sub_tag: String, _x: int, _y: int) -> void:
 
 func game_over(_win: bool) -> void:
 	pass
-
-
-func _init_dungeon_grids() -> void:
-	if DUNGEON_GRIDS.size() == 0:
-		for x in range(0, Game_DungeonSize.MAX_X):
-			DUNGEON_GRIDS[x] = []
-			DUNGEON_GRIDS[x].resize(Game_DungeonSize.MAX_Y)

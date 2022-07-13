@@ -39,7 +39,7 @@ func get_blueprint() -> Array:
 	_init_single_wall(0, 0)
 	_init_floor()
 
-	return _blueprint
+	return BLUEPRINT
 
 
 func _get_zone_coord() -> Array:

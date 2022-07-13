@@ -29,7 +29,7 @@ func get_blueprint() -> Array:
 	_init_river()
 	_init_pc(0, pc_x, pc_y)
 
-	return _blueprint
+	return BLUEPRINT
 
 
 func _init_lighthouse() -> void:

@@ -17,7 +17,7 @@ func get_blueprint() -> Array:
 	_init_pc()
 	_init_dwarf()
 
-	return _blueprint
+	return BLUEPRINT
 
 
 func _init_wall() -> void:

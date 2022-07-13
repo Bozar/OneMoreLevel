@@ -28,7 +28,7 @@ func get_blueprint() -> Array:
 			_spr_PCNinja)
 	_create_actor()
 
-	return _blueprint
+	return BLUEPRINT
 
 
 func _create_wall_floor() -> void:

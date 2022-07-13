@@ -10,14 +10,36 @@ const CENTER_Y := 7
 const ARROW_MARGIN := 32
 
 
-static func init_dungeon_board(dungeon: Dictionary, init_value = null) -> void:
-    if dungeon.size() > 0:
-        return
+static func init_dungeon_grids(dungeon: Dictionary, init_value = null,
+		init_once := true) -> void:
+	var is_empty := dungeon.size() < 1
 
-    for x in range(0, MAX_X):
-        dungeon[x] = []
-        if init_value == null:
-            dungeon[x].resize(MAX_Y)
-        else:
-            for _i in range(0, MAX_Y):
-                dungeon[x].push_back(init_value)
+	if (not is_empty) and init_once:
+		return
+
+	for x in range(0, MAX_X):
+		if is_empty:
+			dungeon[x] = []
+			dungeon[x].resize(MAX_Y)
+		if init_value != null:
+			for y in range(0, MAX_Y):
+				dungeon[x][y] = init_value
+
+
+# get_init_value_func(x: int, y: int, optional_arg: Array)
+# Return an initial value for dungeon[x][y].
+static func init_dungeon_grids_by_func(dungeon: Dictionary, func_host: Object,
+		get_init_value_func: String, optional_arg: Array, init_once := true) \
+		-> void:
+	var is_empty := dungeon.size() < 1
+	var get_init_value := funcref(func_host, get_init_value_func)
+
+	if (not is_empty) and init_once:
+		return
+
+	for x in range(0, MAX_X):
+		if is_empty:
+			dungeon[x] = []
+			dungeon[x].resize(MAX_Y)
+		for y in range(0, MAX_Y):
+			dungeon[x][y] = get_init_value.call_func(x, y, optional_arg)
