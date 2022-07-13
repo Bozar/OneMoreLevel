@@ -5,7 +5,7 @@ const MAX_TREASURE := 22
 const MAX_RARE_TREASURE := 3
 
 const TREASURE_GAP := 2
-const RARE_TREASURE_GAP := 7
+const RARE_TREASURE_GAP := 10
 
 const MAX_SCP := 13
 const SCP_GAP := 2
