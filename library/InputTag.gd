@@ -33,6 +33,7 @@ const CLOSE_MENU := "close_menu"
 const MOVE_BY_MOUSE := "move_by_mouse"
 const WAIT_BY_MOUSE := "wait_by_mouse"
 const RELOAD_BY_MOUSE := "reload_by_mouse"
+const FORCE_RELOAD_BY_MOUSE := "force_reload_by_mouse"
 
 const DIRECTION_TO_COORD := {
 	MOVE_UP: [0, -1],

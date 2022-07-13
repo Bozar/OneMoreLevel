@@ -109,6 +109,6 @@ Removing a common or shadow ninja due to being idle for 1 turn (see above, *Gene
 
 ## Respawn Ninjas
 
-The elevator shaft holds at most 13 ninjas. If the number of ninjas does not reach its maximum, new ones appear at the top three rows of the shaft when PC's turn ends. There can be at most 4 new common ninjas every turn. If currently there are fewer than 4 shadow ninjas, one of the common ninjas is replaced by a shadow ninja. Respawning a shadow ninja has a higher priority over a common one.
+The elevator shaft holds at most 13 ninjas. If the number of ninjas does not reach its maximum, new ones appear at the top three rows of the shaft when PC's turn ends. There can be at most 4 new common ninjas every turn. If currently there are fewer than 4 shadow ninjas, the first common ninja is replaced by a shadow ninja. A new shadow ninja tends to appear in a row that has the most soul fragments. Besides, he is less likely to be in the same column with another shadow ninja.
 
 In order to beat the game, first you need to hit a ninja and enter time stop. Then you have to kill all remaining ninjas, the number of which ranges from 3 to 12, within 4 ticks.

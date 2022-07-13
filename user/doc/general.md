@@ -18,7 +18,7 @@ Press `C` to read these mechanics. The help text is also available in `doc/`.
 
 ## Change Game Settings
 
-Edit `data/setting.json` for play testing. You can also change settings in debug menu by pressing `V`. Debug settings overwrite their counterparts in json files.
+Edit `data/setting.json` for play testing. You can also change settings in debug menu by pressing `V`. Debug settings overwrite their counterparts in json files. All settings take effect when starting a new game.
 
 Set `rng_seed` to a positive integer as a random number generator seed. When in debug mode, seed digits can be separated by characters: `[-,.\s]`. For example: `12-3,4.5 6` is the same as `123456`.
 

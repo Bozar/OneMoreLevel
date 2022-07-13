@@ -10,7 +10,7 @@ Every time you start the game, One More Level presents you with a theme dungeon 
 
 ## Key Bindings
 
-Godot engine natively supports keyboards and gamepads (Xbox, DualShock and Nintendo). Xbox buttons are shown in square brackets below.
+Godot engine natively supports keyboards and gamepads (Xbox, DualShock and Nintendo). Xbox buttons are shown in square brackets below. If you need mouse support, press `V` to open debug menu, then set `mouse_input` to `true`.
 
 General gameplay:
 
@@ -27,7 +27,7 @@ Menu keys:
 
 Function keys:
 
-* Force reload: O, [Y].
+* Force reload: O, Left-click[!], [Y].
 * Replay dungeon: R, [X].
 * Replay world: U, [Start].
 * Copy RNG seed to clipboard: Ctrl + C.
@@ -37,6 +37,8 @@ Force reload and two replay keys start a new game in different ways.
 * Force reload: A random seed and world tag.
 * Replay dungeon: The same seed and world tag.
 * Replay world: A random seed and the same world tag.
+
+[!] In order to force reload by mouse, left-click the grid that is just outside the bottom right corner of the dungeon, or, put it in another way, the grid that is on the left end of the RNG seed.
 
 Following keys are available in Help menu.
 
@@ -74,7 +76,7 @@ Press `C` to read these mechanics. The help text is also available in `doc/`.
 
 ## Change Game Settings
 
-Edit `data/setting.json` for play testing. You can also change settings in debug menu by pressing `V`. Debug settings overwrite their counterparts in json files.
+Edit `data/setting.json` for play testing. You can also change settings in debug menu by pressing `V`. Debug settings overwrite their counterparts in json files. All settings take effect when starting a new game.
 
 Set `rng_seed` to a positive integer as a random number generator seed. When in debug mode, seed digits can be separated by characters: `[-,.\s]`. For example: `12-3,4.5 6` is the same as `123456`.
 

@@ -3,6 +3,8 @@ class_name Game_PlayerInput
 
 
 const RELOAD_GAME := "ReloadGame"
+const BOTTOM_RIGHT_X := 21
+const BOTTOM_RIGHT_Y := 15
 
 var _ref_Schedule: Game_Schedule
 var _ref_DungeonBoard: Game_DungeonBoard
@@ -28,7 +30,8 @@ func _unhandled_input(event: InputEvent) -> void:
 
 	if _verify_input(event, Game_InputTag.QUIT):
 		get_tree().quit()
-	elif _verify_input(event, Game_InputTag.FORCE_RELOAD):
+	elif _verify_input(event, Game_InputTag.FORCE_RELOAD) \
+			or _is_mouse_force_reload(event):
 		get_node(RELOAD_GAME).reload()
 	elif _verify_input(event, Game_InputTag.REPLAY_WORLD):
 		_ref_GameSetting.save_setting(Game_SaveTag.REPLAY_WORLD)
@@ -133,6 +136,7 @@ func _is_mouse_move_input(event: InputEvent) -> bool:
 		return false
 
 	mouse_pos = Game_ConvertCoord.mouse_to_coord(event)
+	# print(String(mouse_pos.x) + "," + String(mouse_pos.y))
 	pc_pos = Game_ConvertCoord.sprite_to_coord(_ref_DungeonBoard.get_pc())
 	_direction = ""
 
@@ -179,3 +183,13 @@ func _is_mouse_action(event: InputEvent, input_tag: String) -> bool:
 	if not _ref_GameSetting.get_mouse_input():
 		return false
 	return _verify_input(event, input_tag)
+
+
+func _is_mouse_force_reload(event: InputEvent) -> bool:
+	var mouse_pos: Game_IntCoord
+
+	if _is_mouse_action(event, Game_InputTag.FORCE_RELOAD_BY_MOUSE):
+		mouse_pos = Game_ConvertCoord.mouse_to_coord(event)
+		return (mouse_pos.x == BOTTOM_RIGHT_X) \
+				and (mouse_pos.y == BOTTOM_RIGHT_Y)
+	return false
