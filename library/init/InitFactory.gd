@@ -69,8 +69,8 @@ func get_blueprint() -> Array:
 		_reverse_occupy(i[0], i[1])
 
 	for i in [
-		Game_SubTag.FAKE_RARE_TREASURE,
 		Game_SubTag.RARE_TREASURE,
+		Game_SubTag.FAKE_RARE_TREASURE,
 		Game_SubTag.TREASURE,
 	]:
 		_create_treasure(i, pc_coord)
@@ -309,13 +309,13 @@ func _is_valid_treasure_coord(coord: Game_IntCoord, _retry: int, opt_arg) \
 			or _is_terrain_marker(coord.x, coord.y, TREASURE_MARKER):
 		return false
 
-	if sub_tag != Game_SubTag.TREASURE:
-		# Rare gadgets are away from each other.
+	if sub_tag == Game_SubTag.RARE_TREASURE:
+		# Real rare gadgets are away from each other.
 		for i in rare_coords:
 			if Game_CoordCalculator.is_in_range(i, coord,
 					Game_FactoryData.RARE_TREASURE_GAP):
 				return false
-		# The first rare gadget is far away from PC.
+		# The first real rare gadget is far away from PC.
 		if rare_coords.size() < 1:
 			gap_to_pc = Game_FactoryData.RARE_TREASURE_GAP
 	return Game_CoordCalculator.is_out_of_range(coord, pc_pos, gap_to_pc)
@@ -337,7 +337,7 @@ func _create_treasure_here(coord: Game_IntCoord, opt_arg: Array) -> void:
 	# sprite when game starts.
 	_occupy_position(coord.x, coord.y)
 
-	if sub_tag != Game_SubTag.TREASURE:
+	if sub_tag == Game_SubTag.RARE_TREASURE:
 		rare_coords.push_back(coord)
 
 

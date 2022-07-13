@@ -25,7 +25,7 @@ There are two types of gadgets: common (?) and rare (!). If you move over a rare
 
 As mentioned above, you need to collect 3 rare gadgets to beat the game. At least one of them is far away from your starting point. And they are not so close to each other. Besides, there are 3 fake rare gadgets which look the same as a real one but have no effect when picking up.
 
-When pressing Space to wait, if you have no common gadgets in the bag, you lose 1 turn. Otherwise, you lose 1 gadget and gain 8 turns, which can be interpreted as you identify an unknown gadget and regain courage.
+When pressing Space to wait, if you have no common gadgets in the bag, you lose 1 turn. Otherwise, you lose 1 gadget and restore 5 turns, which can be interpreted as you identify an unknown gadget and regain courage.
 
 You cannot move if there is only one turn left and you have at least one common gadget. The game forces you to press Space to restore turns. On the other hand, you can move and collect a rare gadget on the last turn. You do not need to remember these two rules. They take effect when necessary to prevent you from making careless mistakes.
 
