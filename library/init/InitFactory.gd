@@ -299,7 +299,8 @@ func _create_treasure(sub_tag: String, is_first_rare_treasure: bool,
 			return []
 
 	while true:
-		if retry > MAX_WHILE_TRUE_RETRY:
+		if retry > 999:
+		# if retry > MAX_WHILE_TRUE_RETRY:
 			print("Factory: Too many retries.")
 			return []
 		retry += 1

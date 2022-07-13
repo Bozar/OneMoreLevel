@@ -360,6 +360,11 @@ _global_script_classes=[ {
 "path": "res://scene/transfer_data/TransferData.gd"
 }, {
 "base": "Reference",
+"class": "Game_WorldGenerator",
+"language": "GDScript",
+"path": "res://library/WorldGenerator.gd"
+}, {
+"base": "Reference",
 "class": "Game_WorldTag",
 "language": "GDScript",
 "path": "res://library/WorldTag.gd"
@@ -445,6 +450,7 @@ _global_script_class_icons={
 "Game_SwitchScreen": "",
 "Game_SwitchSprite": "",
 "Game_TransferData": "",
+"Game_WorldGenerator": "",
 "Game_WorldTag": "",
 "Game_WorldTemplate": "",
 "Game_ZIndex": ""

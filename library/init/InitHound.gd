@@ -21,7 +21,7 @@ func _init(parent_node: Node2D).(parent_node) -> void:
 
 
 func get_blueprint() -> Array:
-	_init_wall()
+	_create_wall()
 	_init_floor(_spr_FloorHound)
 	_create_pc()
 	_init_actor(Game_HoundData.MIN_HOUND_GAP, INVALID_COORD, INVALID_COORD,
@@ -32,7 +32,7 @@ func get_blueprint() -> Array:
 	return BLUEPRINT
 
 
-func _init_wall() -> void:
+func _create_wall() -> void:
 	var counter_index: int = _ref_RandomNumber.get_int(0, PICK_ROOM)
 	var start_point: Array = _get_top_left_position()
 	var x: int
@@ -68,21 +68,22 @@ func _get_top_left_position() -> Array:
 
 
 func _create_pc() -> void:
-	var pos: Game_IntCoord
-	var neighbor: Array
+	var coords := Game_DungeonSize.get_all_coords()
+	Game_WorldGenerator.create_by_coord(coords, 1, _ref_RandomNumber, self,
+			"_is_valid_pc_coord", [], "_create_pc_here", [])
 
-	# Grids are only occupied by walls at this moment.
-	while true:
-		pos = _ref_RandomNumber.get_dungeon_coord()
-		if _is_occupied(pos.x, pos.y):
-			continue
-		neighbor = Game_CoordCalculator.get_neighbor(pos, 1)
-		for i in neighbor:
-			if _is_occupied(i.x, i.y):
-				continue
-			neighbor = Game_CoordCalculator.get_neighbor(pos,
-					Game_HoundData.PC_SIGHT, true)
-			for j in neighbor:
-				_occupy_position(j.x, j.y)
-			_add_actor_to_blueprint(_spr_PCHound, Game_SubTag.PC, pos.x, pos.y)
-			return
+
+func _is_valid_pc_coord(coord: Game_IntCoord, _retry: int, _arg: Array) -> bool:
+	if _is_occupied(coord.x, coord.y):
+		return false
+	for i in Game_CoordCalculator.get_neighbor(coord, 1):
+		if _is_occupied(i.x, i.y):
+			return false
+	return true
+
+
+func _create_pc_here(coord: Game_IntCoord, _arg: Array) -> void:
+	_add_actor_to_blueprint(_spr_PCHound, Game_SubTag.PC, coord.x, coord.y)
+	for i in Game_CoordCalculator.get_neighbor(coord, Game_HoundData.PC_SIGHT,
+			true):
+		_occupy_position(i.x, i.y)

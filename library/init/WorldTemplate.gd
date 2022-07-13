@@ -8,8 +8,6 @@ const INVALID_COORD := -99
 const DEFAULT_MARKER := 0
 const OCCUPIED_MARKER := 1
 
-const MAX_WHILE_TRUE_RETRY := 1000
-
 # {0: [0, ...], 1: [0, ...], ...}
 const DUNGEON_BOARD := {}
 # [SpriteBlueprint, ...]
@@ -109,33 +107,33 @@ func _init_floor(floor_sprite: PackedScene = _spr_Floor) -> void:
 
 func _init_actor(min_distance: int, x: int, y: int, max_actor: int,
 		actor_scene: PackedScene, sub_tag: String) -> void:
-	if max_actor < 1:
-		return
-	max_actor -= 1
+	var coords := Game_DungeonSize.get_all_coords()
 
-	var neighbor: Array
-	var retry := 0
-
-	while true:
-		if retry > MAX_WHILE_TRUE_RETRY:
-			print("_init_actor(): Too many retries.")
-			return
-		retry += 1
-		if Game_CoordCalculator.is_inside_dungeon(x, y) \
-				and (not _is_occupied(x, y)):
-			break
-		x = _ref_RandomNumber.get_x_coord()
-		y = _ref_RandomNumber.get_y_coord()
-
-	neighbor = Game_CoordCalculator.get_neighbor_xy(x, y, min_distance, true)
-	for i in neighbor:
-		_occupy_position(i.x, i.y)
-	_add_to_blueprint(actor_scene, Game_MainTag.ACTOR, sub_tag, x, y)
-
-	_init_actor(min_distance, x, y, max_actor, actor_scene, sub_tag)
+	if _is_valid_coord(Game_IntCoord.new(x, y), 0, []):
+		_add_actor_to_blueprint(actor_scene, sub_tag, x, y)
+	else:
+		Game_WorldGenerator.create_by_coord(coords,
+				max_actor, _ref_RandomNumber, self,
+				"_is_valid_coord", [],
+				"_create_here", [min_distance, actor_scene, sub_tag])
 
 
-func _init_pc(min_distance: int = 0,
-		x: int = INVALID_COORD, y: int = INVALID_COORD,
-		pc_scene: PackedScene = _spr_PC) -> void:
+func _init_pc(min_distance := 0, x := INVALID_COORD, y := INVALID_COORD,
+		pc_scene := _spr_PC) -> void:
 	_init_actor(min_distance, x, y, 1, pc_scene, Game_SubTag.PC)
+
+
+func _is_valid_coord(coord: Game_IntCoord, _retry: int, _arg: Array) -> bool:
+	if Game_CoordCalculator.is_inside_dungeon(coord.x, coord.y):
+		return not _is_occupied(coord.x, coord.y)
+	return false
+
+
+func _create_here(coord: Game_IntCoord, opt_arg: Array) -> void:
+	var min_distance: int = opt_arg[0]
+	var actor: PackedScene = opt_arg[1]
+	var sub_tag: String = opt_arg[2]
+
+	for i in Game_CoordCalculator.get_neighbor(coord, min_distance, true):
+		_occupy_position(i.x, i.y)
+	_add_actor_to_blueprint(actor, sub_tag, coord.x, coord.y)

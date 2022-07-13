@@ -144,11 +144,9 @@ func _create_floor():
 
 
 func _create_actor(sub_tag: String) -> void:
+	var coords := Game_DungeonSize.get_all_coords()
 	var new_actor: PackedScene
 	var min_distance: int
-	var x: int
-	var y: int
-	var neighbor: Array
 
 	match sub_tag:
 		Game_SubTag.PC:
@@ -161,14 +159,20 @@ func _create_actor(sub_tag: String) -> void:
 			new_actor = _spr_KnightCaptain
 			min_distance = Game_KnightData.KNIGHT_GAP
 
-	# There should not be too many knights.
-	while true:
-		x = _ref_RandomNumber.get_x_coord()
-		y = _ref_RandomNumber.get_y_coord()
-		if _get_terrain_marker(x, y) != WALL_MARKER:
-			break
+	Game_WorldGenerator.create_by_coord(coords, 1, _ref_RandomNumber, self,
+			"_is_valid_coord", [],
+			"_create_here", [min_distance, new_actor, sub_tag])
 
-	neighbor = Game_CoordCalculator.get_neighbor_xy(x, y, min_distance, true)
-	for i in neighbor:
+
+func _is_valid_coord(coord: Game_IntCoord, _retry: int, _arg: Array) -> bool:
+	return _get_terrain_marker(coord.x, coord.y) != WALL_MARKER
+
+
+func _create_here(coord: Game_IntCoord, opt_arg: Array) -> void:
+	var min_distance: int = opt_arg[0]
+	var new_actor: PackedScene = opt_arg[1]
+	var sub_tag: String = opt_arg[2]
+
+	for i in Game_CoordCalculator.get_neighbor(coord, min_distance, true):
 		_set_terrain_marker(i.x, i.y, WALL_MARKER)
-	_add_actor_to_blueprint(new_actor, sub_tag, x, y)
+	_add_actor_to_blueprint(new_actor, sub_tag, coord.x, coord.y)

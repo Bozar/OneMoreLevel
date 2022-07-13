@@ -1,6 +1,8 @@
 extends Game_ProgressTemplate
 
 
+const MAX_RETRY := 5
+
 var _spr_Frog := preload("res://sprite/Frog.tscn")
 var _spr_FrogPrincess := preload("res://sprite/FrogPrincess.tscn")
 var _spr_Counter := preload("res://sprite/Counter.tscn")
@@ -75,42 +77,18 @@ func remove_actor(actor: Sprite, _x: int, _y: int) -> void:
 			# _ref_EndGame.player_win()
 
 
-func _spawn_frogs(pc_pos: Game_IntCoord, max_frogs: int,
-		frog_sprite: PackedScene, sub_tag: String) -> void:
-	var count_frogs := max_frogs
-	var frog_coords := []
-
-	while count_frogs > 0:
-		count_frogs = _create_frog_in_loop(pc_pos, count_frogs, frog_sprite,
-			sub_tag, frog_coords, count_frogs == max_frogs)
-
-
 func _spawn_knights(pc_pos: Game_IntCoord) -> void:
-	_spawn_frogs(pc_pos, Game_FrogData.MAX_FROG, _spr_Frog, Game_SubTag.FROG)
+	Game_WorldGenerator.create_by_coord(_ground_coords,
+			Game_FrogData.MAX_FROG, _ref_RandomNumber, self,
+			"_is_valid_coord", [pc_pos],
+			"_create_frog", [_spr_Frog, Game_SubTag.FROG])
 
 
 func _spawn_princess(pc_pos: Game_IntCoord) -> void:
-	_spawn_frogs(pc_pos, Game_FrogData.MAX_PRINCESS, _spr_FrogPrincess,
-			Game_SubTag.FROG_PRINCESS)
-
-
-func _create_frog_in_loop(pc_pos: Game_IntCoord, count_frogs: int,
-		frog_sprite: PackedScene, sub_tag: String, frog_coords: Array,
-		is_first_loop: bool) -> int:
-	Game_ArrayHelper.shuffle(_ground_coords, _ref_RandomNumber)
-	for i in _ground_coords:
-		if count_frogs < 1:
-			break
-		if _is_close_to_pc(i, pc_pos) or _is_far_from_pc(i, pc_pos):
-			continue
-		elif is_first_loop and _is_close_to_frogs(i, frog_coords):
-			continue
-		elif _ref_DungeonBoard.has_actor(i):
-			continue
-		count_frogs -= 1
-		frog_coords.push_back(i)
-		_ref_CreateObject.create_actor(frog_sprite, sub_tag, i)
-	return count_frogs
+	Game_WorldGenerator.create_by_coord(_ground_coords,
+			Game_FrogData.MAX_PRINCESS, _ref_RandomNumber, self,
+			"_is_valid_coord", [pc_pos],
+			"_create_frog", [_spr_FrogPrincess, Game_SubTag.FROG_PRINCESS])
 
 
 func _submerge_land(submerge: int) -> void:
@@ -150,9 +128,12 @@ func _init_ground_coords() -> void:
 				_ground_coords.push_back(Game_IntCoord.new(x, y))
 
 
-func _is_close_to_frogs(self_pos: Game_IntCoord, frog_coords: Array) -> bool:
-	for i in frog_coords:
-		if Game_CoordCalculator.is_in_range(self_pos, i,
+func _is_close_to_frogs(self_pos: Game_IntCoord) -> bool:
+	var npc_pos: Game_IntCoord
+
+	for i in _ref_DungeonBoard.get_npc():
+		npc_pos = Game_ConvertCoord.sprite_to_coord(i)
+		if Game_CoordCalculator.is_in_range(self_pos, npc_pos,
 				Game_FrogData.MIN_DISTANCE):
 			return true
 	return false
@@ -166,3 +147,22 @@ func _is_close_to_pc(self_pos: Game_IntCoord, pc_pos: Game_IntCoord) -> bool:
 func _is_far_from_pc(self_pos: Game_IntCoord, pc_pos: Game_IntCoord) -> bool:
 	return Game_CoordCalculator.is_out_of_range(self_pos, pc_pos,
 			Game_FrogData.MAX_DISTANCE)
+
+
+func _create_frog(coord: Game_IntCoord, opt_arg: Array) -> void:
+	var frog_sprite: PackedScene = opt_arg[0]
+	var sub_tag: String = opt_arg[1]
+
+	_ref_CreateObject.create_actor(frog_sprite, sub_tag, coord)
+
+
+func _is_valid_coord(coord: Game_IntCoord, retry: int, opt_arg: Array) -> bool:
+	var pc_pos: Game_IntCoord = opt_arg[0]
+
+	if _is_close_to_pc(coord, pc_pos) or _is_far_from_pc(coord, pc_pos):
+		return false
+	elif (retry < MAX_RETRY) and _is_close_to_frogs(coord):
+		return false
+	elif _ref_DungeonBoard.has_actor(coord):
+		return false
+	return true

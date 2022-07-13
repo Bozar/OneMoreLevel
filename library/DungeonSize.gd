@@ -43,3 +43,12 @@ static func init_dungeon_grids_by_func(dungeon: Dictionary, func_host: Object,
 			dungeon[x].resize(MAX_Y)
 		for y in range(0, MAX_Y):
 			dungeon[x][y] = get_init_value.call_func(x, y, optional_arg)
+
+
+static func get_all_coords() -> Array:
+	var coords := []
+
+	for x in range(0, MAX_X):
+		for y in range(0, MAX_Y):
+			coords.push_back(Game_IntCoord.new(x, y))
+	return coords

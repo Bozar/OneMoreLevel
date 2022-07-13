@@ -110,43 +110,17 @@ func _parse_prefab(this_prefab: Game_DungeonPrefab.PackedPrefab,
 
 
 func _create_pc(terrain_map: Array, bandit_map: Array) -> void:
-	var goto_next: bool
-	var pc_pos: Game_IntCoord
-
-	Game_ArrayHelper.shuffle(terrain_map, _ref_RandomNumber)
-	for i in range(0, terrain_map.size()):
-		goto_next = false
-		for j in bandit_map:
-			if Game_CoordCalculator.is_in_range(j, terrain_map[i],
-					Game_BaronData.BASE_SIGHT):
-				goto_next = true
-				break
-		if goto_next:
-			continue
-		Game_ArrayHelper.swap_element(terrain_map, i, terrain_map.size() - 1)
-		break
-	# Even if all grids are within Y_STEP to bandits, the last element in
-	# terrain_map is still a tree grid and therefore is available.
-	pc_pos = terrain_map.pop_back()
-	_add_actor_to_blueprint(_spr_PCBaron, Game_SubTag.PC, pc_pos.x, pc_pos.y,
-			Game_BaronData.TREE_LAYER)
+	Game_WorldGenerator.create_by_coord(terrain_map,
+			1, _ref_RandomNumber, self,
+			"_is_valid_pc_coord", [bandit_map],
+			"_create_above_ground_actor", [_spr_PCBaron, Game_SubTag.PC])
 
 
 func _create_bird(terrain_map: Array) -> void:
-	var count_bird := 0
-
-	for i in terrain_map:
-		if count_bird >= Game_BaronData.MAX_BIRD:
-			break
-		if _is_terrain_marker(i.x, i.y, BIRD):
-			continue
-
-		count_bird += 1
-		_add_actor_to_blueprint(_spr_Bird, Game_SubTag.BIRD, i.x, i.y,
-				Game_BaronData.TREE_LAYER)
-		for j in Game_CoordCalculator.get_neighbor(i,
-				Game_BaronData.MIN_BIRD_GAP, true):
-			_set_terrain_marker(j.x, j.y, BIRD)
+	Game_WorldGenerator.create_by_coord(terrain_map,
+			Game_BaronData.MAX_BIRD, _ref_RandomNumber, self,
+			"_is_valid_bird_coord", [],
+			"_create_above_ground_actor", [_spr_Bird, Game_SubTag.BIRD])
 
 
 func _create_bandit(terrain_map: Array) -> void:
@@ -154,3 +128,30 @@ func _create_bandit(terrain_map: Array) -> void:
 			_ref_RandomNumber)
 	for i in terrain_map:
 		_add_actor_to_blueprint(_spr_Bandit, Game_SubTag.BANDIT, i.x, i.y)
+
+
+func _is_valid_pc_coord(coord: Game_IntCoord, _retry: int, opt_arg: Array) \
+		-> bool:
+	var bandit_coords: Array = opt_arg[0]
+
+	for i in bandit_coords:
+		if Game_CoordCalculator.is_in_range(coord, i,
+				Game_BaronData.BASE_SIGHT):
+			return false
+	return true
+
+
+func _is_valid_bird_coord(coord: Game_IntCoord, _retry: int, _arg: Array) \
+		-> bool:
+	return not _is_terrain_marker(coord.x, coord.y, BIRD)
+
+
+func _create_above_ground_actor(coord: Game_IntCoord, opt_arg: Array) -> void:
+	var actor: PackedScene = opt_arg[0]
+	var sub_tag: String = opt_arg[1]
+
+	_add_actor_to_blueprint(actor, sub_tag, coord.x, coord.y,
+			Game_BaronData.TREE_LAYER)
+	for i in Game_CoordCalculator.get_neighbor(coord,
+			Game_BaronData.MIN_BIRD_GAP, true):
+		_set_terrain_marker(i.x, i.y, BIRD)
