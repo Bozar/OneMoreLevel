@@ -144,7 +144,6 @@ func _create_floor():
 
 
 func _create_actor(sub_tag: String) -> void:
-	var coords := Game_DungeonSize.get_all_coords()
 	var new_actor: PackedScene
 	var min_distance: int
 
@@ -159,16 +158,17 @@ func _create_actor(sub_tag: String) -> void:
 			new_actor = _spr_KnightCaptain
 			min_distance = Game_KnightData.KNIGHT_GAP
 
-	Game_WorldGenerator.create_by_coord(coords, 1, _ref_RandomNumber, self,
-			"_is_valid_coord", [],
-			"_create_here", [min_distance, new_actor, sub_tag])
+	Game_WorldGenerator.create_by_coord(ALL_COORDS, 1, _ref_RandomNumber, self,
+			"_is_valid_knight_coord", [],
+			"_create_knight_here", [min_distance, new_actor, sub_tag])
 
 
-func _is_valid_coord(coord: Game_IntCoord, _retry: int, _arg: Array) -> bool:
+func _is_valid_knight_coord(coord: Game_IntCoord, _retry: int, _arg: Array) \
+		-> bool:
 	return _get_terrain_marker(coord.x, coord.y) != WALL_MARKER
 
 
-func _create_here(coord: Game_IntCoord, opt_arg: Array) -> void:
+func _create_knight_here(coord: Game_IntCoord, opt_arg: Array) -> void:
 	var min_distance: int = opt_arg[0]
 	var new_actor: PackedScene = opt_arg[1]
 	var sub_tag: String = opt_arg[2]

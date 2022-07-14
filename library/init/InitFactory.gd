@@ -276,7 +276,6 @@ func _is_on_border(coord: int, is_x: int) -> bool:
 func _create_treasure(sub_tag: String, pc_pos: Game_IntCoord) -> void:
 	var new_sprite: PackedScene
 	var max_treasure: int
-	var all_coords := Game_DungeonSize.get_all_coords()
 	var rare_coords := []
 
 	match sub_tag:
@@ -292,7 +291,7 @@ func _create_treasure(sub_tag: String, pc_pos: Game_IntCoord) -> void:
 		_:
 			return
 
-	Game_WorldGenerator.create_by_coord(all_coords,
+	Game_WorldGenerator.create_by_coord(ALL_COORDS,
 			max_treasure, _ref_RandomNumber, self,
 			"_is_valid_treasure_coord", [pc_pos, sub_tag, rare_coords],
 			"_create_treasure_here", [new_sprite, sub_tag, rare_coords])

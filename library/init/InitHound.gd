@@ -68,8 +68,7 @@ func _get_top_left_position() -> Array:
 
 
 func _create_pc() -> void:
-	var coords := Game_DungeonSize.get_all_coords()
-	Game_WorldGenerator.create_by_coord(coords, 1, _ref_RandomNumber, self,
+	Game_WorldGenerator.create_by_coord(ALL_COORDS, 1, _ref_RandomNumber, self,
 			"_is_valid_pc_coord", [], "_create_pc_here", [])
 
 

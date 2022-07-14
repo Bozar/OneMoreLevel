@@ -12,6 +12,8 @@ const OCCUPIED_MARKER := 1
 const DUNGEON_BOARD := {}
 # [SpriteBlueprint, ...]
 const BLUEPRINT := []
+# [Game_IntCoord.new(x, y), ...]
+const ALL_COORDS := []
 
 var _spr_Floor := preload("res://sprite/Floor.tscn")
 var _spr_Wall := preload("res://sprite/Wall.tscn")
@@ -26,6 +28,7 @@ func _init(parent_node: Node2D) -> void:
 	_ref_DangerZone = parent_node._ref_DangerZone
 
 	Game_DungeonSize.init_dungeon_grids(DUNGEON_BOARD, DEFAULT_MARKER)
+	Game_DungeonSize.init_all_coords(ALL_COORDS)
 
 
 # Child scripts should implement _init() to pass arguments.
@@ -107,13 +110,12 @@ func _init_floor(floor_sprite: PackedScene = _spr_Floor) -> void:
 
 func _init_actor(min_distance: int, x: int, y: int, max_actor: int,
 		actor_scene: PackedScene, sub_tag: String) -> void:
-	var coords := Game_DungeonSize.get_all_coords()
 	var init_coord := Game_IntCoord.new(x, y)
 
 	if _is_valid_coord(init_coord, 0, []):
 		_create_here(init_coord, [min_distance, actor_scene, sub_tag])
 	else:
-		Game_WorldGenerator.create_by_coord(coords,
+		Game_WorldGenerator.create_by_coord(ALL_COORDS,
 				max_actor, _ref_RandomNumber, self,
 				"_is_valid_coord", [],
 				"_create_here", [min_distance, actor_scene, sub_tag])

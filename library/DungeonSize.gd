@@ -45,10 +45,12 @@ static func init_dungeon_grids_by_func(dungeon: Dictionary, func_host: Object,
 			dungeon[x][y] = get_init_value.call_func(x, y, optional_arg)
 
 
-static func get_all_coords() -> Array:
-	var coords := []
+static func init_all_coords(save_coords: Array) -> void:
+	var row := 0
 
+	save_coords.resize(MAX_X * MAX_Y)
 	for x in range(0, MAX_X):
 		for y in range(0, MAX_Y):
-			coords.push_back(Game_IntCoord.new(x, y))
-	return coords
+			save_coords[x + y + row] = Game_IntCoord.new(x, y)
+		# Every row has (MAX_Y - 1) elements.
+		row += MAX_Y - 1
