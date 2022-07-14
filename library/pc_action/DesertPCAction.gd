@@ -1,9 +1,9 @@
 extends Game_PCActionTemplate
 
 
-const MAX_NEIGHBOR: int = 4
+const MAX_NEIGHBOR := 4
 
-var _pc_is_number: bool = false
+var _pc_is_number := false
 
 
 func _init(parent_node: Node2D).(parent_node) -> void:
@@ -14,6 +14,16 @@ func switch_sprite() -> void:
 	_pc_is_number = false
 	_switch_to_number(_pc_is_number)
 	.switch_sprite()
+
+
+func reset_state() -> void:
+	var worm := 0
+
+	.reset_state()
+	for i in Game_CoordCalculator.get_neighbor(_source_position, 1):
+		if _ref_DungeonBoard.has_actor(i):
+			worm += 1
+	_ref_CountDown.subtract_count(worm * Game_DesertData.SANDWORM_CONSUME_TURN)
 
 
 func game_over(win: bool) -> void:
@@ -28,11 +38,10 @@ func wait() -> void:
 
 
 func attack() -> void:
-	var worm: Sprite = _ref_DungeonBoard.get_actor_xy(
-			_target_position.x, _target_position.y)
-	var is_active_spice: bool = _ref_ObjectData.verify_state(worm,
+	var worm := _ref_DungeonBoard.get_actor(_target_position)
+	var is_active_spice := _ref_ObjectData.verify_state(worm,
 			Game_StateTag.ACTIVE)
-	var pc: Sprite = _ref_DungeonBoard.get_pc()
+	var pc := _ref_DungeonBoard.get_pc()
 
 	if (not worm.is_in_group(Game_SubTag.WORM_SPICE)) \
 			or _ref_ObjectData.verify_state(worm, Game_StateTag.PASSIVE):
@@ -71,12 +80,8 @@ func _remove_building_or_trap() -> void:
 
 
 func _is_checkmate() -> bool:
-	var x: int = _source_position.x
-	var y: int = _source_position.y
-
-	var neighbor: Array = Game_CoordCalculator.get_neighbor_xy(x, y, 1)
-	var count_neighbor: int = MAX_NEIGHBOR - neighbor.size()
-
+	var neighbor := Game_CoordCalculator.get_neighbor(_source_position, 1)
+	var count_neighbor := MAX_NEIGHBOR - neighbor.size()
 	var actor: Sprite
 	var is_head: bool
 	var is_body: bool
@@ -84,17 +89,15 @@ func _is_checkmate() -> bool:
 	var is_passive: bool
 
 	for i in neighbor:
-		actor = _ref_DungeonBoard.get_actor_xy(i.x, i.y)
+		actor = _ref_DungeonBoard.get_actor(i)
 		if actor == null:
 			continue
-
 		is_head = actor.is_in_group(Game_SubTag.WORM_HEAD)
 		is_body = actor.is_in_group(Game_SubTag.WORM_BODY)
 		is_spice = actor.is_in_group(Game_SubTag.WORM_SPICE)
 		is_passive = _ref_ObjectData.verify_state(actor, Game_StateTag.PASSIVE)
 		if is_head or is_body or (is_spice and is_passive):
 			count_neighbor += 1
-
 	return count_neighbor == MAX_NEIGHBOR
 
 

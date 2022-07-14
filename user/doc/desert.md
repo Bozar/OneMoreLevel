@@ -4,31 +4,33 @@
 
 You need to bump and collect 3 quality spices (*) from a living sandworm. Press Space to show how many spices you have so far, but you cannot wait in desert, which makes the job a little bit harder.
 
-A sandworm has a head (diamond), a tail (-) and body segments (+). The third, fourth and fifth segment contains spice (?) or quality spice (*). Every sandworm has at most one quality spice. You can only interact with segments that have spices. Other sandworm parts (head, body and tail) act like indestructible walls.
+A sandworm has a head (diamond), a tail (-) and body segments (+). The third, fourth and fifth segment contains a common spice (?) or a quality spice (*). Every sandworm has at most one quality spice. You can only bump segments that have spices. Other sandworm parts (head, body and tail) act like indestructible walls.
 
-There are at most 2 sandworms in the desert. A new sandworm always appears in a grid that is at least 5 steps away from PC or another sandworm. It is more likely to appear in a grid without a dune. Every turn a sandworm moves one step in a random direction. Eventually it will tunnel into ground and leave a wall of dunes behind. The more spices a living sandworm has, the more likely are the dunes to contain spices. A sandworm spends fewer time on the surface if: (1) It is immobilized. (2) It has spices, the more the better.
+There are at most 2 sandworms in the desert. A new sandworm always appears in a grid that is at least 5 steps away from PC or another sandworm. It is more likely to appear in a grid surrounded by fewer dunes.
 
-A wall of dunes is composed of sand walls (#) and spices (?). You can bump and destroy a wall block or collect a spice just as from a sandworm. You do not move when bumping. It can be used as poor man's waiting key.
+Every turn a sandworm moves one step in a random direction. It has a higher chance to move in a straight line. Eventually it will tunnel into ground and leave a wall of dunes behind. A sandworm spends fewer time on the surface if: (1) It is immobilized; (2) It has spices, the more the better.
 
-You might lose the game due to one of three reasons.
+Dunes are composed of sand walls (#) and spices (?). They are created by a living sandworm. The more spices a sandworm has, the more spices will be left behind. You can bump and destroy a wall or bump and collect a spice just as from a sandworm. You do not move when bumping. It can be used as a poor man's waiting key.
 
-You can survive in desert for at most 24 turns. Every spice and quality spice extends your remaining time by 5 turns.
+You might lose due to one of three reasons.
 
-PC's symbol changes into a rectangle when being adjacent to a sandworm's head. The game ends if the sandworm intends to move into PC's position the next turn.
+Firstly, you can survive in desert for at most 24 turns. Moving and bumping costs 1 turn. If you start your turn beside a sandworm, every adjacent sandworm segment reduces your remaining time by 1 turn. Bumping a common or quality spice restores 6 turns. You lose if you have not collected 3 spices when your last turn ends.
 
-If you are surrounded by four solid blocks when your turn starts, the game ends automatically.
+Secondly, PC's symbol turns into a rectangle when being adjacent to a sandworm's head. The game ends if the sandworm intends to move into PC's position the next turn.
+
+Lastly, if you are surrounded by four solid blocks when your turn starts, you fail automatically. A solid block refers to a sandworm segment or an edge of the dungeon. See digraph below.
 
     . # .   North (O): Sand wall.
     . @ +   East (X): Sandworm segment.
     + + +   South (X): Sandworm segment.
-            West (O): Floor.
+    [Alive] West (O): Floor.
 
-    % ? .   North (O): Spice.
-    % @ *   East (O): Quality spice.
+    % ? .   North (O): Common spice, dune.
+    % @ *   East (X): Quality spice, sandworm.
     % - +   South (X): Sandworm tail.
-            West (X): Edge of the dungeon.
+    [Alive] West (X): Edge of the dungeon.
 
     % s +   North (X): Sandworm head.
     % @ +   East (X): Sandworm segment.
     % - +   South (X): Sandworm tail.
-            West (X): Edge of the dungeon.
+    [Dead]  West (X): Edge of the dungeon.

@@ -3,10 +3,6 @@ extends Game_WorldTemplate
 
 var _spr_PCDesert := preload("res://sprite/PCDesert.tscn")
 var _spr_Treasure := preload("res://sprite/Treasure.tscn")
-var _spr_WormHead := preload("res://sprite/WormHead.tscn")
-var _spr_WormBody := preload("res://sprite/WormBody.tscn")
-var _spr_WormSpice := preload("res://sprite/WormSpice.tscn")
-var _spr_WormTail := preload("res://sprite/WormTail.tscn")
 
 
 func _init(parent_node: Node2D).(parent_node) -> void:
@@ -16,9 +12,6 @@ func _init(parent_node: Node2D).(parent_node) -> void:
 func get_blueprint() -> Array:
 	_init_floor()
 	_init_wall()
-	_init_actor(Game_DesertData.WORM_DISTANCE, INVALID_COORD, INVALID_COORD,
-			Game_DesertData.MAX_WORM,
-			_spr_WormHead, Game_SubTag.WORM_HEAD)
 	_init_pc(0, INVALID_COORD, INVALID_COORD, _spr_PCDesert)
 
 	return BLUEPRINT

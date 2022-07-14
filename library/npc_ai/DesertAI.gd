@@ -1,17 +1,18 @@
 extends Game_AITemplate
 
 
+# int: Array[Sprite]
+const ID_TO_WORM := {}
+# int: bool
+const ID_TO_HAS_ACTIVE_SPICE := {}
+
 var _spr_WormBody := preload("res://sprite/WormBody.tscn")
 var _spr_WormSpice := preload("res://sprite/WormSpice.tscn")
 var _spr_WormTail := preload("res://sprite/WormTail.tscn")
 var _spr_Treasure := preload("res://sprite/Treasure.tscn")
 var _spr_Wall := preload("res://sprite/Wall.tscn")
 
-# int: Array[Sprite]
-var _id_to_worm: Dictionary = {}
-# int: bool
-var _id_to_has_active_spice: Dictionary = {}
-var _quality_spice_chance: int = Game_DesertData.CREATE_QUALITY_SPICE
+var _quality_spice_chance := Game_DesertData.CREATE_QUALITY_SPICE
 
 
 func _init(parent_node: Node2D).(parent_node) -> void:
@@ -24,7 +25,7 @@ func take_action() -> void:
 
 	var id: int = _self.get_instance_id()
 
-	if not _id_to_worm.has(id):
+	if not ID_TO_WORM.has(id):
 		_init_worm(id)
 
 	# A newly created worm waits one turn.
@@ -46,111 +47,112 @@ func take_action() -> void:
 
 
 func _init_worm(id: int) -> void:
-	var worm_length: int = _ref_RandomNumber.get_int(
+	var worm_length := _ref_RandomNumber.get_int(
 			Game_DesertData.MIN_LENGTH, Game_DesertData.MAX_LENGTH)
 
-	_id_to_worm[id] = []
-	_id_to_worm[id].resize(worm_length)
-	_id_to_worm[id][0] = _self
+	ID_TO_WORM[id] = []
+	ID_TO_WORM[id].resize(worm_length)
+	ID_TO_WORM[id][0] = _self
 
-	_id_to_has_active_spice[id] = false
+	ID_TO_HAS_ACTIVE_SPICE[id] = false
 	_set_danger_zone(_self, true)
 
 
-func _create_body(id: int, index: int, x: int, y: int) -> void:
-	var worm_length: int = _id_to_worm[id].size()
-	var is_active: bool = false
+func _create_body(id: int, index: int, coord: Game_IntCoord) -> void:
+	var worm_length: int = ID_TO_WORM[id].size()
+	var is_active := false
 	var worm_body: Sprite
 
 	# Create tail.
 	if index == worm_length - 1:
-		worm_body = _ref_CreateObject.create_and_fetch_actor_xy(_spr_WormTail,
-				Game_SubTag.WORM_BODY, x, y)
+		worm_body = _ref_CreateObject.create_and_fetch_actor(_spr_WormTail,
+				Game_SubTag.WORM_BODY, coord)
 	# Create spice.
 	elif (index >= Game_DesertData.SPICE_START) \
 			and (index < Game_DesertData.SPICE_END):
-		is_active = (not _id_to_has_active_spice[id]) \
+		is_active = (not ID_TO_HAS_ACTIVE_SPICE[id]) \
 				and _ref_RandomNumber.get_percent_chance(_quality_spice_chance)
-		worm_body = _ref_CreateObject.create_and_fetch_actor_xy(_spr_WormSpice,
-				Game_SubTag.WORM_SPICE, x, y)
+		worm_body = _ref_CreateObject.create_and_fetch_actor(_spr_WormSpice,
+				Game_SubTag.WORM_SPICE, coord)
 	# Create body.
 	else:
-		worm_body = _ref_CreateObject.create_and_fetch_actor_xy(_spr_WormBody,
-				Game_SubTag.WORM_BODY, x, y)
-	_id_to_worm[id][index] = worm_body
+		worm_body = _ref_CreateObject.create_and_fetch_actor(_spr_WormBody,
+				Game_SubTag.WORM_BODY, coord)
+	ID_TO_WORM[id][index] = worm_body
 
 	if is_active:
 		_ref_ObjectData.set_state(worm_body, Game_StateTag.ACTIVE)
 		_ref_SwitchSprite.set_sprite(worm_body, Game_SpriteTypeTag.ACTIVE)
-		_id_to_has_active_spice[id] = true
+		ID_TO_HAS_ACTIVE_SPICE[id] = true
 		_quality_spice_chance = 0
 
 
 func _try_random_walk(id: int) -> bool:
-	var x: int = _self_pos.x
-	var y: int = _self_pos.y
-	var neighbor: Array = Game_CoordCalculator.get_neighbor_xy(x, y, 1)
-	var candidate: Array = []
 	var neck: Game_IntCoord
-	var coord: Game_IntCoord
+	var forward: Game_IntCoord
+	var side := []
 	var move_to: Game_IntCoord
-	var pc: Sprite = _ref_DungeonBoard.get_pc()
+	var pc := _ref_DungeonBoard.get_pc()
 
-	if _id_to_worm[id][1] != null:
-		neck = Game_ConvertCoord.sprite_to_coord(_id_to_worm[id][1])
-		coord = Game_CoordCalculator.get_mirror_image_xy(neck.x, neck.y, x, y)
-		if Game_CoordCalculator.is_inside_dungeon(coord.x, coord.y):
-			neighbor.push_back(coord)
+	if ID_TO_WORM[id][1] != null:
+		neck = Game_ConvertCoord.sprite_to_coord(ID_TO_WORM[id][1])
 
-	for i in neighbor:
-		if _ref_DungeonBoard.has_actor_xy(i.x, i.y) and (not _is_pc_pos(
-				i.x, i.y)):
+	for i in Game_CoordCalculator.get_neighbor(_self_pos, 1):
+		# A sandworm segment.
+		if _ref_DungeonBoard.has_actor(i) and (not _is_pc_pos(i)):
 			continue
-		candidate.push_back(i)
+		# A grid that is in a straight line with neck.
+		elif (neck != null) and ((i.x == neck.x) or (i.y == neck.y)):
+			forward = i
+		else:
+			side.push_back(i)
 
-	if candidate.size() < 1:
+	if (forward != null) and _ref_RandomNumber.get_percent_chance(
+			Game_DesertData.MOVE_STRAIGHT):
+		move_to = forward
+	elif side.size() > 0:
+		Game_ArrayHelper.shuffle(side, _ref_RandomNumber)
+		move_to = side[0]
+	else:
 		return false
-	move_to = candidate[_ref_RandomNumber.get_int(0, candidate.size())]
 
-	if _is_pc_pos(move_to.x, move_to.y):
+	if _is_pc_pos(move_to):
 		_ref_SwitchSprite.set_sprite(pc, Game_SpriteTypeTag.ACTIVE)
 		_ref_SwitchSprite.set_sprite(_self, Game_SpriteTypeTag.ACTIVE)
 		_ref_EndGame.player_lose()
 		return false
 
-	_ref_RemoveObject.remove_building_xy(move_to.x, move_to.y)
-	_ref_RemoveObject.remove_trap_xy(move_to.x, move_to.y)
+	_ref_RemoveObject.remove_building(move_to)
+	_ref_RemoveObject.remove_trap(move_to)
 
 	_set_danger_zone(_self, false)
-	_ref_DungeonBoard.move_actor_xy(_self_pos.x, _self_pos.y,
-			move_to.x, move_to.y)
+	_ref_DungeonBoard.move_actor(_self_pos, move_to)
 	_set_danger_zone(_self, true)
 	return true
 
 
-func _is_pc_pos(x: int, y: int) -> bool:
-	return (x == _pc_pos.x) and (y == _pc_pos.y)
+func _is_pc_pos(coord: Game_IntCoord) -> bool:
+	return (coord.x == _pc_pos.x) and (coord.y == _pc_pos.y)
 
 
 func _move_body(id: int) -> void:
-	var worm: Array = _id_to_worm[id]
+	var worm: Array = ID_TO_WORM[id]
 	var current_position: Game_IntCoord = _self_pos
 	var save_position: Game_IntCoord
 
 	for i in range(1, worm.size()):
 		if worm[i] == null:
-			_create_body(id, i, current_position.x, current_position.y)
+			_create_body(id, i, current_position)
 			return
 
 		save_position = Game_ConvertCoord.sprite_to_coord(worm[i])
-		_ref_DungeonBoard.move_actor_xy(save_position.x, save_position.y,
-				current_position.x, current_position.y)
+		_ref_DungeonBoard.move_actor(save_position, current_position)
 		current_position = save_position
 
 
 func _bury_worm(id: int) -> void:
-	var worm: Array = _id_to_worm[id]
-	var create_spice: int = Game_DesertData.CREATE_SPICE
+	var worm: Array = ID_TO_WORM[id]
+	var create_spice := Game_DesertData.CREATE_SPICE
 	var pos: Game_IntCoord
 
 	for i in range(Game_DesertData.SPICE_END):
@@ -163,21 +165,20 @@ func _bury_worm(id: int) -> void:
 		if i == null:
 			break
 		pos = Game_ConvertCoord.sprite_to_coord(i)
-		_ref_RemoveObject.remove_actor_xy(pos.x, pos.y)
+		_ref_RemoveObject.remove_actor(pos)
 		if _ref_RandomNumber.get_percent_chance(create_spice):
-			_ref_CreateObject.create_trap_xy(_spr_Treasure, Game_SubTag.TREASURE,
-					pos.x, pos.y)
+			_ref_CreateObject.create_trap(_spr_Treasure, Game_SubTag.TREASURE,
+					pos)
 		else:
-			_ref_CreateObject.create_building_xy(_spr_Wall, Game_SubTag.WALL,
-					pos.x, pos.y)
+			_ref_CreateObject.create_building(_spr_Wall, Game_SubTag.WALL, pos)
 
 	_clear_worm_data(id)
 	_quality_spice_chance += Game_DesertData.CREATE_QUALITY_SPICE
 
 
 func _can_bury_worm(id: int) -> bool:
-	var worm: Array = _id_to_worm[id]
-	var hit_point: int = _ref_ObjectData.get_hit_point(worm[0])
+	var worm: Array = ID_TO_WORM[id]
+	var hit_point := _ref_ObjectData.get_hit_point(worm[0])
 
 	for i in worm:
 		if i == null:
@@ -189,7 +190,7 @@ func _can_bury_worm(id: int) -> bool:
 
 func _set_danger_zone(head: Sprite, is_danger: bool) -> void:
 	var pos := Game_ConvertCoord.sprite_to_coord(head)
-	var neighbor: Array = Game_CoordCalculator.get_neighbor_xy(pos.x, pos.y, 1)
+	var neighbor := Game_CoordCalculator.get_neighbor(pos, 1)
 
 	for i in neighbor:
 		_ref_DangerZone.set_danger_zone(i.x, i.y, is_danger)
@@ -205,5 +206,5 @@ func _has_spice(body: Sprite) -> bool:
 
 func _clear_worm_data(id: int) -> void:
 	var __
-	__ = _id_to_worm.erase(id)
-	__ = _id_to_has_active_spice.erase(id)
+	__ = ID_TO_WORM.erase(id)
+	__ = ID_TO_HAS_ACTIVE_SPICE.erase(id)
