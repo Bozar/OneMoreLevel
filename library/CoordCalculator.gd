@@ -124,3 +124,11 @@ static func get_ray_path(source_x: int, source_y: int, max_range: int,
 			return ray_path
 		ray_path.push_back(Game_IntCoord.new(x, y))
 	return ray_path
+
+
+static func is_in_square(coord: Game_IntCoord, center: Game_IntCoord,
+		half_size: int) -> bool:
+	for i in ["x", "y"]:
+		if abs(coord[i] - center[i]) > half_size:
+			return false
+	return true

@@ -91,9 +91,7 @@ func _get_teleport_coord(retry := 0) -> Game_IntCoord:
 
 	if Game_ShadowCastFOV.is_in_sight(pos.x, pos.y):
 		return _get_teleport_coord(retry)
-	elif _ref_DungeonBoard.has_building(pos) \
-			and (not _ref_DungeonBoard.has_sprite_with_sub_tag(Game_SubTag.DOOR,
-					pos)):
+	elif _ref_DungeonBoard.has_building(pos) and _is_not_door(pos):
 		return _get_teleport_coord(retry)
 	elif _ref_DungeonBoard.has_actor(pos):
 		return _get_teleport_coord(retry)
@@ -103,3 +101,8 @@ func _get_teleport_coord(retry := 0) -> Game_IntCoord:
 			if _ref_DungeonBoard.has_actor(pos):
 				return _get_teleport_coord(retry + 1)
 	return pos
+
+
+func _is_not_door(coord: Game_IntCoord) -> bool:
+	return not _ref_DungeonBoard.has_sprite_with_sub_tag(
+			Game_MainTag.BUILDING, Game_SubTag.DOOR, coord)

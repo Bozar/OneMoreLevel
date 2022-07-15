@@ -90,8 +90,8 @@ func _path_is_clear() -> bool:
 			y += i[1]
 			if not Game_CoordCalculator.is_inside_dungeon(x, y):
 				break
-			if _ref_DungeonBoard.has_sprite_with_sub_tag_xy(Game_SubTag.PC,
-					x, y):
+			if _ref_DungeonBoard.has_sprite_with_sub_tag_xy(Game_MainTag.ACTOR,
+					Game_SubTag.PC, x, y):
 				if counter > 0:
 					return false
 				break

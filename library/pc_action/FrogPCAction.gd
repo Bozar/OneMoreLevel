@@ -97,8 +97,11 @@ func render_fov() -> void:
 					"_is_in_sight")
 			if not _is_in_sight(this_pos.x, this_pos.y):
 				# Princess is visible. Ground is invisible.
-				if _ref_DungeonBoard.has_sprite_with_sub_tag(
+				if _ref_DungeonBoard.has_sprite_with_sub_tag(Game_MainTag.ACTOR,
 						Game_SubTag.FROG_PRINCESS, this_pos):
+					i.visible = (mtag == Game_MainTag.ACTOR)
+				# Knight is visible. Ground is invisible.
+				elif _actor_is_in_square(this_pos):
 					i.visible = (mtag == Game_MainTag.ACTOR)
 				# Knight is invisible. Ground is visible.
 				else:
@@ -118,7 +121,8 @@ func switch_sprite() -> void:
 
 
 func _is_in_swamp(coord: Game_IntCoord) -> bool:
-	return _ref_DungeonBoard.has_sprite_with_sub_tag(Game_SubTag.SWAMP, coord)
+	return _ref_DungeonBoard.has_sprite_with_sub_tag(Game_MainTag.GROUND,
+			Game_SubTag.SWAMP, coord)
 
 
 func _set_pc_state(state_tag: int) -> void:
@@ -152,3 +156,16 @@ func _set_lighted_dungeon() -> void:
 			ground.remove_from_group(Game_SubTag.LAND)
 			ground.add_to_group(Game_SubTag.FLOOR)
 		_lighted_dungeon[i.x][i.y] = true
+
+
+# Consider this situation: `@ 1 2`. Frog 1 is visible and frog 2 is invisible
+# because according to `_block_line_of_sight()`, an actor blocks sight. However,
+# if PC stabs frog 1, frog 2 may react and grapple PC, which results in a
+# disappointing failure. In order to solve this issue, we make actors that are
+# out of sight and close to PC visible. They have a darker color because they
+# are blocked. They are visible so that PC can make decisions accordingly.
+func _actor_is_in_square(coord: Game_IntCoord) -> bool:
+	if _ref_DungeonBoard.has_actor(coord):
+		return Game_CoordCalculator.is_in_square(coord, _source_position,
+				Game_FrogData.RENDER_RANGE - 1)
+	return false

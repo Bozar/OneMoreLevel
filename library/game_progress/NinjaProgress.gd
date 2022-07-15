@@ -103,7 +103,7 @@ func _count_traps(this_x: int) -> int:
 		if _ref_DungeonBoard.has_trap_xy(this_x, y):
 			count += 1
 		# Prevent shadow ninjas from stacking on each other.
-		elif _ref_DungeonBoard.has_sprite_with_sub_tag_xy(
+		elif _ref_DungeonBoard.has_sprite_with_sub_tag_xy(Game_MainTag.ACTOR,
 				Game_SubTag.NINJA_SHADOW, this_x, y):
 			count -= SHADOW_AS_TRAP
 	return count

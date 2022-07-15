@@ -63,8 +63,8 @@ func render_fov() -> void:
 
 
 func interact_with_building() -> void:
-	if _ref_DungeonBoard.has_sprite_with_sub_tag(Game_SubTag.DOOR,
-			_target_position):
+	if _ref_DungeonBoard.has_sprite_with_sub_tag(Game_MainTag.BUILDING,
+			Game_SubTag.DOOR, _target_position):
 		move()
 
 

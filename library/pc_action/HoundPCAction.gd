@@ -189,8 +189,8 @@ func _can_hit_target(coord: Game_IntCoord, hit_diagonally: bool) -> bool:
 		return false
 
 	if _ground_is_active(coord) == hit_diagonally:
-		if _ref_DungeonBoard.has_sprite_with_sub_tag(Game_SubTag.HOUND_BOSS,
-				coord):
+		if _ref_DungeonBoard.has_sprite_with_sub_tag(Game_MainTag.ACTOR,
+				Game_SubTag.HOUND_BOSS, coord):
 			return hit_diagonally
 		return true
 	return false

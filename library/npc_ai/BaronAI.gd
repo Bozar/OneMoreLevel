@@ -93,8 +93,8 @@ func _reach_destination(id: int) -> bool:
 
 
 func _is_obstacle(x: int, y: int) -> bool:
-	return _ref_DungeonBoard.has_sprite_with_sub_tag_xy(Game_SubTag.TREE_TRUNK,
-		x, y)
+	return _ref_DungeonBoard.has_sprite_with_sub_tag_xy(Game_MainTag.BUILDING,
+			Game_SubTag.TREE_TRUNK, x, y)
 
 
 func _is_passable_func(source_array: Array, current_index: int,

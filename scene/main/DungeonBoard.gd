@@ -26,20 +26,27 @@ func has_sprite(main_tag: String, coord: Game_IntCoord, sprite_layer := 0) \
 	return has_sprite_xy(main_tag, coord.x, coord.y, sprite_layer)
 
 
-func has_sprite_with_sub_tag_xy(sub_tag: String, x: int, y: int,
-		sprite_layer := 0) -> bool:
+func has_sprite_with_sub_tag_xy(main_tag: String, sub_tag: String,
+		x: int, y: int, sprite_layer := 0) -> bool:
 	var find_sprite: Sprite
+	var find_in_main_tags: Array
 
-	for i in Game_MainTag.DUNGEON_OBJECT:
+	if main_tag == "":
+		find_in_main_tags = Game_MainTag.DUNGEON_OBJECT
+	else:
+		find_in_main_tags = [main_tag]
+
+	for i in find_in_main_tags:
 		find_sprite = get_sprite_xy(i, x, y, sprite_layer)
 		if (find_sprite != null) and find_sprite.is_in_group(sub_tag):
 			return true
 	return false
 
 
-func has_sprite_with_sub_tag(sub_tag: String, coord: Game_IntCoord,
-		sprite_layer := 0) -> bool:
-	return has_sprite_with_sub_tag_xy(sub_tag, coord.x, coord.y, sprite_layer)
+func has_sprite_with_sub_tag(main_tag: String, sub_tag: String,
+		coord: Game_IntCoord, sprite_layer := 0) -> bool:
+	return has_sprite_with_sub_tag_xy(main_tag, sub_tag, coord.x, coord.y,
+			sprite_layer)
 
 
 func get_sprite_xy(main_tag: String, x: int, y: int, sprite_layer := 0) \

@@ -28,8 +28,8 @@ func create_actor(actor: Sprite, sub_tag: String, x: int, y: int) -> void:
 	if sub_tag != Game_SubTag.BIRD:
 		return
 
-	if  _ref_DungeonBoard.has_sprite_with_sub_tag_xy(Game_SubTag.TREE_BRANCH,
-			x, y):
+	if  _ref_DungeonBoard.has_sprite_with_sub_tag_xy(Game_MainTag.BUILDING,
+			Game_SubTag.TREE_BRANCH, x, y):
 		_ref_SwitchSprite.set_sprite(actor, Game_SpriteTypeTag.ACTIVE)
 
 
@@ -86,8 +86,8 @@ func _mark_tree_trunk() -> void:
 		i.add_to_group(Game_SubTag.COUNTER)
 		# Drive away the bird if there is any.
 		pos = Game_ConvertCoord.sprite_to_coord(i)
-		if _ref_DungeonBoard.has_sprite_with_sub_tag(Game_SubTag.BIRD, pos,
-				Game_BaronData.TREE_LAYER):
+		if _ref_DungeonBoard.has_sprite_with_sub_tag(Game_MainTag.ACTOR,
+				Game_SubTag.BIRD, pos, Game_BaronData.TREE_LAYER):
 			_ref_RemoveObject.remove_actor(pos, Game_BaronData.TREE_LAYER)
 		break
 

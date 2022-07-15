@@ -78,8 +78,8 @@ func interact_with_building() -> void:
 
 
 func wait() -> void:
-	if _ref_DungeonBoard.has_sprite_with_sub_tag(Game_SubTag.TREE_BRANCH,
-			_source_position):
+	if _ref_DungeonBoard.has_sprite_with_sub_tag(Game_MainTag.BUILDING,
+			Game_SubTag.TREE_BRANCH, _source_position):
 		end_turn = false
 	else:
 		_try_end_turn(_try_find_bandit())
@@ -112,8 +112,8 @@ func _sprite_is_visible(main_tag: String, x: int, y: int, _use_memory: bool,
 
 
 func _block_line_of_sight(x: int, y: int, _opt_arg: Array) -> bool:
-	return _ref_DungeonBoard.has_sprite_with_sub_tag_xy(Game_SubTag.TREE_TRUNK,
-			x, y)
+	return _ref_DungeonBoard.has_sprite_with_sub_tag_xy(Game_MainTag.BUILDING,
+			Game_SubTag.TREE_TRUNK, x, y)
 
 
 func _render_without_fog_of_war() -> void:
