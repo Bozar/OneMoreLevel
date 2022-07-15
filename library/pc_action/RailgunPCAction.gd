@@ -14,11 +14,11 @@ const VERTICAL := 1
 var _spr_Treasure := preload("res://sprite/Treasure.tscn")
 var _spr_Portal := preload("res://sprite/Portal.tscn")
 
-var _counter_sprite: Array = []
-var _kill_count: int = Game_RailgunData.MAX_KILL_COUNT
-var _ammo: int = Game_RailgunData.MAX_AMMO
-var _face_direction: Array = [0, -1]
-var _has_found_pillar: bool = false
+var _counter_sprite := []
+var _kill_count := Game_RailgunData.MAX_KILL_COUNT
+var _ammo := Game_RailgunData.MAX_AMMO
+var _face_direction := [0, -1]
+var _has_found_pillar := false
 var _plillar_position: Game_IntCoord
 
 
@@ -138,7 +138,7 @@ func attack() -> void:
 func move() -> void:
 	if _is_under_attack():
 		return
-	elif _ref_DungeonBoard.has_actor_xy(_target_position.x, _target_position.y):
+	elif _ref_DungeonBoard.has_actor(_target_position):
 		return
 	_pc_move()
 
@@ -146,7 +146,7 @@ func move() -> void:
 func interact_with_trap() -> void:
 	if _is_under_attack():
 		return
-	_ref_RemoveObject.remove_trap_xy(_target_position.x, _target_position.y)
+	_ref_RemoveObject.remove_trap(_target_position)
 	_pc_restore()
 	_pc_move()
 
@@ -190,12 +190,12 @@ func _init_skull_pillar() -> void:
 				Game_DungeonSize.CENTER_X):
 			continue
 
-		neighbor = Game_CoordCalculator.get_neighbor_xy(pos.x, pos.y, 1, false)
+		neighbor = Game_CoordCalculator.get_neighbor(pos, 1, false)
 		for j in neighbor:
-			if _ref_DungeonBoard.has_ground_xy(j.x, j.y):
-				_ref_RemoveObject.remove_building_xy(pos.x, pos.y)
-				_ref_CreateObject.create_building_xy(_spr_Portal,
-						Game_SubTag.PILLAR, pos.x, pos.y)
+			if _ref_DungeonBoard.has_ground(j):
+				_ref_RemoveObject.remove_building(pos)
+				_ref_CreateObject.create_building(_spr_Portal,
+						Game_SubTag.PILLAR, pos)
 				_plillar_position = pos
 				return
 
@@ -253,13 +253,10 @@ func _try_find_pillar() -> void:
 
 	if _has_found_pillar:
 		return
-	_has_found_pillar = Game_CoordCalculator.is_in_range_xy(
-			_target_position.x, _target_position.y,
-			_plillar_position.x, _plillar_position.y,
-			Game_RailgunData.TOUCH_PILLAR)
+	_has_found_pillar = Game_CoordCalculator.is_in_range(
+			_target_position, _plillar_position, Game_RailgunData.TOUCH_PILLAR)
 	if _has_found_pillar:
-		pillar = _ref_DungeonBoard.get_building_xy(
-				_plillar_position.x, _plillar_position.y)
+		pillar = _ref_DungeonBoard.get_building(_plillar_position)
 		_ref_SwitchSprite.set_sprite(pillar, Game_SpriteTypeTag.ACTIVE)
 
 
@@ -282,8 +279,8 @@ func _is_under_attack() -> bool:
 	var x: int
 	var y: int
 	var npc: Sprite
-	var horizontal_move: bool = (_source_position.y == _target_position.y)
-	var vertical_move: bool = (_source_position.x == _target_position.x)
+	var horizontal_move := (_source_position.y == _target_position.y)
+	var vertical_move := (_source_position.x == _target_position.x)
 	var horizontal_attack := false
 	var vertical_attack := false
 

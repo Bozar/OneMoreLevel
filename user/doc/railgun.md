@@ -10,7 +10,7 @@ You need to accumulate 6 and 6 and 6 devil kills before you are allowed to leave
 
 Press Space to switch between move mode and aim mode. This action costs no turns.
 
-In move mode, you are an "at" symbol (@). Press arrow keys to move around. You cannot enter a grid that is occupied by a wall (#) or a devil (d). Moving 1 step costs 1 turn. When you move over and pick up a survial kit (?), you restore 6 turns and 1 charge of ammo. You have at most 24 turns and 5 charges.
+In move mode, you are an "at" symbol (@). Press arrow keys to move around. You cannot enter a grid that is occupied by a wall (#) or a devil (d). Moving 1 step costs 1 turn. When you move over and pick up a survial kit (?), you restore 4 turns and 1 charge of ammo. You have at most 24 turns and 5 charges.
 
 You cannot move to or away from a devil in a straight line if: (1) The devil is in your sight and is about to attack (more details below). (2) There are no other devils in between you two. (3) You can move aside or shoot back.
 
@@ -30,7 +30,7 @@ There are three counters at the bottom right corner of the screen. They act as w
 
 A devil's default symbol is a lower case d. If it is in an unblocked straight line with PC and no more than 4 steps away, its symbol turns into an upper case D, which means it will cast a burning ray the next turn. The ray travels like a railgun projectile until it hits something. If a devil is killed by friendly fire, it drops a survival kit, may trigger devil respawn (see below), but does NOT count as your kill. If you are hit instead, your killer glows like the letter with a wicked sharp angle -- "On A field, sable, the letter A, gules".
 
-A devil can hear you 8 steps away. If you keep firing for two or more consecutive turns, all devils' ear shots extend to 12 grids starting from the second turn. The ear shot resets to 8 once you move.
+A devil hears you 8 steps away. If you keep firing for two or more consecutive turns, all devils' ear shots extend to 12 grids starting from the second turn. The ear shot resets to 8 once you move. If a devil cannot see you, it approaches a survival kit within 8 steps instead.
 
 The dungeon holds at most 6 devils. When 2 or more of them dies, new ones respawn. A new devil is at least 6 grids away from you.
 

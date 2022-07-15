@@ -22,4 +22,4 @@ const COUNTER_WIDTH := 3
 const MAX_AMMO := 5
 
 const RESTORE_AMMO := 1
-const RESTORE_TURN := 7
+const RESTORE_TURN := 5

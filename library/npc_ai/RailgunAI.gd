@@ -16,6 +16,8 @@ func _init(parent_node: Node2D).(parent_node) -> void:
 
 
 func take_action() -> void:
+	var trap_coords := []
+
 	if _ref_ObjectData.verify_state(_self, Game_StateTag.ACTIVE):
 		_switch_mode(false)
 		_attack()
@@ -27,7 +29,10 @@ func take_action() -> void:
 		# 	_self.modulate = _ref_Palette.DEBUG
 		# 	print("gunshot")
 		_approach_pc()
-		_ref_RemoveObject.remove_trap_xy(_self_pos.x, _self_pos.y)
+		_ref_RemoveObject.remove_trap(_self_pos)
+	elif _detect_trap(trap_coords):
+		_approach_pc(trap_coords)
+		_ref_RemoveObject.remove_trap(_self_pos)
 
 
 func _switch_mode(aim_mode: bool) -> void:
@@ -83,7 +88,7 @@ func _is_in_close_range() -> bool:
 
 	if (self_x != pc_x) and (self_y != pc_y):
 		return false
-	elif not Game_CoordCalculator.is_in_range_xy(self_x, self_y, pc_x, pc_y,
+	elif Game_CoordCalculator.is_out_of_range(_self_pos, _pc_pos,
 			Game_RailgunData.PC_SIDE_SIGHT):
 		return false
 
@@ -128,11 +133,21 @@ func _is_actor(x: int, y: int) -> bool:
 
 func _detect_pc() -> bool:
 	var detect_distance: int
-	var pc: Sprite = _ref_DungeonBoard.get_pc()
+	var pc := _ref_DungeonBoard.get_pc()
 
 	if _ref_ObjectData.get_hit_point(pc) > Game_RailgunData.GUN_SHOT_HP:
 		detect_distance = Game_RailgunData.NPC_EAR_SHOT
 	else:
 		detect_distance = Game_RailgunData.NPC_SIGHT
-	return Game_CoordCalculator.is_in_range_xy(_self_pos.x, _self_pos.y,
-			_pc_pos.x, _pc_pos.y, detect_distance)
+	return Game_CoordCalculator.is_in_range(_self_pos, _pc_pos, detect_distance)
+
+
+func _detect_trap(save_coords: Array) -> bool:
+	for i in Game_CoordCalculator.get_neighbor(_self_pos,
+			Game_RailgunData.NPC_SIGHT):
+		if _ref_DungeonBoard.has_trap(i):
+			save_coords.push_back(i)
+	if save_coords.size() > 0:
+		Game_ArrayHelper.rand_picker(save_coords, 1, _ref_RandomNumber)
+		return true
+	return false
