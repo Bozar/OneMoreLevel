@@ -4,7 +4,7 @@
 
 ## Winning and Losing
 
-There are four lost harbors in the mist of Styx. In order to beat the game, you need to reach at least one of them in 24 turns. You lose the game if you have not reached any harbor when the last turn ends.
+There are 3 lost harbors in the mist of Styx. In order to beat the game, you need to reach at least one of them in 24 turns. You lose the game if you have not reached any harbor when the last turn ends.
 
 ## Moving and Waiting
 
@@ -34,10 +34,10 @@ Suppose you start from grid 1, press right arrow key to move to grid 8. You can 
 
 ## Reaching a Harbor
 
-A harbor is an impassable building similar to the lighthouse. There are 4 harbors in Styx and all of them are invisible at the start of the game.
+A harbor is an impassable building similar to the lighthouse. There are 3 harbors in Styx. They are all invisible initially. Harbors are 7+ grids away from each other and PC's start point.
 
 If a harbor shows up at the edge of your field of view, it is a dark grey question mark (?). You cannot remember the position of such a harbor. If you move away, the harbor becomes invisible again.
 
 If a harbor appears inside your field of view, it turns into a grey question mark (?). It remains visible no matter where you go from now on.
 
-In order to reach a harbor, you need to end your turn in a grid that is adjacent to it. The harbor becomes a grey exclamation mark (!) and remains visible. Beating the game requires reaching one harbor. Try to discover more of them before your time runs out as a bonus quest.
+In order to reach a harbor, you need to end your turn in an adjacent grid. The harbor becomes a grey exclamation mark (!) and remains visible. Beating the game requires reaching one harbor. Try to discover more of them before your time runs out as a bonus quest.

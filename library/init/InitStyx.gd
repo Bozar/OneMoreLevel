@@ -44,33 +44,14 @@ func _init_lighthouse() -> void:
 
 
 func _init_harbor(pc_x: int, pc_y: int) -> void:
-	var neighbor: Array
-	var harbor_x: int
-	var harbor_y: int
-
-	neighbor = Game_CoordCalculator.get_neighbor_xy(pc_x, pc_y,
-			Game_StyxData.NORMAL_SIGHT, true)
-	for i in neighbor:
+	for i in Game_CoordCalculator.get_neighbor_xy(pc_x, pc_y,
+			Game_StyxData.HARBOR_GAP, true):
 		_set_terrain_marker(i.x, i.y, HARBOR_MARKER)
 
-	for _i in range(0, Game_StyxData.MAX_HARBOR):
-		# There are very few harbors so this should hardly fail.
-		while true:
-			harbor_x = _ref_RandomNumber.get_x_coord()
-			harbor_y = _ref_RandomNumber.get_y_coord()
-			if _is_occupied(harbor_x, harbor_y) \
-					or _is_terrain_marker(harbor_x, harbor_y, HARBOR_MARKER):
-				continue
-			break
-
-		_add_building_to_blueprint(_spr_Harbor, Game_SubTag.HARBOR,
-				harbor_x, harbor_y)
-		_occupy_position(harbor_x, harbor_y)
-		neighbor = Game_CoordCalculator.get_neighbor_xy(harbor_x, harbor_y,
-				Game_StyxData.NORMAL_SIGHT, false)
-		for j in neighbor:
-			if _is_terrain_marker(j.x, j.y, DEFAULT_MARKER):
-				_set_terrain_marker(j.x, j.y, HARBOR_MARKER)
+	Game_WorldGenerator.create_by_coord(ALL_COORDS,
+			Game_StyxData.MAX_HARBOR, _ref_RandomNumber, self,
+			"_is_valid_harbor_coord", [],
+			"_create_harbor_here", [])
 
 
 func _init_river() -> void:
@@ -79,3 +60,21 @@ func _init_river() -> void:
 			if _is_occupied(i, j):
 				continue
 			_add_ground_to_blueprint(_spr_Arrow, Game_SubTag.ARROW, i, j)
+
+
+func _is_valid_harbor_coord(coord: Game_IntCoord, _retry: int, _arg: Array) \
+		-> bool:
+	if _is_terrain_marker(coord.x, coord.y, HARBOR_MARKER) \
+			or _is_occupied(coord.x, coord.y):
+		return false
+	return true
+
+
+func _create_harbor_here(coord: Game_IntCoord, _arg: Array) -> void:
+	_add_building_to_blueprint(_spr_Harbor, Game_SubTag.HARBOR,
+			coord.x, coord.y)
+	_occupy_position(coord.x, coord.y)
+	for i in Game_CoordCalculator.get_neighbor(coord,
+			Game_StyxData.HARBOR_GAP, false):
+		if _is_terrain_marker(i.x, i.y, DEFAULT_MARKER):
+			_set_terrain_marker(i.x, i.y, HARBOR_MARKER)
