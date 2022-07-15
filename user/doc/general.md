@@ -18,9 +18,11 @@ Press `C` to read these mechanics. The help text is also available in `doc/`.
 
 ## Change Game Settings
 
-Edit `data/setting.json` for play testing. You can also change settings in debug menu by pressing `V`. Debug settings overwrite their counterparts in json files. All settings take effect when starting a new game.
+Edit `data/setting.json` for play testing. You can also change settings in debug menu by pressing `V`. Debug settings overwrite their counterparts in `data/setting.json`. All settings take effect when starting a new game.
 
-Set `rng_seed` to a positive integer as a random number generator seed. When in debug mode, seed digits can be separated by characters: `[-,.\s]`. For example: `12-3,4.5 6` is the same as `123456`.
+When in debug menu, if a text field requires a boolean value, strings match this pattern are `true`: `^(true|t|yes|y|[1-9]\d*)$`.
+
+Set `rng_seed` to a positive integer as a random number generator seed. When in debug menu, seed digits can be separated by characters: `[-,.\s]`. For example: `12-3,4.56` is the same as `123456`.
 
 Add world names from `data/world_list.md` to `include_world` or `exclude_world` to customize your world rotation list.
 

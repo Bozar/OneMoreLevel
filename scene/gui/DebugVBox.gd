@@ -32,19 +32,25 @@ const EXCLUDE_PLACEHOLDER := "INITIAL: DEMO"
 const SHOW_TEXT := "ShowMap"
 const MOUSE_TEXT := "Mouse"
 
-const TRUE_PATTERN := "true"
+const TRUE_PATTERN := "^(true|t|yes|y|[1-9]\\d*)$"
 const VERSION_PREFIX := "Version: "
 const ARRAY_SEPARATOR := ","
 const TRAILING_SPACE := " "
-const SEED_SEPARATOR := "[-,.\\s]"
+const SEED_SEPARATOR_PATTERN := "[-,.\\s]"
 
 var _ref_Palette: Game_Palette
 
 var _seed_reg := RegEx.new()
+var _true_reg := RegEx.new()
+
+
+func _init() -> void:
+	var __
+	__ = _seed_reg.compile(SEED_SEPARATOR_PATTERN)
+	__ = _true_reg.compile(TRUE_PATTERN)
 
 
 func _ready() -> void:
-	var __ = _seed_reg.compile(SEED_SEPARATOR)
 	visible = false
 
 
@@ -155,11 +161,8 @@ func _save_as_array(source: String) -> Array:
 
 
 func _save_as_bool(source: String) -> bool:
-	var tmp: String = get_node(source).text.to_lower().strip_edges()
-
-	if (tmp == TRUE_PATTERN) or (int(tmp) > 0):
-		return true
-	return false
+	source = get_node(source).text.to_lower().strip_edges()
+	return _true_reg.search(source) != null
 
 
 func _save_as_float(source: String) -> float:
