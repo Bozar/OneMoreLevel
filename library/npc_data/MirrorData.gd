@@ -14,5 +14,5 @@ const MAX_PHANTOM := 5
 const CRYSTAL_DISTANCE := 5
 const PHANTOM_SIGHT := 5
 const ATTACK_RANGE := 1
-const RESTORE_TURN := 7
+const RESTORE_TURN := 2
 const RENDER_RANGE := 4

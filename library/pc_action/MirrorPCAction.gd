@@ -30,31 +30,36 @@ func move() -> void:
 
 func attack() -> void:
 	var mirror: Game_IntCoord
-	var pc: Sprite = _ref_DungeonBoard.get_pc()
+	var pc := _ref_DungeonBoard.get_pc()
+	# There is always a new actor on the other side.
+	var new_actors := 1
 
 	if _pc_hit_target:
 		_create_image_on_the_other_side(_target_position.x, _target_position.y)
-		_create_image_on_the_same_side(_target_position.x, _target_position.y)
+		new_actors += _create_image_on_the_same_side(
+				_target_position.x, _target_position.y)
 		if _ref_ObjectData.get_hit_point(pc) == Game_MirrorData.MAX_CRYSTAL:
 			_ref_EndGame.player_win()
-		_ref_CountDown.add_count(Game_MirrorData.RESTORE_TURN)
+			return
+		_ref_CountDown.add_count(Game_MirrorData.RESTORE_TURN * new_actors + 1)
 	else:
 		mirror = _get_mirror(_target_position.x, _target_position.y)
-		_ref_RemoveObject.remove_actor_xy(mirror.x, mirror.y)
+		_ref_RemoveObject.remove_actor(mirror)
 	end_turn = true
 
 
 func interact_with_trap() -> void:
 	var mirror: Game_IntCoord
-	var pc: Sprite = _ref_DungeonBoard.get_pc()
+	var pc := _ref_DungeonBoard.get_pc()
 
 	if not _pc_hit_target:
 		mirror = _get_mirror(_target_position.x, _target_position.y)
-		_ref_RemoveObject.remove_trap_xy(mirror.x, mirror.y)
+		_ref_RemoveObject.remove_trap(mirror)
 
 	_move_pc_and_image()
 	if _ref_ObjectData.get_hit_point(pc) == Game_MirrorData.MAX_CRYSTAL:
 		_ref_EndGame.player_win()
+		return
 	end_turn = true
 
 
@@ -79,11 +84,10 @@ func _get_mirror(x: int, y: int) -> Game_IntCoord:
 func _target_is_occupied(main_tag: String) -> bool:
 	var mirror := _get_mirror(_target_position.x, _target_position.y)
 
-	if _ref_DungeonBoard.has_sprite_xy(main_tag,
-			_target_position.x, _target_position.y):
+	if _ref_DungeonBoard.has_sprite(main_tag, _target_position):
 		_pc_hit_target = true
 		return true
-	elif _ref_DungeonBoard.has_sprite_xy(main_tag, mirror.x, mirror.y):
+	elif _ref_DungeonBoard.has_sprite(main_tag, mirror):
 		_pc_hit_target = false
 		return true
 	return false
@@ -109,7 +113,7 @@ func _create_image_on_the_other_side(x: int, y: int) -> void:
 	_ref_ObjectData.set_state(actor, Game_StateTag.PASSIVE)
 
 	# On the other side: Remove a trap.
-	_ref_RemoveObject.remove_trap_xy(mirror.x, mirror.y)
+	_ref_RemoveObject.remove_trap(mirror)
 
 	# There can be at most (5 - crystal) phantom images.
 	images = _ref_DungeonBoard.get_sprites_by_tag(Game_SubTag.PHANTOM)
@@ -124,10 +128,11 @@ func _create_image_on_the_other_side(x: int, y: int) -> void:
 			_ref_RemoveObject.remove_actor(pos)
 
 
-func _create_image_on_the_same_side(x: int, y: int) -> void:
+func _create_image_on_the_same_side(x: int, y: int) -> int:
 	var wall: Array = []
 	var mirror: Game_IntCoord
 	var actor: Sprite
+	var count_actors := 0
 
 	# Cast a ray to the top.
 	wall += _get_mirror_position(x, y, 0, -1, 0)
@@ -145,10 +150,10 @@ func _create_image_on_the_same_side(x: int, y: int) -> void:
 			continue
 
 		# Continue if there is a building blocks the image.
-		if _ref_DungeonBoard.has_building_xy(mirror.x, mirror.y):
+		if _ref_DungeonBoard.has_building(mirror):
 			continue
 		# Continue if there is an actor blocks the image.
-		elif _ref_DungeonBoard.has_actor_xy(mirror.x, mirror.y):
+		elif _ref_DungeonBoard.has_actor(mirror):
 			continue
 		# Continue if the phantom and its image are on different sides.
 		elif ((x - Game_DungeonSize.CENTER_X) \
@@ -156,13 +161,15 @@ func _create_image_on_the_same_side(x: int, y: int) -> void:
 			continue
 
 		# Create a new actor.
-		_ref_CreateObject.create_actor_xy(_spr_Phantom, Game_SubTag.PHANTOM,
-				mirror.x, mirror.y)
+		_ref_CreateObject.create_actor(_spr_Phantom, Game_SubTag.PHANTOM,
+				mirror)
+		count_actors += 1
 
 		# Switch the actor's sprite to active.
-		if _ref_DungeonBoard.has_trap_xy(mirror.x, mirror.y):
-			actor = _ref_DungeonBoard.get_actor_xy(mirror.x, mirror.y)
+		if _ref_DungeonBoard.has_trap(mirror):
+			actor = _ref_DungeonBoard.get_actor(mirror)
 			_ref_SwitchSprite.set_sprite(actor, Game_SpriteTypeTag.ACTIVE)
+	return count_actors
 
 
 func _get_mirror_position(x: int, y: int, x_shift: int, y_shift: int,
@@ -234,7 +241,5 @@ func _move_pc_and_image() -> void:
 	var source_mirror := _get_mirror(_source_position.x, _source_position.y)
 	var target_mirror := _get_mirror(_target_position.x, _target_position.y)
 
-	_ref_DungeonBoard.move_actor_xy(_source_position.x, _source_position.y,
-			_target_position.x, _target_position.y)
-	_ref_DungeonBoard.move_actor_xy(source_mirror.x, source_mirror.y,
-			target_mirror.x, target_mirror.y)
+	_ref_DungeonBoard.move_actor(_source_position, _target_position)
+	_ref_DungeonBoard.move_actor(source_mirror, target_mirror)
