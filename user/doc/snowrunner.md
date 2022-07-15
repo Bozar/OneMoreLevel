@@ -4,7 +4,7 @@
 
 ## Turn Restoration Cheatsheet
 
-* Offload a unit of goods: 24 turns
+* Offload a unit of goods: 16 turns
 * Pick up a passenger: 4 turns
 * Drop off a passenger: 8 turns
 
@@ -44,7 +44,11 @@ In the diagram above, suppose A, B, C and D are crossroad grids and 1 is a norma
 * Grid C: Press Left to turn left and enter grid D.
 * Grid D: Unfortunally you cannot turn left again because grid A is occupied by a slot.
 
-Turning sideways usually costs 1 turn. However, if all three slots are occupied, turning costs 2 turns.
+Turning a corner costs 1 to 3 turns.
+
+* 1 turn: Carry 0 to 1 unit of goods.
+* 2 turns: Carry 2 units of goods.
+* 3 turns: Carry 3 units of goods.
 
 There is snow on the ground. Its symbol is an asterisk (*). Driving over a snow grid costs 1 extra turn and the snow is removed. Snow grids appear and disappear at their own pace, which may even happens during semi-auto driving.
 
@@ -61,7 +65,7 @@ The garage (G) is on the right side of your starting point. Bump it to onload go
 
 A successful delivery requires you to onload a unit of goods from the garage and put it down at an offloading zone. After you have made 5 deliveries, you need to go back to the garage and bump it one last time. This time, all the slots must be empty. The truck does not stop by the garage if you have delivered 5 units of goods and one or more slots are occupied.
 
-The symbol of an offloading zone is a solid rectangle. The truck stops by there only if you are carrying at least one unit of goods. Bump the zone to offload a unit of goods. Your remaining time restores to its maximum, 24 turns. There are five offloading zones but at most two of them appear at the same time. The first two zones show up at the start of the second turn.
+The symbol of an offloading zone is a solid rectangle. The truck stops by there only if you are carrying at least one unit of goods. Bump the zone to offload a unit of goods and you restore 16 turns. There are five offloading zones but at most two of them appear at the same time. The first two zones show up at the start of the second turn.
 
 ## Picking Up and Dropping Off Passengers
 

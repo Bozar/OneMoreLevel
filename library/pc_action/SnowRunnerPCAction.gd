@@ -266,6 +266,15 @@ func _is_fully_loaded() -> bool:
 	return true
 
 
+func _get_loaded_goods() -> int:
+	var goods := 0
+
+	for i in _truck_slot:
+		if _ref_ObjectData.get_hit_point(i) != SLOT.DEFAULT:
+			goods += 1
+	return goods
+
+
 func _is_empty_loaded() -> bool:
 	for i in _truck_slot:
 		if _ref_ObjectData.get_hit_point(i) != SLOT.DEFAULT:
@@ -346,9 +355,9 @@ func _try_offload_goods(door: Sprite) -> bool:
 			_ref_ObjectData.set_hit_point(i, SLOT.DEFAULT)
 			_ref_SwitchSprite.set_sprite(i, Game_SpriteTypeTag.DEFAULT)
 			# Replace sprite: offload -> door.
-			_ref_RemoveObject.remove_building_xy(pos.x, pos.y)
-			_ref_CreateObject.create_building_xy(_spr_DoorTruck, Game_SubTag.DOOR,
-					pos.x, pos.y)
+			_ref_RemoveObject.remove_building(pos)
+			_ref_CreateObject.create_building(_spr_DoorTruck, Game_SubTag.DOOR,
+					pos)
 			# Update progress.
 			_deliveries += 1
 			_ref_CountDown.add_count(Game_SnowRunnerData.OFFLOAD_GOODS)
@@ -396,8 +405,9 @@ func _active_passenger() -> void:
 
 
 func _turn_slowly() -> void:
-	if _is_fully_loaded():
-		_ref_CountDown.subtract_count(Game_SnowRunnerData.GOODS_COST_TURN)
+	var goods := _get_loaded_goods() - 1
+	if goods > 0:
+		_ref_CountDown.subtract_count(goods)
 
 
 func _clear_snow(x: int, y: int) -> void:

@@ -13,13 +13,12 @@ const NO_SNOW := 0
 const SNOW_FALL := 20
 const SNOW_MELT := 40
 
-const MAX_SNOW := 20
+const MAX_SNOW := 22
 const MAX_DOOR := 18
 const MAX_OFFLOAD := 2
 
 const SNOW_COST_TURN := 1
-const GOODS_COST_TURN := 1
 
-const OFFLOAD_GOODS := 25
+const OFFLOAD_GOODS := 17
 const DROP_OFF_PASSENGER := 9
 const PICK_UP_PASSENGER := 5
