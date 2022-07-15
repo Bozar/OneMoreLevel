@@ -13,7 +13,7 @@ To beat the game, you need to stop time and kill all ninjas before time starts t
 
 The dungeon is composed of three columns. The left and right columns are indicators to show your current level. An empty row means you are at an empty grid. A row with question marks (?) means you are at a grid with a soul fragment, of which the symbol is also a question mark (?).
 
-The middle column is battle ground. When the game starts, you stand on a static platform at the bottom of an elevator shaft. Underneath the platform is your health bar. The bar has 2 blocks. When you take 1 hit from a ninja, the right block is depleted. The second hit depletes the left block and kills you.
+The middle column is battle ground. When the game starts, you stand on a static platform at the bottom of an elevator shaft. Underneath the platform is your hit point bar. The bar has 2 blocks. When you take 1 hit from a ninja, the right block is depleted. The second hit depletes the left block and kills you.
 
 ## PC Moves outside Time Stop
 
@@ -66,7 +66,7 @@ If grid 8 is occupied by a ninja, press Space to move to grid X, otherwise to mo
 
 ## PC Moves inside Time Stop
 
-When you hit a ninja outside time stop, you freeze the countdown timer immediately and your symbol turns into a digit. It shows how many remaining ticks you have in the current stop. You have at most 4 ticks.
+When you hit a ninja outside time stop, you freeze the countdown timer immediately and your symbol turns into a digit. It shows how many remaining ticks you have in the current stop. The maximum ticks equals to `5 - PC_HIT_POINT`.
 
 Press left or right arrow key to move 1 step horizontally, and up or down arrow key to move 2 grids vertically. If you hit a ninja in the way or the first grid in your path has a soul fragment (As mentioned above, its symbol is a question mark (?).), this moving or attacking costs no tick, otherwise your tick is reduced by 1. You end your current turn when there is no ticks left. You can also press Space to let time flow right away.
 
@@ -74,7 +74,11 @@ Press left or right arrow key to move 1 step horizontally, and up or down arrow 
 
 If a ninja blocks your moving path, you stop right before the ninja, hit him, remove him from the game, and stop time. Besides, a dead ninja may leave a soul fragment behind. The soul fragment is shown as a question mark (?). Its symbol turns into a exclamation mark (!) when it is in a falling trajectory.
 
-There are two types of ninjas: common ninja (N, n) and shadow ninja (S, s). An uppercase letter means the ninja is on a grid that has a soul fragment. A common ninja leaves behind a fragment if there are no shadow ninjas on the same row or column with him. A shadow ninja leaves nothing behind. If there is a fragment beneath him, he removes it when killed.
+There are two types of ninjas: common ninja (N, n) and shadow ninja (S, s). An uppercase letter means the ninja is on a grid that has a soul fragment.
+
+When you hit a common ninja, he leaves behind a soul fragment if there are no shadow ninjas on the same row or column with him. Otherwise, he removes the fragment beneath him (if there is any) instead. When you hit a shadow ninja, he removes the fragment beneath him (if there is any).
+
+Removing a common or shadow ninja due to being idle for 1 turn (see below, *General AI*) does not add or remove a soul fragment.
 
 ## Ninja AI
 
@@ -89,23 +93,19 @@ All ninjas act after PC. If a ninja neither moves nor attacks in his turn, he wi
 
 A common ninja may perform one of three actions at the start of his turn.
 
-Action 1. Hit PC and deal 1 point of damage if he is adjacent to PC. His symbol changes from n to x for one turn.
+Action 1. Hit PC if he is adjacent to PC. His symbol changes from n to x for one turn.
 
-Action 2. When on ground, jump up if there is at least one unoccupied grid above, otherwise try to move 1 step horizontally towards PC. A ninja can jump at most 2 grids high. PC is hit if he blocks the jumping path. If another NPC blocks the vertical or horizontal path, the ninja cannot move to his destination.
+Action 2. When on ground, jump up if there is at least one unoccupied grid above. Otherwise, if he is not in the same column with PC, try to move 1 step horizontally towards PC. A ninja can jump at most 2 grids high. PC is hit if he blocks the jumping path. If another NPC blocks the vertical or horizontal path, the ninja cannot move to his destination.
 
-Action 3. When in mid-air, if the vertical distance between the ninja and PC is no more than 2 grids, try to move 1 step horizontally towards PC first and then try to fall down 2 grids; otherwise try to fall down 2 grids. Same as action 2, PC is hit if he blocks the way, and the ninja can be blocked by his allies.
+Action 3. When in mid-air, try to fall down 2 grids. Same as action 2, PC is hit if he blocks the way, and the ninja can be blocked by his allies.
 
 ### Shadow Ninja AI
 
-At the start of a shadow ninja's turn, if there is a soul fragment under him, the fragment is removed. Then he may perform one of two actions.
+At the start of a shadow ninja's turn, remove the soul fragment beneath him if there is any. Then he may perform one of two actions.
 
-Action 1. When in mid-air, fall down 2 grids if possible.
+Action 1. When in mid-air, fall down 2 grids if possible. Remove fragments along the way.
 
-Action 2. When on ground, try to move 1 step horizontally towards PC. Do not move if he is already in the same column with PC.
-
-So long as the shadow ninja is alive, a common ninja does not leave a soul fragment when killed if he is on the same row or column with the shadow ninja. When the shadow ninja is killed by PC, if there is a soul fragment under him, he removes the fragment.
-
-Removing a common or shadow ninja due to being idle for 1 turn (see above, *General AI*) does not add or remove a soul fragment.
+Action 2. When on ground, if he is not in the same column with PC, try to move 1 step horizontally towards PC. Remove fragments along the way.
 
 ## Respawn Ninjas
 

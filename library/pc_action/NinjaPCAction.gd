@@ -64,9 +64,9 @@ func switch_sprite() -> void:
 
 
 func attack() -> void:
-	_hit_actor(_target_position.x, _target_position.y)
+	_hit_actor(_target_position)
 	if _time_stop < 1:
-		_time_stop = Game_NinjaData.MAX_TIME_STOP
+		_time_stop = _get_max_time_stop()
 		switch_sprite()
 
 	_update_trajectory()
@@ -109,12 +109,12 @@ func _move_outside_time_stop() -> void:
 	if _is_horizontal_move():
 		_move_pc_sprite()
 		if _charge_and_try_hit(Game_CoordCalculator.DOWN, true):
-			_time_stop = Game_NinjaData.MAX_TIME_STOP
+			_time_stop = _get_max_time_stop()
 		else:
 			end_turn = true
 	elif _is_upward_move_from_ground() or _is_downward_move():
 		if _charge_and_try_hit(INPUT_TO_COORD[_input_direction], true):
-			_time_stop = Game_NinjaData.MAX_TIME_STOP
+			_time_stop = _get_max_time_stop()
 		else:
 			end_turn = true
 
@@ -139,14 +139,14 @@ func _charge_and_try_hit(direction: int, can_hit_npc: bool) -> bool:
 	var grid_pos: Game_IntCoord = path[path.size() - 1]
 	var hit_npc := false
 
-	if _ref_DungeonBoard.has_building_xy(grid_pos.x, grid_pos.y):
+	if _ref_DungeonBoard.has_building(grid_pos):
 		grid_pos = path[path.size() - 2]
-	elif _ref_DungeonBoard.has_actor_xy(grid_pos.x, grid_pos.y):
+	elif _ref_DungeonBoard.has_actor(grid_pos):
 		if can_hit_npc:
-			_hit_actor(grid_pos.x, grid_pos.y)
+			_hit_actor(grid_pos)
 		grid_pos = path[path.size() - 2]
 		hit_npc = can_hit_npc
-	_ref_DungeonBoard.move_actor_xy(pc_pos.x, pc_pos.y, grid_pos.x, grid_pos.y)
+	_ref_DungeonBoard.move_actor(pc_pos, grid_pos)
 	return hit_npc
 
 
@@ -197,8 +197,8 @@ func _set_trajectory_type(id: int, sprite_type_tag: String) -> void:
 	var this_sprite: Sprite
 
 	for i in ACTOR_TRAJECTORY[id]:
-		for j in TRAJECTORY_MAIN_TAG:
-			this_sprite = _ref_DungeonBoard.get_sprite_xy(j, i.x, i.y)
+		for mtag in TRAJECTORY_MAIN_TAG:
+			this_sprite = _ref_DungeonBoard.get_sprite(mtag, i)
 			if this_sprite != null:
 				_ref_SwitchSprite.set_sprite(this_sprite, sprite_type_tag)
 
@@ -208,23 +208,21 @@ func _is_obstacle(x: int, y: int, _opt_art: Array) -> bool:
 			or _ref_DungeonBoard.has_building_xy(x, y)
 
 
-func _hit_actor(x: int, y: int) -> void:
-	var shadows := _ref_DungeonBoard.get_sprites_by_tag(
-			Game_SubTag.NINJA_SHADOW)
+func _hit_actor(coord: Game_IntCoord) -> void:
 	var shadow_pos: Game_IntCoord
 	var create_trap := true
 
-	for i in shadows:
+	for i in _ref_DungeonBoard.get_sprites_by_tag(Game_SubTag.NINJA_SHADOW):
 		shadow_pos = Game_ConvertCoord.sprite_to_coord(i)
-		if (x == shadow_pos.x) or (y == shadow_pos.y):
+		if (coord.x == shadow_pos.x) or (coord.y == shadow_pos.y):
 			create_trap = false
 			break
+	# Avoid creating two traps in one grid.
+	_ref_RemoveObject.remove_trap(coord)
 	if create_trap:
-		_ref_CreateObject.create_trap_xy(_spr_SoulFragment, Game_SubTag.TREASURE,
-				x, y)
-	else:
-		_ref_RemoveObject.remove_trap_xy(x, y)
-	_ref_RemoveObject.remove_actor_xy(x, y)
+		_ref_CreateObject.create_trap(_spr_SoulFragment, Game_SubTag.TREASURE,
+				coord)
+	_ref_RemoveObject.remove_actor(coord)
 
 
 func _try_end_game() -> void:
@@ -236,7 +234,7 @@ func _try_end_game() -> void:
 
 func _update_indicator() -> void:
 	var pos := _ref_DungeonBoard.get_pc_coord()
-	var has_trap := _ref_DungeonBoard.has_trap_xy(pos.x, pos.y)
+	var has_trap := _ref_DungeonBoard.has_trap(pos)
 	var default_type := Game_SpriteTypeTag.DEFAULT
 	var new_type := Game_SpriteTypeTag.ACTIVE \
 			if has_trap \
@@ -268,3 +266,9 @@ func _render_end_game(win: bool) -> void:
 	_update_indicator()
 
 	._render_end_game(win)
+
+
+func _get_max_time_stop() -> int:
+	var remaining_hp := Game_NinjaData.MAX_PC_HP \
+			- _ref_ObjectData.get_hit_point(_ref_DungeonBoard.get_pc())
+	return Game_NinjaData.MAX_TIME_STOP - remaining_hp

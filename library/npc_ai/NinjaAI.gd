@@ -55,9 +55,12 @@ func _ninja_act() -> void:
 		if not has_moved:
 			has_moved = _try_move_horizontally()
 	else:
+		# UPDATE: Do not move horizontally in mid-air. Ninjas are close to each
+		# other in this way and PC can kill them easily.
+		# ----------------------------------------------------------------------
 		# When in mid-air, move horizontally to PC when in close range.
-		if abs(_self_pos.y - _pc_pos.y) < Game_NinjaData.VERTICAL_NINJA_SIGHT:
-			has_moved = _try_move_horizontally()
+		# if abs(_self_pos.y - _pc_pos.y) < Game_NinjaData.VERTICAL_NINJA_SIGHT:
+		# 	has_moved = _try_move_horizontally()
 		# Then fall down.
 		move_result = _try_move_vertically(Game_CoordCalculator.DOWN)
 		has_moved = has_moved or move_result[0]
@@ -82,19 +85,29 @@ func _ninja_act() -> void:
 func _shadow_ninja_act() -> void:
 	var has_moved := false
 	var move_result: Array
-
-	_ref_RemoveObject.remove_trap(_self_pos)
+	var previous_pos := Game_ConvertCoord.sprite_to_coord(_self)
+	var current_pos: Game_IntCoord
+	var is_vertical := true
 
 	if _self_pos.y == Game_NinjaData.GROUND_Y:
 		has_moved = _try_move_horizontally()
+		is_vertical = false
 	else:
 		move_result = _try_move_vertically(Game_CoordCalculator.DOWN)
 		has_moved = move_result[0]
 
 	_switch_sprite(false)
 	if has_moved:
+		current_pos = Game_ConvertCoord.sprite_to_coord(_self)
+		if is_vertical:
+			for y in range(previous_pos.y, current_pos.y):
+				_ref_RemoveObject.remove_trap_xy(previous_pos.x, y)
+		else:
+			for x in range(previous_pos.x, current_pos.x):
+				_ref_RemoveObject.remove_trap_xy(x, previous_pos.y)
 		_ref_ObjectData.set_hit_point(_self, 0)
 	else:
+		_ref_RemoveObject.remove_trap(previous_pos)
 		_ref_ObjectData.add_hit_point(_self, 1)
 
 
