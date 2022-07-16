@@ -14,6 +14,8 @@ const HP_BAR := [
 	[Game_DungeonSize.CENTER_X + 1, Game_NinjaData.MAX_X],
 	[Game_NinjaData.MIN_X, Game_DungeonSize.CENTER_X],
 ]
+const COMMON_HORIZONTAL_GAP := 2
+const SHADOW_HORIZONTAL_GAP := 0
 
 var _end_game := false
 
@@ -47,13 +49,13 @@ func _ninja_act() -> void:
 			Game_NinjaData.ATTACK_RANGE):
 		hit_pc = true
 	elif _self_pos.y == Game_NinjaData.GROUND_Y:
-		# Try to jump and hit PC when standing on ground.
-		move_result = _try_move_vertically(Game_CoordCalculator.UP)
-		has_moved = move_result[0]
-		hit_pc = move_result[1]
-		# Otherwise try to move horizontally.
+		# Try to move horizontally when standing on ground.
+		has_moved = _try_move_horizontally(COMMON_HORIZONTAL_GAP)
+		# Otherwise try to jump and hit PC.
 		if not has_moved:
-			has_moved = _try_move_horizontally()
+			move_result = _try_move_vertically(Game_CoordCalculator.UP)
+			has_moved = move_result[0]
+			hit_pc = move_result[1]
 	else:
 		# UPDATE: Do not move horizontally in mid-air. Ninjas are close to each
 		# other in this way and PC can kill them easily.
@@ -90,7 +92,7 @@ func _shadow_ninja_act() -> void:
 	var is_vertical := true
 
 	if _self_pos.y == Game_NinjaData.GROUND_Y:
-		has_moved = _try_move_horizontally()
+		has_moved = _try_move_horizontally(SHADOW_HORIZONTAL_GAP)
 		is_vertical = false
 	else:
 		move_result = _try_move_vertically(Game_CoordCalculator.DOWN)
@@ -146,9 +148,12 @@ func _try_move_vertically(direction: int) -> Array:
 	return [true, is_pc]
 
 
-func _try_move_horizontally() -> bool:
+func _try_move_horizontally(min_range: int) -> bool:
 	var pos := Game_ConvertCoord.sprite_to_coord(_self)
 	var move_to: Game_IntCoord
+
+	if abs(pos.x - _pc_pos.x) <= min_range:
+		return false
 
 	if pos.x < _pc_pos.x:
 		move_to = Game_IntCoord.new(pos.x + 1, pos.y)

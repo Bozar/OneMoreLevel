@@ -95,7 +95,7 @@ A common ninja may perform one of three actions at the start of his turn.
 
 Action 1. Hit PC if he is adjacent to PC. His symbol changes from n to x for one turn.
 
-Action 2. When on ground, jump up if there is at least one unoccupied grid above. Otherwise, if he is not in the same column with PC, try to move 1 step horizontally towards PC. A ninja can jump at most 2 grids high. PC is hit if he blocks the jumping path. If another NPC blocks the vertical or horizontal path, the ninja cannot move to his destination.
+Action 2. When on ground, if he is more than 2 steps away from PC horizontally, try to move 1 step towards PC. Otherwise, jump up if there is at least one unoccupied grid above. A ninja can jump at most 2 grids high. PC is hit if he blocks the jumping path. If another NPC blocks the vertical or horizontal path, the ninja cannot move to his destination.
 
 Action 3. When in mid-air, try to fall down 2 grids. Same as action 2, PC is hit if he blocks the way, and the ninja can be blocked by his allies.
 
