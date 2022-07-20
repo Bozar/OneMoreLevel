@@ -23,7 +23,7 @@ Press arrow keys to move around. Press Space to wait. An action (move or wait) c
 
 There are two types of gadgets: common (?) and rare (!). If you move over a rare gadget, you collect it automatically and your remaining time restores to its maximum: 24 turns. If you move over a common gadget, you put it into your bag. Your symbol, which is a digit, shows how many common gadgets you have found. Your bag holds at most 9 of them. A common gadget disappears if you walk past it with a full bag.
 
-As mentioned above, you need to collect 3 rare gadgets to beat the game. At least one of them is far away from your starting point. And they are not so close to each other. Besides, there are 3 fake rare gadgets which look the same as a real one but have no effect when picking up.
+As mentioned above, you need to collect 3 rare gadgets to beat the game. At least one of them is far away from your starting point. And they are not so close to each other. Besides, there are 3 fake rare gadgets which look the same as a real one but have no effect when picking up. Fake gadgets do not need to be far away from each other or PC's starting point.
 
 When pressing Space to wait, if you have no common gadgets in the bag, you lose 1 turn. Otherwise, you lose 1 gadget and restore 5 turns, which can be interpreted as you identify an unknown gadget and regain courage.
 
