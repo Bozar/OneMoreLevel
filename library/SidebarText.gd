@@ -1,7 +1,7 @@
 class_name Game_SidebarText
 
 
-const VERSION := "0.4.3"
+const VERSION := "0.4.4"
 # const VERSION := "0.3.1-\nNightly-\n04-16-2021"
 const BOOL_TO_PREFIX := {true: "+", false: "-"}
 const VERSION_BAR := "\n--------"

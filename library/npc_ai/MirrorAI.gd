@@ -1,87 +1,40 @@
 extends Game_AITemplate
 
 
-var _trap_pos: Game_IntCoord
-
-
 func _init(parent_node: Node2D).(parent_node) -> void:
 	pass
 
 
 func take_action() -> void:
-	var pc: Sprite
 	var distance: int
 
-	if _ref_ObjectData.verify_state(_self, Game_StateTag.PASSIVE):
+	if _self.is_in_group(Game_SubTag.PC_MIRROR_IMAGE):
 		return
-	elif _self.is_in_group(Game_SubTag.PC_MIRROR_IMAGE):
-		return
-
-	_trap_pos = null
-	pc = _ref_DungeonBoard.get_pc()
-	distance = Game_CoordCalculator.get_range_xy(_self_pos.x, _self_pos.y,
-			_pc_pos.x, _pc_pos.y)
-
-	if distance > Game_MirrorData.PHANTOM_SIGHT:
-		return
-	elif distance == Game_MirrorData.ATTACK_RANGE:
-		_attack()
-	else:
-		_move()
-
-	_try_remove_trap()
-	if _ref_ObjectData.get_hit_point(pc) == Game_MirrorData.MAX_CRYSTAL:
-		_ref_EndGame.player_win()
-
-
-func _attack() -> void:
-	_switch_pc_and_image()
-	_set_npc_state()
-
-
-func _move() -> void:
-	var new_position: Game_IntCoord
-
-	if _ref_DungeonBoard.has_trap_xy(_self_pos.x, _self_pos.y):
-		_ref_SwitchSprite.set_sprite(_self, Game_SpriteTypeTag.DEFAULT)
-
-	_approach_pc()
-
-	new_position = Game_ConvertCoord.sprite_to_coord(_self)
-	if _ref_DungeonBoard.has_trap_xy(new_position.x, new_position.y):
-		_ref_SwitchSprite.set_sprite(_self, Game_SpriteTypeTag.ACTIVE)
+	elif not _ref_ObjectData.verify_state(_self, Game_StateTag.PASSIVE):
+		distance = Game_CoordCalculator.get_range(_self_pos, _pc_pos)
+		if distance == Game_MirrorData.ATTACK_RANGE:
+			_switch_pc_and_image()
+			_set_npc_state()
+		elif distance <= Game_MirrorData.PHANTOM_SIGHT:
+			_approach_pc()
 
 
 func _switch_pc_and_image() -> void:
-	var mirror := Game_CoordCalculator.get_mirror_image_xy(
+	var mirror_coord := Game_CoordCalculator.get_mirror_image_xy(
 			_pc_pos.x, _pc_pos.y, Game_DungeonSize.CENTER_X, _pc_pos.y)
-	var pc: Sprite = _ref_DungeonBoard.get_pc()
-
-	if _ref_DungeonBoard.has_trap_xy(_pc_pos.x, _pc_pos.y):
-		_ref_SwitchSprite.set_sprite(pc, Game_SpriteTypeTag.DEFAULT)
-		_trap_pos = _pc_pos
-
-	_ref_DungeonBoard.swap_sprite_xy(Game_MainTag.ACTOR,
-			_pc_pos.x, _pc_pos.y, mirror.x, mirror.y)
+	_ref_DungeonBoard.swap_sprite(Game_MainTag.ACTOR, _pc_pos, mirror_coord)
 
 
 func _set_npc_state() -> void:
-	var npc: Array = _ref_DungeonBoard.get_npc()
 	var npc_pos: Game_IntCoord
 
-	for i in npc:
+	for i in _ref_DungeonBoard.get_npc():
 		if i.is_in_group(Game_SubTag.PC_MIRROR_IMAGE):
 			continue
 		elif _ref_ObjectData.verify_state(i, Game_StateTag.DEFAULT):
 			_ref_ObjectData.set_state(i, Game_StateTag.PASSIVE)
 			npc_pos = Game_ConvertCoord.sprite_to_coord(i)
-			if _ref_DungeonBoard.has_trap_xy(npc_pos.x, npc_pos.y):
-				_ref_SwitchSprite.set_sprite(i, Game_SpriteTypeTag.DEFAULT)
-				_trap_pos = npc_pos
+			if _ref_DungeonBoard.has_trap(npc_pos):
+				_ref_RemoveObject.remove_trap(npc_pos)
 		else:
 			_ref_ObjectData.set_state(i, Game_StateTag.DEFAULT)
-
-
-func _try_remove_trap() -> void:
-	if _trap_pos != null:
-		_ref_RemoveObject.remove_trap_xy(_trap_pos.x, _trap_pos.y)

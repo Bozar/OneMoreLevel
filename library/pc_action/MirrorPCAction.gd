@@ -15,6 +15,19 @@ func render_fov() -> void:
 	_reset_sprite_color()
 
 
+func switch_sprite() -> void:
+	var new_type: String
+	var pos: Game_IntCoord
+
+	for i in _ref_DungeonBoard.get_sprites_by_tag(Game_MainTag.ACTOR):
+		pos = Game_ConvertCoord.sprite_to_coord(i)
+		if _ref_DungeonBoard.has_trap(pos):
+			new_type = Game_SpriteTypeTag.ACTIVE
+		else:
+			new_type = Game_SpriteTypeTag.DEFAULT
+		_ref_SwitchSprite.set_sprite(i, new_type)
+
+
 func is_npc() -> bool:
 	return _target_is_occupied(Game_MainTag.ACTOR)
 
@@ -29,51 +42,19 @@ func move() -> void:
 
 
 func attack() -> void:
-	var mirror: Game_IntCoord
-	var pc := _ref_DungeonBoard.get_pc()
-	# There is always a new actor on the other side.
-	var new_actors := 1
-
 	if _pc_hit_target:
-		_create_image_on_the_other_side(_target_position.x, _target_position.y)
-		new_actors += _create_image_on_the_same_side(
-				_target_position.x, _target_position.y)
-		if _ref_ObjectData.get_hit_point(pc) == Game_MirrorData.MAX_CRYSTAL:
-			_ref_EndGame.player_win()
-			return
-		_ref_CountDown.add_count(Game_MirrorData.RESTORE_TURN * new_actors + 1)
+		_hit_phantom()
 	else:
-		mirror = _get_mirror(_target_position.x, _target_position.y)
-		_ref_RemoveObject.remove_actor(mirror)
-	end_turn = true
+		_push_image()
 
 
 func interact_with_trap() -> void:
-	var mirror: Game_IntCoord
-	var pc := _ref_DungeonBoard.get_pc()
-
-	if not _pc_hit_target:
-		mirror = _get_mirror(_target_position.x, _target_position.y)
-		_ref_RemoveObject.remove_trap(mirror)
-
 	_move_pc_and_image()
-	if _ref_ObjectData.get_hit_point(pc) == Game_MirrorData.MAX_CRYSTAL:
-		_ref_EndGame.player_win()
-		return
 	end_turn = true
 
 
 func _is_checkmate() -> bool:
-	var npc: Array = _ref_DungeonBoard.get_sprites_by_tag(Game_SubTag.PHANTOM)
-	var trap: Sprite = _ref_DungeonBoard.get_sprites_by_tag(
-			Game_SubTag.CRYSTAL)[0]
-	var trap_x: int = Game_ConvertCoord.sprite_to_coord(trap).x
-
-	for i in npc:
-		if _ref_ObjectData.verify_state(i, Game_StateTag.DEFAULT):
-			return false
-	return (_source_position.x - Game_DungeonSize.CENTER_X) \
-			* (trap_x - Game_DungeonSize.CENTER_X) > 0
+	return _has_no_phantom() or (_is_out_of_sight() and _is_surrounded())
 
 
 func _get_mirror(x: int, y: int) -> Game_IntCoord:
@@ -98,12 +79,8 @@ func _create_image_on_the_other_side(x: int, y: int) -> void:
 	var pc: Sprite = _ref_DungeonBoard.get_pc()
 	var mirror := _get_mirror(x, y)
 	var images: Array
-	var remove: int
+	var max_actors: int
 	var pos: Game_IntCoord
-
-	# On this side: Switch phantom's sprite into default.
-	if _ref_DungeonBoard.has_trap_xy(x, y):
-		_ref_SwitchSprite.set_sprite(actor, Game_SpriteTypeTag.DEFAULT)
 
 	# On the other side: Remove an existing phantom.
 	_ref_RemoveObject.remove_actor_xy(mirror.x, mirror.y)
@@ -119,19 +96,19 @@ func _create_image_on_the_other_side(x: int, y: int) -> void:
 	images = _ref_DungeonBoard.get_sprites_by_tag(Game_SubTag.PHANTOM)
 	Game_ArrayHelper.filter_element(images, self, "_filter_create_image",
 			[actor])
-	remove = images.size() + 1 - (Game_MirrorData.MAX_PHANTOM \
-			- _ref_ObjectData.get_hit_point(pc))
-	if remove > 0:
-		Game_ArrayHelper.rand_picker(images, remove, _ref_RandomNumber)
-		for i in images:
-			pos = Game_ConvertCoord.sprite_to_coord(i)
+	max_actors = Game_MirrorData.MAX_PHANTOM - _ref_ObjectData.get_hit_point(pc)
+	if max_actors < images.size():
+		Game_ArrayHelper.shuffle(images, _ref_RandomNumber)
+		for i in range(0, images.size()):
+			if i < max_actors - 1:
+				continue
+			pos = Game_ConvertCoord.sprite_to_coord(images[i])
 			_ref_RemoveObject.remove_actor(pos)
 
 
 func _create_image_on_the_same_side(x: int, y: int) -> int:
 	var wall: Array = []
 	var mirror: Game_IntCoord
-	var actor: Sprite
 	var count_actors := 0
 
 	# Cast a ray to the top.
@@ -164,11 +141,6 @@ func _create_image_on_the_same_side(x: int, y: int) -> int:
 		_ref_CreateObject.create_actor(_spr_Phantom, Game_SubTag.PHANTOM,
 				mirror)
 		count_actors += 1
-
-		# Switch the actor's sprite to active.
-		if _ref_DungeonBoard.has_trap(mirror):
-			actor = _ref_DungeonBoard.get_actor(mirror)
-			_ref_SwitchSprite.set_sprite(actor, Game_SpriteTypeTag.ACTIVE)
 	return count_actors
 
 
@@ -243,3 +215,98 @@ func _move_pc_and_image() -> void:
 
 	_ref_DungeonBoard.move_actor(_source_position, _target_position)
 	_ref_DungeonBoard.move_actor(source_mirror, target_mirror)
+
+
+func _hit_phantom() -> void:
+	# There is always a new actor on the other side.
+	var new_actors := 1
+	var pc := _ref_DungeonBoard.get_pc()
+
+	_create_image_on_the_other_side(_target_position.x, _target_position.y)
+	new_actors += _create_image_on_the_same_side(
+			_target_position.x, _target_position.y)
+	if new_actors > Game_MirrorData.MAX_ACTOR_FOR_RESTORE:
+		new_actors = Game_MirrorData.MAX_ACTOR_FOR_RESTORE
+	if _ref_ObjectData.get_hit_point(pc) == Game_MirrorData.MAX_CRYSTAL:
+		# Call _ref_EndGame.player_win() in MirrorProgress.remove_trap().
+		end_turn = false
+	else:
+		_ref_CountDown.add_count(Game_MirrorData.RESTORE_TURN * new_actors + 1)
+		end_turn = true
+
+
+func _push_image() -> void:
+	var source_mirror := _get_mirror(_source_position.x, _source_position.y)
+	var target_mirror := _get_mirror(_target_position.x, _target_position.y)
+	var push_to := Game_CoordCalculator.get_mirror_image(source_mirror,
+			target_mirror)
+
+	if _is_valid_coord(push_to):
+		_ref_DungeonBoard.move_actor(target_mirror, push_to)
+		_ref_RemoveObject.remove_trap(push_to)
+		_move_pc_and_image()
+		end_turn = true
+	else:
+		end_turn = false
+
+
+func _is_valid_coord(coord: Game_IntCoord) -> bool:
+	if not Game_CoordCalculator.is_inside_dungeon(coord.x, coord.y):
+		return false
+	elif _ref_DungeonBoard.has_building(coord):
+		return false
+	elif _ref_DungeonBoard.has_actor(coord):
+		return false
+	return true
+
+
+func _has_no_phantom() -> bool:
+	var trap: Sprite = _ref_DungeonBoard.get_sprites_by_tag(
+			Game_SubTag.CRYSTAL)[0]
+	var trap_x: int = Game_ConvertCoord.sprite_to_coord(trap).x
+
+	for i in _ref_DungeonBoard.get_sprites_by_tag(Game_SubTag.PHANTOM):
+		if _ref_ObjectData.verify_state(i, Game_StateTag.DEFAULT):
+			return false
+	return (_source_position.x - Game_DungeonSize.CENTER_X) \
+			* (trap_x - Game_DungeonSize.CENTER_X) > 0
+
+
+func _is_out_of_sight() -> bool:
+	var pos: Game_IntCoord
+
+	for i in _ref_DungeonBoard.get_npc():
+		pos = Game_ConvertCoord.sprite_to_coord(i)
+		if Game_CoordCalculator.is_in_range(pos, _source_position,
+				Game_MirrorData.PHANTOM_SIGHT) \
+				and _ref_ObjectData.verify_state(i, Game_StateTag.DEFAULT):
+			return false
+	return true
+
+
+func _is_surrounded() -> bool:
+	var mirror_coord := Game_CoordCalculator.get_mirror_image(_source_position,
+			Game_IntCoord.new(Game_DungeonSize.CENTER_X, _source_position.y))
+
+	for i in Game_CoordCalculator.get_neighbor(mirror_coord, 1):
+		if _ref_DungeonBoard.has_building(i):
+			continue
+		elif _ref_DungeonBoard.has_actor(i) and _image_is_blocked(i,
+				mirror_coord):
+			continue
+		return false
+	return true
+
+
+func _image_is_blocked(phantom_image: Game_IntCoord, pc_image: Game_IntCoord) \
+		-> bool:
+	var push_to := Game_CoordCalculator.get_mirror_image(pc_image,
+			phantom_image)
+
+	if not Game_CoordCalculator.is_inside_dungeon(push_to.x, push_to.y):
+		return true
+	elif _ref_DungeonBoard.has_actor(push_to):
+		return true
+	elif _ref_DungeonBoard.has_building(push_to):
+		return true
+	return false
