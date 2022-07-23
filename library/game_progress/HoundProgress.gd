@@ -9,7 +9,6 @@ var _ground_sprites := []
 var _ground_coords := []
 var _current_hound := Game_HoundData.MAX_HOUND
 var _minion_trigger := false
-var _has_boss := false
 
 
 func _init(parent_node: Node2D).(parent_node) -> void:
@@ -17,9 +16,14 @@ func _init(parent_node: Node2D).(parent_node) -> void:
 	pass
 
 
-func end_world(pc_x: int, pc_y: int) -> void:
+func start_first_turn() -> void:
+	var pos := Game_ConvertCoord.sprite_to_coord(_ref_DungeonBoard.get_pc())
+
 	_init_grounds()
-	_respawn_boss(pc_x, pc_y)
+	_respawn_boss(pos.x, pos.y)
+
+
+func end_world(pc_x: int, pc_y: int) -> void:
 	_respawn_minion(pc_x, pc_y)
 	_add_or_remove_fog()
 
@@ -101,10 +105,6 @@ func _respawn_minion(pc_x: int, pc_y: int) -> void:
 
 
 func _respawn_boss(pc_x: int, pc_y: int) -> void:
-	if _has_boss:
-		return
-
-	_has_boss = true
 	_respawn_actor(pc_x, pc_y,
 			Game_HoundData.MIN_BOSS_DISTANCE,
 			Game_HoundData.MAX_BOSS_DISTANCE,
@@ -137,8 +137,7 @@ func _is_close_to_hound(coord: Game_IntCoord) -> bool:
 
 
 func _init_grounds() -> void:
-	if _ground_sprites.size() == 0:
-		_ground_sprites = _ref_DungeonBoard.get_sprites_by_tag(
-				Game_MainTag.GROUND)
-		for i in _ground_sprites:
-			_ground_coords.push_back(Game_ConvertCoord.sprite_to_coord(i))
+	_ground_sprites = _ref_DungeonBoard.get_sprites_by_tag(
+			Game_MainTag.GROUND)
+	for i in _ground_sprites:
+		_ground_coords.push_back(Game_ConvertCoord.sprite_to_coord(i))
