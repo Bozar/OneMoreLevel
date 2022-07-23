@@ -29,7 +29,7 @@ func get_blueprint() -> Array:
 	# _init_actor(1, INVALID_COORD, INVALID_COORD,
 	# 		1, _spr_HoundBoss, Game_SubTag.HOUND_BOSS)
 
-	return BLUEPRINT
+	return _blueprint
 
 
 func _create_wall() -> void:
@@ -68,7 +68,7 @@ func _get_top_left_position() -> Array:
 
 
 func _create_pc() -> void:
-	Game_WorldGenerator.create_by_coord(ALL_COORDS, 1, _ref_RandomNumber, self,
+	Game_WorldGenerator.create_by_coord(_all_coords, 1, _ref_RandomNumber, self,
 			"_is_valid_pc_coord", [], "_create_pc_here", [])
 
 

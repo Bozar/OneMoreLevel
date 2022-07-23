@@ -79,7 +79,7 @@ func get_blueprint() -> Array:
 	_init_actor(Game_FactoryData.SCP_GAP, INVALID_COORD, INVALID_COORD,
 			Game_FactoryData.MAX_SCP, _spr_SCP_173, Game_SubTag.SCP_173)
 
-	return BLUEPRINT
+	return _blueprint
 
 
 func _create_start_point(inner_floor: Array) -> Game_IntCoord:
@@ -291,7 +291,7 @@ func _create_treasure(sub_tag: String, pc_pos: Game_IntCoord) -> void:
 		_:
 			return
 
-	Game_WorldGenerator.create_by_coord(ALL_COORDS,
+	Game_WorldGenerator.create_by_coord(_all_coords,
 			max_treasure, _ref_RandomNumber, self,
 			"_is_valid_treasure_coord", [pc_pos, sub_tag, rare_coords],
 			"_create_treasure_here", [new_sprite, sub_tag, rare_coords])

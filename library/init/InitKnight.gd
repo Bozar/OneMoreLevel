@@ -33,7 +33,7 @@ func get_blueprint() -> Array:
 	for _i in range(Game_KnightData.MAX_KNIGHT):
 		_create_actor(Game_SubTag.KNIGHT)
 
-	return BLUEPRINT
+	return _blueprint
 
 
 func _init_wall() -> void:
@@ -158,7 +158,7 @@ func _create_actor(sub_tag: String) -> void:
 			new_actor = _spr_KnightCaptain
 			min_distance = Game_KnightData.KNIGHT_GAP
 
-	Game_WorldGenerator.create_by_coord(ALL_COORDS, 1, _ref_RandomNumber, self,
+	Game_WorldGenerator.create_by_coord(_all_coords, 1, _ref_RandomNumber, self,
 			"_is_valid_knight_coord", [],
 			"_create_knight_here", [min_distance, new_actor, sub_tag])
 

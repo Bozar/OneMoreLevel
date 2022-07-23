@@ -1,14 +1,13 @@
 extends Game_ProgressTemplate
 
 
-const GROUND_COORDS := []
-
 var _spr_Crystal := preload("res://sprite/Crystal.tscn")
 var _spr_DoorTruck := preload("res://sprite/DoorTruck.tscn")
 var _spr_OffloadGoods := preload("res://sprite/OffloadGoods.tscn")
 
 var _is_first_turn := true
 var _fake_door_coords := []
+var _ground_coords := []
 
 
 func _init(parent_node: Node2D).(parent_node) -> void:
@@ -16,7 +15,7 @@ func _init(parent_node: Node2D).(parent_node) -> void:
 
 
 func end_world(_pc_x: int, _pc_y: int) -> void:
-	# print(GROUND_COORDS.size())
+	# print(_ground_coords.size())
 	_melt_snow()
 	_replenish_snow()
 	_update_doors()
@@ -25,7 +24,7 @@ func end_world(_pc_x: int, _pc_y: int) -> void:
 
 
 func create_ground(_ground: Sprite, _sub_tag: String, x: int, y: int) -> void:
-	GROUND_COORDS.push_back(Game_IntCoord.new(x, y))
+	_ground_coords.push_back(Game_IntCoord.new(x, y))
 
 
 func _melt_snow() -> void:
@@ -47,7 +46,7 @@ func _melt_snow() -> void:
 func _replenish_snow() -> void:
 	var snow := _ref_DungeonBoard.get_sprites_by_tag(Game_SubTag.SNOW).size()
 
-	Game_WorldGenerator.create_by_coord(GROUND_COORDS,
+	Game_WorldGenerator.create_by_coord(_ground_coords,
 			Game_SnowRunnerData.MAX_SNOW - snow, _ref_RandomNumber, self,
 			"_is_valid_snow_coord", [],
 			"_create_snow_here", [])

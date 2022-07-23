@@ -20,7 +20,7 @@ func get_blueprint() -> Array:
 	_init_crystal()
 	_init_phantom()
 
-	return BLUEPRINT
+	return _blueprint
 
 
 func _init_middle_border() -> void:
@@ -137,7 +137,6 @@ func _init_crystal() -> void:
 
 	_add_trap_to_blueprint(_spr_Crystal, Game_SubTag.CRYSTAL, x, y)
 	_occupy_position(x, y)
-	_ref_DangerZone.set_danger_zone(x, y, true)
 
 
 func _init_phantom() -> void:

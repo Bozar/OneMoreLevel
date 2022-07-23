@@ -17,7 +17,7 @@ func get_blueprint() -> Array:
 	# _init_actor(0, INVALID_COORD, INVALID_COORD,
 	# 		Game_FrogData.MAX_FROG, _spr_Frog, Game_SubTag.FROG)
 
-	return BLUEPRINT
+	return _blueprint
 
 
 func _init_swamp() -> void:

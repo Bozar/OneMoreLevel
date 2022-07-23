@@ -28,7 +28,7 @@ func get_blueprint() -> Array:
 	_create_building_ground()
 	_init_pc(0, _pc_x, _pc_y, _spr_PCSnowRunner)
 
-	return BLUEPRINT
+	return _blueprint
 
 
 func _create_building_ground() -> void:

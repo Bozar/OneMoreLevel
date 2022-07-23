@@ -2,6 +2,10 @@ extends Node2D
 class_name Game_DungeonBoard
 
 
+const ERR_SPRITE := ": MainTag: {0}, Coord: ({1}, {2}), Layer: {3}."
+const ERR_NO_SPRITE := "No sprite" + ERR_SPRITE
+const ERR_HAS_SPRITE := "Has sprite" + ERR_SPRITE
+
 # <main_tag: String, <column: int, [sprite]>>
 var _sprite_dict: Dictionary
 var _pc: Sprite
@@ -195,7 +199,14 @@ func has_ground(coord: Game_IntCoord) -> bool:
 func move_sprite_xy(main_tag: String, source_x: int, source_y: int,
 		target_x: int, target_y: int, sprite_layer := 0) -> void:
 	var move_this := get_sprite_xy(main_tag, source_x, source_y, sprite_layer)
+
 	if move_this == null:
+		push_error(ERR_NO_SPRITE.format([main_tag, source_x, source_y,
+				sprite_layer]))
+		return
+	elif has_sprite_xy(main_tag, target_x, target_y, sprite_layer):
+		push_error(ERR_HAS_SPRITE.format([main_tag, target_x, target_y,
+				sprite_layer]))
 		return
 
 	main_tag = _try_convert_main_tag(main_tag, sprite_layer)

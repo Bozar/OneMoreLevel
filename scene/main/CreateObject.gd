@@ -2,7 +2,7 @@ extends Node2D
 class_name Game_CreateObject
 
 
-const WARN_MSG := "Duplicate sprite. MainTag: {0}, x: {1}, y: {2}, layer: {3}."
+const ERR_MSG := "Duplicate sprite. MainTag: {0}, x: {1}, y: {2}, layer: {3}."
 
 signal sprite_created(new_sprite, main_tag, sub_tag, x, y, sprite_layer)
 
@@ -18,7 +18,7 @@ func create_and_fetch_xy(prefab: PackedScene, main_tag: String, sub_tag: String,
 	var z_index: int = Game_ZIndex.get_z_index(main_tag)
 
 	if _ref_DungeonBoard.has_sprite_xy(main_tag, x, y, sprite_layer):
-		push_warning(WARN_MSG.format([main_tag, String(x), String(y),
+		push_error(ERR_MSG.format([main_tag, String(x), String(y),
 				String(sprite_layer)]))
 		return null
 

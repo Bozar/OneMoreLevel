@@ -29,7 +29,7 @@ func get_blueprint() -> Array:
 	_init_river()
 	_init_pc(0, pc_x, pc_y)
 
-	return BLUEPRINT
+	return _blueprint
 
 
 func _init_lighthouse() -> void:
@@ -48,7 +48,7 @@ func _init_harbor(pc_x: int, pc_y: int) -> void:
 			Game_StyxData.HARBOR_GAP, true):
 		_set_terrain_marker(i.x, i.y, HARBOR_MARKER)
 
-	Game_WorldGenerator.create_by_coord(ALL_COORDS,
+	Game_WorldGenerator.create_by_coord(_all_coords,
 			Game_StyxData.MAX_HARBOR, _ref_RandomNumber, self,
 			"_is_valid_harbor_coord", [],
 			"_create_harbor_here", [])

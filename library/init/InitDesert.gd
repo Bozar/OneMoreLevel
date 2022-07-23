@@ -14,7 +14,7 @@ func get_blueprint() -> Array:
 	_init_wall()
 	_init_pc(0, INVALID_COORD, INVALID_COORD, _spr_PCDesert)
 
-	return BLUEPRINT
+	return _blueprint
 
 
 func _init_wall(count: int = 0) -> void:

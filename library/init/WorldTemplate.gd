@@ -8,13 +8,6 @@ const INVALID_COORD := -99
 const DEFAULT_MARKER := 0
 const OCCUPIED_MARKER := 1
 
-# {0: [0, ...], 1: [0, ...], ...}
-const DUNGEON_BOARD := {}
-# [SpriteBlueprint, ...]
-const BLUEPRINT := []
-# [Game_IntCoord.new(x, y), ...]
-const ALL_COORDS := []
-
 var _spr_Floor := preload("res://sprite/Floor.tscn")
 var _spr_Wall := preload("res://sprite/Wall.tscn")
 var _spr_PC := preload("res://sprite/PC.tscn")
@@ -22,13 +15,20 @@ var _spr_PC := preload("res://sprite/PC.tscn")
 var _ref_RandomNumber: Game_RandomNumber
 var _ref_DangerZone: Game_DangerZone
 
+# {0: [0, ...], 1: [0, ...], ...}
+var _dungeon_board := {}
+# [SpriteBlueprint, ...]
+var _blueprint := []
+# [Game_IntCoord.new(x, y), ...]
+var _all_coords := []
+
 
 func _init(parent_node: Node2D) -> void:
 	_ref_RandomNumber = parent_node._ref_RandomNumber
 	_ref_DangerZone = parent_node._ref_DangerZone
 
-	Game_DungeonSize.init_dungeon_grids(DUNGEON_BOARD, DEFAULT_MARKER)
-	Game_DungeonSize.init_all_coords(ALL_COORDS)
+	Game_DungeonSize.init_dungeon_grids(_dungeon_board, DEFAULT_MARKER)
+	Game_DungeonSize.init_all_coords(_all_coords)
 
 
 # Child scripts should implement _init() to pass arguments.
@@ -38,44 +38,44 @@ func _init(parent_node: Node2D) -> void:
 
 # Override.
 func get_blueprint() -> Array:
-	return BLUEPRINT
+	return _blueprint
 
 
 func clear_blueprint() -> void:
-	DUNGEON_BOARD.clear()
-	BLUEPRINT.clear()
+	_dungeon_board.clear()
+	_blueprint.clear()
 
 
 func _occupy_position(x: int, y: int) -> void:
-	DUNGEON_BOARD[x][y] = OCCUPIED_MARKER
+	_dungeon_board[x][y] = OCCUPIED_MARKER
 
 
 func _reverse_occupy(x: int, y: int) -> void:
 	var new_marker: int = DEFAULT_MARKER \
-			if DUNGEON_BOARD[x][y] == OCCUPIED_MARKER \
+			if _dungeon_board[x][y] == OCCUPIED_MARKER \
 			else OCCUPIED_MARKER
-	DUNGEON_BOARD[x][y] = new_marker
+	_dungeon_board[x][y] = new_marker
 
 
 func _is_occupied(x: int, y: int) -> bool:
-	return DUNGEON_BOARD[x][y] == OCCUPIED_MARKER
+	return _dungeon_board[x][y] == OCCUPIED_MARKER
 
 
 func _set_terrain_marker(x: int, y: int, marker: int) -> void:
-	DUNGEON_BOARD[x][y] = marker
+	_dungeon_board[x][y] = marker
 
 
 func _get_terrain_marker(x: int, y: int) -> int:
-	return DUNGEON_BOARD[x][y]
+	return _dungeon_board[x][y]
 
 
 func _is_terrain_marker(x: int, y: int, marker: int) -> bool:
-	return DUNGEON_BOARD[x][y] == marker
+	return _dungeon_board[x][y] == marker
 
 
 func _add_to_blueprint(scene: PackedScene, main_tag: String, sub_tag: String,
 		x: int, y: int, sprite_layer := 0) -> void:
-	BLUEPRINT.push_back(Game_SpriteBlueprint.new(scene, main_tag, sub_tag,
+	_blueprint.push_back(Game_SpriteBlueprint.new(scene, main_tag, sub_tag,
 			x, y, sprite_layer))
 
 
@@ -115,7 +115,7 @@ func _init_actor(min_distance: int, x: int, y: int, max_actor: int,
 	if _is_valid_coord(init_coord, 0, []):
 		_create_here(init_coord, [min_distance, actor_scene, sub_tag])
 	else:
-		Game_WorldGenerator.create_by_coord(ALL_COORDS,
+		Game_WorldGenerator.create_by_coord(_all_coords,
 				max_actor, _ref_RandomNumber, self,
 				"_is_valid_coord", [],
 				"_create_here", [min_distance, actor_scene, sub_tag])
