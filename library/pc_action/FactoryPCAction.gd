@@ -79,12 +79,13 @@ func interact_with_trap() -> void:
 		win = _rare_treasure == Game_FactoryData.MAX_RARE_TREASURE
 		if not win:
 			_ref_CountDown.add_count(Game_FactoryData.RESTORE_RARE_TREASURE)
-	elif trap.is_in_group(Game_SubTag.TREASURE):
+	else:
 		if _is_dying():
 			end_turn = false
 			return
-		_treasure += 1
-		_treasure = min(_treasure, Game_FactoryData.MAX_TREASURE_SLOT) as int
+		if trap.is_in_group(Game_SubTag.TREASURE):
+			_treasure += 1
+			_treasure = int(min(_treasure, Game_FactoryData.MAX_TREASURE_SLOT))
 
 	_ref_RemoveObject.remove_trap(_target_position)
 	._move_pc_sprite()
