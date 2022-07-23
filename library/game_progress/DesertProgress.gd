@@ -5,49 +5,53 @@ const MAX_RETRY := 0
 const MAX_CANDIDATES := 10
 const DETECT_RANGE := 3
 
-const RESPAWN_COUNTER := []
-const ALL_COORDS := []
-
 var _spr_WormHead := preload("res://sprite/WormHead.tscn")
 var _spr_Counter := preload("res://sprite/Counter.tscn")
 
+var _respawn_counter := []
+var _all_coords := []
+
 
 func _init(parent_node: Node2D).(parent_node) -> void:
-	Game_WorldGenerator.init_array(RESPAWN_COUNTER, Game_DesertData.MAX_WORM,
+	Game_WorldGenerator.init_array(_respawn_counter, Game_DesertData.MAX_WORM,
 			Game_DesertData.MIN_COOLDOWN)
-	Game_DungeonSize.init_all_coords(ALL_COORDS)
+	Game_DungeonSize.init_all_coords(_all_coords)
+
+
+func start_first_turn() -> void:
+	_try_add_new_worm(false)
 
 
 func end_world(_pc_x: int, _pc_y: int) -> void:
-	_try_add_new_worm()
+	_try_add_new_worm(true)
 
 
 func remove_actor(actor: Sprite, _x: int, _y: int) -> void:
 	if not actor.is_in_group(Game_SubTag.WORM_HEAD):
 		return
 
-	for i in range(0, RESPAWN_COUNTER.size()):
+	for i in range(0, _respawn_counter.size()):
 		# Reset at most one counter when removing a sandworm.
-		if RESPAWN_COUNTER[i] < Game_DesertData.MIN_COOLDOWN:
-			RESPAWN_COUNTER[i] = _ref_RandomNumber.get_int(
+		if _respawn_counter[i] < Game_DesertData.MIN_COOLDOWN:
+			_respawn_counter[i] = _ref_RandomNumber.get_int(
 					Game_DesertData.MIN_COOLDOWN, Game_DesertData.MAX_COOLDOWN)
 			break
 
 
-func _try_add_new_worm() -> void:
-	for i in range(RESPAWN_COUNTER.size()):
+func _try_add_new_worm(is_passive: bool) -> void:
+	for i in range(_respawn_counter.size()):
 		# A sandworm has already been created.
-		if RESPAWN_COUNTER[i] < Game_DesertData.MIN_COOLDOWN:
+		if _respawn_counter[i] < Game_DesertData.MIN_COOLDOWN:
 			continue
-		elif RESPAWN_COUNTER[i] == Game_DesertData.MIN_COOLDOWN:
+		elif _respawn_counter[i] == Game_DesertData.MIN_COOLDOWN:
 			# Retry next turn.
-			if not _create_worm_head():
-				RESPAWN_COUNTER[i] += 1
+			if not _create_worm_head(is_passive):
+				_respawn_counter[i] += 1
 		# Keep waiting.
-		RESPAWN_COUNTER[i] -= 1
+		_respawn_counter[i] -= 1
 
 
-func _create_worm_head() -> bool:
+func _create_worm_head(is_passive: bool) -> bool:
 	var actor_coords := []
 	var worm_coords := []
 	var this_coord: Game_IntCoord
@@ -55,7 +59,7 @@ func _create_worm_head() -> bool:
 
 	for i in _ref_DungeonBoard.get_sprites_by_tag(Game_MainTag.ACTOR):
 		actor_coords.push_back(Game_ConvertCoord.sprite_to_coord(i))
-	Game_WorldGenerator.create_by_coord(ALL_COORDS,
+	Game_WorldGenerator.create_by_coord(_all_coords,
 			MAX_CANDIDATES, _ref_RandomNumber, self,
 			"_is_valid_worm_coord", [actor_coords],
 			"_create_worm_here", [worm_coords], MAX_RETRY)
@@ -69,7 +73,8 @@ func _create_worm_head() -> bool:
 	_ref_RemoveObject.remove_trap(this_coord)
 	head = _ref_CreateObject.create_and_fetch_actor(_spr_WormHead,
 			Game_SubTag.WORM_HEAD, this_coord)
-	_ref_ObjectData.set_state(head, Game_StateTag.PASSIVE)
+	if is_passive:
+		_ref_ObjectData.set_state(head, Game_StateTag.PASSIVE)
 	return true
 
 
