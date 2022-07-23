@@ -14,6 +14,10 @@ func _init(parent_node: Node2D).(parent_node) -> void:
 	pass
 
 
+func start_first_turn() -> void:
+	_replenish_snow()
+
+
 func end_world(_pc_x: int, _pc_y: int) -> void:
 	# print(_ground_coords.size())
 	_melt_snow()

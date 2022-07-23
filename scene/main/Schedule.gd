@@ -2,6 +2,7 @@ extends Node2D
 class_name Game_Schedule
 
 
+signal first_turn_started()
 signal turn_started(current_sprite)
 signal turn_ended(current_sprite)
 
@@ -38,6 +39,7 @@ func end_turn() -> void:
 
 func init_schedule() -> void:
 	if _start_first_turn:
+		emit_signal("first_turn_started")
 		emit_signal("turn_started", _get_current())
 		_start_first_turn = false
 

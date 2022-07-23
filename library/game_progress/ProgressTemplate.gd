@@ -31,6 +31,10 @@ func _init(parent_node: Node2D) -> void:
 	_ref_Palette = parent_node._ref_Palette
 
 
+func start_first_turn() -> void:
+	pass
+
+
 # PC's FOV is rendered when his turn starts. Be careful of adding new sprites.
 func renew_world(_pc_x: int, _pc_y: int) -> void:
 	pass

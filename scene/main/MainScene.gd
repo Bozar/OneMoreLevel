@@ -37,6 +37,11 @@ const SIGNAL_BIND := [
 		HELP_INPUT, DEBUG_GUI,
 	],
 	[
+		"first_turn_started", "_on_Schedule_first_turn_started",
+		SCHEDULE,
+		GAME_PROGRESS,
+	],
+	[
 		"turn_started", "_on_Schedule_turn_started",
 		SCHEDULE,
 		PLAYER_INPUT, ENEMY_AI, SIDEBAR_GUI, COUNT_DOWN, GAME_PROGRESS,

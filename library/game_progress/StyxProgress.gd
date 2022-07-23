@@ -1,25 +1,19 @@
 extends Game_ProgressTemplate
 
 
-var _init_world: bool = true
-
-
 func _init(parent_node: Node2D).(parent_node) -> void:
 	pass
 
 
+func start_first_turn() -> void:
+	_change_water_flow()
+
+
 func renew_world(_pc_x: int, _pc_y: int) -> void:
-	var pc: Sprite = _ref_DungeonBoard.get_pc()
-	var renew: bool = true
+	var pc := _ref_DungeonBoard.get_pc()
 
-	if _init_world:
-		_init_world = false
-	elif _ref_ObjectData.verify_state(pc, Game_StateTag.ACTIVE):
+	if _ref_ObjectData.verify_state(pc, Game_StateTag.ACTIVE):
 		_ref_ObjectData.set_state(pc, Game_StateTag.DEFAULT)
-	else:
-		renew = false
-
-	if renew:
 		_change_water_flow()
 
 

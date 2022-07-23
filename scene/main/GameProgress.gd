@@ -34,6 +34,10 @@ func _on_CreateObject_sprite_created(new_sprite: Sprite, main_tag: String,
 			_progress.create_ground(new_sprite, sub_tag, x, y)
 
 
+func _on_Schedule_first_turn_started() -> void:
+	_progress.start_first_turn()
+
+
 func _on_Schedule_turn_started(current_sprite: Sprite) -> void:
 	var pc_pos: Game_IntCoord
 

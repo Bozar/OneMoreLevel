@@ -11,7 +11,7 @@ const START_CHAR := "S"
 
 var _spr_DoorTruck := preload("res://sprite/DoorTruck.tscn")
 var _spr_FloorSnowRunner := preload("res://sprite/FloorSnowRunner.tscn")
-var _spr_Crystal := preload("res://sprite/Crystal.tscn")
+# var _spr_Crystal := preload("res://sprite/Crystal.tscn")
 var _spr_OnloadGoods := preload("res://sprite/OnloadGoods.tscn")
 var _spr_OffloadGoods := preload("res://sprite/OffloadGoods.tscn")
 var _spr_PCSnowRunner := preload("res://sprite/PCSnowRunner.tscn")
@@ -39,7 +39,7 @@ func _create_building_ground() -> void:
 	var main_tag: String
 	var sub_tag: String
 	var create_this: bool
-	var ground_coords := []
+	# var ground_coords := []
 	var door_coords := []
 	var offload_coords := []
 
@@ -65,12 +65,12 @@ func _create_building_ground() -> void:
 					new_scene = _spr_FloorSnowRunner
 					main_tag = Game_MainTag.GROUND
 					sub_tag = Game_SubTag.CROSSROAD
-					ground_coords.push_back(Game_IntCoord.new(x, y))
+					# ground_coords.push_back(Game_IntCoord.new(x, y))
 				_:
 					new_scene = _spr_Floor
 					main_tag = Game_MainTag.GROUND
 					sub_tag = Game_SubTag.FLOOR
-					ground_coords.push_back(Game_IntCoord.new(x, y))
+					# ground_coords.push_back(Game_IntCoord.new(x, y))
 					if packed_prefab.prefab[x][y] == START_CHAR:
 						_pc_x = x
 						_pc_y = y
@@ -78,10 +78,10 @@ func _create_building_ground() -> void:
 				_add_to_blueprint(new_scene, main_tag, sub_tag, x, y)
 
 	# Create snow.
-	Game_ArrayHelper.rand_picker(ground_coords, Game_SnowRunnerData.MAX_SNOW,
-			_ref_RandomNumber)
-	for i in ground_coords:
-		_add_trap_to_blueprint(_spr_Crystal, Game_SubTag.SNOW, i.x, i.y)
+	# Game_ArrayHelper.rand_picker(ground_coords, Game_SnowRunnerData.MAX_SNOW,
+	# 		_ref_RandomNumber)
+	# for i in ground_coords:
+	# 	_add_trap_to_blueprint(_spr_Crystal, Game_SubTag.SNOW, i.x, i.y)
 
 	# Create doors. Replace some of them with walls.
 	_create_building_by_threshold(door_coords, Game_SnowRunnerData.MAX_DOOR,
