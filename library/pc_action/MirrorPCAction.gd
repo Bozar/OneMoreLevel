@@ -97,10 +97,12 @@ func _create_image_on_the_other_side(x: int, y: int) -> void:
 	Game_ArrayHelper.filter_element(images, self, "_filter_create_image",
 			[actor])
 	max_actors = Game_MirrorData.MAX_PHANTOM - _ref_ObjectData.get_hit_point(pc)
+	# The newly created phantom image should not be removed.
+	max_actors -= 1
 	if max_actors < images.size():
 		Game_ArrayHelper.shuffle(images, _ref_RandomNumber)
 		for i in range(0, images.size()):
-			if i < max_actors - 1:
+			if i < max_actors:
 				continue
 			pos = Game_ConvertCoord.sprite_to_coord(images[i])
 			_ref_RemoveObject.remove_actor(pos)
