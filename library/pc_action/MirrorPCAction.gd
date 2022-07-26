@@ -229,12 +229,11 @@ func _hit_phantom() -> void:
 			_target_position.x, _target_position.y)
 	if new_actors > Game_MirrorData.MAX_ACTOR_FOR_RESTORE:
 		new_actors = Game_MirrorData.MAX_ACTOR_FOR_RESTORE
-	if _ref_ObjectData.get_hit_point(pc) == Game_MirrorData.MAX_CRYSTAL:
-		# Call _ref_EndGame.player_win() in MirrorProgress.remove_trap().
-		end_turn = false
-	else:
+	# Call _ref_EndGame.player_win() in MirrorProgress.remove_trap().
+	# Let MirrorProgress.end_world() to decide whether to end current turn.
+	if _ref_ObjectData.get_hit_point(pc) < Game_MirrorData.MAX_CRYSTAL:
 		_ref_CountDown.add_count(Game_MirrorData.RESTORE_TURN * new_actors + 1)
-		end_turn = true
+	end_turn = true
 
 
 func _push_image() -> void:
