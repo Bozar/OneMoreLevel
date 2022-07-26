@@ -21,6 +21,14 @@ func _init(parent_node: Node2D).(parent_node) -> void:
 	pass
 
 
+func end_world(_pc_x: int, _pc_y: int) -> void:
+	_try_end_game()
+
+
+func npc_end_world(_pc_x: int, _pc_y: int) -> void:
+	_try_end_game()
+
+
 func remove_trap(_trap: Sprite, _x: int, _y: int) -> void:
 	var pc := _ref_DungeonBoard.get_pc()
 	var hp := _ref_ObjectData.get_hit_point(pc)
@@ -32,8 +40,6 @@ func remove_trap(_trap: Sprite, _x: int, _y: int) -> void:
 
 	if _ref_ObjectData.get_hit_point(pc) < Game_MirrorData.MAX_CRYSTAL:
 		_replenish_crystal()
-	else:
-		_ref_EndGame.player_win()
 
 
 func _replenish_crystal() -> void:
@@ -76,3 +82,10 @@ func _is_valid_ground_coord(coord: Game_IntCoord, retry: int, opt_arg: Array) \
 
 func _create_crystal_here(coord: Game_IntCoord, _arg: Array) -> void:
 	_ref_CreateObject.create_trap(_spr_Crystal, Game_SubTag.CRYSTAL, coord)
+
+
+func _try_end_game() -> void:
+	var pc := _ref_DungeonBoard.get_pc()
+
+	if _ref_ObjectData.get_hit_point(pc) >= Game_MirrorData.MAX_CRYSTAL:
+		_ref_EndGame.player_win()

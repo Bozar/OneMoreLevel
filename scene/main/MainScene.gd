@@ -47,9 +47,14 @@ const SIGNAL_BIND := [
 		PLAYER_INPUT, ENEMY_AI, SIDEBAR_GUI, COUNT_DOWN, GAME_PROGRESS,
 	],
 	[
+		"turn_ending", "_on_Schedule_turn_ending",
+		SCHEDULE,
+		GAME_PROGRESS,
+	],
+	[
 		"turn_ended", "_on_Schedule_turn_ended",
 		SCHEDULE,
-		COUNT_DOWN, GAME_PROGRESS,
+		COUNT_DOWN,
 	],
 	[
 		"sprite_removed", "_on_RemoveObject_sprite_removed",

@@ -40,7 +40,13 @@ func renew_world(_pc_x: int, _pc_y: int) -> void:
 	pass
 
 
+# PC ends his turn.
 func end_world(_pc_x: int, _pc_y: int) -> void:
+	pass
+
+
+# If an unspecified NPC changes PC's state, do something.
+func npc_end_world(_pc_x: int, _pc_y: int) -> void:
 	pass
 
 

@@ -5,7 +5,7 @@ func _ready() -> void:
 	text = "Press Space to start game."
 
 
-func _on_Schedule_turn_ended(current_sprite: Sprite) -> void:
+func _on_Schedule_turn_ending(current_sprite: Sprite) -> void:
 	if current_sprite.is_in_group(Game_SubTag.PC):
 		text = ""
 
