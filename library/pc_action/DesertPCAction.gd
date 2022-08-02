@@ -16,16 +16,6 @@ func switch_sprite() -> void:
 	.switch_sprite()
 
 
-func reset_state() -> void:
-	var worm := 0
-
-	.reset_state()
-	for i in Game_CoordCalculator.get_neighbor(_source_position, 1):
-		if _ref_DungeonBoard.has_actor(i):
-			worm += 1
-	_ref_CountDown.subtract_count(worm * Game_DesertData.SANDWORM_CONSUME_TURN)
-
-
 func game_over(win: bool) -> void:
 	_render_end_game(win)
 	_switch_to_number(not win)
@@ -54,11 +44,11 @@ func attack() -> void:
 	if is_active_spice:
 		_ref_ObjectData.add_hit_point(pc, 1)
 	if _ref_ObjectData.get_hit_point(pc) < Game_DesertData.MAX_SPICE:
+		_ref_CountDown.add_count(Game_DesertData.RESTORE_TURN)
 		end_turn = true
 	else:
 		_ref_EndGame.player_win()
 		end_turn = false
-	_ref_CountDown.add_count(Game_DesertData.RESTORE_TURN)
 
 
 func interact_with_trap() -> void:

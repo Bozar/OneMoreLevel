@@ -12,6 +12,7 @@ var _ref_ObjectData: Game_ObjectData
 var _ref_DangerZone: Game_DangerZone
 var _ref_EndGame: Game_EndGame
 var _ref_Palette: Game_Palette
+var _ref_CountDown: Game_CountDown
 
 var _progress: Game_ProgressTemplate
 var _game_over: bool = false

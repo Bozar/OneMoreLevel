@@ -134,7 +134,7 @@ const NODE_REF := [
 	[
 		"_ref_CountDown",
 		COUNT_DOWN,
-		SIDEBAR_GUI, PLAYER_INPUT, ENEMY_AI,
+		SIDEBAR_GUI, PLAYER_INPUT, ENEMY_AI, GAME_PROGRESS,
 	],
 	[
 		"_ref_CreateObject",
