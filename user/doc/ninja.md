@@ -66,7 +66,7 @@ If grid 8 is occupied by a ninja, press Space to move to grid X, otherwise to mo
 
 ## PC Moves inside Time Stop
 
-When you hit a ninja outside time stop, you freeze the countdown timer immediately and your symbol turns into a digit. It shows how many remaining ticks you have in the current stop. The maximum ticks equals to `5 - PC_HIT_POINT`.
+When you hit a ninja outside time stop, you freeze the countdown timer immediately and your symbol turns into a digit. It shows how many remaining ticks you have in the current stop. The maximum ticks equals to `6 - PC_HIT_POINT`.
 
 Press left or right arrow key to move 1 step horizontally, and up or down arrow key to move 2 grids vertically. If you hit a ninja in the way or the first grid in your path has a soul fragment (As mentioned above, its symbol is a question mark (?).), this moving or attacking costs no tick, otherwise your tick is reduced by 1. You end your current turn when there is no ticks left. You can also press Space to let time flow right away.
 

@@ -146,7 +146,10 @@ func _charge_and_try_hit(direction: int, can_hit_npc: bool) -> bool:
 			_hit_actor(grid_pos)
 		grid_pos = path[path.size() - 2]
 		hit_npc = can_hit_npc
-	_ref_DungeonBoard.move_actor(pc_pos, grid_pos)
+	# Do not move to PC's current position, which results in an error from
+	# DungeonBoard.move_sprite_xy().
+	if (pc_pos.x != grid_pos.x) or (pc_pos.y != grid_pos.y):
+		_ref_DungeonBoard.move_actor(pc_pos, grid_pos)
 	return hit_npc
 
 
