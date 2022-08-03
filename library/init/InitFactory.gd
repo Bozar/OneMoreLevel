@@ -55,17 +55,17 @@ func _init(parent_node: Node2D).(parent_node) -> void:
 
 
 func get_blueprint() -> Array:
-	var pos := []
+	var inner_floor := []
 	var pc_coord: Game_IntCoord
 	var __
 
-	_create_room(PATH_TO_BIG_ROOM, MAX_BIG_ROOM, pos)
-	pc_coord = _create_start_point(pos)
-	_create_room(PATH_TO_SMALL_ROOM, MAX_SMALL_ROOM, pos)
+	_create_room(PATH_TO_BIG_ROOM, MAX_BIG_ROOM, inner_floor)
+	pc_coord = _create_start_point(inner_floor)
+	_create_room(PATH_TO_SMALL_ROOM, MAX_SMALL_ROOM, inner_floor)
 	_init_floor()
 	# Floors in a room are marked as occupied so as not to be replaced by
 	# regular floors. Now we need to unmask them in order to place actors.
-	for i in pos:
+	for i in inner_floor:
 		_reverse_occupy(i[0], i[1])
 
 	for i in [
@@ -227,17 +227,18 @@ func _build_from_prefab(packed_prefab: Game_DungeonPrefab.PackedPrefab,
 			return _build_from_prefab(packed_prefab, inner_floor, tmp_x, tmp_y,
 					parsed, retry + 1)
 
-	for i in [
+	# pst: prefab, sprite, subtag.
+	for pst in [
 		[Game_DungeonPrefab.WALL_CHAR, _spr_Wall, Game_SubTag.WALL],
 		[DOOR_CHAR, _spr_Door, Game_SubTag.DOOR],
 		[INNER_DOOR_CHAR, _spr_Door, Game_SubTag.DOOR],
 		[CLOCK_CHAR, _spr_FactoryClock, Game_SubTag.ARROW],
 	]:
-		# j = [x, y]
-		for j in parsed[i[0]]:
-			tmp_x = j[0] + start_x
-			tmp_y = j[1] + start_y
-			_build_building(tmp_x, tmp_y, i[1], i[2])
+		# coord = [x, y]
+		for coord in parsed[pst[0]]:
+			tmp_x = coord[0] + start_x
+			tmp_y = coord[1] + start_y
+			_build_building(tmp_x, tmp_y, pst[1], pst[2])
 	for i in parsed[Game_DungeonPrefab.FLOOR_CHAR]:
 		tmp_x = i[0] + start_x
 		tmp_y = i[1] + start_y
