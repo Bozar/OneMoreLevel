@@ -19,6 +19,7 @@ const MAX_OFFLOAD := 2
 
 const SNOW_COST_TURN := 1
 
+const ONLOAD_GOODS := 5
 const OFFLOAD_GOODS := 17
 const DROP_OFF_PASSENGER := 9
 const PICK_UP_PASSENGER := 5

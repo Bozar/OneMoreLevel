@@ -342,6 +342,7 @@ func _try_onload_goods() -> bool:
 				_ref_SwitchSprite.set_sprite(i, Game_SpriteTypeTag.ACTIVE)
 				# Update progress.
 				_goods_in_garage -= 1
+				_ref_CountDown.add_count(Game_SnowRunnerData.ONLOAD_GOODS)
 				return true
 	return false
 

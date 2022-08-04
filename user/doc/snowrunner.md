@@ -4,6 +4,7 @@
 
 ## Turn Restoration Cheatsheet
 
+* Onload a unit of goods: 4 turns
 * Offload a unit of goods: 16 turns
 * Pick up a passenger: 4 turns
 * Drop off a passenger: 8 turns
@@ -61,7 +62,7 @@ A building is composed of walls and interaction points. The symbol of a wall is 
 * Garage: G.
 * Offloading zone: a solid rectangle.
 
-The garage (G) is on the right side of your starting point. Bump it to onload goods. Then one of the slots changes from an underscore to three short dashes. Bumping once costs 1 turn. You cannot onload goods if all three slots are occupied. Nor does the truck stop by the garage in this case. The garage has only 5 units of goods. Bump it the sixth time has no effect.
+The garage (G) is on the right side of your starting point. Bump it to onload goods. Then one of the slots changes from an underscore to three short dashes. Bumping once restores 4 turns. You cannot onload goods if all three slots are occupied. Nor does the truck stop by the garage in this case. The garage has only 5 units of goods. Bump it the sixth time has no effect.
 
 A successful delivery requires you to onload a unit of goods from the garage and put it down at an offloading zone. After you have made 5 deliveries, you need to go back to the garage and bump it one last time. This time, all the slots must be empty. The truck does not stop by the garage if you have delivered 5 units of goods and one or more slots are occupied.
 
