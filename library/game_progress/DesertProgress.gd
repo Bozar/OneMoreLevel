@@ -19,16 +19,16 @@ func _init(parent_node: Node2D).(parent_node) -> void:
 	Game_DungeonSize.init_all_coords(_all_coords)
 
 
-func start_first_turn() -> void:
+func start_first_turn(_pc_coord: Game_IntCoord) -> void:
 	_try_add_new_worm(false)
 
 
-func renew_world(pc_x: int, pc_y: int) -> void:
+func renew_world(pc_coord: Game_IntCoord) -> void:
 	# Count adjacent worms at the start of PC's turn.
-	_count_worms = _get_adjacent_worms(pc_x, pc_y)
+	_count_worms = _get_adjacent_worms(pc_coord)
 
 
-func end_world(_pc_x: int, _pc_y: int) -> void:
+func end_world(_pc_coord: Game_IntCoord) -> void:
 	var count := _count_worms * Game_DesertData.SANDWORM_CONSUME_TURN
 
 	# Do not subtract count if game ends.
@@ -122,10 +122,10 @@ func _get_unoccupied_floor(coord: Game_IntCoord) -> int:
 	return unoccupied
 
 
-func _get_adjacent_worms(pc_x: int, pc_y: int) -> int:
+func _get_adjacent_worms(pc_coord: Game_IntCoord) -> int:
 	var worms := 0
 
-	for i in Game_CoordCalculator.get_neighbor_xy(pc_x, pc_y, 1):
+	for i in Game_CoordCalculator.get_neighbor(pc_coord, 1):
 		if _ref_DungeonBoard.has_actor(i):
 			worms += 1
 	return worms

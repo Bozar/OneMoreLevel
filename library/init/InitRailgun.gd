@@ -1,11 +1,10 @@
 extends Game_WorldTemplate
 
 
-const PATH_LENGTH: int = 10
-const MAX_FLOOR: int = 150
+const PATH_LENGTH := 10
+const MAX_FLOOR := 120
 
 var _spr_PCRailgun := preload("res://sprite/PCRailgun.tscn")
-var _spr_Devil := preload("res://sprite/Devil.tscn")
 var _spr_Counter := preload("res://sprite/Counter.tscn")
 
 
@@ -18,16 +17,13 @@ func get_blueprint() -> Array:
 	_init_floor()
 	_init_pc(Game_RailgunData.PC_FRONT_SIGHT, INVALID_COORD, INVALID_COORD,
 			_spr_PCRailgun)
-	_init_actor(Game_RailgunData.NPC_GAP, INVALID_COORD, INVALID_COORD,
-			Game_RailgunData.MAX_NPC,
-			_spr_Devil, Game_SubTag.DEVIL)
 
 	return _blueprint
 
 
 func _init_wall() -> void:
-	var end_point: Array = []
-	var count_floor: int = 1
+	var end_point := []
+	var count_floor := 1
 
 	_set_start_point(end_point)
 	while count_floor < MAX_FLOOR:
@@ -60,7 +56,7 @@ func _create_path(end_point: Array) -> int:
 	var multi_x: int
 	var multi_y: int
 	var step: int
-	var counter: int = 0
+	var counter := 0
 
 	select = _ref_RandomNumber.get_int(0, end_point.size())
 	if _is_odd(select):

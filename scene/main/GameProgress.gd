@@ -36,28 +36,24 @@ func _on_CreateObject_sprite_created(new_sprite: Sprite, main_tag: String,
 
 
 func _on_Schedule_first_turn_started() -> void:
-	_progress.start_first_turn()
+	_progress.start_first_turn(_ref_DungeonBoard.get_pc_coord())
 
 
 func _on_Schedule_turn_started(current_sprite: Sprite) -> void:
-	var pc_pos: Game_IntCoord
-
 	if current_sprite.is_in_group(Game_SubTag.PC):
-		pc_pos = Game_ConvertCoord.sprite_to_coord(current_sprite)
-		_progress.renew_world(pc_pos.x, pc_pos.y)
+		_progress.renew_world(_ref_DungeonBoard.get_pc_coord())
 
 
 func _on_Schedule_turn_ending(current_sprite: Sprite) -> void:
-	var pc_pos: Game_IntCoord
+	var pc_coord := _ref_DungeonBoard.get_pc_coord()
 
 	# Do not change world (like adding new NPCs) when the game is over.
 	if _game_over:
 		return
-	pc_pos = Game_ConvertCoord.sprite_to_coord(current_sprite)
 	if current_sprite.is_in_group(Game_SubTag.PC):
-		_progress.end_world(pc_pos.x, pc_pos.y)
+		_progress.end_world(pc_coord)
 	else:
-		_progress.npc_end_world(pc_pos.x, pc_pos.y)
+		_progress.npc_end_world(pc_coord)
 
 
 func _on_RemoveObject_sprite_removed(remove_sprite: Sprite,

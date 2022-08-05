@@ -13,6 +13,7 @@ const NPC_ATTACK := 4
 const NPC_GAP := 3
 const MAX_NPC := 6
 const TRIGGER_RESPAWN := 2
+const MAX_DISTANCE_TO_PC := 16
 
 const MAX_KILL_COUNT := 18
 const ONE_KILL := 1

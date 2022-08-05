@@ -12,7 +12,7 @@ func _init(parent_node: Node2D).(parent_node) -> void:
 	pass
 
 
-func end_world(_pc_x: int, _pc_y: int) -> void:
+func end_world(_pc_coord: Game_IntCoord) -> void:
 	var count_npc := _try_remove_npc()
 	var count_shadow := _ref_DungeonBoard.get_sprites_by_tag(
 			Game_SubTag.NINJA_SHADOW).size()

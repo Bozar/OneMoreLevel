@@ -11,7 +11,7 @@ func _init(parent_node: Node2D).(parent_node) -> void:
 	_wind_forecast.resize(MAX_FORECAST_SLOT)
 
 
-func renew_world(_pc_x: int, _pc_y: int) -> void:
+func renew_world(_pc_coord: Game_IntCoord) -> void:
 	var ground: Sprite
 
 	if _wind_duration < 1:

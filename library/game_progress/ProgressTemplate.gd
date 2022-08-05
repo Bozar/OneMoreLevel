@@ -33,22 +33,22 @@ func _init(parent_node: Node2D) -> void:
 	_ref_CountDown = parent_node._ref_CountDown
 
 
-func start_first_turn() -> void:
+func start_first_turn(_pc_coord: Game_IntCoord) -> void:
 	pass
 
 
 # PC's FOV is rendered when his turn starts. Be careful of adding new sprites.
-func renew_world(_pc_x: int, _pc_y: int) -> void:
+func renew_world(_pc_coord: Game_IntCoord) -> void:
 	pass
 
 
 # PC ends his turn.
-func end_world(_pc_x: int, _pc_y: int) -> void:
+func end_world(_pc_coord: Game_IntCoord) -> void:
 	pass
 
 
 # If an unspecified NPC changes PC's state, do something.
-func npc_end_world(_pc_x: int, _pc_y: int) -> void:
+func npc_end_world(_pc_coord: Game_IntCoord) -> void:
 	pass
 
 

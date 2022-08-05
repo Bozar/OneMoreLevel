@@ -25,29 +25,26 @@ func _init(parent_node: Node2D).(parent_node) -> void:
 	pass
 
 
-func end_world(pc_x: int, pc_y: int) -> void:
-	var pc_pos: Game_IntCoord
-
+func end_world(pc_coord: Game_IntCoord) -> void:
 	_init_ground_coords()
 
 	if _start_next_wave:
 		_start_next_wave = false
 		_refresh_counter()
-		pc_pos = Game_IntCoord.new(pc_x, pc_y)
 
 		if _wave_counter == 0:
-			_spawn_knights(pc_pos)
+			_spawn_knights(pc_coord)
 		elif _wave_counter == 1:
 			_submerge_land(Game_FrogData.SUBMERGE_LAND)
 			_remove_frog()
-			_spawn_princess(pc_pos)
+			_spawn_princess(pc_coord)
 		elif _wave_counter == 2:
-			_spawn_knights(pc_pos)
+			_spawn_knights(pc_coord)
 		elif _wave_counter == 3:
 			_submerge_land(Game_FrogData.SUBMERGE_MORE_LAND)
-			_spawn_princess(pc_pos)
+			_spawn_princess(pc_coord)
 		elif _wave_counter == -3:
-			_spawn_princess(pc_pos)
+			_spawn_princess(pc_coord)
 			_wave_counter = 3
 
 
