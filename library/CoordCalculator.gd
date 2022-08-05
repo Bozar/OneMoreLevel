@@ -103,7 +103,7 @@ static func is_inside_dungeon(x: int, y: int) -> bool:
 # Return an array of coordinates: [Game_IntCoord, ...].
 static func get_ray_path(source_x: int, source_y: int, max_range: int,
 		ray_direction: int, has_start_point: bool, has_end_point: bool,
-		func_host: Object, is_obstacle_func: String, optional_arg: Array = []) \
+		func_host: Object, is_obstacle_func: String, optional_arg := []) \
 		-> Array:
 	var x: int = source_x
 	var y: int = source_y

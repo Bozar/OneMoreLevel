@@ -27,7 +27,7 @@ static func shuffle(source_array: Array, rand) -> void:
 #> optional_arg: Array) -> bool
 # Return true if we need an array element.
 static func filter_element(source_array: Array, func_host: Object,
-		filter_in_func: String, optional_arg: Array) -> void:
+		filter_in_func: String, optional_arg := []) -> void:
 	var filter_in := funcref(func_host, filter_in_func)
 	var counter: int = 0
 
@@ -42,7 +42,7 @@ static func filter_element(source_array: Array, func_host: Object,
 #> optional_arg: Array) -> int
 # Return how many times an element should appear in the new array.
 static func duplicate_element(source_array: Array, func_host: Object,
-		get_counter_func: String, optional_arg: Array) -> void:
+		get_counter_func: String, optional_arg := []) -> void:
 	var get_counter := funcref(func_host, get_counter_func)
 	var counter: int
 	var tmp: Array = []

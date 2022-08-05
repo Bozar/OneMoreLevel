@@ -29,7 +29,7 @@ static func init_dungeon_grids(dungeon: Dictionary, init_value = null,
 # get_init_value_func(x: int, y: int, optional_arg: Array)
 # Return an initial value for dungeon[x][y].
 static func init_dungeon_grids_by_func(dungeon: Dictionary, func_host: Object,
-		get_init_value_func: String, optional_arg: Array, init_once := true) \
+		get_init_value_func: String, optional_arg := [], init_once := true) \
 		-> void:
 	var is_empty := dungeon.size() < 1
 	var get_init_value := funcref(func_host, get_init_value_func)
