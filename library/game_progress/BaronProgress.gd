@@ -11,7 +11,7 @@ func _init(parent_node: Node2D).(parent_node) -> void:
 	pass
 
 
-func end_world(_pc_x: int, _pc_y: int) -> void:
+func end_world(_pc_coord: Game_IntCoord) -> void:
 	_respawn_bird()
 
 	# if _test_once:

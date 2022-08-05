@@ -16,15 +16,15 @@ func _init(parent_node: Node2D).(parent_node) -> void:
 	pass
 
 
-func start_first_turn() -> void:
+func start_first_turn(_pc_coord: Game_IntCoord) -> void:
 	var pos := Game_ConvertCoord.sprite_to_coord(_ref_DungeonBoard.get_pc())
 
 	_init_grounds()
 	_respawn_boss(pos.x, pos.y)
 
 
-func end_world(pc_x: int, pc_y: int) -> void:
-	_respawn_minion(pc_x, pc_y)
+func end_world(pc_coord: Game_IntCoord) -> void:
+	_respawn_minion(pc_coord.x, pc_coord.y)
 	_add_or_remove_fog()
 
 
