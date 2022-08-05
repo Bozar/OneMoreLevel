@@ -1,6 +1,7 @@
 extends Game_PCActionTemplate
 
 
+const MAX_PILLAR := 1
 const HALF_SIGHT_WIDTH := 1
 const RAY_DIRECTION := [
 	[0, 1],
@@ -174,30 +175,19 @@ func _block_line_of_sight(x: int, y: int, _opt_arg: Array) -> bool:
 
 
 func _init_skull_pillar() -> void:
-	var building: Array
-	var pos: Game_IntCoord
-	var neighbor: Array
+	var wall_coords: Array
 
 	if _plillar_position != null:
 		return
 
-	building = _ref_DungeonBoard.get_sprites_by_tag(Game_SubTag.WALL)
-	Game_ArrayHelper.shuffle(building, _ref_RandomNumber)
+	wall_coords = _ref_DungeonBoard.get_sprites_by_tag(Game_SubTag.WALL)
+	for i in range(0, wall_coords.size()):
+		wall_coords[i] = Game_ConvertCoord.sprite_to_coord(wall_coords[i])
 
-	for i in building:
-		pos = Game_ConvertCoord.sprite_to_coord(i)
-		if Game_CoordCalculator.is_in_range(pos, _source_position,
-				Game_DungeonSize.CENTER_X):
-			continue
-
-		neighbor = Game_CoordCalculator.get_neighbor(pos, 1, false)
-		for j in neighbor:
-			if _ref_DungeonBoard.has_ground(j):
-				_ref_RemoveObject.remove_building(pos)
-				_ref_CreateObject.create_building(_spr_Portal,
-						Game_SubTag.PILLAR, pos)
-				_plillar_position = pos
-				return
+	Game_WorldGenerator.create_by_coord(wall_coords,
+			MAX_PILLAR, _ref_RandomNumber, self,
+			"_is_valid_pillar_coord", [],
+			"_create_pillar_here", [])
 
 
 func _init_counter() -> void:
@@ -338,3 +328,27 @@ func _is_passable(direction: int) -> bool:
 			continue
 		return true
 	return false
+
+
+func _is_valid_pillar_coord(coord: Game_IntCoord, retry: int, _opt: Array) \
+		-> bool:
+	if Game_CoordCalculator.is_in_range(coord, _source_position,
+			Game_DungeonSize.CENTER_X):
+		return false
+	elif retry < 1:
+		return Game_CoordCalculator.is_in_range(coord, _source_position,
+				Game_DungeonSize.MAX_Y) and _has_adjacent_ground(coord)
+	return _has_adjacent_ground(coord)
+
+
+func _has_adjacent_ground(coord: Game_IntCoord) -> bool:
+	for i in Game_CoordCalculator.get_neighbor(coord, 1, false):
+		if _ref_DungeonBoard.has_ground(i):
+			return true
+	return false
+
+
+func _create_pillar_here(coord: Game_IntCoord, _opt: Array) -> void:
+	_ref_RemoveObject.remove_building(coord)
+	_ref_CreateObject.create_building(_spr_Portal, Game_SubTag.PILLAR, coord)
+	_plillar_position = coord
