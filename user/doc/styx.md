@@ -21,9 +21,9 @@ Press Space to wait 1 turn. Waiting also randomize the directions of all arrows 
 
 ## Field of View and Lighthouse
 
-Your field of view is a rhombus area. Grids outside this area are invisible. Grids on the edge are dark grey. Grids inside are grey. Initially, you can see grids 3 steps away. Whenever you press Space, your sight range reduces to 2, and it will expand to 3 grids after 4 turns.
+Your field of view is a rhombus area. Grids outside this area are invisible. Grids on the edge are dark grey. Grids inside are grey. Initially, you can see 3 grids around you. Whenever you press Space, your sight range reduces to 2, and it will increase to 3 grids after 3 turns.
 
-There is a lighthouse in the center of the map, which is shown as a digit. The digit is a countdown timer. When it reduces to 0, your sight range increases to 3 grids. The lighthouse is always visible. It blocks movement. There is no water flow around it. Its color is dark grey when the game starts. Once you reach the first harbor, it turns to grey, which means you are qualified for beating the game.
+There is a lighthouse in the center of the map, which is shown as a digit. The digit is a countdown timer. When it reduces to 0, your sight range restores to normal. The lighthouse is always visible. It blocks movement. There is no water flow around it. Its color is dark grey by default. However, if you are within 6 or fewer grids to a harbor, the lighthouse turns to grey.
 
 The field of view is updated once at the start of a turn. You cannot examine surroundings when being carried away by water flow.
 

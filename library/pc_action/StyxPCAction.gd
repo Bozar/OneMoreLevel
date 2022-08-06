@@ -23,9 +23,15 @@ const RENDER_THIS := [Game_MainTag.GROUND, Game_MainTag.BUILDING]
 
 var _reached_harbor := 0
 var _sight_counter := Game_StyxData.NORMAL_THRESHOLD
+var _harbor_coords := []
+var _lighthouse: Sprite
 
 
 func _init(parent_node: Node2D).(parent_node) -> void:
+	pass
+
+
+func switch_sprite() -> void:
 	pass
 
 
@@ -116,13 +122,40 @@ func _get_ground_direction(x: int, y: int) -> int:
 
 
 func _set_lighthouse_color() -> void:
-	var lighthouse := _ref_DungeonBoard.get_building_xy(
+	_init_harbor_coords()
+	_init_lighthouse()
+
+	if _is_close_to_harbor():
+		_ref_Palette.set_default_color(_lighthouse, Game_MainTag.BUILDING)
+	else:
+		_ref_Palette.set_dark_color(_lighthouse, Game_MainTag.BUILDING)
+
+
+func _init_harbor_coords() -> void:
+	if _harbor_coords.size() > 0:
+		return
+
+	_harbor_coords = _ref_DungeonBoard.get_sprites_by_tag(Game_SubTag.HARBOR)
+	for i in range(0, _harbor_coords.size()):
+		_harbor_coords[i] = Game_ConvertCoord.sprite_to_coord(_harbor_coords[i])
+
+
+func _init_lighthouse() -> void:
+	if _lighthouse != null:
+		return
+
+	_lighthouse = _ref_DungeonBoard.get_building_xy(
 			Game_DungeonSize.CENTER_X, Game_DungeonSize.CENTER_Y)
 
-	if _reached_harbor > Game_StyxData.MIN_REACHED_HARBOR:
-		_ref_Palette.set_default_color(lighthouse, Game_MainTag.BUILDING)
-	else:
-		_ref_Palette.set_dark_color(lighthouse, Game_MainTag.BUILDING)
+
+func _is_close_to_harbor() -> bool:
+	var pc_coord := _ref_DungeonBoard.get_pc_coord()
+
+	for i in _harbor_coords:
+		if Game_CoordCalculator.is_in_range(i, pc_coord,
+				Game_StyxData.DETECT_HARBOR):
+			return true
+	return false
 
 
 func _set_harbor_visibility(set_this: Sprite) -> void:

@@ -12,3 +12,4 @@ const HARBOR_GAP := 7
 const MIN_SIGHT := 2
 const NORMAL_SIGHT := 3
 const NORMAL_THRESHOLD := 4
+const DETECT_HARBOR := 6
