@@ -76,7 +76,7 @@ const ROTATE_RIGHT := 3
 
 # The argument `edit` accepts an array of constant integers: HORIZONTAL_FLIP,
 # VERTICAL_FLIP, ROTATE_RIGHT.
-static func get_prefab(path_to_prefab: String, edit: Array) -> PackedPrefab:
+static func get_prefab(path_to_prefab: String, edit := []) -> PackedPrefab:
 	var read_file: Game_FileParser = Game_FileIOHelper.read_as_line(
 			path_to_prefab)
 	var dungeon := {}

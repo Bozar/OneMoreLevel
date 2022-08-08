@@ -1,6 +1,14 @@
 extends Game_WorldTemplate
 
 
+const PATH_TO_MIRROR := Game_DungeonPrefab.RESOURCE_PATH + "mirror/"
+const PATH_TO_LEFT_SIDE := "left_side.txt"
+const PATH_TO_WALLS := "walls/"
+
+const CRYSTAL_CHAR := "X"
+const WALL_CHAR := "#"
+const MIRROR_CHAR := "+"
+
 var _spr_Crystal := preload("res://sprite/Crystal.tscn")
 var _spr_CrystalBase := preload("res://sprite/CrystalBase.tscn")
 var _spr_PCMirrorImage := preload("res://sprite/PCMirrorImage.tscn")
@@ -12,8 +20,10 @@ func _init(parent_node: Node2D).(parent_node) -> void:
 
 
 func get_blueprint() -> Array:
-	_init_middle_border()
-	_init_wall()
+	var wall_start_points := []
+
+	_init_middle_border(wall_start_points)
+	_init_wall(wall_start_points)
 	_init_floor()
 
 	_create_pc()
@@ -23,75 +33,67 @@ func get_blueprint() -> Array:
 	return _blueprint
 
 
-func _init_middle_border() -> void:
-	var crystal_base: Array = [
-		Game_MirrorData.CENTER_Y_1,
-		Game_MirrorData.CENTER_Y_2,
-		Game_MirrorData.CENTER_Y_3,
-		Game_MirrorData.CENTER_Y_4,
-		Game_MirrorData.CENTER_Y_5,
-	]
+func _init_middle_border(start_points: Array) -> void:
+	var left_side := Game_DungeonPrefab.get_prefab(PATH_TO_MIRROR \
+			+ PATH_TO_LEFT_SIDE)
+	var create_sprite: bool
 	var new_sprite: PackedScene
 	var sub_tag: String
 
-	for i in range(Game_DungeonSize.MAX_Y):
-		if i in crystal_base:
-			new_sprite = _spr_CrystalBase
-			sub_tag = Game_SubTag.CRYSTAL_BASE
-		else:
-			new_sprite = _spr_Wall
-			sub_tag = Game_SubTag.WALL
-
-		_add_building_to_blueprint(new_sprite, sub_tag,
-				Game_DungeonSize.CENTER_X, i)
-		_occupy_position(Game_DungeonSize.CENTER_X, i)
-
-
-func _init_wall() -> void:
-	var valid_x: Array = []
-	var valid_y: Array = []
-	var valid_coord: Array = []
-	var block_size: int = 4
-	var max_mirror: int = 5
-	var index: int
-	var candidate: Array = [
-		[[1, 1], [1, 2]],
-		[[2, 1], [2, 2]],
-		[[1, 1], [2, 1]],
-		[[1, 2], [2, 2]],
-	]
-
-	for i in range(1, Game_DungeonSize.CENTER_X, block_size):
-		if i + block_size < Game_DungeonSize.CENTER_X:
-			valid_x.push_back(i)
-		else:
-			break
-	for j in range(1, Game_DungeonSize.MAX_Y, block_size):
-		if j + block_size < Game_DungeonSize.MAX_Y:
-			valid_y.push_back(j)
-		else:
-			break
-	for i in valid_x:
-		for j in valid_y:
-			valid_coord.push_back([i, j])
-	Game_ArrayHelper.rand_picker(valid_coord, max_mirror, _ref_RandomNumber)
-
-	for i in valid_coord:
-		index = _ref_RandomNumber.get_int(0, candidate.size())
-		for j in candidate[index]:
-			_create_mirror(i[0] + j[0], i[1] + j[1])
-			_create_reflection(i[0] + j[0], i[1] + j[1])
+	for x in range(0, left_side.max_x):
+		for y in range(0, left_side.max_y):
+			create_sprite = false
+			match left_side.prefab[x][y]:
+				CRYSTAL_CHAR:
+					create_sprite = true
+					new_sprite = _spr_CrystalBase
+					sub_tag = Game_SubTag.CRYSTAL_BASE
+				WALL_CHAR:
+					create_sprite = true
+					new_sprite = _spr_Wall
+					sub_tag = Game_SubTag.WALL
+				MIRROR_CHAR:
+					start_points.push_back(Game_IntCoord.new(x, y))
+			if create_sprite:
+				_add_building_to_blueprint(new_sprite, sub_tag, x, y)
+				_occupy_position(x, y)
 
 
-func _create_reflection(x: int, y: int) -> void:
-	var mirror := Game_CoordCalculator.get_mirror_image_xy(x, y,
-			Game_DungeonSize.CENTER_X, y)
-	_create_mirror(mirror.x, mirror.y)
+func _init_wall(start_points: Array) -> void:
+	var file_list: Array = Game_FileIOHelper.get_file_list(PATH_TO_MIRROR \
+			+ PATH_TO_WALLS)
+	var this_coord: Game_IntCoord
+	var this_prefab: Game_DungeonPrefab.PackedPrefab
+
+	# There are 6 start points but only 4 strings in `file_list`, so we need to
+	# create 2 more candidates.
+	Game_ArrayHelper.shuffle(file_list, _ref_RandomNumber)
+	# Duplicate an existing string.
+	file_list.push_back(file_list[0])
+	# Add an empty string.
+	file_list.push_back("")
+	# Randomize element orders.
+	Game_ArrayHelper.shuffle(file_list, _ref_RandomNumber)
+
+	for i in range(0, start_points.size()):
+		if file_list[i] == "":
+			continue
+		this_coord = start_points[i]
+		this_prefab = Game_DungeonPrefab.get_prefab(file_list[i])
+		for x in range(0, this_prefab.max_x):
+			for y in range(0, this_prefab.max_y):
+				if this_prefab.prefab[x][y] == WALL_CHAR:
+					_create_mirror(x + this_coord.x, y + this_coord.y)
 
 
 func _create_mirror(x: int, y: int) -> void:
-	_add_building_to_blueprint(_spr_Wall, Game_SubTag.WALL, x, y)
-	_occupy_position(x, y)
+	var left_coord := Game_IntCoord.new(x, y)
+	var right_coord := Game_CoordCalculator.get_mirror_image_xy(x, y,
+			Game_DungeonSize.CENTER_X, y)
+
+	for i in [left_coord, right_coord]:
+		_add_building_to_blueprint(_spr_Wall, Game_SubTag.WALL, i.x, i.y)
+		_occupy_position(i.x, i.y)
 
 
 func _create_pc() -> void:
