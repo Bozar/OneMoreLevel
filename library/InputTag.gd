@@ -14,6 +14,7 @@ const REPLAY_WORLD := "replay_world"
 const QUIT := "quit"
 const OPEN_HELP := "open_help"
 const COPY_SEED := "copy_seed"
+const COPY_WORLD := "copy_world"
 
 const INIT_WORLD := "init_world"
 const FORCE_RELOAD := "force_reload"

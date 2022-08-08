@@ -31,6 +31,7 @@ Function keys:
 * Replay dungeon: R, [X].
 * Replay world: U, [Start].
 * Copy RNG seed to clipboard: Ctrl + C.
+* Copy world name to clipboard: Ctrl + D.
 
 Force reload and two replay keys start a new game in different ways.
 
