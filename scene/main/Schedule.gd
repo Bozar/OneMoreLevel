@@ -3,12 +3,16 @@ class_name Game_Schedule
 
 
 const FIRST_SIGNALS := ["first_turn_starting", "first_turn_started",]
+const START_SIGNALS := ["turn_starting", "turn_started",]
 const END_SIGNALS := ["turn_ending", "turn_ended",]
 
 # warning-ignore: UNUSED_SIGNAL
 signal first_turn_starting()
 # warning-ignore: UNUSED_SIGNAL
 signal first_turn_started()
+# warning-ignore: UNUSED_SIGNAL
+signal turn_starting(current_sprite)
+# warning-ignore: UNUSED_SIGNAL
 signal turn_started(current_sprite)
 # warning-ignore: UNUSED_SIGNAL
 signal turn_ending(current_sprite)
@@ -46,14 +50,16 @@ func end_turn() -> void:
 
 	if _end_game:
 		return
-	emit_signal("turn_started", _get_current())
+	for i in START_SIGNALS:
+		emit_signal(i, _get_current())
 
 
 func init_schedule() -> void:
 	if _start_first_turn:
 		for i in FIRST_SIGNALS:
 			emit_signal(i)
-		emit_signal("turn_started", _get_current())
+		for i in START_SIGNALS:
+			emit_signal(i, _get_current())
 		_start_first_turn = false
 
 

@@ -37,7 +37,6 @@ func start_first_turn(_pc_coord: Game_IntCoord) -> void:
 	pass
 
 
-# PC's FOV is rendered when his turn starts. Be careful of adding new sprites.
 func renew_world(_pc_coord: Game_IntCoord) -> void:
 	pass
 

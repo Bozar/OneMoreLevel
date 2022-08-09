@@ -39,7 +39,7 @@ func _on_Schedule_first_turn_starting() -> void:
 	_progress.start_first_turn(_ref_DungeonBoard.get_pc_coord())
 
 
-func _on_Schedule_turn_started(current_sprite: Sprite) -> void:
+func _on_Schedule_turn_starting(current_sprite: Sprite) -> void:
 	if current_sprite.is_in_group(Game_SubTag.PC):
 		_progress.renew_world(_ref_DungeonBoard.get_pc_coord())
 
