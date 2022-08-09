@@ -1,6 +1,10 @@
 extends Game_WorldTemplate
 
 
+const BLOCK_SIZE := 3
+const TO_CENTER := 1
+const MAX_RETRY := 0
+
 var _spr_PCBalloon := preload("res://sprite/PCBalloon.tscn")
 var _spr_WormSpice := preload("res://sprite/WormSpice.tscn")
 var _spr_Arrow := preload("res://sprite/Arrow.tscn")
@@ -36,7 +40,7 @@ func get_blueprint() -> Array:
 		else:
 			_init_wall_beacon(x, y)
 
-	_init_single_wall(0, 0)
+	_init_single_wall()
 	_init_floor()
 
 	return _blueprint
@@ -114,30 +118,30 @@ func _init_wall_beacon(x: int, y: int) -> void:
 	_occupy_position(beacon[0], beacon[1])
 
 
-func _init_single_wall(retry: int, count_wall: int) -> void:
-	var max_retry: int = 500
-	var block_size: int = 3
-	var move_to_center: int = 1
-	var build_wall: bool = true
-	var x: int
-	var y: int
+func _init_single_wall() -> void:
+	var all_coords := []
 
-	if (count_wall > Game_BalloonData.MAX_WALL) or (retry > max_retry):
-		return
+	for x in range(-TO_CENTER, Game_DungeonSize.MAX_X - TO_CENTER):
+		for y in range(-TO_CENTER, Game_DungeonSize.MAX_Y - TO_CENTER):
+			all_coords.push_back(Game_IntCoord.new(x, y))
+	Game_WorldGenerator.create_by_coord(all_coords, Game_BalloonData.MAX_WALL,
+			_ref_RandomNumber, self,
+			"_is_valid_wall_coord", [],
+			"_create_wall_here", [],
+			MAX_RETRY)
 
-	x = _ref_RandomNumber.get_int(0, Game_DungeonSize.MAX_X - block_size)
-	y = _ref_RandomNumber.get_int(0, Game_DungeonSize.MAX_Y - block_size)
-	for i in range(x, x + block_size):
-		for j in range(y, y + block_size):
-			if _is_occupied(i, j):
-				build_wall = false
-				break
 
-	if build_wall:
-		_add_building_to_blueprint(_spr_Wall, Game_SubTag.WALL,
-				x + move_to_center, y + move_to_center)
-		_occupy_position(x + move_to_center, y + move_to_center)
-		count_wall += 1
+func _is_valid_wall_coord(coord: Game_IntCoord, _retry: int, _opt: Array) \
+		-> bool:
+	for i in range(coord.x, coord.x + BLOCK_SIZE):
+		for j in range(coord.y, coord.y + BLOCK_SIZE):
+			if Game_CoordCalculator.is_inside_dungeon(i, j) \
+					and _is_occupied(i, j):
+				return false
+	return true
 
-	retry += 1
-	_init_single_wall(retry, count_wall)
+
+func _create_wall_here(coord: Game_IntCoord, _opt: Array) -> void:
+	_add_building_to_blueprint(_spr_Wall, Game_SubTag.WALL,
+			coord.x + TO_CENTER, coord.y + TO_CENTER)
+	_occupy_position(coord.x + TO_CENTER, coord.y + TO_CENTER)

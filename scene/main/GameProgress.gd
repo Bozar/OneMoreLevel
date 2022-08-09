@@ -35,7 +35,7 @@ func _on_CreateObject_sprite_created(new_sprite: Sprite, main_tag: String,
 			_progress.create_ground(new_sprite, sub_tag, x, y)
 
 
-func _on_Schedule_first_turn_started() -> void:
+func _on_Schedule_first_turn_starting() -> void:
 	_progress.start_first_turn(_ref_DungeonBoard.get_pc_coord())
 
 

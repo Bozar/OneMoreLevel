@@ -4,7 +4,7 @@
 
 > Sit in a hot balloon and fly across a power station in a speed race. Reach designated places to earn points. Do not bump into tower like chimneys when possible.
 
-During the balloon race, you need to earn at least 4 points by ending your turn at a beacon marked with a question mark (?). You have at most 24 turns. You lose the game when running out of turns.
+During the balloon race, you need to earn at least 3 points by ending your turn at a beacon marked with a question mark (?). You have at most 24 turns. You lose the game when running out of turns.
 
 A beacon has three states:
 

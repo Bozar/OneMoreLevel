@@ -57,6 +57,10 @@ func set_message(_message: String) -> void:
 	pass
 
 
+func init_data() -> void:
+	pass
+
+
 func allow_input() -> bool:
 	if _is_checkmate():
 		_ref_EndGame.player_lose()
@@ -146,7 +150,7 @@ func render_fov() -> void:
 	_set_render_sprites()
 	if _ref_GameSetting.get_show_full_map():
 		_render_without_fog_of_war()
-		# _post_process_fov(pc_pos.x, pc_pos.y)
+		# _post_process_fov(pc_pos)
 		return
 
 	Game_ShadowCastFOV.set_field_of_view(
@@ -160,7 +164,7 @@ func render_fov() -> void:
 			_set_sprite_color(this_pos.x, this_pos.y, mtag, Game_ShadowCastFOV,
 					"is_in_sight")
 
-	_post_process_fov(pc_pos.x, pc_pos.y)
+	_post_process_fov(pc_pos)
 
 
 func switch_sprite() -> void:
@@ -309,7 +313,7 @@ func _move_pc_sprite() -> void:
 
 
 # Render dungeon objects at the end of the default render_fov().
-func _post_process_fov(_pc_x: int, _pc_y: int) -> void:
+func _post_process_fov(_pc_coord: Game_IntCoord) -> void:
 	pass
 
 

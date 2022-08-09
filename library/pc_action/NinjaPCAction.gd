@@ -255,12 +255,12 @@ func _update_indicator() -> void:
 	_previous_pc_y = pos.y
 
 
-func _post_process_fov(_pc_x: int, pc_y: int) -> void:
+func _post_process_fov(pc_coord: Game_IntCoord) -> void:
 	var wall: Sprite
 
 	for i in WALL_COORD:
 		for x in range(i[0], i[1]):
-			wall = _ref_DungeonBoard.get_building_xy(x, pc_y)
+			wall = _ref_DungeonBoard.get_building_xy(x, pc_coord.y)
 			_ref_Palette.set_default_color(wall, Game_MainTag.BUILDING)
 
 
