@@ -83,19 +83,22 @@ func _create_building_ground() -> void:
 	# for i in ground_coords:
 	# 	_add_trap_to_blueprint(_spr_Crystal, Game_SubTag.SNOW, i.x, i.y)
 
+	# Create offload doors. They are shown as ordinary doors when game starts.
+	# Refer: SnowRunnerProgress.end_world().
+	Game_ArrayHelper.shuffle(offload_coords, _ref_RandomNumber)
+	for i in range(0, offload_coords.size()):
+		if i < Game_SnowRunnerData.MAX_DELIVERY:
+			_add_building_to_blueprint(_spr_DoorTruck,
+					Game_SubTag.OFFLOAD_GOODS,
+					offload_coords[i].x, offload_coords[i].y)
+		else:
+			door_coords.push_back(offload_coords[i])
+
 	# Create doors. Replace some of them with walls.
 	_create_building_by_threshold(door_coords, Game_SnowRunnerData.MAX_DOOR,
 			_spr_DoorTruck, Game_SubTag.DOOR,
 			_spr_Wall, Game_SubTag.WALL)
 	# print(door_coords.size())
-
-	# Create offload doors. They are shown as ordinary doors when game starts.
-	# Refer: SnowRunnerProgress.end_world().
-	_create_building_by_threshold(offload_coords,
-			Game_SnowRunnerData.MAX_DELIVERY,
-			_spr_DoorTruck, Game_SubTag.OFFLOAD_GOODS,
-			_spr_DoorTruck, Game_SubTag.DOOR)
-	# print(offload_coords.size())
 
 
 func _create_building_by_threshold(coords: Array, max_building: int,

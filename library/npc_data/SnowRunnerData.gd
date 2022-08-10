@@ -14,7 +14,7 @@ const SNOW_FALL := 20
 const SNOW_MELT := 40
 
 const MAX_SNOW := 22
-const MAX_DOOR := 18
+const MAX_DOOR := 12
 const MAX_OFFLOAD := 2
 
 const SNOW_COST_TURN := 1
