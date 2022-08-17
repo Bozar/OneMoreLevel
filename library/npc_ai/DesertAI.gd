@@ -91,6 +91,8 @@ func _try_random_walk(id: int) -> bool:
 	var neck: Game_IntCoord
 	var forward: Game_IntCoord
 	var side := []
+	var has_forward: bool
+	var has_side: bool
 	var move_to: Game_IntCoord
 	var pc := _ref_DungeonBoard.get_pc()
 
@@ -107,10 +109,11 @@ func _try_random_walk(id: int) -> bool:
 		else:
 			side.push_back(i)
 
-	if (forward != null) and _ref_RandomNumber.get_percent_chance(
-			Game_DesertData.MOVE_STRAIGHT):
+	has_forward = (forward != null)
+	has_side = (side.size() > 0)
+	if _can_move_forward(has_forward, has_side):
 		move_to = forward
-	elif side.size() > 0:
+	elif has_side:
 		Game_ArrayHelper.shuffle(side, _ref_RandomNumber)
 		move_to = side[0]
 	else:
@@ -129,6 +132,12 @@ func _try_random_walk(id: int) -> bool:
 	_ref_DungeonBoard.move_actor(_self_pos, move_to)
 	_set_danger_zone(_self, true)
 	return true
+
+
+func _can_move_forward(has_forward: bool, has_side: bool) -> bool:
+	return has_forward and (not has_side \
+			or _ref_RandomNumber.get_percent_chance(
+					Game_DesertData.MOVE_STRAIGHT))
 
 
 func _is_pc_pos(coord: Game_IntCoord) -> bool:
