@@ -12,9 +12,9 @@ Every turn a sandworm moves one step in a random direction. It has a higher chan
 
 Dunes are composed of sand walls (#) and spices (?). They are created by a living sandworm. The more spices a sandworm has, the more spices will be left behind. You can bump and destroy a wall or bump and collect a spice just as from a sandworm. You do not move when bumping. It can be used as a poor man's waiting key.
 
-You might lose due to one of three reasons.
+You might lose the game due to one of three reasons.
 
-Firstly, you can survive in desert for at most 24 turns. Moving and bumping costs 1 turn. If you start your turn beside a sandworm, every adjacent sandworm segment reduces your remaining time by 2 turns. Bumping a common or quality spice restores 6 turns. You lose if you have not collected 3 spices when your last turn ends.
+Firstly, you can survive in desert for at most 24 turns. Moving and bumping costs 1 turn. Starting your turn beside a sandworm costs an extra `2N - 1` turns, where `N` is the number of adjacent sandworm segments. Bumping a common or quality spice restores 6 turns. You lose if you have not collected 3 spices when your last turn ends.
 
 Secondly, PC's symbol turns into a rectangle when being adjacent to a sandworm's head. The game ends if the sandworm intends to move into PC's position the next turn.
 

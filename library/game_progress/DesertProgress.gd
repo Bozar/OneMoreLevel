@@ -29,7 +29,7 @@ func renew_world(pc_coord: Game_IntCoord) -> void:
 
 
 func end_world(_pc_coord: Game_IntCoord) -> void:
-	var count := _count_worms * Game_DesertData.SANDWORM_CONSUME_TURN
+	var count := int(max(0, _count_worms * 2 - 1))
 
 	# Do not subtract count if game ends.
 	_ref_CountDown.subtract_count(count)

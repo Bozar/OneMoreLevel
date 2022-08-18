@@ -23,5 +23,4 @@ const WORM_DISTANCE := 5
 const MOVE_STRAIGHT := 60
 
 const RESTORE_TURN := 7
-const SANDWORM_CONSUME_TURN := 2
 const RENDER_RANGE := 8
